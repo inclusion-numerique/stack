@@ -1,8 +1,8 @@
-import type { Metadata } from 'next'
-import { metadataTitle } from '@app/web/app/metadataTitle'
-import { authenticateUser } from '@app/web/auth/authenticateUser'
 import AssistantParametresPage from '@app/web/app/assistant/parametres/AssistantParametresPage'
 import { getAssistantParametresPageData } from '@app/web/app/assistant/parametres/getAssistantParametresPageData'
+import { metadataTitle } from '@app/web/app/metadataTitle'
+import { authenticateUser } from '@app/web/auth/authenticateUser'
+import type { Metadata } from 'next'
 
 export const generateMetadata = (): Metadata => ({
   title: metadataTitle('Assistant - Paramètres'),

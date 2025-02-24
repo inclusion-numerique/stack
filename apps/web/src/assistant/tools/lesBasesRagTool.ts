@@ -1,8 +1,8 @@
-import { z } from 'zod'
-import { zodFunction } from 'openai/helpers/zod'
-import { ZodFunctionOptions } from '@app/web/assistant/tools/zodFunctionType'
-import { ragSources } from '@app/web/assistant/rag/sources'
 import { getRagChunksForQuery } from '@app/web/assistant/rag/getRagChunksForQuery'
+import { ragSources } from '@app/web/assistant/rag/sources'
+import { ZodFunctionOptions } from '@app/web/assistant/tools/zodFunctionType'
+import { zodFunction } from 'openai/helpers/zod'
+import { z } from 'zod'
 
 export const lesBasesRagToolParameters = z.object({
   query: z

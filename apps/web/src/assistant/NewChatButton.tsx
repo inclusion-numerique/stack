@@ -1,10 +1,10 @@
 'use client'
 
-import Button from '@codegouvfr/react-dsfr/Button'
 import {
   initialiseChatSession,
   useIsChatSessionEmpty,
 } from '@app/web/assistant/hooks/useAssistantChatController'
+import Button from '@codegouvfr/react-dsfr/Button'
 
 const NewChatButton = () => {
   const isChatSessionEmpty = useIsChatSessionEmpty()

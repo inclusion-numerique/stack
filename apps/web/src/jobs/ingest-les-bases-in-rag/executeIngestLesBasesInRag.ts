@@ -1,12 +1,12 @@
-import { request } from 'undici'
-import pThrottle from 'p-throttle'
-import type { IngestLesBasesInRagJob } from '@app/web/jobs/ingest-les-bases-in-rag/ingestLesBasesInRagJob'
-import { runPromisesSequentially } from '@app/web/utils/runPromisesSequentially'
-import { prismaClient } from '@app/web/prismaClient'
-import { ragSources } from '@app/web/assistant/rag/sources'
-import { insertMarkdownRagChunks } from '@app/web/assistant/rag/insertMarkdownRagChunks'
-import { output } from '@app/web/jobs/output'
 import { checkIfRagDocumentExists } from '@app/web/assistant/rag/checkIfRagDocumentExists'
+import { insertMarkdownRagChunks } from '@app/web/assistant/rag/insertMarkdownRagChunks'
+import { ragSources } from '@app/web/assistant/rag/sources'
+import type { IngestLesBasesInRagJob } from '@app/web/jobs/ingest-les-bases-in-rag/ingestLesBasesInRagJob'
+import { output } from '@app/web/jobs/output'
+import { prismaClient } from '@app/web/prismaClient'
+import { runPromisesSequentially } from '@app/web/utils/runPromisesSequentially'
+import pThrottle from 'p-throttle'
+import { request } from 'undici'
 
 type ApiV1BasesResponse = {
   data: {

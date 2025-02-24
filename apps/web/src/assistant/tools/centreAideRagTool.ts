@@ -1,9 +1,9 @@
-import { z } from 'zod'
-import { zodFunction } from 'openai/helpers/zod'
-import { ZodFunctionOptions } from '@app/web/assistant/tools/zodFunctionType'
+import { formatRagSearchResultToMarkdown } from '@app/web/assistant/rag/formatRagSearchResultToMarkdown'
 import { getRagChunksForQuery } from '@app/web/assistant/rag/getRagChunksForQuery'
 import { ragSources } from '@app/web/assistant/rag/sources'
-import { formatRagSearchResultToMarkdown } from '@app/web/assistant/rag/formatRagSearchResultToMarkdown'
+import { ZodFunctionOptions } from '@app/web/assistant/tools/zodFunctionType'
+import { zodFunction } from 'openai/helpers/zod'
+import { z } from 'zod'
 
 export const centreAideRagToolParameters = z.object({
   query: z

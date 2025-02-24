@@ -1,24 +1,22 @@
 'use client'
 
-import classNames from 'classnames'
-import { useEffect } from 'react'
-import Button from '@codegouvfr/react-dsfr/Button'
-import type { AssistantPageData } from '@app/web/assistant/getAssistantPageData'
 import ChatSession from '@app/web/assistant/ChatSession'
-import { withTrpc } from '@app/web/components/trpc/withTrpc'
-import { initialiseChatSession } from '@app/web/assistant/hooks/useAssistantChatController'
 import ChatSessionHistorySideMenu from '@app/web/assistant/ChatSessionHistorySideMenu'
 import NewChatButton from '@app/web/assistant/NewChatButton'
+import type { AssistantPageData } from '@app/web/assistant/getAssistantPageData'
+import { initialiseChatSession } from '@app/web/assistant/hooks/useAssistantChatController'
+import { withTrpc } from '@app/web/components/trpc/withTrpc'
+import Button from '@codegouvfr/react-dsfr/Button'
+import classNames from 'classnames'
+import { useEffect } from 'react'
 import styles from './ChatSession.module.css'
 
 const AssistantPageContent = ({
   data: { chatSession, chatSessionHistory },
 }: {
   data: AssistantPageData
-  // eslint-disable-next-line @typescript-eslint/require-await
 }) => {
-  console.log('RE RENDER ASSISTANT PAGE CONTENT chat id :', chatSession?.id)
-
+  // biome-ignore lint/correctness/useExhaustiveDependencies: we want to initialize when id changes
   useEffect(() => {
     initialiseChatSession({
       chatSessionHistory: chatSessionHistory ?? [],

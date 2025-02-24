@@ -1,13 +1,13 @@
 import {
+  OpenAiChunkChoice,
   executeOpenAiChat,
   executeOpenAiChatStream,
-  OpenAiChunkChoice,
 } from '@app/web/assistant/openAiChat'
-import { mediationAssistantSystemMessage } from '@app/web/assistant/systemMessages'
 import {
   openAiClient,
   openAiClientConfiguration,
 } from '@app/web/assistant/openAiClient'
+import { mediationAssistantSystemMessage } from '@app/web/assistant/systemMessages'
 import { weatherTestTool } from '@app/web/assistant/tools/weatherTestTool'
 
 describe('openAiChat', () => {

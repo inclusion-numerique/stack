@@ -1,8 +1,8 @@
-import type { Metadata } from 'next'
 import { metadataTitle } from '@app/web/app/metadataTitle'
 import AssistantPageContent from '@app/web/assistant/AssistantPageContent'
 import { getAssistantPageData } from '@app/web/assistant/getAssistantPageData'
 import { authenticateUser } from '@app/web/auth/authenticateUser'
+import type { Metadata } from 'next'
 
 export const generateMetadata = (): Metadata => ({
   title: metadataTitle('Assistant - Chat'),

@@ -1,17 +1,16 @@
-// eslint-disable-next-line unicorn/prevent-abbreviations
 import fs from 'node:fs'
 import path from 'node:path'
-import { varFile } from '@app/config/varDirectory'
-import slugify from 'slugify'
-import { prismaClient } from '@app/web/prismaClient'
-import { Command } from '@commander-js/extra-typings'
-import { insertMarkdownRagChunks } from '@app/web/assistant/rag/insertMarkdownRagChunks'
-import { ragSources } from '@app/web/assistant/rag/sources'
 import {
-  configureDeploymentTarget,
   DeploymentTargetOption,
+  configureDeploymentTarget,
 } from '@app/cli/deploymentTarget'
 import { output } from '@app/cli/output'
+import { varFile } from '@app/config/varDirectory'
+import { insertMarkdownRagChunks } from '@app/web/assistant/rag/insertMarkdownRagChunks'
+import { ragSources } from '@app/web/assistant/rag/sources'
+import { prismaClient } from '@app/web/prismaClient'
+import { Command } from '@commander-js/extra-typings'
+import slugify from 'slugify'
 
 /**
  * How to export and ingest the markdown files from the help center
@@ -70,7 +69,6 @@ const absoluteNotionUrlFromFilename = (filename: string): string => {
   return `${baseUrl}${slugForUrl}`
 }
 
-// eslint-disable-next-line unicorn/prevent-abbreviations
 export const ingestNotionHelpCenterExportedMarkdown = new Command()
   .command('rag:ingest-notion-help-center-exported-markdown')
   .addOption(DeploymentTargetOption)
@@ -131,7 +129,6 @@ export const ingestNotionHelpCenterExportedMarkdown = new Command()
               `Deleted ${deletedOutdatedChunks} existing chunks for document ${file.filename} that no longer exist`,
             )
           }
-          // eslint-disable-next-line promise/always-return
           if (insertedChunks > 0) {
             output(
               `Inserted ${insertedChunks} new chunks for document ${file.filename}`,

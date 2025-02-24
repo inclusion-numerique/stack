@@ -1,15 +1,15 @@
+import type { AssistantChatRequestData } from '@app/web/app/api/assistant/chat/AssistantChatRequestData'
+import type { AssistantChatStreamChunk } from '@app/web/assistant/assistantChatStream'
+import { assistantEndpoints } from '@app/web/assistant/assistantEndpoints'
+import { chatStore } from '@app/web/assistant/chatStore'
+import { decodeStreamChunk } from '@app/web/assistant/decodeStreamChunk'
+import type { AssistantPageDataChatSessionHistoryItem } from '@app/web/assistant/getAssistantPageData'
+import type { ChatSessionData } from '@app/web/assistant/getChatSession'
+import { trpc } from '@app/web/trpc'
+import { replaceRouteWithoutRerender } from '@app/web/utils/replaceRouteWithoutRerender'
 import type { SnapshotFromStore } from '@xstate/store/dist/declarations/src/types'
 import { useSelector } from '@xstate/store/react'
 import { useRef } from 'react'
-import { chatStore } from '@app/web/assistant/chatStore'
-import type { ChatSessionData } from '@app/web/assistant/getChatSession'
-import type { AssistantPageDataChatSessionHistoryItem } from '@app/web/assistant/getAssistantPageData'
-import { replaceRouteWithoutRerender } from '@app/web/utils/replaceRouteWithoutRerender'
-import { trpc } from '@app/web/trpc'
-import type { AssistantChatRequestData } from '@app/web/app/api/assistant/chat/AssistantChatRequestData'
-import { assistantEndpoints } from '@app/web/assistant/assistantEndpoints'
-import { decodeStreamChunk } from '@app/web/assistant/decodeStreamChunk'
-import type { AssistantChatStreamChunk } from '@app/web/assistant/assistantChatStream'
 
 /**
  * This files exports the actions and queries for the chat assistant features
@@ -17,10 +17,9 @@ import type { AssistantChatStreamChunk } from '@app/web/assistant/assistantChatS
  * And implements the business logic
  */
 
-export const useAssistantChatController = () => {}
-
 // Subscribe to snapshot changes for debugging
 chatStore.subscribe((snapshot) => {
+  // biome-ignore lint/suspicious/noConsole: used for debugging
   console.info(snapshot.context)
 })
 
@@ -55,8 +54,6 @@ export const useCreateNewChatSession = () => {
 
   const createChatSession = async () => {
     const createSessionResponse = await createSessionMutation.mutateAsync()
-
-    console.log('CREATE CHAT SESSION')
 
     const newChatSessionId = createSessionResponse.chatSession.id
     replaceRouteWithoutRerender(`/assistant/chat/${newChatSessionId}`)
@@ -107,7 +104,6 @@ export const useSendUserMessage = () => {
     // Create a new chat session if none exists before sending the user message
     if (!streamChatSessionId) {
       const createdChatSession = await createChatSession()
-      console.log('CREATED CHAT SESSION', createdChatSession)
       streamChatSessionId = createdChatSession.chatSession.id
     }
 
@@ -148,9 +144,7 @@ export const useSendUserMessage = () => {
         return
       }
 
-      // eslint-disable-next-line no-constant-condition
       while (true) {
-        // eslint-disable-next-line no-await-in-loop
         const { done, value } = await reader.read()
         if (done) break
 
@@ -167,10 +161,10 @@ export const useSendUserMessage = () => {
       // Completion stream ended
       chatStore.send({ type: 'completionStreamEnded' })
     } catch (error) {
+      // biome-ignore lint/suspicious/noConsole: used until feature is in production
       console.error('Response stream error:', error)
 
       // This is an expected error, the user aborted the request
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       if (
         !!error &&
         typeof error === 'object' &&

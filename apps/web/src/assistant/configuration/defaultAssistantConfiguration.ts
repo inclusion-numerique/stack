@@ -1,8 +1,8 @@
-import type { AssistantConfiguration } from '@prisma/client'
 import { openAiClientConfiguration } from '@app/web/assistant/openAiClient'
 import { mediationAssistantSystemMessage } from '@app/web/assistant/systemMessages'
 import { agenticSearchToolDescription } from '@app/web/assistant/tools/agenticSearchToolConfig'
 import { removeNullAndUndefinedValues } from '@app/web/utils/removeNullAndUndefinedValues'
+import type { AssistantConfiguration } from '@prisma/client'
 
 export type DefaultAssistantConfiguration = Omit<
   AssistantConfiguration,

@@ -1,9 +1,9 @@
-import pThrottle from 'p-throttle'
 import {
   openAiClient,
   openAiClientConfiguration,
 } from '@app/web/assistant/openAiClient'
 import { createStopwatch } from '@app/web/utils/stopwatch'
+import pThrottle from 'p-throttle'
 
 const createEmbeddingThrottle = pThrottle({
   limit: 95,

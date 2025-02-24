@@ -1,5 +1,5 @@
-import { ChatCompletionMessageToolCall } from 'openai/src/resources/chat/completions'
 import { prismaClient } from '@app/web/prismaClient'
+import { ChatCompletionMessageToolCall } from 'openai/src/resources/chat/completions'
 
 export const getChatSession = async (chatSessionId: string) => {
   const chatSession = await prismaClient.assistantChatSession.findUnique({

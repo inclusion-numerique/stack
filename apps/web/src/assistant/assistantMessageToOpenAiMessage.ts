@@ -1,4 +1,10 @@
+import {
+  assistantChatRoleToOpenAiRole,
+  openAiRoleToAssistantChatRole,
+} from '@app/web/assistant/assistantChatRole'
+import type { OpenAiChatMessage } from '@app/web/assistant/openAiChat'
 import type { AssistantChatMessage, Prisma } from '@prisma/client'
+import type { InputJsonObject } from '@prisma/client/runtime/library'
 import {
   ChatCompletionAssistantMessageParam,
   ChatCompletionDeveloperMessageParam,
@@ -9,12 +15,6 @@ import {
   ChatCompletionUserMessageParam,
 } from 'openai/src/resources/chat/completions'
 import { v4 } from 'uuid'
-import type { InputJsonObject } from '@prisma/client/runtime/library'
-import type { OpenAiChatMessage } from '@app/web/assistant/openAiChat'
-import {
-  assistantChatRoleToOpenAiRole,
-  openAiRoleToAssistantChatRole,
-} from '@app/web/assistant/assistantChatRole'
 
 export const assistantMessageToOpenAiMessage = ({
   role,

@@ -1,5 +1,5 @@
-import { formatInTimeZone } from 'date-fns-tz'
 import { dateFormatter } from '@app/web/utils/formatDate'
+import { formatInTimeZone } from 'date-fns-tz'
 
 export const dateAsDayAndTime = dateFormatter("dd/MM/yyyy HH'h'mm")
 

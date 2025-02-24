@@ -1,22 +1,22 @@
 'use client'
 
-import { DefaultValues, useForm } from 'react-hook-form'
 import InputFormField from '@app/ui/components/Form/InputFormField'
-import React from 'react'
-import Button from '@codegouvfr/react-dsfr/Button'
-import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
 import { createToast } from '@app/ui/toast/createToast'
-import { useRouter } from 'next/navigation'
-import { zodResolver } from '@hookform/resolvers/zod'
+import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
 import {
   AssistantConfigurationData,
   AssistantConfigurationValidation,
 } from '@app/web/assistant/configuration/AssistantConfigurationValidation'
 import { DefaultAssistantConfiguration } from '@app/web/assistant/configuration/defaultAssistantConfiguration'
-import { trpc } from '@app/web/trpc'
-import { optionalNumberToString } from '@app/web/utils/formatNumber'
-import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
+import { trpc } from '@app/web/trpc'
+import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
+import { optionalNumberToString } from '@app/web/utils/formatNumber'
+import Button from '@codegouvfr/react-dsfr/Button'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter } from 'next/navigation'
+import React from 'react'
+import { DefaultValues, useForm } from 'react-hook-form'
 
 const AssistantParametresForm = ({
   defaultValues,

@@ -8,15 +8,15 @@ import { createTfVarsFileFromEnvironment } from '@app/cli/commands/infrastructur
 import { locallyRestoreLatestMainBackup } from '@app/cli/commands/infrastructure/locallyRestoreLatestMainBackup'
 import { executeJobApiCommand } from '@app/cli/commands/jobs/executeJobApiCommand'
 import { executeJobCommand } from '@app/cli/commands/jobs/executeJobCommand'
+import { ingestNotionHelpCenterExportedMarkdown } from '@app/cli/commands/rag/ingestNotionHelpCenterExportedMarkdown'
 import { createDotEnvFromSecrets } from '@app/cli/commands/secrets/createDotEnvFromSecrets'
 import { getDatabasePasswordSecret } from '@app/cli/commands/secrets/getDatabasePasswordSecret'
 import { getSecretValue } from '@app/cli/commands/secrets/getSecretValue'
 import { listSecrets } from '@app/cli/commands/secrets/listSecrets'
 import { setupDatabaseSecret } from '@app/cli/commands/secrets/setupDatabaseSecret'
 import { listV1Emails } from '@app/cli/commands/v1/listEmails'
-import { ingestNotionHelpCenterExportedMarkdown } from '@app/cli/commands/rag/ingestNotionHelpCenterExportedMarkdown'
-import { output } from '@app/cli/output'
 import { fetchAccompagnements } from '@app/cli/fetchAccompagnement'
+import { output } from '@app/cli/output'
 import { Command } from '@commander-js/extra-typings'
 
 if (

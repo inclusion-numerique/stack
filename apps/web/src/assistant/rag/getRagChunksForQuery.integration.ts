@@ -1,8 +1,8 @@
 import { centreAideRagTool } from '@app/web/assistant/tools/centreAideRagTool'
 
-import { prismaClient } from '@app/web/prismaClient'
 import { openAiClientConfiguration } from '@app/web/assistant/openAiClient'
 import { getRagChunksForQuery } from '@app/web/assistant/rag/getRagChunksForQuery'
+import { prismaClient } from '@app/web/prismaClient'
 import huitreEmbedding from './testing.huitre.embedding.json'
 import zebreEmbedding from './testing.zebre.embedding.json'
 
@@ -15,7 +15,6 @@ describe('getRagChunksForQuery', () => {
     })
 
     for (const testEmbedding of [huitreEmbedding, zebreEmbedding]) {
-      // eslint-disable-next-line no-await-in-loop
       await prismaClient.ragDocumentChunk.create({
         data: {
           id: testEmbedding.id,
@@ -30,7 +29,6 @@ describe('getRagChunksForQuery', () => {
         },
       })
 
-      // eslint-disable-next-line no-await-in-loop
       await prismaClient.$queryRawUnsafe(`
           UPDATE "rag_document_chunks"
           SET embedding = '${JSON.stringify(testEmbedding.embedding)}'::vector

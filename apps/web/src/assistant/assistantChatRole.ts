@@ -1,5 +1,5 @@
-import type { AssistantChatRole } from '@prisma/client'
 import type { OpenAiChatRole } from '@app/web/assistant/openAiChat'
+import type { AssistantChatRole } from '@prisma/client'
 
 export const assistantChatRoleLabels: { [key in AssistantChatRole]: string } = {
   System: 'Système',

@@ -1,11 +1,11 @@
-import { createStore } from '@xstate/store'
-import type { ChatCompletionMessageToolCall } from 'openai/src/resources/chat/completions'
+import type { AssistantChatStreamChunk } from '@app/web/assistant/assistantChatStream'
+import { AssistantPageDataChatSessionHistoryItem } from '@app/web/assistant/getAssistantPageData'
 import {
   ChatCompletionMessageWithToolCalls,
   ChatSessionData,
 } from '@app/web/assistant/getChatSession'
-import type { AssistantChatStreamChunk } from '@app/web/assistant/assistantChatStream'
-import { AssistantPageDataChatSessionHistoryItem } from '@app/web/assistant/getAssistantPageData'
+import { createStore } from '@xstate/store'
+import type { ChatCompletionMessageToolCall } from 'openai/src/resources/chat/completions'
 
 // Create a store
 export const chatStore = createStore({
@@ -68,8 +68,6 @@ export const chatStore = createStore({
     }),
     completionStreamStarted: (context, event: { prompt: string }) => {
       // Append the sent user message to the chat session
-      console.log('EVENT: COMPLETION STREAM STARTED', event.prompt)
-
       const userMessage = {
         id: new Date().toISOString(), // no need to use a uuid here
         content: event.prompt,
@@ -94,8 +92,6 @@ export const chatStore = createStore({
       context,
       event: { chunk: AssistantChatStreamChunk },
     ) => {
-      console.log('CHUNK', event.chunk)
-
       const { role, content, toolCall } = event.chunk
 
       if (role === 'tool') {
@@ -116,6 +112,7 @@ export const chatStore = createStore({
       }
     },
     completionStreamEnded: (context) => {
+      // biome-ignore lint/suspicious/noConsole: used until feature is in production
       console.log('EVENT: COMPLETION STREAM ENDED')
 
       let updatedMessages = context.messages

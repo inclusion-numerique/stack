@@ -1,7 +1,16 @@
-import { z } from 'zod'
-import { zodFunction } from 'openai/helpers/zod'
-import { stringify } from 'yaml'
-import type { ZodFunctionOptions } from '@app/web/assistant/tools/zodFunctionType'
+import {
+  type RagChunkResultForAssistant,
+  formatRagSearchResultToJsonForAssistant,
+  formatRagSearchResultToMarkdown,
+} from '@app/web/assistant/rag/formatRagSearchResultToMarkdown'
+import { getRagChunksForQuery } from '@app/web/assistant/rag/getRagChunksForQuery'
+import { ragSources } from '@app/web/assistant/rag/sources'
+import { summarizeWebPage } from '@app/web/assistant/tasks/summarizeWebPage'
+import {
+  type AgenticSearchToolName,
+  agenticSearchToolDescription,
+  agenticSearchToolName,
+} from '@app/web/assistant/tools/agenticSearchToolConfig'
 import {
   type BraveSearchResult,
   type BraveSearchResultForAssistant,
@@ -10,20 +19,10 @@ import {
   formatResultToJsonForAssistant,
   formatResultToMarkdownForAssistant,
 } from '@app/web/assistant/tools/brave/braveSearch'
-import { getRagChunksForQuery } from '@app/web/assistant/rag/getRagChunksForQuery'
-import { ragSources } from '@app/web/assistant/rag/sources'
-import {
-  formatRagSearchResultToJsonForAssistant,
-  formatRagSearchResultToMarkdown,
-  type RagChunkResultForAssistant,
-} from '@app/web/assistant/rag/formatRagSearchResultToMarkdown'
-import { summarizeWebPage } from '@app/web/assistant/tasks/summarizeWebPage'
-import { createStopwatch } from '@app/web/utils/stopwatch'
-import {
-  agenticSearchToolDescription,
-  type AgenticSearchToolName,
-  agenticSearchToolName,
-} from '@app/web/assistant/tools/agenticSearchToolConfig'
+import type { ZodFunctionOptions } from '@app/web/assistant/tools/zodFunctionType'
+import { zodFunction } from 'openai/helpers/zod'
+import { stringify } from 'yaml'
+import { z } from 'zod'
 
 const stringBooleanValidation = (description: string) =>
   z
@@ -68,6 +67,7 @@ const summarizeWebSearchResult = async ({
   // Fetch HTML content from URL
   const response = await fetch(result.url)
   if (!response.ok) {
+    // biome-ignore lint/suspicious/noConsole: used until feature is in production
     console.warn(`Failed to fetch ${result.url}: ${response.statusText}`)
     return result
   }
@@ -153,16 +153,6 @@ export const agenticSearchToolOptions = {
       )
     }
 
-    const stopwatch = createStopwatch()
-    console.log('AGENTIC TOOL CALL', {
-      query,
-      objectif,
-      centreAide,
-      lesBases,
-      internet,
-      sitesOfficiels,
-    })
-
     try {
       const [
         genericWebSearchRawResults,
@@ -223,22 +213,6 @@ export const agenticSearchToolOptions = {
           ? lesBasesRagRawResults.chunkResults
           : false
 
-      console.log('AGENTIC TOOLS RESULTS', {
-        duration: stopwatch.stop().duration,
-        genericWebSearchResults: genericWebSearchRawResults
-          ? genericWebSearchRawResults.length
-          : null,
-        oficialWebSearchResults: oficialWebSearchResults
-          ? oficialWebSearchResults?.length
-          : null,
-        centreAideRagChunkResults: centreAideRagChunkResults
-          ? centreAideRagChunkResults.length
-          : null,
-        lesBasesRagChunkResults: lesBasesRagChunkResults
-          ? lesBasesRagChunkResults.length
-          : null,
-      })
-
       if (
         !genericWebSearchResults &&
         !oficialWebSearchResults &&
@@ -251,23 +225,6 @@ export const agenticSearchToolOptions = {
       }
 
       if (returnFormat === 'json') {
-        console.log('JSON RETURN VALUE', {
-          status:
-            'L’assistant doit utiliser ces informations pour répondre de manière complète et pertinente et générer les liens vers les sources pour l’utilisateur',
-          internetSources: genericWebSearchResults
-            ? genericWebSearchResults.map(formatResultToJsonForAssistant)
-            : undefined,
-          sitesOfficielsSources: oficialWebSearchResults
-            ? oficialWebSearchResults.map(formatResultToJsonForAssistant)
-            : undefined,
-          centreAideSources: centreAideRagChunkResults
-            ? formatRagSearchResultToJsonForAssistant(centreAideRagChunkResults)
-            : undefined,
-          lesBasesSources: lesBasesRagChunkResults
-            ? formatRagSearchResultToJsonForAssistant(lesBasesRagChunkResults)
-            : undefined,
-        })
-
         return JSON.stringify(
           {
             status:
@@ -356,6 +313,7 @@ ${formatRagSearchResultToMarkdown(lesBasesRagChunkResults)}
 
       return assistantResponse
     } catch (error) {
+      // biome-ignore lint/suspicious/noConsole: used until feature is in production
       console.error('Error in agenticSearchTool', error)
       return errorResult('Une erreur est survenue 🙁, veuillez réessayer.')
     }

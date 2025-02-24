@@ -1,7 +1,7 @@
+import { authenticateUser } from '@app/web/auth/authenticateUser'
+import Header from '@app/web/components/Header'
 import { notFound } from 'next/navigation'
 import React, { PropsWithChildren } from 'react'
-import Header from '@app/web/components/Header'
-import { authenticateUser } from '@app/web/auth/authenticateUser'
 
 const AssistantLayout = async ({ children }: PropsWithChildren) => {
   const user = await authenticateUser()

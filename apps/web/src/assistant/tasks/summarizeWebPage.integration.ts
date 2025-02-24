@@ -1,5 +1,5 @@
-import { summarizeWebPage } from '@app/web/assistant/tasks/summarizeWebPage'
 import { readFileSync } from 'node:fs'
+import { summarizeWebPage } from '@app/web/assistant/tasks/summarizeWebPage'
 
 describe('summarizeWebPage', () => {
   const legiFranceHtml = readFileSync(

@@ -1,5 +1,5 @@
-import { z } from 'zod'
 import { zodFunction } from 'openai/helpers/zod'
+import { z } from 'zod'
 
 export const weatherTestTool = zodFunction({
   name: 'get_current_weather',

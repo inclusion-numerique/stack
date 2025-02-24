@@ -1,10 +1,10 @@
-import { z } from 'zod'
-import { zodFunction } from 'openai/helpers/zod'
-import type { ZodFunctionOptions } from '@app/web/assistant/tools/zodFunctionType'
 import {
   executeBraveWebSearch,
   formatResultToMarkdownForAssistant,
 } from '@app/web/assistant/tools/brave/braveSearch'
+import type { ZodFunctionOptions } from '@app/web/assistant/tools/zodFunctionType'
+import { zodFunction } from 'openai/helpers/zod'
+import { z } from 'zod'
 
 export const generalWebSearchToolParameters = z.object({
   query: z

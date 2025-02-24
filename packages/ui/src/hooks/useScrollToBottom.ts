@@ -3,7 +3,7 @@ import { RefObject } from 'react'
 export const useScrollToBottom = ({
   containerRef,
   enabled,
-  ignoreOffset = 30,
+  ignoreOffset: _ignoreOffset = 30,
 }: {
   enabled?: boolean
   containerRef: RefObject<HTMLElement>
@@ -25,18 +25,7 @@ export const useScrollToBottom = ({
     const lastElement = containerElement.lastElementChild ?? containerElement
 
     const isScrolledToBottom = scrollTop + clientHeight >= scrollHeight
-    console.log('IS SCROLLED', {
-      scrollTop,
-      scrollHeight,
-      clientHeight,
-      isScrolledToBottom,
-      ignoreOffset,
-    })
-
-    // TODO apply ignore offset
-
     if (!isScrolledToBottom) {
-      console.log('Scrolling to', lastElement)
       lastElement.scrollIntoView({ behavior: 'smooth' })
     }
   }

@@ -1,8 +1,8 @@
+import { OpenAiChatMessage } from '@app/web/assistant/openAiChat'
 import {
   OpenAiClienChatModel,
   openAiClient,
 } from '@app/web/assistant/openAiClient'
-import { OpenAiChatMessage } from '@app/web/assistant/openAiChat'
 import { preProcessHtmlForSummary } from '@app/web/assistant/tasks/preProcessHtmlForSummary'
 
 const defaultModel = OpenAiClienChatModel.Llama3_1_8bInstruct

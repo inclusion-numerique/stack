@@ -1,15 +1,15 @@
-import { z } from 'zod'
-import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
-import { prismaClient } from '@app/web/prismaClient'
-import { forbiddenError, invalidError } from '@app/web/server/rpc/trpcErrors'
-import { generateChatSessionTitle } from '@app/web/assistant/tasks/generateChatSessionTitle'
+import { AssistantConfigurationValidation } from '@app/web/assistant/configuration/AssistantConfigurationValidation'
 import {
   getCurrentAssistantConfigurationForUser,
   saveAssistantConfiguration,
 } from '@app/web/assistant/configuration/assistantConfiguration'
-import { getUserChatSessions } from '@app/web/assistant/getChatSession'
 import type { AssistantPageData } from '@app/web/assistant/getAssistantPageData'
-import { AssistantConfigurationValidation } from '@app/web/assistant/configuration/AssistantConfigurationValidation'
+import { getUserChatSessions } from '@app/web/assistant/getChatSession'
+import { generateChatSessionTitle } from '@app/web/assistant/tasks/generateChatSessionTitle'
+import { prismaClient } from '@app/web/prismaClient'
+import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
+import { forbiddenError, invalidError } from '@app/web/server/rpc/trpcErrors'
+import { z } from 'zod'
 
 export const assistantRouter = router({
   createSession: protectedProcedure.mutation(async ({ ctx: { user } }) => {

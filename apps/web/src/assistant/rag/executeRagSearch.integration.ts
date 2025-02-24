@@ -1,5 +1,5 @@
-import { prismaClient } from '@app/web/prismaClient'
 import { executeRagSearch } from '@app/web/assistant/rag/executeRagSearch'
+import { prismaClient } from '@app/web/prismaClient'
 
 describe('executeRagSearch', () => {
   const mostSimilarChunk = {
@@ -53,12 +53,10 @@ describe('executeRagSearch', () => {
 
     for (const chunk of testRagDocumentChunks) {
       const { embedding, ...chunkWithoutEmbedding } = chunk
-      // eslint-disable-next-line no-await-in-loop
       await prismaClient.ragDocumentChunk.create({
         data: chunkWithoutEmbedding,
       })
 
-      // eslint-disable-next-line no-await-in-loop
       await prismaClient.$queryRawUnsafe(`
           UPDATE "rag_document_chunks"
           SET embedding = '${JSON.stringify(chunk.embedding)}'::vector

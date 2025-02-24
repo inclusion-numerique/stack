@@ -1,11 +1,11 @@
 'use client'
 
-import React from 'react'
 import ChatMessage from '@app/web/assistant/ChatMessage'
 import {
   useChatInitialized,
   useChatMessages,
 } from '@app/web/assistant/hooks/useAssistantChatController'
+import React from 'react'
 
 const ChatMessagesList = () => {
   const initialized = useChatInitialized()

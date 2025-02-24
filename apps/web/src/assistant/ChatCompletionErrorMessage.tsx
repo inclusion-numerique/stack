@@ -1,9 +1,9 @@
-import React from 'react'
 import ChatMessage from '@app/web/assistant/ChatMessage'
 import {
   useCompletionError,
   useLastMessageRole,
 } from '@app/web/assistant/hooks/useAssistantChatController'
+import React from 'react'
 
 const ChatCompletionErrorMessage = () => {
   const completionError = useCompletionError()

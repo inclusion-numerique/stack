@@ -1,6 +1,5 @@
 'use client'
 
-import React from 'react'
 import ChatMessage from '@app/web/assistant/ChatMessage'
 import {
   useCurrentToolCalls,
@@ -8,6 +7,7 @@ import {
   useLastMessageRole,
   useStreamingMessage,
 } from '@app/web/assistant/hooks/useAssistantChatController'
+import React from 'react'
 
 const created = new Date() // no need for a real created date for the streaming message
 

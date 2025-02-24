@@ -1,8 +1,8 @@
-import type { AssistantParametresPageData } from '@app/web/app/assistant/parametres/getAssistantParametresPageData'
-import Breadcrumbs from '@app/web/components/Breadcrumbs'
 import AdministrationTitle from '@app/web/app/administration/AdministrationTitle'
 import AssistantParametresForm from '@app/web/app/assistant/parametres/AssistantParametresForm'
+import type { AssistantParametresPageData } from '@app/web/app/assistant/parametres/getAssistantParametresPageData'
 import { assistantConfigurationDefaultValuesFromModel } from '@app/web/assistant/configuration/AssistantConfigurationValidation'
+import Breadcrumbs from '@app/web/components/Breadcrumbs'
 
 const AssistantParametresPage = ({
   data,

@@ -1,7 +1,7 @@
-import type { ChatCompletionMessageToolCall } from 'openai/src/resources/chat/completions'
-import classNames from 'classnames'
 import styles from '@app/web/assistant/ChatSession.module.css'
 import { Spinner } from '@app/web/ui/Spinner'
+import classNames from 'classnames'
+import type { ChatCompletionMessageToolCall } from 'openai/src/resources/chat/completions'
 
 const defaultLoadingMessage = 'Je recherche plus d’informations'
 
@@ -28,8 +28,6 @@ const ToolCallMessage = ({
           toolCall.function.name as keyof typeof toolsLoadingMessages // ts does not understand that the key is in the object after the check
         ]
       : defaultLoadingMessage
-
-  console.log('TOOLCALL', toolCall)
 
   const objectif =
     'parsed_arguments' in toolCall.function &&

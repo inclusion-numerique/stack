@@ -1,12 +1,12 @@
 'use client'
 
+import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
+import type { AssistantPageDataChatSessionHistoryItem } from '@app/web/assistant/getAssistantPageData'
+import { withTrpc } from '@app/web/components/trpc/withTrpc'
+import { trpc } from '@app/web/trpc'
+import { dateAsDayAndTimeInTimeZone } from '@app/web/utils/dateAsDayAndTime'
 import Button from '@codegouvfr/react-dsfr/Button'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
-import { dateAsDayAndTimeInTimeZone } from '@app/web/utils/dateAsDayAndTime'
-import { withTrpc } from '@app/web/components/trpc/withTrpc'
-import type { AssistantPageDataChatSessionHistoryItem } from '@app/web/assistant/getAssistantPageData'
-import { trpc } from '@app/web/trpc'
 
 const defaultTitle = ({ created }: { created: Date }) =>
   `Chat du ${dateAsDayAndTimeInTimeZone(created, 'Europe/Paris')}`

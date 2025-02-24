@@ -1,5 +1,5 @@
-import OpenAI from 'openai'
 import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
+import OpenAI from 'openai'
 
 const openAiClientConfigurationWithSensitiveData =
   ServerWebAppConfig.Assistant.service === 'scaleway'

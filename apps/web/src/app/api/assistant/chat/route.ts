@@ -1,20 +1,20 @@
-import { type NextRequest, NextResponse } from 'next/server'
-import { v4 } from 'uuid'
-import { prismaClient } from '@app/web/prismaClient'
-import { getChatSession } from '@app/web/assistant/getChatSession'
-import {
-  executeChatInteraction,
-  OpenAiChatMessage,
-} from '@app/web/assistant/openAiChat'
 import { AssistantChatRequestDataValidation } from '@app/web/app/api/assistant/chat/AssistantChatRequestData'
 import {
   assistantMessageToOpenAiMessage,
   openAiMessageToAssistantChatMessage,
 } from '@app/web/assistant/assistantMessageToOpenAiMessage'
-import { getSessionTokenFromNextRequestCookies } from '@app/web/auth/getSessionTokenFromCookies'
-import { getSessionUserFromSessionToken } from '@app/web/auth/getSessionUserFromSessionToken'
+import { getChatSession } from '@app/web/assistant/getChatSession'
+import {
+  OpenAiChatMessage,
+  executeChatInteraction,
+} from '@app/web/assistant/openAiChat'
 import { mediationAssistantSystemMessage } from '@app/web/assistant/systemMessages'
 import { tools } from '@app/web/assistant/tools/tools'
+import { getSessionTokenFromNextRequestCookies } from '@app/web/auth/getSessionTokenFromCookies'
+import { getSessionUserFromSessionToken } from '@app/web/auth/getSessionUserFromSessionToken'
+import { prismaClient } from '@app/web/prismaClient'
+import { type NextRequest, NextResponse } from 'next/server'
+import { v4 } from 'uuid'
 
 const notFoundResponse = () =>
   new Response('', {

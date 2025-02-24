@@ -1,22 +1,22 @@
+import { serializeAssistantChatStreamChunk } from '@app/web/assistant/assistantChatStream'
+import { defaultAssistantConfiguration } from '@app/web/assistant/configuration/defaultAssistantConfiguration'
 import {
+  type OpenAiClienChatModel,
+  openAiClient,
+  openAiClientConfiguration,
+} from '@app/web/assistant/openAiClient'
+import { agenticSearchToolName } from '@app/web/assistant/tools/agenticSearchToolConfig'
+import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
+import { AssistantConfiguration } from '@prisma/client'
+import * as Sentry from '@sentry/nextjs'
+import { ChatCompletionChunk } from 'openai/resources'
+import { AutoParseableTool } from 'openai/src/lib/parser'
+import type {
   ChatCompletionMessageParam,
   ChatCompletionMessageToolCall,
   ChatCompletionTool,
   ChatCompletionToolChoiceOption,
 } from 'openai/src/resources/chat/completions'
-import { ChatCompletionChunk } from 'openai/resources'
-import { AutoParseableTool } from 'openai/src/lib/parser'
-import * as Sentry from '@sentry/nextjs'
-import { AssistantConfiguration } from '@prisma/client'
-import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
-import {
-  OpenAiClienChatModel,
-  openAiClient,
-  openAiClientConfiguration,
-} from '@app/web/assistant/openAiClient'
-import { serializeAssistantChatStreamChunk } from '@app/web/assistant/assistantChatStream'
-import { defaultAssistantConfiguration } from '@app/web/assistant/configuration/defaultAssistantConfiguration'
-import { agenticSearchToolName } from '@app/web/assistant/tools/agenticSearchToolConfig'
 
 export type OpenAiChatMessage = ChatCompletionMessageParam
 export type OpenAiChatRole = OpenAiChatMessage['role']
@@ -158,7 +158,6 @@ export const executeChatInteraction = ({
   onContent?: (content: string) => void | Promise<void>
   messages: OpenAiChatMessage[]
   toolChoice?: OpenAiToolChoice
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   tools: AutoParseableTool<any, true>[]
   maxToolsCalls?: number
   invalidToolCallRetries?: number
@@ -214,8 +213,7 @@ export const executeChatInteraction = ({
                 }),
               )
               if (onToolCall) {
-                // eslint-disable-next-line no-void
-                void onToolCall(toolCall)
+                onToolCall(toolCall)
               }
             }
 
@@ -224,18 +222,19 @@ export const executeChatInteraction = ({
                 serializeAssistantChatStreamChunk({
                   role: 'tool',
                   content: Array.isArray(message.content)
-                    ? message.content.map((part) => part.text).join('') // should never happen foor tool responses
+                    ? message.content
+                        .map((part) => part.text)
+                        .join('') // should never happen foor tool responses
                     : message.content,
                 }),
               )
               if (onToolResult) {
-                // eslint-disable-next-line no-void
-                void onToolResult(message)
+                onToolResult(message)
               }
             }
+            // biome-ignore lint/suspicious/noConsole: used until feature is in production
             console.log('onMessage', message)
-            // eslint-disable-next-line no-void
-            void onMessage(message)
+            onMessage(message)
           })
           .on('content', (content) => {
             if (!content) {
@@ -249,13 +248,13 @@ export const executeChatInteraction = ({
             )
 
             if (onContent) {
-              // eslint-disable-next-line no-void
-              void onContent(content)
+              onContent(content)
             }
           })
           .on('error', (error) => {
             Sentry.captureException(error)
             controller.error(error)
+            // biome-ignore lint/suspicious/noConsole: used until feature is in production
             console.error('Error in runner stream', error)
           })
 
@@ -267,6 +266,7 @@ export const executeChatInteraction = ({
       }
     },
     cancel() {
+      // biome-ignore lint/suspicious/noConsole: used until feature is in production
       console.warn('chat response stream cancelled by client.')
     },
   })

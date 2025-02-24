@@ -1,7 +1,7 @@
+import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
 // See https://api.search.brave.com/app/documentation/web-search/query#LocalSearchAPIQueryParameters
 import axios from 'axios'
 import pThrottle from 'p-throttle'
-import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
 
 export type BraveApiSearchParams = {
   q: string // The search query
@@ -99,8 +99,6 @@ const executeBraveWebSearchImmediate = async ({
     summary: true,
     ...params, // Allow to pass extra params
   } satisfies BraveApiSearchParams
-
-  console.log('BRAVE PARAMS', paramsMergedWithDefaults)
 
   const response = await axios.get<BraveApiSearchResponse>(
     braveSearchApiEndpoint,

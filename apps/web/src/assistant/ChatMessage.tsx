@@ -1,12 +1,12 @@
-import { CSSProperties } from 'react'
-import classNames from 'classnames'
-import { marked, type Tokens } from 'marked'
-import type { AssistantChatRole } from '@prisma/client'
-import { parse } from 'yaml'
-import LogoCoop from '@app/web/components/LogoCoop'
 import ToolCallMessage from '@app/web/assistant/ToolCallMessage'
 import type { ChatCompletionMessageWithToolCalls } from '@app/web/assistant/getChatSession'
 import type { AgenticSearchToolYamlResult } from '@app/web/assistant/tools/agenticSearchTool'
+import LogoCoop from '@app/web/components/LogoCoop'
+import type { AssistantChatRole } from '@prisma/client'
+import classNames from 'classnames'
+import { type Tokens, marked } from 'marked'
+import type { CSSProperties, RefObject } from 'react'
+import { parse } from 'yaml'
 import styles from './ChatSession.module.css'
 
 const renderer = new marked.Renderer()
@@ -22,8 +22,7 @@ renderer.link = (linkParameters: Tokens.Link) => {
 const parseYamlToolContent = (content: string) => {
   try {
     return parse(content) as AgenticSearchToolYamlResult
-  } catch (error) {
-    console.error('Error parsing yaml', error)
+  } catch {
     return null
   }
 }
@@ -37,7 +36,7 @@ const ChatMessage = ({
   cursor,
 }: {
   message: ChatCompletionMessageWithToolCalls
-  contentRef?: React.RefObject<HTMLDivElement>
+  contentRef?: RefObject<HTMLDivElement>
   style?: CSSProperties
   previousMessageRole?: AssistantChatRole
   isStreaming?: boolean
@@ -56,8 +55,6 @@ const ChatMessage = ({
       (role === 'Assistant' || role === 'Tool'))
 
   const marginTop = previousMessageIsSameRole ? 'fr-mt-0' : 'fr-mt-10v'
-
-  console.log('MESSAGE', { content, role, toolCall })
 
   if (role === 'Tool') {
     if (!content) {
@@ -134,21 +131,20 @@ const ChatMessage = ({
     )
   }
 
-  const contentToParse =
-    cursor || 1
-      ? `${content ?? ''}<span class="chat-message__blinking-cursor" />`
-      : content
-
-  const parsedContent = contentToParse
+  const parsedContent = content
     ? role === 'Assistant'
-      ? marked.parse(contentToParse, { renderer, async: false })
-      : contentToParse
+      ? marked.parse(content, { renderer, async: false })
+      : content
     : ''
 
   const cleanedContent = parsedContent
     .replaceAll('\n', '<br />')
     // Replace all composed characters with non breakable spaces
     .replaceAll(/ ([!%:;?»])/g, '&nbsp;$1')
+
+  const contentWithCursor = cursor
+    ? `${cleanedContent ?? ''}<span class="chat-message__blinking-cursor" />`
+    : cleanedContent
 
   return (
     <div
@@ -174,7 +170,7 @@ const ChatMessage = ({
       )}
       <div
         ref={contentRef}
-        dangerouslySetInnerHTML={{ __html: cleanedContent }}
+        dangerouslySetInnerHTML={{ __html: contentWithCursor }}
       />
     </div>
   )

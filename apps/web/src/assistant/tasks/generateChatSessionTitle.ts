@@ -1,10 +1,10 @@
 import { ChatSessionMessage } from '@app/web/assistant/getChatSession'
+import { OpenAiChatMessage } from '@app/web/assistant/openAiChat'
 import {
   OpenAiClienChatModel,
   openAiClient,
   openAiClientConfiguration,
 } from '@app/web/assistant/openAiClient'
-import { OpenAiChatMessage } from '@app/web/assistant/openAiChat'
 
 export const generateChatSessionTitle = async ({
   messages,

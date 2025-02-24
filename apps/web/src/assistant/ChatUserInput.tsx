@@ -1,20 +1,20 @@
 'use client'
 
-import classNames from 'classnames'
 import InputFormField from '@app/ui/components/Form/InputFormField'
-import Button from '@codegouvfr/react-dsfr/Button'
-import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
-import React from 'react'
-import { useForm } from 'react-hook-form'
 import { useScrollToBottom } from '@app/ui/hooks/useScrollToBottom'
-import { chatStore } from '@app/web/assistant/chatStore'
+import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
 import styles from '@app/web/assistant/ChatSession.module.css'
-import { withTrpc } from '@app/web/components/trpc/withTrpc'
+import { chatStore } from '@app/web/assistant/chatStore'
 import {
   useIsGenerating,
   useIsSendingUserMessage,
   useSendUserMessage,
 } from '@app/web/assistant/hooks/useAssistantChatController'
+import { withTrpc } from '@app/web/components/trpc/withTrpc'
+import Button from '@codegouvfr/react-dsfr/Button'
+import classNames from 'classnames'
+import React from 'react'
+import { useForm } from 'react-hook-form'
 
 /**
  * User interaction with the chat and completion execution logic
@@ -53,10 +53,10 @@ const ChatUserInput = ({
         },
       })
     } catch (error) {
+      // biome-ignore lint/suspicious/noConsole: used until feature is in production
       console.error('Chat stream error:', error)
 
       // This is an expected error, the user aborted the request
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       if (
         !!error &&
         typeof error === 'object' &&

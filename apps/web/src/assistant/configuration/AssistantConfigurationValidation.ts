@@ -1,7 +1,7 @@
-import { z } from 'zod'
-import type { DefaultValues } from 'react-hook-form'
 import type { AssistantParametresPageData } from '@app/web/app/assistant/parametres/getAssistantParametresPageData'
 import type { DefaultAssistantConfiguration } from '@app/web/assistant/configuration/defaultAssistantConfiguration'
+import type { DefaultValues } from 'react-hook-form'
+import { z } from 'zod'
 
 const emptyStringToNull = (value: string | undefined | null) =>
   value?.trim() || null

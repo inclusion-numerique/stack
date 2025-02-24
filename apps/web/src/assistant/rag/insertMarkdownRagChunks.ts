@@ -1,8 +1,8 @@
-import { MarkdownTextSplitter } from '@langchain/textsplitters'
-import { prismaClient } from '@app/web/prismaClient'
 import { createEmbedding } from '@app/web/assistant/createEmbedding'
-import { createMd5Hash } from '@app/web/assistant/rag/createMd5Hash'
 import { checkIfRagDocumentExists } from '@app/web/assistant/rag/checkIfRagDocumentExists'
+import { createMd5Hash } from '@app/web/assistant/rag/createMd5Hash'
+import { prismaClient } from '@app/web/prismaClient'
+import { MarkdownTextSplitter } from '@langchain/textsplitters'
 
 export type InsertMarkdownRagChunksOptions = {
   type: string

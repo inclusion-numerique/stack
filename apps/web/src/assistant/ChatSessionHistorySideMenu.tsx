@@ -1,9 +1,9 @@
 'use client'
 
-import { Fragment } from 'react'
 import HistoryChatSessionButton from '@app/web/assistant/HistoryChatSessionButton'
 import type { AssistantPageData } from '@app/web/assistant/getAssistantPageData'
 import { useChatSessionHistory } from '@app/web/assistant/hooks/useAssistantChatController'
+import { Fragment } from 'react'
 
 // Groupe les messages pour la sidebar
 // "Aujourd'hui
