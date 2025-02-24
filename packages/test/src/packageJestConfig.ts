@@ -56,7 +56,8 @@ export const packageJestConfig = ({
       '**/*.integration.tsx',
     ],
     moduleNameMapper: {
-      '@sentry/nextjs': '<rootDir>/../../packages/test/src/mocks/sentry.ts',
+      '@sentry/nextjs':
+        '<rootDir>/../../packages/test/src/mocks/sentry.jest.ts',
       '\\.module\\.css$': 'identity-obj-proxy', // Mock CSS modules
       '^@app/web/(.*)$': '<rootDir>/../../apps/web/src/$1',
       '^@app/cli/(.*)$': '<rootDir>/../../apps/cli/src/$1',
