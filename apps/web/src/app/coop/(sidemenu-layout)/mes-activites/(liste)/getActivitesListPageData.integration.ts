@@ -69,7 +69,6 @@ describe('getActivitesListPageData', () => {
         isFiltered: false,
         searchResult: {
           activites: sortedActivites.map((fixture) =>
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
             expect.objectContaining({
               id: fixture.activite.id,
             }),

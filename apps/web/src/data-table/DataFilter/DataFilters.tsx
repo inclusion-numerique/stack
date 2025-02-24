@@ -30,7 +30,6 @@ const DataFilters = <Configuration extends DataTableConfiguration>({
 }) => {
   const router = useRouter()
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const _onFilter = () => {
     // TODO MERGE QUERY PARAAMS
     router.push(`${baseHref}?filter=todo`)

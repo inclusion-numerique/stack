@@ -63,7 +63,6 @@ describe('minutesToCraDuree', () => {
 
   describe('minutesToCraDureeData Function', () => {
     it('should return null when minutes is undefined', () => {
-      // eslint-disable-next-line unicorn/no-useless-undefined
       expect(minutesToCraDureeData(undefined)).toBeNull()
     })
 

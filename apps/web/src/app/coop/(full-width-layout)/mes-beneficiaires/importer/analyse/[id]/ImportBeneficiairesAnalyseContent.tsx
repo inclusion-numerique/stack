@@ -184,7 +184,6 @@ const ImportBeneficiairesAnalyseContent = ({
                   </thead>
                   <tbody className={styles.tbody}>
                     {rows.map((row, index) => (
-                      // eslint-disable-next-line react/no-array-index-key
                       <tr key={index}>
                         <td>
                           {row.errors ? (

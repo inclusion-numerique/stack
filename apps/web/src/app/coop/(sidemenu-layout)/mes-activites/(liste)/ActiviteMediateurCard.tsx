@@ -18,7 +18,6 @@ const ActiviteMediateurCard = ({
   return (
     <div className="fr-py-2v fr-px-4v fr-flex fr-align-items-center fr-my-2v fr-enlarge-button fr-border-radius--8 fr-justify-content-start">
       <div className="fr-background-alt--blue-france fr-p-1v fr-border-radius--8 fr-flex fr-mr-4v">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           className="fr-display-block"
           alt=""

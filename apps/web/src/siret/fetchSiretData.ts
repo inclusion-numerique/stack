@@ -29,13 +29,9 @@ export const fetchSiretData = async (siret: string) => {
 
   const {
     data: {
-      // eslint-disable-next-line @typescript-eslint/naming-convention
       unite_legale: { personne_morale_attributs, forme_juridique, siren },
-      // eslint-disable-next-line @typescript-eslint/naming-convention
       etat_administratif,
-      // eslint-disable-next-line @typescript-eslint/naming-convention
       activite_principale,
-      // eslint-disable-next-line @typescript-eslint/naming-convention
     },
   } = siretResult
 

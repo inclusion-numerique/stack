@@ -1,5 +1,3 @@
-/* eslint-disable no-sparse-arrays */
-
 import { computeProportion } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/allocatePercentages'
 import type { MesStatistiquesPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/getMesStatistiquesPageData'
 import { dureeAccompagnementStatisticsRanges } from '@app/web/cra/cra'
@@ -802,5 +800,3 @@ describe('build statistiques worksheet for coordinateur', () => {
     expect(rows).toStrictEqual([[undefined, 'Médiateur', 'Marie Doe'], []])
   })
 })
-
-/* eslint-enable */

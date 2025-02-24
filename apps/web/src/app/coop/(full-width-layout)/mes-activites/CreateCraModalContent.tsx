@@ -29,7 +29,6 @@ const ModalNavigationButton = ({
     )}
   >
     <div className="fr-background-alt--blue-france fr-p-4v fr-border-radius-left--8">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img className="fr-display-block" alt="" src={illustration} />
     </div>
     <div className="fr-p-5v fr-flex fr-align-items-center fr-align-self-center fr-text--medium fr-height-full">

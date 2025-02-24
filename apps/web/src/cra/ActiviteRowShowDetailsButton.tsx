@@ -15,7 +15,6 @@ const ActiviteRowShowDetailsButton = ({ row }: { row: ActiviteForList }) => {
     event.stopPropagation()
   }
 
-  // eslint-disable-next-line jsx-a11y/control-has-associated-label
   return <button type="button" title="Voir le détail" onClick={onClick} />
 }
 export default ActiviteRowShowDetailsButton

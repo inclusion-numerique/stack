@@ -56,7 +56,6 @@ const Page = async () => {
                   <thead>
                     <tr>
                       <th scope="col">Utilisateur</th>
-                      {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
                       <th scope="col" colSpan={2} />
                     </tr>
                   </thead>

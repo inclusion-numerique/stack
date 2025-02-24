@@ -169,7 +169,6 @@ export const buildArchivesCrasV1Worksheet = ({
         // 17. Organismes (peut être un tableau)
         organismes
           ? Object.entries(organismes)
-              // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
               .map(([key, value]) => `${key}: ${value?.toString()}`)
               .join(', ')
           : null,
@@ -224,7 +223,6 @@ export const buildArchivesCrasV1Worksheet = ({
     .getColumn(dateColumnIndex)
     .eachCell({ includeEmpty: true }, (cell, rowNumber) => {
       if (rowNumber >= tableStartRowNumber && cell.value) {
-        // eslint-disable-next-line no-param-reassign
         cell.numFmt = 'dd/mm/yyyy' // Set date format only for rows starting from tableStartRowNumber
       }
     })
@@ -233,14 +231,12 @@ export const buildArchivesCrasV1Worksheet = ({
     .getColumn(createdAtColumnIndex)
     .eachCell({ includeEmpty: true }, (cell, rowNumber) => {
       if (rowNumber >= tableStartRowNumber && cell.value) {
-        // eslint-disable-next-line no-param-reassign
         cell.numFmt = 'dd/mm/yyyy HH:mm' // Set date format only for rows starting from tableStartRowNumber
       }
     })
 
   // Ensure that the rows auto-adjust their height to fit the wrapped text and displays break lines
   worksheet.eachRow((row) => {
-    // eslint-disable-next-line no-param-reassign
     row.alignment = { wrapText: true, vertical: 'top' }
   })
 

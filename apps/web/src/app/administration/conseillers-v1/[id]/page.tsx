@@ -624,7 +624,6 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
               ? {
                   label: 'Ruptures',
                   value: conseiller.ruptures.map((rupture, index) => (
-                    // eslint-disable-next-line react/no-array-index-key
                     <div key={index}>
                       <p>
                         Date de rupture:{' '}

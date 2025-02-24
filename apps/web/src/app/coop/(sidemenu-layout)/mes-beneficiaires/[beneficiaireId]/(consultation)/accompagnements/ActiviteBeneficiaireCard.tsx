@@ -44,7 +44,6 @@ const ActiviteBeneficiaireCard = ({
   return (
     <div className="fr-py-2v fr-px-4v fr-flex fr-align-items-center fr-flex-gap-4v fr-my-2v fr-enlarge-button fr-border-radius--8">
       <div className="fr-background-alt--blue-france fr-p-2v fr-border-radius--8 fr-flex">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           className="fr-display-block"
           alt=""

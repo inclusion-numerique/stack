@@ -340,7 +340,6 @@ const ActiviteDetailsModal = ({
             styles.titleIconContainer,
           )}
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             className="fr-display-block"
             alt={typeActiviteLabels[type]}
@@ -434,7 +433,6 @@ const ActiviteDetailsModal = ({
           <hr className="fr-separator-6v" />
           <ul>
             {donneesItems.map((item, index) => (
-              // eslint-disable-next-line react/no-array-index-key
               <ListItem key={index}>{item}</ListItem>
             ))}
           </ul>
@@ -460,7 +458,6 @@ const ActiviteDetailsModal = ({
               </p>
               <ul>
                 {infosBeneficiaireAnonyme.map((item, index) => (
-                  // eslint-disable-next-line react/no-array-index-key
                   <ListItem key={index}>{item}</ListItem>
                 ))}
               </ul>

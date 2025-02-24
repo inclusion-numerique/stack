@@ -32,7 +32,6 @@ const TerminerUsurpationHeaderUserMenuItem = () => {
   return (
     <li>
       <button
-        // eslint-disable-next-line react/jsx-props-no-spreading
         {...buttonLoadingClassname(
           mutation.isPending || mutation.isSuccess,
           'fr-nav__link fr-border--bottom fr-display-block',

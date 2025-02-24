@@ -43,7 +43,6 @@ const RawModal = ({
         tabIndex={-1}
         aria-hidden
       />
-      {/* eslint-disable-next-line jsx-a11y/no-redundant-roles */}
       <dialog
         role="dialog"
         aria-labelledby={titleId}
@@ -107,13 +106,11 @@ const RawModal = ({
                                 'linkProps' in buttonProps &&
                                 buttonProps.linkProps
                               ) {
-                                // eslint-disable-next-line no-param-reassign
                                 buttonProps.linkProps = {
                                   ...buttonProps.linkProps,
                                   'aria-controls': id,
                                 }
                               } else {
-                                // eslint-disable-next-line no-param-reassign
                                 buttonProps.nativeButtonProps = {
                                   ...buttonProps.nativeButtonProps,
                                   'aria-controls': id,
@@ -122,7 +119,6 @@ const RawModal = ({
                             }
 
                             return (
-                              // eslint-disable-next-line react/no-array-index-key
                               <li
                                 key={
                                   buttonProps.nativeButtonProps?.key ??

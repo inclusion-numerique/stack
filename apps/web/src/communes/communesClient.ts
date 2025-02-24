@@ -55,7 +55,6 @@ const buildCommuneMap = async () => {
 
 const cleanupCommuneCodePostal = (commune: Commune) => {
   if (commune.codePostal.startsWith('"') && commune.codePostal.endsWith('"')) {
-    // eslint-disable-next-line no-param-reassign
     commune.codePostal = commune.codePostal.slice(1, -1).trim() // Remove quotes and trim whitespace
   }
   return commune

@@ -33,7 +33,6 @@ describe('Validations SIRET', () => {
     })
 
     it('devrait invalider une valeur undefined', () => {
-      // eslint-disable-next-line unicorn/no-useless-undefined
       expect(optionalSiretValidation.safeParse(undefined).success).toBeFalse()
     })
   })
@@ -60,7 +59,6 @@ describe('Validations SIRET', () => {
     })
 
     it('devrait invalider une valeur undefined', () => {
-      // eslint-disable-next-line unicorn/no-useless-undefined
       expect(requiredSiretValidation.safeParse(undefined).success).toBeFalse()
     })
   })

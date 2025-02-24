@@ -130,7 +130,6 @@ export const updateStructureFromCartoDataApi =
       `3. link ${structuresLinkedToCarto.length} structures from cartographie nationale to coop structures`,
     )
     for (const structureLinkedToCarto of structuresLinkedToCarto) {
-      // eslint-disable-next-line no-await-in-loop
       await linkToCoopStructure(now)(structureLinkedToCarto)
     }
     output(`4. updated finished successfully`)

@@ -25,7 +25,6 @@ const DataSearchAndFilters = async <
   searchParams: DataTableSearchParams<Configuration>
   baseHref: string
   // TODO used ?
-  // eslint-disable-next-line react/no-unused-prop-types
   data: Data[]
   filterValues: DataTableFilterValues<Configuration>
 }) => {
@@ -36,7 +35,6 @@ const DataSearchAndFilters = async <
 
   const filterComponents = await Promise.all(
     filterConfigurations.map(async (filterConfiguration) => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const _options =
         'options' in filterConfiguration
           ? Array.isArray(filterConfiguration.options)

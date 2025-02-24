@@ -1,5 +1,3 @@
-/* eslint unicorn/prevent-abbreviations: 0 */
-
 import { appUrl } from '@app/e2e/support/helpers'
 import { CreateUserInput } from '@app/e2e/tasks/handlers/user.tasks'
 import { inscriptionRolesErrorTitles } from '@app/web/app/inscription/(steps)/identification/_components/inscriptionRole'

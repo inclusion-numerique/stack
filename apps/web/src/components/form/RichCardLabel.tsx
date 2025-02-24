@@ -1,10 +1,8 @@
-/* eslint jsx-a11y/no-noninteractive-tabindex : off */
-
-import { SelectOption } from '@app/ui/components/Form/utils/options'
+import type { SelectOption } from '@app/ui/components/Form/utils/options'
 import classNames from 'classnames'
 
 import Stars from '@app/web/components/Stars'
-import { Fragment, KeyboardEventHandler, memo } from 'react'
+import { Fragment, type KeyboardEventHandler, memo } from 'react'
 import styles from './RichCardLabel.module.css'
 
 export type RichCardOptionExtras = {
@@ -82,7 +80,6 @@ const RichCardLabel = memo(
     }
 
     return (
-      // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
       <label
         htmlFor={htmlFor}
         className={classNames(
@@ -124,14 +121,12 @@ const RichCardLabel = memo(
             )}
           </div>
 
-          {/* eslint-disable-next-line @next/next/no-img-element */}
           {!!option.extra?.illustration && (
             <div
               className={classNames(
                 'fr-flex-shrink-0 fr-flex fr-align-items-center',
               )}
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 className={styles.illustration}
                 alt=""

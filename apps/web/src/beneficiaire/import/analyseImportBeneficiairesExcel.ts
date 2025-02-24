@@ -140,7 +140,6 @@ function getCellValueAsNumber(
 }
 
 const rowIsEmpty = (worksheet: WorkSheet, rowNumber: number): boolean => {
-  // eslint-disable-next-line no-plusplus
   for (let colNumber = 1; colNumber <= 10; colNumber++) {
     const value = getCellValueAsString(worksheet, rowNumber, colNumber)
     if (value) {

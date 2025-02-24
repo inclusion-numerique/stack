@@ -95,7 +95,6 @@ const Template = ({
     ? ((async (search: string) => {
         // Fake delay to show loading state on the component
         await new Promise((resolve) =>
-          // eslint-disable-next-line no-promise-executor-return
           setTimeout(() => {
             resolve(null)
           }, 2000),

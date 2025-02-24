@@ -78,15 +78,10 @@ export const autosizeColumns = (
 export const setWorkbookMetadata =
   (workbook: Workbook) =>
   ({ worksheetGenerationDate }: { worksheetGenerationDate: Date }) => {
-    // eslint-disable-next-line no-param-reassign
     workbook.creator = 'La coop de la médiation numérique'
-    // eslint-disable-next-line no-param-reassign
     workbook.lastModifiedBy = 'La coop de la médiation numérique'
-    // eslint-disable-next-line no-param-reassign
     workbook.created = worksheetGenerationDate
-    // eslint-disable-next-line no-param-reassign
     workbook.modified = worksheetGenerationDate
-    // eslint-disable-next-line no-param-reassign
     workbook.lastPrinted = worksheetGenerationDate
   }
 

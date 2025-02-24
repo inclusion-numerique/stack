@@ -7,7 +7,6 @@ import { v4 } from 'uuid'
 
 export const toId = ({ id }: { id: string | ObjectId }) => id.toString()
 
-// eslint-disable-next-line unicorn/prevent-abbreviations
 export type MiseEnRelationWithStructureAdministrativeInfo = {
   structureObj: Pick<
     MiseEnRelationConseillerNumeriqueV1MinimalProjection['structureObj'],

@@ -1,5 +1,3 @@
-/* eslint @typescript-eslint/no-redundant-type-constituents: 0 */
-
 import type { UniteLegale } from '@app/web/external-apis/apiEntrepriseApiModels'
 import pRetry from 'p-retry'
 

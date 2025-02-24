@@ -112,10 +112,7 @@ const CompactNavigationSideMenu = memo(
                       >
                         <Link
                           target="_self"
-                          {
-                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                            ...(item.linkProps as unknown as any)
-                          }
+                          {...(item.linkProps as unknown as any)}
                           {...(item.isActive && {
                             'aria-current': 'page',
                           })}

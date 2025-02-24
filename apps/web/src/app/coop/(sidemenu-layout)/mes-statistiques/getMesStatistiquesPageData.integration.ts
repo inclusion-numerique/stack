@@ -1,4 +1,3 @@
-/* eslint no-param-reassign: 0 */
 import { resetFixtureUser } from '@app/fixtures/resetFixtureUser'
 import { mediateque, seedStructures } from '@app/fixtures/structures'
 import { conseillerNumerique } from '@app/fixtures/users/conseillerNumerique'

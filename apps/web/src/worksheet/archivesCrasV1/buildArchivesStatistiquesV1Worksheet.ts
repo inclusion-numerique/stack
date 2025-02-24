@@ -228,7 +228,6 @@ const addTotalsColumns = (
   }
 
   // Add right border from titles to lastRow
-  // eslint-disable-next-line no-plusplus
   for (let row = statsStartRow; row <= lastRow; row++) {
     const cell = worksheet.getCell(row, percentageColumn)
     cell.border = {
@@ -265,7 +264,6 @@ const addMontlyStatColumns = (
   }
 
   // Add right border from titles to lastRow
-  // eslint-disable-next-line no-plusplus
   for (let row = statsStartRow; row <= lastRow; row++) {
     const cell = worksheet.getCell(row, percentageColumn)
     cell.border = {
@@ -312,7 +310,6 @@ export const buildArchivesStatistiquesV1Worksheet = ({
   const monthsCount = monthlyStats.length
 
   // add border top to startRow for monthsCount *2 columns, skip first column
-  // eslint-disable-next-line no-plusplus
   for (let column = 2; column < monthsCount * 2 + 4; column++) {
     const cell = worksheet.getCell(statsStartRow, column)
     cell.border = {
@@ -321,7 +318,6 @@ export const buildArchivesStatistiquesV1Worksheet = ({
   }
 
   // add border bottom to lastRow for 1+monthsCount *2 columns, and first column
-  // eslint-disable-next-line no-plusplus
   for (let column = 1; column <= monthsCount * 2 + 3; column++) {
     const cell = worksheet.getCell(lastRow, column)
     cell.border = {

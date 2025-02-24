@@ -35,7 +35,6 @@ describe('getOrCreateStructureEmployeuse', () => {
     }
     const result = await getOrCreateStructureEmployeuse(input)
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     expect(result).toEqual(expect.objectContaining({ id: expect.any(String) }))
     const { id } = result
 

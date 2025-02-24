@@ -31,7 +31,6 @@ describe('BeneficiaireValidation', () => {
       expect(() => telephoneValidation.parse(null)).not.toThrow()
     })
     it('allows undefined', () => {
-      // eslint-disable-next-line unicorn/no-useless-undefined
       expect(() => telephoneValidation.parse(undefined)).not.toThrow()
     })
     it('allows empty string', () => {

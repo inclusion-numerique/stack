@@ -1,7 +1,4 @@
 // app.css must be the first import for webpack css chunks to work properly
-// eslint-disable-next-line import/order
-// setup.ts must be the first import for webpack css chunks to work properly
-// eslint-disable-next-line import/order
 import '@app/web/app/setup'
 import Toaster from '@app/ui/toast/Toaster'
 import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
@@ -11,9 +8,9 @@ import { Matomo } from '@app/web/app/Matomo'
 import { PreloadResources } from '@app/web/app/PreloadResources'
 import { getServerDsfrTheme } from '@app/web/app/getServerDsfrTheme'
 import { setLink } from '@codegouvfr/react-dsfr/link'
-import { Metadata, Viewport } from 'next'
+import type { Metadata, Viewport } from 'next'
 import Link from 'next/link'
-import { PropsWithChildren } from 'react'
+import type { PropsWithChildren } from 'react'
 
 declare module '@codegouvfr/react-dsfr/link' {
   interface RegisterLink {

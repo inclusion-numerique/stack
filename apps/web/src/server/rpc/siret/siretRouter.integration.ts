@@ -16,7 +16,6 @@ describe('siretRouter', () => {
   }
 
   describe('checkSiret', () => {
-    // eslint-disable-next-line unicorn/consistent-function-scoping
     const executeSiretInfoProcedure = (input: { siret: string }) =>
       siretRouter
         .createCaller(createTestContext({ user: givenUser }))

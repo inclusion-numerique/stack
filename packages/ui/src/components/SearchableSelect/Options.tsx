@@ -30,7 +30,6 @@ const Options = <T extends string>({
   return (
     <>
       {options.slice(0, limit).map((option) => (
-        // eslint-disable-next-line jsx-a11y/no-static-element-interactions
         <div
           key={option.value}
           defaultValue={option.value}

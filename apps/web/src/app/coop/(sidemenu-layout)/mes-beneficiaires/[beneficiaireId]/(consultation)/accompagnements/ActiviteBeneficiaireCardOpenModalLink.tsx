@@ -18,10 +18,8 @@ const ActiviteBeneficiaireCardOpenModalLink = ({
     event.preventDefault()
     event.stopPropagation()
   }
-  return (
-    // eslint-disable-next-line jsx-a11y/anchor-is-valid,jsx-a11y/control-has-associated-label
-    <button type="button" title="Voir le détail" onClick={onClick} />
-  )
+
+  return <button type="button" title="Voir le détail" onClick={onClick} />
 }
 
 export default ActiviteBeneficiaireCardOpenModalLink

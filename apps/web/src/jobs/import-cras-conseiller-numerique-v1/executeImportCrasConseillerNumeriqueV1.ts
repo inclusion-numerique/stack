@@ -58,7 +58,6 @@ const importCrasConseillerNumeriqueV1ByWeeks = async () => {
     output.log(
       `import-cras-conseiller-numerique-v1: importing week ${batchSince.toISOString().slice(0, 10)}`,
     )
-    // eslint-disable-next-line no-await-in-loop
     const weekResult = await importCrasConseillerNumeriqueV1({
       createdAtSince: batchSince,
       createdAtUntil: batchUntil,

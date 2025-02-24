@@ -199,14 +199,12 @@ export const buildActivitesWorksheet = ({
     .getColumn(dateColumnIndex)
     .eachCell({ includeEmpty: true }, (cell, rowNumber) => {
       if (rowNumber >= tableStartRowNumber && cell.value) {
-        // eslint-disable-next-line no-param-reassign
         cell.numFmt = 'dd/mm/yyyy' // Set date format only for rows starting from tableStartRowNumber
       }
     })
 
   // Ensure that the rows auto-adjust their height to fit the wrapped text and displays break lines
   worksheet.eachRow((row) => {
-    // eslint-disable-next-line no-param-reassign
     row.alignment = { wrapText: true, vertical: 'top' }
   })
 

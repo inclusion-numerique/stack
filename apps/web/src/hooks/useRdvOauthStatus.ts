@@ -21,7 +21,6 @@ export const useRdvOauthStatus = ({
   // biome-ignore lint/correctness/useExhaustiveDependencies: oauthApiCallMutation.isPending is not in dependencies as it should not retrigger the call
   useEffect(() => {
     if (!hasOauthTokens || oauthApiCallMutation.isPending) return
-    // eslint-disable-next-line promise/catch-or-return
     oauthApiCallMutation
       .mutateAsync({
         endpoint: '/agents/me',
@@ -34,7 +33,6 @@ export const useRdvOauthStatus = ({
         return 'empty' as const
       })
       .catch(() => 'error' as const)
-      // eslint-disable-next-line promise/always-return
       .then((result) => {
         setStatus(result)
       })

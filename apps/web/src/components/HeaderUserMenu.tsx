@@ -256,7 +256,6 @@ export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
       >
         {displayName}
       </button>
-      {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
       <div
         role="navigation"
         className={classNames('fr-collapse', 'fr-menu', styles.collapse)}

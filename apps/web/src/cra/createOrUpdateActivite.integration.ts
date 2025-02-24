@@ -1,5 +1,3 @@
-/* eslint @typescript-eslint/no-unsafe-assignment: 0 */
-
 import { resetFixtureUser } from '@app/fixtures/resetFixtureUser'
 import { seedStructures } from '@app/fixtures/structures'
 import {

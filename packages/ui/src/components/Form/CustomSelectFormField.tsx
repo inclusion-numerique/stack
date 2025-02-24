@@ -133,23 +133,18 @@ const CustomSelectFormField = <
   >) => {
   const id = `custom-select-form-field__${path}`
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const getOptionLabel = useCallback(
     getOptionLabelProperty ?? defaultGetOptionLabel,
     [],
   )
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const optionToFormValue = useCallback(
     optionToFormValueProperty ?? defaultOptionToFormValue,
     [],
   )
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const getOptionKey = useCallback(
     getOptionKeyProperty ?? defaultGetOptionKey,
     [],
   )
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const getValueKey = useCallback(getValueKeyProperty ?? defaultGetValueKey, [])
 
   const isOptionSelected: (
@@ -174,7 +169,6 @@ const CustomSelectFormField = <
 
         const result: Option[] = []
 
-        // eslint-disable-next-line no-unreachable-loop
         for (const oneOfMultiValue of multiValues) {
           const oneOfMultiValueKey = getValueKey(oneOfMultiValue)
           for (const optionOrGroup of optionsToMatch) {

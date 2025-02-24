@@ -12,7 +12,6 @@ const InscriptionInvalidInformationContactSupportLink = ({
   <div
     className={classNames('fr-width-full fr-text--center fr-mt-6v', className)}
   >
-    {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
     <Link
       className={classNames('fr-link fr-link--sm fr-mb-0 ', linkClassName)}
       href="mailto:conseiller-numerique@anct.gouv.fr"

@@ -5,7 +5,6 @@ import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
 import { executeJobApiTokenHeader } from '@app/web/app/api/jobs/executeJobApiTokenHeader'
 import { closeMongoClient } from '@app/web/external-apis/conseiller-numerique/conseillerNumeriqueMongoClient'
 import { jobExecutors } from '@app/web/jobs/jobExecutors'
-// eslint-disable-next-line unicorn/prevent-abbreviations
 import { Argument, Command } from '@commander-js/extra-typings'
 import axios from 'axios'
 
@@ -13,7 +12,6 @@ const cleanupAfterJob = async () => {
   await closeMongoClient()
 }
 
-// eslint-disable-next-line unicorn/prevent-abbreviations
 export const executeJobApiCommand = new Command()
   .command('job:api:execute')
   .addArgument(
@@ -39,7 +37,6 @@ export const executeJobApiCommand = new Command()
       endpoint,
       {
         name,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         data: JSON.parse(dataAsString ?? ''),
       },
       {

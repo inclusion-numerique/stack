@@ -12,7 +12,6 @@ export const expectV1ApiResponseJest = async (
   const status = options?.status ?? 200
   expect(response.status).toBe(status)
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const json = await response.json()
 
   expect(json).toEqual(options?.data)
