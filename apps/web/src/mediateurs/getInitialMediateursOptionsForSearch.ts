@@ -1,5 +1,5 @@
 import { prismaClient } from '@app/web/prismaClient'
-import { getUserDisplayName, UserDisplayName } from '@app/web/utils/user'
+import { UserDisplayName, getUserDisplayName } from '@app/web/utils/user'
 import { MediateurOption } from './MediateurOption'
 
 const mediateurSelect = {

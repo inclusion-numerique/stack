@@ -1,10 +1,10 @@
 'use client'
 
 import { createToast } from '@app/ui/toast/createToast'
-import Button from '@codegouvfr/react-dsfr/Button'
 import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
-import { trpc } from '@app/web/trpc'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
+import { trpc } from '@app/web/trpc'
+import Button from '@codegouvfr/react-dsfr/Button'
 
 const ResetUserFixtureButton = ({ userId }: { userId: string }) => {
   const mutation = trpc.usurpation.resetUserFixture.useMutation()

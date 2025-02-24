@@ -1,8 +1,8 @@
-import { PropsWithChildren } from 'react'
-import CoopPageContainer from '@app/web/app/coop/CoopPageContainer'
-import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
 import MesActivitesVueSegmentedControl from '@app/web/app/coop/(sidemenu-layout)/mes-activites/(liste)/MesActivitesVueSegmentedControl'
+import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
+import CoopPageContainer from '@app/web/app/coop/CoopPageContainer'
 import ActiviteDetailsModal from '@app/web/components/activite/ActiviteDetailsModal/ActiviteDetailsModal'
+import { PropsWithChildren } from 'react'
 
 const MesActivitesListeLayout = ({
   children,

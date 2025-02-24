@@ -1,6 +1,6 @@
+import { createBeneficiairesForParticipantsAnonymes } from '@app/web/beneficiaire/createBeneficiairesForParticipantsAnonymes'
 import type { ActiviteForList } from '@app/web/cra/activitesQueries'
 import { participantsAnonymesDefault } from '@app/web/cra/participantsAnonymes'
-import { createBeneficiairesForParticipantsAnonymes } from '@app/web/beneficiaire/createBeneficiairesForParticipantsAnonymes'
 
 export const activiteIndividuelleInfosMinimum = {
   type: 'Individuel',

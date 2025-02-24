@@ -1,14 +1,14 @@
-import Notice from '@codegouvfr/react-dsfr/Notice'
-import Link from 'next/link'
-import React from 'react'
 import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 import SignoutButton from '@app/web/app/(public)/(authentication)/deconnexion/SignoutButton'
 import type { SessionUser } from '@app/web/auth/sessionUser'
 import {
+  type ProfileInscriptionSlug,
   allProfileInscriptionLabels,
   profileInscriptionFromSlug,
-  type ProfileInscriptionSlug,
 } from '@app/web/inscription/profilInscription'
+import Notice from '@codegouvfr/react-dsfr/Notice'
+import Link from 'next/link'
+import React from 'react'
 import { inscriptionRolesErrorTitles } from './inscriptionRole'
 
 export const RoleNotFound = ({

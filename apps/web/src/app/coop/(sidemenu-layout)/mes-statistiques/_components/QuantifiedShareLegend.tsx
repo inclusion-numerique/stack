@@ -1,5 +1,5 @@
-import classNames from 'classnames'
 import { numberToPercentage, numberToString } from '@app/web/utils/formatNumber'
+import classNames from 'classnames'
 import type { QuantifiedShare } from '../quantifiedShare'
 
 export const QuantifiedShareLegend = ({

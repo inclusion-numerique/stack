@@ -1,8 +1,8 @@
 import { createWriteStream } from 'node:fs'
-import { Command } from '@commander-js/extra-typings'
-import { conseillerNumeriqueMongoCollection } from '@app/web/external-apis/conseiller-numerique/conseillerNumeriqueMongoClient'
-import { varFile } from '@app/config/varDirectory'
 import { output } from '@app/cli/output'
+import { varFile } from '@app/config/varDirectory'
+import { conseillerNumeriqueMongoCollection } from '@app/web/external-apis/conseiller-numerique/conseillerNumeriqueMongoClient'
+import { Command } from '@commander-js/extra-typings'
 
 export const listV1Emails = new Command()
   .command('v1:list-emails')

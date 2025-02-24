@@ -1,4 +1,5 @@
-import z from 'zod'
+import { BeneficiaireCraValidation } from '@app/web/beneficiaire/BeneficiaireValidation'
+import { CraDureeValidation } from '@app/web/cra/CraDureeValidation'
 import {
   autonomieValues,
   materielValues,
@@ -6,10 +7,9 @@ import {
   thematiqueValues,
   typeLieuValues,
 } from '@app/web/cra/cra'
-import { BeneficiaireCraValidation } from '@app/web/beneficiaire/BeneficiaireValidation'
 import { AdresseBanValidation } from '@app/web/external-apis/ban/AdresseBanValidation'
 import { yesOrNo } from '@app/web/utils/yesNoBooleanOptions'
-import { CraDureeValidation } from '@app/web/cra/CraDureeValidation'
+import z from 'zod'
 
 export const CraIndividuelValidation = z
   .object({

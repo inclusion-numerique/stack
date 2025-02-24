@@ -1,17 +1,17 @@
-import * as Excel from 'exceljs'
-import { Worksheet } from 'exceljs'
-import { ActivitesFiltersLabels } from '@app/web/cra/generateActivitesFiltersLabels'
 import { MesStatistiquesPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/getMesStatistiquesPageData'
+import { QuantifiedShare } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/quantifiedShare'
+import { ActivitesFiltersLabels } from '@app/web/cra/generateActivitesFiltersLabels'
+import { numberToPercentage } from '@app/web/utils/formatNumber'
 import {
+  WorksheetUser,
   addExportMetadata,
   addFilters,
   addTitleRow,
   autosizeColumns,
   setWorkbookMetadata,
-  WorksheetUser,
 } from '@app/web/worksheet/buildWorksheetHelpers'
-import { numberToPercentage } from '@app/web/utils/formatNumber'
-import { QuantifiedShare } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/quantifiedShare'
+import * as Excel from 'exceljs'
+import { Worksheet } from 'exceljs'
 
 const addStatistiquesGenerales =
   (worksheet: Excel.Worksheet) =>

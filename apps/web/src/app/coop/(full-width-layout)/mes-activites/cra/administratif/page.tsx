@@ -1,15 +1,15 @@
-import { DefaultValues } from 'react-hook-form'
-import { CraDemarcheAdministrativeData } from '@app/web/cra/CraDemarcheAdministrativeValidation'
-import {
-  decodeSerializableState,
-  EncodedState,
-} from '@app/web/utils/encodeSerializableState'
-import { banDefaultValueToAdresseBanData } from '@app/web/external-apis/ban/banDefaultValueToAdresseBanData'
-import { getInitialBeneficiairesOptionsForSearch } from '@app/web/beneficiaire/getInitialBeneficiairesOptionsForSearch'
-import { getLieuxActiviteOptions } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
 import CraDemarcheAdministrativePage from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/administratif/CraDemarcheAdministrativePage'
-import { getAdaptiveDureeOptions } from '@app/web/cra/getAdaptiveDureeOptions'
+import { getLieuxActiviteOptions } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
 import { authenticateMediateur } from '@app/web/auth/authenticateUser'
+import { getInitialBeneficiairesOptionsForSearch } from '@app/web/beneficiaire/getInitialBeneficiairesOptionsForSearch'
+import { CraDemarcheAdministrativeData } from '@app/web/cra/CraDemarcheAdministrativeValidation'
+import { getAdaptiveDureeOptions } from '@app/web/cra/getAdaptiveDureeOptions'
+import { banDefaultValueToAdresseBanData } from '@app/web/external-apis/ban/banDefaultValueToAdresseBanData'
+import {
+  EncodedState,
+  decodeSerializableState,
+} from '@app/web/utils/encodeSerializableState'
+import { DefaultValues } from 'react-hook-form'
 
 const CreateCraDemarcheAdministrativePage = async ({
   searchParams: { v, retour } = {},

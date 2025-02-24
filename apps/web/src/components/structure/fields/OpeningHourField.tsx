@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react'
-import { UseFormReturn } from 'react-hook-form'
-import { OsmDaysOfWeek } from '@gouvfr-anct/timetable-to-osm-opening-hours'
 import InputFormField from '@app/ui/components/Form/InputFormField'
 import ToggleFormField from '@app/ui/components/Form/ToggleFormField'
 import { OpeningHoursData } from '@app/web/app/structure/OpeningHoursValidation'
-import { daysTexts, Period, periodsTexts } from './openingHoursHelpers'
+import { OsmDaysOfWeek } from '@gouvfr-anct/timetable-to-osm-opening-hours'
+import React, { useEffect } from 'react'
+import { UseFormReturn } from 'react-hook-form'
+import { Period, daysTexts, periodsTexts } from './openingHoursHelpers'
 
 export type OpeningHourFieldFormValues = { openingHours: OpeningHoursData }
 

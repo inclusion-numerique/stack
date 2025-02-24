@@ -1,5 +1,5 @@
-import React from 'react'
 import Button from '@codegouvfr/react-dsfr/Button'
+import React from 'react'
 import { OutilPageData } from '../../outilPageData'
 import { AccessInfoLink } from './AccessInfoLink'
 import { AccessInfoShare } from './AccessInfoShare'

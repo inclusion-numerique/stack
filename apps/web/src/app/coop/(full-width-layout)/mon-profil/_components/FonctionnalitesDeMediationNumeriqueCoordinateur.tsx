@@ -1,13 +1,13 @@
 'use client'
 
-import React from 'react'
-import { useRouter } from 'next/navigation'
-import { createModal } from '@codegouvfr/react-dsfr/Modal'
+import Card from '@app/web/components/Card'
+import { withTrpc } from '@app/web/components/trpc/withTrpc'
+import { trpc } from '@app/web/trpc'
 import Badge from '@codegouvfr/react-dsfr/Badge'
 import Button from '@codegouvfr/react-dsfr/Button'
-import { trpc } from '@app/web/trpc'
-import { withTrpc } from '@app/web/components/trpc/withTrpc'
-import Card from '@app/web/components/Card'
+import { createModal } from '@codegouvfr/react-dsfr/Modal'
+import { useRouter } from 'next/navigation'
+import React from 'react'
 
 const {
   Component: ActivateMediationNumeriqueModal,

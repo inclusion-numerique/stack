@@ -1,6 +1,6 @@
-import { Genre, StatutSocial, TrancheAge } from '@prisma/client'
-import { snakeCase } from 'change-case'
-import { prismaClient } from '@app/web/prismaClient'
+import { activitesMediateurIdsWhereCondition } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/activitesMediateurIdsWhereCondition'
+import { allocatePercentagesFromRecords } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/allocatePercentages'
+import { createEnumCountSelect } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/createEnumCountSelect'
 import {
   genreLabels,
   genreValues,
@@ -14,10 +14,10 @@ import {
   getActiviteFiltersSqlFragment,
   getActivitesFiltersWhereConditions,
 } from '@app/web/cra/activitesFiltersSqlWhereConditions'
-import { createEnumCountSelect } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/createEnumCountSelect'
-import { allocatePercentagesFromRecords } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/allocatePercentages'
-import { activitesMediateurIdsWhereCondition } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/activitesMediateurIdsWhereCondition'
+import { prismaClient } from '@app/web/prismaClient'
 import { UserProfile } from '@app/web/utils/user'
+import { Genre, StatutSocial, TrancheAge } from '@prisma/client'
+import { snakeCase } from 'change-case'
 
 export type BeneficiairesStatsRaw = {
   total_beneficiaires: number

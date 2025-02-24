@@ -1,11 +1,11 @@
-import type { NextRequest } from 'next/server'
-import { v4 } from 'uuid'
-import * as Sentry from '@sentry/nextjs'
 import {
+  type Analysis,
   analyseImportBeneficiairesExcel,
-  Analysis,
 } from '@app/web/beneficiaire/import/analyseImportBeneficiairesExcel'
 import { getBeneficiaireImportSheet } from '@app/web/beneficiaire/import/getBeneficiaireImportSheet'
+import * as Sentry from '@sentry/nextjs'
+import type { NextRequest } from 'next/server'
+import { v4 } from 'uuid'
 
 export type AnalyseResponse = {
   analysis: Analysis
@@ -44,6 +44,7 @@ export const POST = async (request: NextRequest) => {
       status: 200,
     })
   } catch (error) {
+    // biome-ignore lint/suspicious/noConsole: need to log this output for debug in container logs
     console.error(error)
     Sentry.captureException(error)
 

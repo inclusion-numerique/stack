@@ -1,7 +1,7 @@
-import { ApiClient, ApiClientScope } from '@prisma/client'
+import { prismaClient } from '@app/web/prismaClient'
 import { generateRandomSecret } from '@app/web/security/generateRandomSecret'
 import { hashSecret, verifySecret } from '@app/web/security/hashSecret'
-import { prismaClient } from '@app/web/prismaClient'
+import { ApiClient, ApiClientScope } from '@prisma/client'
 
 export type CreateApiClientInput = {
   id?: string

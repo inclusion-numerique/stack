@@ -1,10 +1,10 @@
 import type { SelectOption } from '@app/ui/components/Form/utils/options'
-import type { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
-import { dateAsDay } from '@app/web/utils/dateAsDay'
-import type { LocationFilterType } from '@app/web/components/filters/LocationFilter'
-import { profilSlugLabels, typeActiviteSlugLabels } from '@app/web/cra/cra'
 import type { BeneficiaireOption } from '@app/web/beneficiaire/BeneficiaireOption'
-import { MediateurOption } from '@app/web/mediateurs/MediateurOption'
+import type { LocationFilterType } from '@app/web/components/filters/LocationFilter'
+import type { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
+import { profilSlugLabels, typeActiviteSlugLabels } from '@app/web/cra/cra'
+import type { MediateurOption } from '@app/web/mediateurs/MediateurOption'
+import { dateAsDay } from '@app/web/utils/dateAsDay'
 
 export const locationTypeLabels: {
   [key in LocationFilterType]: string

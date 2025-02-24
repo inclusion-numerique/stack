@@ -1,7 +1,7 @@
+import { StructureCreationDataWithSiret } from '@app/web/app/structure/StructureValidation'
 import { UniteLegale } from '@app/web/external-apis/apiEntrepriseApiModels'
 import { getTypologieFromApiEntreprise } from '@app/web/structure/typologieFromApiEntreprise'
 import { toTitleCase } from '@app/web/utils/toTitleCase'
-import { StructureCreationDataWithSiret } from '@app/web/app/structure/StructureValidation'
 
 export const structureCreationDataWithSiretFromUniteLegale = ({
   nature_juridique,

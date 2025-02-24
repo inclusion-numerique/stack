@@ -1,5 +1,5 @@
-/* eslint no-param-reassign: 0 */
 import { resetFixtureUser } from '@app/fixtures/resetFixtureUser'
+import { mediateque, seedStructures } from '@app/fixtures/structures'
 import { conseillerNumerique } from '@app/fixtures/users/conseillerNumerique'
 import {
   mediateurAvecActivite,
@@ -10,15 +10,21 @@ import {
   mediateurSansActivites,
   mediateurSansActivitesUserId,
 } from '@app/fixtures/users/mediateurSansActivites'
+import { computeProportion } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/allocatePercentages'
 import {
-  getMesStatistiquesPageData,
   MesStatistiquesGraphOptions,
   MesStatistiquesPageData,
+  getMesStatistiquesPageData,
 } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/getMesStatistiquesPageData'
-import { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
-import { cloneDeep } from 'lodash-es'
-import { mediateque, seedStructures } from '@app/fixtures/structures'
+import { QuantifiedShare } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/quantifiedShare'
+import { emptyQuantifiedSharesFromEnum } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/statistiquesFixturesHelpers'
+import {
+  genreLabels,
+  statutSocialLabels,
+  trancheAgeLabels,
+} from '@app/web/beneficiaire/beneficiaire'
 import { getInitialBeneficiairesOptionsForSearch } from '@app/web/beneficiaire/getInitialBeneficiairesOptionsForSearch'
+import { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
 import {
   dureeAccompagnementStatisticsRanges,
   materielLabels,
@@ -27,16 +33,9 @@ import {
   typeActiviteLabels,
   typeLieuLabels,
 } from '@app/web/cra/cra'
-import {
-  genreLabels,
-  statutSocialLabels,
-  trancheAgeLabels,
-} from '@app/web/beneficiaire/beneficiaire'
-import { emptyQuantifiedSharesFromEnum } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/statistiquesFixturesHelpers'
 import { prismaClient } from '@app/web/prismaClient'
-import { QuantifiedShare } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/quantifiedShare'
-import { computeProportion } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/allocatePercentages'
 import { UserDisplayName, UserProfile } from '@app/web/utils/user'
+import { cloneDeep } from 'lodash-es'
 
 /**
  * Base empty data for all tests

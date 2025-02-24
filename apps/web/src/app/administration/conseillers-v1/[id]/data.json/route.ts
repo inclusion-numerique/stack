@@ -1,12 +1,12 @@
-import { NextRequest } from 'next/server'
 import { getSessionTokenFromNextRequestCookies } from '@app/web/auth/getSessionTokenFromCookies'
 import { getSessionUserFromSessionToken } from '@app/web/auth/getSessionUserFromSessionToken'
-import {
-  findConseillerNumeriqueV1,
-  FindConseillerNumeriqueV1Result,
-} from '@app/web/external-apis/conseiller-numerique/searchConseillerNumeriqueV1'
-import { fetchConseillerNumeriqueV1Data } from '@app/web/external-apis/conseiller-numerique/fetchConseillerNumeriqueV1Data'
 import { ConseillerNumeriqueV1Data } from '@app/web/external-apis/conseiller-numerique/ConseillerNumeriqueV1Data'
+import { fetchConseillerNumeriqueV1Data } from '@app/web/external-apis/conseiller-numerique/fetchConseillerNumeriqueV1Data'
+import {
+  FindConseillerNumeriqueV1Result,
+  findConseillerNumeriqueV1,
+} from '@app/web/external-apis/conseiller-numerique/searchConseillerNumeriqueV1'
+import { NextRequest } from 'next/server'
 
 export const GET = async (request: NextRequest) => {
   const conseillerNumeriqueId = request.nextUrl.pathname.split('/').at(-2)

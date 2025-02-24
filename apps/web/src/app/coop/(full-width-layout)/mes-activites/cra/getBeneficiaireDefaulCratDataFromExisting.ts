@@ -1,7 +1,7 @@
-import type { DefaultValues } from 'react-hook-form'
-import type { Beneficiaire } from '@prisma/client'
 import type { BeneficiaireCraData } from '@app/web/beneficiaire/BeneficiaireValidation'
 import { banDefaultValueToAdresseBanData } from '@app/web/external-apis/ban/banDefaultValueToAdresseBanData'
+import type { Beneficiaire } from '@prisma/client'
+import type { DefaultValues } from 'react-hook-form'
 
 export const getBeneficiaireDefaulCratDataFromExisting =
   ({

@@ -1,14 +1,14 @@
-import NextAuth, { type NextAuthOptions } from 'next-auth'
-import * as Sentry from '@sentry/nextjs'
-import type { NextRequest } from 'next/server'
-import Email from 'next-auth/providers/email'
-import { nextAuthAdapter } from '@app/web/auth/nextAuthAdapter'
-import { ProConnectProvider } from '@app/web/auth/ProConnectProvider'
-import { registerLastLogin } from '@app/web/security/registerLastLogin'
-import { isFirewallUserAgent } from '@app/web/app/api/auth/[...nextauth]/isFirewallUserAgent'
-import { sendVerificationRequest } from '@app/web/auth/sendVerificationRequest'
 import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
+import { isFirewallUserAgent } from '@app/web/app/api/auth/[...nextauth]/isFirewallUserAgent'
+import { ProConnectProvider } from '@app/web/auth/ProConnectProvider'
 import { authenticationViaProconnect } from '@app/web/auth/authenticationProvider'
+import { nextAuthAdapter } from '@app/web/auth/nextAuthAdapter'
+import { sendVerificationRequest } from '@app/web/auth/sendVerificationRequest'
+import { registerLastLogin } from '@app/web/security/registerLastLogin'
+import * as Sentry from '@sentry/nextjs'
+import NextAuth, { type NextAuthOptions } from 'next-auth'
+import Email from 'next-auth/providers/email'
+import type { NextRequest } from 'next/server'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -43,7 +43,6 @@ const authOptions: NextAuthOptions = {
     },
     session: ({ session, user }) => {
       if (session.user) {
-        // eslint-disable-next-line no-param-reassign
         session.user.id = user.id
       }
       return session
@@ -62,7 +61,6 @@ const handler = (
     return new Response('Bad Request', { status: 400 })
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return NextAuth(request, res, authOptions)
 }
 

@@ -3,8 +3,8 @@ import {
   givenBeneficiaireAnonyme,
 } from '@app/fixtures/givenBeneficiaire'
 import { conseillerNumeriqueMediateurId } from '@app/fixtures/users/conseillerNumerique'
-import { mediateurAvecActiviteMediateurId } from '@app/fixtures/users/mediateurAvecActivite'
 import { coordinateurInscritAvecToutMediateurId } from '@app/fixtures/users/coordinateurInscritAvecTout'
+import { mediateurAvecActiviteMediateurId } from '@app/fixtures/users/mediateurAvecActivite'
 
 export const beneficiaireMinimaleMediateurAvecActivite = givenBeneficiaire({
   id: 'f4dbca97-6fe8-4be1-97be-bdf5e66b9ea8',

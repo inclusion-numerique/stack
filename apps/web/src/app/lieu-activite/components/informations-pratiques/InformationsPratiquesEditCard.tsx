@@ -1,25 +1,25 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import {
-  fromTimetableOpeningHours,
-  Schedule,
-  toTimetableOpeningHours,
-} from '@gouvfr-anct/timetable-to-osm-opening-hours'
 import { createToast } from '@app/ui/toast/createToast'
-import { trpc } from '@app/web/trpc'
-import { withTrpc } from '@app/web/components/trpc/withTrpc'
-import EditCard from '@app/web/components/EditCard'
 import {
-  InformationsPratiquesValidation,
   InformationsPratiquesData,
+  InformationsPratiquesValidation,
 } from '@app/web/app/structure/InformationsPratiquesValidation'
+import EditCard from '@app/web/components/EditCard'
+import { InformationsPratiquesFields } from '@app/web/components/structure/fields/InformationsPratiquesFields'
+import { appendComment } from '@app/web/components/structure/fields/openingHoursHelpers'
+import { withTrpc } from '@app/web/components/trpc/withTrpc'
+import { trpc } from '@app/web/trpc'
 import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
 import { isEmpty } from '@app/web/utils/isEmpty'
-import { appendComment } from '@app/web/components/structure/fields/openingHoursHelpers'
-import { InformationsPratiquesFields } from '@app/web/components/structure/fields/InformationsPratiquesFields'
+import {
+  Schedule,
+  fromTimetableOpeningHours,
+  toTimetableOpeningHours,
+} from '@gouvfr-anct/timetable-to-osm-opening-hours'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter } from 'next/navigation'
+import { useForm } from 'react-hook-form'
 import { EmptyState } from '../EmptyState'
 import { InformationsPratiquesView } from './InformationsPratiquesView'
 

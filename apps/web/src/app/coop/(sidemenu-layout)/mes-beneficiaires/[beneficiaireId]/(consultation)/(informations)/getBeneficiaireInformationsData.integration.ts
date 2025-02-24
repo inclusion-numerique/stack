@@ -1,13 +1,13 @@
-import { getBeneficiaireInformationsPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-beneficiaires/[beneficiaireId]/(consultation)/(informations)/getBeneficiaireInformationsPageData'
-import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
-import { CountThematiquesResult } from '@app/web/beneficiaire/beneficiaireQueries'
-import { resetFixtureUser } from '@app/fixtures/resetFixtureUser'
-import { mediateurAvecActivite } from '@app/fixtures/users/mediateurAvecActivite'
 import {
   beneficiaireMaximaleMediateurAvecActivite,
   beneficiaireSansAccompagnementsMediateurAvecActivite,
 } from '@app/fixtures/beneficiaires'
+import { resetFixtureUser } from '@app/fixtures/resetFixtureUser'
 import { seedStructures } from '@app/fixtures/structures'
+import { mediateurAvecActivite } from '@app/fixtures/users/mediateurAvecActivite'
+import { getBeneficiaireInformationsPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-beneficiaires/[beneficiaireId]/(consultation)/(informations)/getBeneficiaireInformationsPageData'
+import { CountThematiquesResult } from '@app/web/beneficiaire/beneficiaireQueries'
+import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
 import { prismaClient } from '@app/web/prismaClient'
 
 describe('getBeneficiaireInformationsData', () => {

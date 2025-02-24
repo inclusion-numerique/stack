@@ -1,10 +1,10 @@
-import { notFound } from 'next/navigation'
-import React, { PropsWithChildren } from 'react'
-import classNames from 'classnames'
-import { getSessionUser } from '@app/web/auth/getSessionUser'
-import Header from '@app/web/components/Header'
 import AdministrationSideMenu from '@app/web/app/administration/AdministrationSideMenu'
 import MinimalFooter from '@app/web/app/coop/MinimalFooter'
+import { getSessionUser } from '@app/web/auth/getSessionUser'
+import Header from '@app/web/components/Header'
+import classNames from 'classnames'
+import { notFound } from 'next/navigation'
+import React, { PropsWithChildren } from 'react'
 import styles from './AdministrationLayout.module.css'
 
 const AdministrationLayout = async ({ children }: PropsWithChildren) => {

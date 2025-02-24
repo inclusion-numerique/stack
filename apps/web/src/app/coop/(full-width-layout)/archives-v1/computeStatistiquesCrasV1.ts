@@ -1,11 +1,11 @@
-import { endOfMonth, startOfMonth } from 'date-fns'
-import { prismaClient } from '@app/web/prismaClient'
-import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
 import {
   CrasConseillerNumeriqueV1FilterOptions,
   getCrasV1MinMaxDateAccompagnement,
   whereV1QueryInput,
 } from '@app/web/app/coop/(full-width-layout)/archives-v1/crasConseillerNumeriqueV1Queries'
+import { prismaClient } from '@app/web/prismaClient'
+import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
+import { endOfMonth, startOfMonth } from 'date-fns'
 
 export type CrasV1StatRow = {
   month: string

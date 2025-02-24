@@ -1,5 +1,5 @@
-import React, { ReactNode } from 'react'
 import classNames from 'classnames'
+import React, { ReactNode } from 'react'
 import styles from './Options.module.css'
 
 export type Option<T extends string> = {
@@ -30,7 +30,6 @@ const Options = <T extends string>({
   return (
     <>
       {options.slice(0, limit).map((option) => (
-        // eslint-disable-next-line jsx-a11y/no-static-element-interactions
         <div
           key={option.value}
           defaultValue={option.value}

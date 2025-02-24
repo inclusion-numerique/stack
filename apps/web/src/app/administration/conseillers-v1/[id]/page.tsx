@@ -1,23 +1,23 @@
-import { notFound } from 'next/navigation'
 import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
-import Link from 'next/link'
-import Notice from '@codegouvfr/react-dsfr/Notice'
-import Button from '@codegouvfr/react-dsfr/Button'
-import { metadataTitle } from '@app/web/app/metadataTitle'
 import AdministrationBreadcrumbs from '@app/web/app/administration/AdministrationBreadcrumbs'
-import AdministrationTitle from '@app/web/app/administration/AdministrationTitle'
-import { findConseillerNumeriqueV1 } from '@app/web/external-apis/conseiller-numerique/searchConseillerNumeriqueV1'
-import CoopPageContainer from '@app/web/app/coop/CoopPageContainer'
 import AdministrationInfoCard from '@app/web/app/administration/AdministrationInfoCard'
-import { indexedDayLabels } from '@app/web/components/structure/fields/openingHoursHelpers'
 import AdministrationInlineLabelsValues from '@app/web/app/administration/AdministrationInlineLabelsValues'
+import AdministrationMailtoLink from '@app/web/app/administration/AdministrationMailtoLink'
+import AdministrationTitle from '@app/web/app/administration/AdministrationTitle'
+import CoopPageContainer from '@app/web/app/coop/CoopPageContainer'
+import { metadataTitle } from '@app/web/app/metadataTitle'
+import { indexedDayLabels } from '@app/web/components/structure/fields/openingHoursHelpers'
+import { isConseillerNumeriqueV1DataWithActiveMiseEnRelation } from '@app/web/external-apis/conseiller-numerique/isConseillerNumeriqueV1WithActiveMiseEnRelation'
+import { findConseillerNumeriqueV1 } from '@app/web/external-apis/conseiller-numerique/searchConseillerNumeriqueV1'
+import { prismaClient } from '@app/web/prismaClient'
 import { createOpenStreetMapLink } from '@app/web/utils/createOpenStreetMapLink'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
-import { prismaClient } from '@app/web/prismaClient'
 import { dateAsDayAndTime } from '@app/web/utils/dateAsDayAndTime'
-import AdministrationMailtoLink from '@app/web/app/administration/AdministrationMailtoLink'
 import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
-import { isConseillerNumeriqueV1DataWithActiveMiseEnRelation } from '@app/web/external-apis/conseiller-numerique/isConseillerNumeriqueV1WithActiveMiseEnRelation'
+import Button from '@codegouvfr/react-dsfr/Button'
+import Notice from '@codegouvfr/react-dsfr/Notice'
+import Link from 'next/link'
+import { notFound } from 'next/navigation'
 
 export const metadata = {
   title: metadataTitle('Conseillers V1 - Détails'),
@@ -624,7 +624,6 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
               ? {
                   label: 'Ruptures',
                   value: conseiller.ruptures.map((rupture, index) => (
-                    // eslint-disable-next-line react/no-array-index-key
                     <div key={index}>
                       <p>
                         Date de rupture:{' '}

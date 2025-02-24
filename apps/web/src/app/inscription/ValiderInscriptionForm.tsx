@@ -1,12 +1,12 @@
 'use client'
 
-import Button from '@codegouvfr/react-dsfr/Button'
-import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
-import React from 'react'
-import { useRouter } from 'next/navigation'
 import { createToast } from '@app/ui/toast/createToast'
+import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { trpc } from '@app/web/trpc'
+import Button from '@codegouvfr/react-dsfr/Button'
+import { useRouter } from 'next/navigation'
+import React from 'react'
 
 const ValiderInscriptionForm = ({ userId }: { userId: string }) => {
   const mutation = trpc.inscription.validerInscription.useMutation()

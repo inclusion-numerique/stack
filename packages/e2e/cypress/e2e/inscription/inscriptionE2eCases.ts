@@ -1,5 +1,3 @@
-/* eslint unicorn/prevent-abbreviations: 0 */
-
 import type { CreateUserInput } from '@app/e2e/tasks/handlers/user.tasks'
 
 export const conseillersV1ThatShouldSignupAsConseiller = {

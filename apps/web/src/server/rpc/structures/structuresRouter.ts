@@ -1,16 +1,16 @@
-import { z } from 'zod'
-import { v4 } from 'uuid'
-import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
-import { searchStructure } from '@app/web/structure/searchStructure'
-import { searchStructureCartographieNationale } from '@app/web/structure/searchStructureCartographieNationale'
 import { CreerStructureValidation } from '@app/web/app/structure/CreerStructureValidation'
-import { prismaClient } from '@app/web/prismaClient'
-import { createStopwatch } from '@app/web/utils/stopwatch'
 import {
   itineranceStructureValues,
   modalitesAccesStructureValues,
 } from '@app/web/app/structure/optionsStructure'
+import { prismaClient } from '@app/web/prismaClient'
+import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
+import { searchStructure } from '@app/web/structure/searchStructure'
+import { searchStructureCartographieNationale } from '@app/web/structure/searchStructureCartographieNationale'
 import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
+import { createStopwatch } from '@app/web/utils/stopwatch'
+import { v4 } from 'uuid'
+import { z } from 'zod'
 
 export const structuresRouter = router({
   search: protectedProcedure
@@ -24,9 +24,6 @@ export const structuresRouter = router({
     .query(({ input: { query, except } }) =>
       searchStructureCartographieNationale(query, {
         except: except ?? undefined,
-      }).catch((error) => {
-        console.error('Error searching carto nationale structures', error)
-        throw error
       }),
     ),
 

@@ -1,8 +1,8 @@
-import type { SessionUser } from '@app/web/auth/sessionUser'
 import type {
   PrismaSessionUser,
   PrismaSessionUsupper,
 } from '@app/web/auth/getSessionUserFromSessionToken'
+import type { SessionUser } from '@app/web/auth/sessionUser'
 
 /**
  * This is the session user that will be publicly sent to the client.

@@ -1,12 +1,3 @@
-import { Thematique, ThematiqueDemarcheAdministrative } from '@prisma/client'
-import { participantsAnonymesDefault } from '@app/web/cra/participantsAnonymes'
-import { conseillerNumeriqueMediateurId } from '@app/fixtures/users/conseillerNumerique'
-import { mediateurAvecActiviteMediateurId } from '@app/fixtures/users/mediateurAvecActivite'
-import {
-  givenCraCollectif,
-  givenCraDemarcheAdministrative,
-  givenCraIndividuel,
-} from '@app/fixtures/givenCra'
 import {
   beneficiaireAnonymeConseillerNumerique,
   beneficiaireAnonymeMediateurAvecActivite,
@@ -17,7 +8,16 @@ import {
   beneficiaireMinimaleCoordinateur,
   beneficiaireMinimaleMediateurAvecActivite,
 } from '@app/fixtures/beneficiaires'
+import {
+  givenCraCollectif,
+  givenCraDemarcheAdministrative,
+  givenCraIndividuel,
+} from '@app/fixtures/givenCra'
 import { mediateque } from '@app/fixtures/structures'
+import { conseillerNumeriqueMediateurId } from '@app/fixtures/users/conseillerNumerique'
+import { mediateurAvecActiviteMediateurId } from '@app/fixtures/users/mediateurAvecActivite'
+import { participantsAnonymesDefault } from '@app/web/cra/participantsAnonymes'
+import { Thematique, ThematiqueDemarcheAdministrative } from '@prisma/client'
 import { coordinateurInscritAvecToutMediateurId } from './users/coordinateurInscritAvecTout'
 
 export const mediateurAvecActiviteCrasIndividuels = [

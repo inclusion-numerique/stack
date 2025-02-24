@@ -14,7 +14,7 @@ const createCommuneReadline = () => {
   const fileStream = createReadStream(filePath)
   const readline = createInterface({
     input: fileStream,
-    crlfDelay: Infinity, // Recognize all instances of CR LF ('\r\n') in input as a single line break
+    crlfDelay: Number.POSITIVE_INFINITY, // Recognize all instances of CR LF ('\r\n') in input as a single line break
   })
   return readline
 }
@@ -55,7 +55,6 @@ const buildCommuneMap = async () => {
 
 const cleanupCommuneCodePostal = (commune: Commune) => {
   if (commune.codePostal.startsWith('"') && commune.codePostal.endsWith('"')) {
-    // eslint-disable-next-line no-param-reassign
     commune.codePostal = commune.codePostal.slice(1, -1).trim() // Remove quotes and trim whitespace
   }
   return commune

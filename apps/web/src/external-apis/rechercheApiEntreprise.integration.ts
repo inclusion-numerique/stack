@@ -11,7 +11,6 @@ describe('rechercheApiEntreprise', () => {
       expect.objectContaining({
         activite_principale: '62.02A',
         date_creation: '2024-11-04',
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         siege: expect.objectContaining({
           siret: '93429789600011',
         }),

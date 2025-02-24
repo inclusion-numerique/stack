@@ -1,5 +1,5 @@
-import { Prisma } from '@prisma/client'
 import { prismaClient } from '@app/web/prismaClient'
+import { Prisma } from '@prisma/client'
 
 export const getFirstAndLastActiviteDate = async ({
   mediateurIds,

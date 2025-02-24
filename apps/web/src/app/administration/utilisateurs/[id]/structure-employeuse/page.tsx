@@ -1,21 +1,21 @@
-import { notFound } from 'next/navigation'
-import Notice from '@codegouvfr/react-dsfr/Notice'
-import Link from 'next/link'
-import type { Structure } from '@prisma/client'
-import { metadataTitle } from '@app/web/app/metadataTitle'
 import AdministrationBreadcrumbs from '@app/web/app/administration/AdministrationBreadcrumbs'
-import AdministrationTitle from '@app/web/app/administration/AdministrationTitle'
-import CoopPageContainer from '@app/web/app/coop/CoopPageContainer'
 import AdministrationInfoCard from '@app/web/app/administration/AdministrationInfoCard'
 import AdministrationInlineLabelsValues, {
   type LabelAndValue,
 } from '@app/web/app/administration/AdministrationInlineLabelsValues'
-import { dateAsDay } from '@app/web/utils/dateAsDay'
-import { prismaClient } from '@app/web/prismaClient'
-import { getUserDisplayName } from '@app/web/utils/user'
-import { getUserLifecycleBadge } from '@app/web/app/administration/utilisateurs/getUserLifecycleBadge'
-import { findConseillerNumeriqueV1 } from '@app/web/external-apis/conseiller-numerique/searchConseillerNumeriqueV1'
+import AdministrationTitle from '@app/web/app/administration/AdministrationTitle'
 import AdministrationStructureEmployeuseFromContratActifForm from '@app/web/app/administration/utilisateurs/[id]/structure-employeuse/AdministrationStructureEmployeuseFromContratActifForm'
+import { getUserLifecycleBadge } from '@app/web/app/administration/utilisateurs/getUserLifecycleBadge'
+import CoopPageContainer from '@app/web/app/coop/CoopPageContainer'
+import { metadataTitle } from '@app/web/app/metadataTitle'
+import { findConseillerNumeriqueV1 } from '@app/web/external-apis/conseiller-numerique/searchConseillerNumeriqueV1'
+import { prismaClient } from '@app/web/prismaClient'
+import { dateAsDay } from '@app/web/utils/dateAsDay'
+import { getUserDisplayName } from '@app/web/utils/user'
+import Notice from '@codegouvfr/react-dsfr/Notice'
+import type { Structure } from '@prisma/client'
+import Link from 'next/link'
+import { notFound } from 'next/navigation'
 
 export const metadata = {
   title: metadataTitle('Utilisateurs - Structure employeuse'),

@@ -1,7 +1,7 @@
 'use client'
 
-import { API } from '@stoplight/elements'
 import { noSsr } from '@app/web/components/NoSsr'
+import { API } from '@stoplight/elements'
 
 const ApiDocsPageContent = () => (
   <API apiDescriptionUrl="/api/v1/openapi" layout="sidebar" router="hash" />

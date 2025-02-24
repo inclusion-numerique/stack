@@ -1,24 +1,24 @@
 'use client'
 
+import CustomSelectFormField from '@app/ui/components/Form/CustomSelectFormField'
+import { useWatchSubscription } from '@app/ui/hooks/useWatchSubscription'
+import type { BeneficiaireOption } from '@app/web/beneficiaire/BeneficiaireOption'
+import type { BeneficiaireCraData } from '@app/web/beneficiaire/BeneficiaireValidation'
+import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
+import { isBeneficiaireAnonymous } from '@app/web/beneficiaire/isBeneficiaireAnonymous'
+import IconInSquare from '@app/web/components/IconInSquare'
+import type { AdresseBanData } from '@app/web/external-apis/ban/AdresseBanValidation'
+import { useBeneficiaireSearch } from '@app/web/hooks/useBeneficiaireSearch'
+import { encodeSerializableState } from '@app/web/utils/encodeSerializableState'
+import Button from '@codegouvfr/react-dsfr/Button'
+import { useRouter } from 'next/navigation'
+import { useCallback, useState } from 'react'
 import type {
   Control,
   UseFormGetValues,
   UseFormSetValue,
   UseFormWatch,
 } from 'react-hook-form'
-import Button from '@codegouvfr/react-dsfr/Button'
-import { useCallback, useState } from 'react'
-import CustomSelectFormField from '@app/ui/components/Form/CustomSelectFormField'
-import { useRouter } from 'next/navigation'
-import { useWatchSubscription } from '@app/ui/hooks/useWatchSubscription'
-import IconInSquare from '@app/web/components/IconInSquare'
-import { encodeSerializableState } from '@app/web/utils/encodeSerializableState'
-import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
-import type { BeneficiaireCraData } from '@app/web/beneficiaire/BeneficiaireValidation'
-import type { AdresseBanData } from '@app/web/external-apis/ban/AdresseBanValidation'
-import { isBeneficiaireAnonymous } from '@app/web/beneficiaire/isBeneficiaireAnonymous'
-import { useBeneficiaireSearch } from '@app/web/hooks/useBeneficiaireSearch'
-import type { BeneficiaireOption } from '@app/web/beneficiaire/BeneficiaireOption'
 
 /**
  * This component has 3 states :

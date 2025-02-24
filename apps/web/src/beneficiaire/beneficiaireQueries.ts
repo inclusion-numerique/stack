@@ -1,14 +1,14 @@
 import {
+  thematiqueDemarcheAdministrativeLabels,
+  thematiqueLabels,
+} from '@app/web/cra/cra'
+import { prismaClient } from '@app/web/prismaClient'
+import {
   Prisma,
   Thematique,
   ThematiqueDemarcheAdministrative,
 } from '@prisma/client'
 import { pascalCase } from 'change-case'
-import { prismaClient } from '@app/web/prismaClient'
-import {
-  thematiqueDemarcheAdministrativeLabels,
-  thematiqueLabels,
-} from '@app/web/cra/cra'
 
 export const beneficiaireAccompagnementsCountSelect = {
   _count: {

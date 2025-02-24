@@ -1,13 +1,13 @@
-import { redirect } from 'next/navigation'
-import { metadataTitle } from '@app/web/app/metadataTitle'
 import InscriptionCard from '@app/web/app/inscription/(steps)/InscriptionCard'
-import LieuxActiviteForm from '@app/web/app/inscription/LieuxActiviteForm'
-import { getLieuxActiviteForInscription } from '@app/web/app/inscription/getLieuxActiviteForInscription'
 import {
   conseillerNumeriqueLieuxInscriptionSteps,
   conseillerNumeriqueLieuxInscriptionStepsCount,
 } from '@app/web/app/inscription/(steps)/conseiller-numerique-lieux/conseillerNumeriqueLieuxInscriptionSteps'
+import LieuxActiviteForm from '@app/web/app/inscription/LieuxActiviteForm'
+import { getLieuxActiviteForInscription } from '@app/web/app/inscription/getLieuxActiviteForInscription'
+import { metadataTitle } from '@app/web/app/metadataTitle'
 import { authenticateUser } from '@app/web/auth/authenticateUser'
+import { redirect } from 'next/navigation'
 
 export const metadata = {
   title: metadataTitle('Finaliser mon inscription'),

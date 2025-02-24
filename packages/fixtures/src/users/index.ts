@@ -1,5 +1,5 @@
-import type { Prisma } from '@prisma/client'
 import { givenUser } from '@app/fixtures/givenUser'
+import type { Prisma } from '@prisma/client'
 import { administrateur } from './administrateur'
 import { conseillerInscription } from './conseillerInscription'
 import {
@@ -7,6 +7,7 @@ import {
   conseillerNumeriqueMediateurId,
 } from './conseillerNumerique'
 import { conseillerSansLieuInscription } from './conseillerSansLieuInscription'
+import { coordinateurHorsDispositifInscription } from './coordinateurHorsDispositifInscription'
 import {
   coordinateurHorsDispositifInscritAvecTout,
   coordinateurHorsDispositifInscritAvecToutCoordinateurId,
@@ -25,7 +26,6 @@ import {
   mediateurAvecActivite,
   mediateurAvecActiviteMediateurId,
 } from './mediateurAvecActivite'
-import { coordinateurHorsDispositifInscription } from './coordinateurHorsDispositifInscription'
 import { mediateurInscription } from './mediateurInscription'
 import { mediateurSansActivites } from './mediateurSansActivites'
 

@@ -1,12 +1,12 @@
-import Button from '@codegouvfr/react-dsfr/Button'
-import React from 'react'
-import classNames from 'classnames'
-import ContactSupportLink from '@app/web/components/ContactSupportLink'
-import IconInSquare from '@app/web/components/IconInSquare'
-import { dateAsMonthFull } from '@app/web/utils/dateAsMonth'
 import ArchivesV1Card from '@app/web/app/coop/(full-width-layout)/archives-v1/ArchivesV1Card'
 import ArchivesV1PageContent from '@app/web/app/coop/(full-width-layout)/archives-v1/ArchivesV1PageContent'
 import type { ArchivesV1CoordinateurPageData } from '@app/web/app/coop/(full-width-layout)/archives-v1/getArchivesV1CoordinateurPageData'
+import ContactSupportLink from '@app/web/components/ContactSupportLink'
+import IconInSquare from '@app/web/components/IconInSquare'
+import { dateAsMonthFull } from '@app/web/utils/dateAsMonth'
+import Button from '@codegouvfr/react-dsfr/Button'
+import classNames from 'classnames'
+import React from 'react'
 
 const ArchivesV1CoordinateurPageContent = ({
   data: {

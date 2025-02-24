@@ -1,10 +1,10 @@
 import { RdvAccount } from '@prisma/client'
 
-import axios, { AxiosError, AxiosRequestConfig } from 'axios'
-import { refreshRdvAccessToken } from '@app/web/rdv-service-public/refreshRdvAccessToken'
 import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
-import { removeUndefinedValues } from '@app/web/utils/removeUndefinedValues'
 import { OauthRdvApiGetUserResponse } from '@app/web/rdv-service-public/OAuthRdvApiCallInput'
+import { refreshRdvAccessToken } from '@app/web/rdv-service-public/refreshRdvAccessToken'
+import { removeUndefinedValues } from '@app/web/utils/removeUndefinedValues'
+import axios, { AxiosError, AxiosRequestConfig } from 'axios'
 
 export type OAuthRdvApiCallRdvAccount = Pick<
   RdvAccount,
@@ -71,6 +71,7 @@ export const executeOAuthRdvApiCall = async <ResponseType = unknown>({
         const retryResponse = await axios<ResponseType>(retryConfig)
         return retryResponse.data
       }
+      // biome-ignore lint/suspicious/noConsole: we log this until feature is not in production
       console.error(`RDV API ERROR FOR ENDPOINT ${path}`, error.toJSON())
     }
     // otherwise rethrow

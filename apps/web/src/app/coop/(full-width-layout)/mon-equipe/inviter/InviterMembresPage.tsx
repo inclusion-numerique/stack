@@ -1,5 +1,5 @@
-import React from 'react'
 import Card from '@app/web/components/Card'
+import React from 'react'
 import InviterMembreForm from './InviterMembreForm'
 
 export const InviterMembresPage = () => (

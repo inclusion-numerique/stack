@@ -1,17 +1,17 @@
-import { redirect } from 'next/navigation'
-import React from 'react'
-import { metadataTitle } from '@app/web/app/metadataTitle'
 import InscriptionCard from '@app/web/app/inscription/(steps)/InscriptionCard'
-import { getStructureEmployeuseForInscription } from '@app/web/app/inscription/getStructureEmployeuseForInscription'
-import { getLieuxActiviteForInscription } from '@app/web/app/inscription/getLieuxActiviteForInscription'
-import RoleInscriptionNotice from '@app/web/app/inscription/RoleInscriptionNotice'
-import InscriptionRecapitulatif from '@app/web/app/inscription/InscriptionRecapitulatif'
 import {
   conseillerNumeriqueLieuxInscriptionSteps,
   conseillerNumeriqueLieuxInscriptionStepsCount,
 } from '@app/web/app/inscription/(steps)/conseiller-numerique-lieux/conseillerNumeriqueLieuxInscriptionSteps'
-import { allProfileInscriptionLabels } from '@app/web/inscription/profilInscription'
+import InscriptionRecapitulatif from '@app/web/app/inscription/InscriptionRecapitulatif'
+import RoleInscriptionNotice from '@app/web/app/inscription/RoleInscriptionNotice'
+import { getLieuxActiviteForInscription } from '@app/web/app/inscription/getLieuxActiviteForInscription'
+import { getStructureEmployeuseForInscription } from '@app/web/app/inscription/getStructureEmployeuseForInscription'
+import { metadataTitle } from '@app/web/app/metadataTitle'
 import { authenticateUser } from '@app/web/auth/authenticateUser'
+import { allProfileInscriptionLabels } from '@app/web/inscription/profilInscription'
+import { redirect } from 'next/navigation'
+import React from 'react'
 
 export const metadata = {
   title: metadataTitle('Finaliser mon inscription'),

@@ -1,3 +1,5 @@
+import { emailAssetUrl } from '@app/emails/emailAssetUrl'
+import { brandColor } from '@app/emails/styles'
 import {
   MjmlButton,
   MjmlColumn,
@@ -5,8 +7,6 @@ import {
   MjmlText,
 } from '@faire/mjml-react'
 import React from 'react'
-import { emailAssetUrl } from '@app/emails/emailAssetUrl'
-import { brandColor } from '@app/emails/styles'
 
 const Explanations = () => (
   <>

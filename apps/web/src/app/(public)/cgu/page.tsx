@@ -1,4 +1,3 @@
-/* eslint jsx-a11y/control-has-associated-label: 0  */
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
 
 const ContentPolicyPage = () => (

@@ -1,6 +1,6 @@
-import React, { ReactNode } from 'react'
-import Badge from '@codegouvfr/react-dsfr/Badge'
 import Card from '@app/web/components/Card'
+import Badge from '@codegouvfr/react-dsfr/Badge'
+import React, { ReactNode } from 'react'
 import { Typologies } from './Typologies'
 
 export const StructureEmployeuse = ({

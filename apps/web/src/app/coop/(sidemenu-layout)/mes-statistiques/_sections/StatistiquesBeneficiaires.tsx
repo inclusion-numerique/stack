@@ -1,13 +1,13 @@
-import Button from '@codegouvfr/react-dsfr/Button'
-import { numberToString } from '@app/web/utils/formatNumber'
 import type {
-  BeneficiairesStatsWithCommunes,
   BeneficiaireStats,
+  BeneficiairesStatsWithCommunes,
 } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/getBeneficiaireStats'
+import { numberToString } from '@app/web/utils/formatNumber'
+import Button from '@codegouvfr/react-dsfr/Button'
 import { AccompagnementPieChart } from '../_components/AccompagnementPieChart'
 import ProgressBar from '../_components/ProgressBar'
-import { QuantifiedShareList } from '../_components/QuantifiedShareList'
 import { QuantifiedShareLegend } from '../_components/QuantifiedShareLegend'
+import { QuantifiedShareList } from '../_components/QuantifiedShareList'
 import {
   communeColor,
   genresColors,

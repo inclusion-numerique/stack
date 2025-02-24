@@ -1,5 +1,5 @@
-import { AxiosResponse } from 'axios'
 import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
+import { AxiosResponse } from 'axios'
 import { BrevoContact, createContact } from './contact'
 
 export const createBrevoContact: (

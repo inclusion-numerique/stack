@@ -1,14 +1,14 @@
 'use client'
 
-import { ChangeEvent, ReactNode, useState } from 'react'
-import classNames from 'classnames'
 import FilterTag from '@app/web/components/filters/FilterTag'
 import {
-  profilOptions,
   ProfilSlug,
+  profilOptions,
   profilSlugLabels,
   profilSlugOptions,
 } from '@app/web/cra/cra'
+import classNames from 'classnames'
+import { ChangeEvent, ReactNode, useState } from 'react'
 
 const valueLabel = (value: ProfilSlug): ReactNode => profilSlugLabels[value]
 

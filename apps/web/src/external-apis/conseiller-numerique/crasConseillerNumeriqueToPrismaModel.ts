@@ -1,5 +1,5 @@
-import type { Prisma } from '@prisma/client'
 import type { ConseillerNumeriqueCraWithStructure } from '@app/web/external-apis/conseiller-numerique/conseillersNumeriquesCraQueries'
+import type { Prisma } from '@prisma/client'
 
 type SousThemeKey =
   | 'equipement informatique'

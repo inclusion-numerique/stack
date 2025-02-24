@@ -1,10 +1,10 @@
-import { NextRequest } from 'next/server'
-import { ApiClientScope } from '@prisma/client'
+import { authenticateApiCient } from '@app/web/api-client/apiClient'
 import {
   apiV1AuthorizationHeader,
   apiV1AuthorizationScheme,
 } from '@app/web/app/api/v1/apiV1Headers'
-import { authenticateApiCient } from '@app/web/api-client/apiClient'
+import { ApiClientScope } from '@prisma/client'
+import { NextRequest } from 'next/server'
 
 export const isAuthenticatedApiClientRequest = async (
   request: NextRequest,

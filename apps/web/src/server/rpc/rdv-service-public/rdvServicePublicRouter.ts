@@ -1,8 +1,6 @@
-import z from 'zod'
+import type { SessionUser } from '@app/web/auth/sessionUser'
+import { getBeneficiaireAdresseString } from '@app/web/beneficiaire/getBeneficiaireAdresseString'
 import { prismaClient } from '@app/web/prismaClient'
-import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
-import { forbiddenError, invalidError } from '@app/web/server/rpc/trpcErrors'
-import { createRdvServicePublicAccount } from '@app/web/rdv-service-public/createRdvServicePublicAccount'
 import {
   OAuthRdvApiCallInputValidation,
   OauthRdvApiCreateRdvPlanInput,
@@ -11,9 +9,11 @@ import {
   OauthRdvApiMeInputValidation,
   type OauthRdvApiMeResponse,
 } from '@app/web/rdv-service-public/OAuthRdvApiCallInput'
+import { createRdvServicePublicAccount } from '@app/web/rdv-service-public/createRdvServicePublicAccount'
 import { executeOAuthRdvApiCall } from '@app/web/rdv-service-public/executeOAuthRdvApiCall'
-import type { SessionUser } from '@app/web/auth/sessionUser'
-import { getBeneficiaireAdresseString } from '@app/web/beneficiaire/getBeneficiaireAdresseString'
+import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
+import { forbiddenError, invalidError } from '@app/web/server/rpc/trpcErrors'
+import z from 'zod'
 
 const getContextForOAuthApiCall = async ({
   user,

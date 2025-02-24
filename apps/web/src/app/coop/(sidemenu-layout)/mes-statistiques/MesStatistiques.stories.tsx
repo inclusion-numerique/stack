@@ -1,4 +1,3 @@
-import { Meta, StoryObj } from '@storybook/react'
 import { MesStatistiquesPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/getMesStatistiquesPageData'
 import { quantifiedSharesFromFixedValues } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/statistiquesFixturesHelpers'
 import {
@@ -14,6 +13,7 @@ import {
   typeActiviteLabels,
   typeLieuLabels,
 } from '@app/web/cra/cra'
+import { Meta, StoryObj } from '@storybook/react'
 import { MesStatistiques } from './MesStatistiques'
 
 const statistiquesPageData = {

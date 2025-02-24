@@ -1,16 +1,16 @@
-import { NextResponse } from 'next/server'
-import type {
-  JsonApiListResponse,
-  JsonApiResource,
-} from '@app/web/app/api/v1/JsonApiTypes'
-import { prismaClient } from '@app/web/prismaClient'
-import { apiV1Url } from '@app/web/app/api/v1/apiV1Url'
 import {
   JsonApiCursorPaginationQueryParamsValidation,
   prismaCursorPagination,
 } from '@app/web/app/api/v1/CursorPagination'
+import type {
+  JsonApiListResponse,
+  JsonApiResource,
+} from '@app/web/app/api/v1/JsonApiTypes'
+import { apiV1Url } from '@app/web/app/api/v1/apiV1Url'
 import { createApiV1Route } from '@app/web/app/api/v1/createApiV1Route'
+import { prismaClient } from '@app/web/prismaClient'
 import { encodeSerializableState } from '@app/web/utils/encodeSerializableState'
+import { NextResponse } from 'next/server'
 
 /**
  * API response types MUST be manually defined to NOT be infered

@@ -1,13 +1,13 @@
 'use client'
 
-import React from 'react'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
+import { withTrpc } from '@app/web/components/trpc/withTrpc'
+import { trpc } from '@app/web/trpc'
 import Button from '@codegouvfr/react-dsfr/Button'
 import Notice from '@codegouvfr/react-dsfr/Notice'
-import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
-import { trpc } from '@app/web/trpc'
-import { withTrpc } from '@app/web/components/trpc/withTrpc'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import React from 'react'
 
 const UpdateStructure = () => {
   const router = useRouter()

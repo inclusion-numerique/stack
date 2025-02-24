@@ -1,13 +1,13 @@
-import { ObjectId } from 'mongodb'
-import { conseillerNumeriqueMongoCollection } from '@app/web/external-apis/conseiller-numerique/conseillerNumeriqueMongoClient'
 import {
-  cleanConseillerNumeriqueV1Document,
   ConseillerNumeriqueV1Collection,
+  cleanConseillerNumeriqueV1Document,
 } from '@app/web/external-apis/conseiller-numerique/ConseillerNumeriqueV1Document'
 import {
   MiseEnRelationConseillerNumeriqueV1MinimalProjection,
   MiseEnRelationV1MinimalProjection,
 } from '@app/web/external-apis/conseiller-numerique/MiseEnRelationConseillerNumeriqueV1'
+import { conseillerNumeriqueMongoCollection } from '@app/web/external-apis/conseiller-numerique/conseillerNumeriqueMongoClient'
+import { ObjectId } from 'mongodb'
 
 export const fetchConseillersCoordonnes = async ({
   coordinateurV1Id,

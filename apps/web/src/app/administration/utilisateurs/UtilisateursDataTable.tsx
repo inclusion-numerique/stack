@@ -1,18 +1,18 @@
-import type { Prisma } from '@prisma/client'
-import Tag from '@codegouvfr/react-dsfr/Tag'
+import { getUserLifecycle } from '@app/web/app/administration/utilisateurs/getUserLifecycle'
+import { getUserLifecycleBadge } from '@app/web/app/administration/utilisateurs/getUserLifecycleBadge'
+import { UtilisateurForList } from '@app/web/app/administration/utilisateurs/queryUtilisateursForList'
+import CopyToClipboardButton from '@app/web/components/CopyToClipboardButton'
 import type {
   DataTableConfiguration,
   DataTableFilterValues,
   DataTableSearchParams,
 } from '@app/web/data-table/DataTableConfiguration'
-import { dateAsIsoDay } from '@app/web/utils/dateAsIsoDay'
-import { UtilisateurForList } from '@app/web/app/administration/utilisateurs/queryUtilisateursForList'
-import { booleanToYesNo } from '@app/web/utils/yesNoBooleanOptions'
-import { optionalNumberToString } from '@app/web/utils/formatNumber'
-import { getUserLifecycle } from '@app/web/app/administration/utilisateurs/getUserLifecycle'
-import { getUserLifecycleBadge } from '@app/web/app/administration/utilisateurs/getUserLifecycleBadge'
 import { dateAsDayAndTime } from '@app/web/utils/dateAsDayAndTime'
-import CopyToClipboardButton from '@app/web/components/CopyToClipboardButton'
+import { dateAsIsoDay } from '@app/web/utils/dateAsIsoDay'
+import { optionalNumberToString } from '@app/web/utils/formatNumber'
+import { booleanToYesNo } from '@app/web/utils/yesNoBooleanOptions'
+import Tag from '@codegouvfr/react-dsfr/Tag'
+import type { Prisma } from '@prisma/client'
 
 export type UtilisateursDataTableConfiguration = DataTableConfiguration<
   UtilisateurForList,

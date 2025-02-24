@@ -1,11 +1,11 @@
-import type { RdvAccount } from '@prisma/client'
-import axios from 'axios'
+import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
+import { prismaClient } from '@app/web/prismaClient'
 import {
   rdvServicePublicOAuthConfig,
   rdvServicePublicOAuthTokenEndpoint,
 } from '@app/web/rdv-service-public/rdvServicePublicOauth'
-import { prismaClient } from '@app/web/prismaClient'
-import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
+import type { RdvAccount } from '@prisma/client'
+import axios from 'axios'
 
 /**
  * refresh the rdv oauth tokens if expired or about to expire

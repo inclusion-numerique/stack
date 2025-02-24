@@ -81,10 +81,7 @@ workflows:
       equal: [ web_app_deployment, << pipeline.parameters.trigger_workflow >> ]
     jobs:
       - prepare_workspace_dependencies
-      - lint_web:
-          requires:
-            - prepare_workspace_dependencies
-      - lint_packages:
+      - lint:
           requires:
             - prepare_workspace_dependencies
       - test_packages:
@@ -110,8 +107,7 @@ workflows:
 
       - deploy_web:
           requires:
-            - lint_web
-            - lint_packages
+            - lint
             - build_web
             - test_packages
             - test_web
@@ -124,17 +120,13 @@ workflows:
       equal: [ chromatic_deployment, << pipeline.parameters.trigger_workflow >> ]
     jobs:
       - prepare_workspace_dependencies
-      - lint_web:
-          requires:
-            - prepare_workspace_dependencies
-      - lint_packages:
+      - lint:
           requires:
             - prepare_workspace_dependencies
       - chromatic:
           requires:
             - prepare_workspace_dependencies
-            - lint_web
-            - lint_packages
+            - lint
 
   project_infrastructure_deployment:
     when:
@@ -200,7 +192,6 @@ jobs:
             - ./packages/config/node_modules
             - ./packages/e2e/node_modules
             - ./packages/emails/node_modules
-            - ./packages/lint/node_modules
             - ./packages/storybook/node_modules
             - ./packages/test/node_modules
             - ./packages/ui/node_modules
@@ -211,7 +202,7 @@ jobs:
           paths:
             - /home/circleci/.cache/Cypress
 
-  lint_web:
+  lint:
     executor: node
     resource_class: large
     steps:
@@ -223,7 +214,12 @@ jobs:
       - run:
           name: 'Tsc'
           command: pnpm tsc
-
+      - run:
+          name: 'Lint all packages except @app/web'
+          command: pnpm -F '!@app/web' lint
+      - run:
+          name: 'Lint @app/web - biome'
+          command: pnpm -F '@app/web' lint:biome
       # check that the openapi file is the same before and after generating (developers should have generated it)
       - run:
           name: 'Get openapi spec file hash before generating'
@@ -243,35 +239,9 @@ jobs:
               echo "Openapi spec file has changed, please run 'pnpm --silent -F @app/web api-v1-doc:generate' to update the openapi spec file and commit the changes"
               exit 1
             fi
-
-      - run:
-          name: 'Lint @app/web - eslint'
-          command: pnpm -F '@app/web' lint:eslint
-          no_output_timeout: 10m
-      - run:
-          name: 'Lint @app/web - styles'
-          command: pnpm -F '@app/web' lint:style
-          no_output_timeout: 4m
       - run:
           name: 'Lint @app/web - api'
           command: pnpm -F '@app/web' lint:api
-
-  lint_packages:
-    executor: node
-    resource_class: large
-    steps:
-      - checkout
-      - install_dependencies
-      - run:
-          name: 'Prisma generate'
-          command: pnpm --silent -F @app/web prisma generate
-      - run:
-          name: 'Tsc'
-          command: pnpm tsc
-      - run:
-          name: 'Lint all packages except @app/web'
-          command: pnpm -F '!@app/web' lint
-          no_output_timeout: 30m
 
   lint_and_test_cdk_package:
     executor: node

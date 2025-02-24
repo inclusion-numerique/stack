@@ -1,5 +1,5 @@
-import { PropsWithChildren, ReactNode } from 'react'
 import Button from '@codegouvfr/react-dsfr/Button'
+import { PropsWithChildren, ReactNode } from 'react'
 import { CloseButton } from './CloseButton'
 import CompleteOnboardingButton from './CompleteOnboardingButton'
 

@@ -1,8 +1,8 @@
-import { NextRequest } from 'next/server'
-import { stringify } from 'csv-stringify/sync'
+import { fetchProconnectUserInfosFromV1 } from '@app/web/app/api/proconnect/users.csv/fetchProconnectUserInfosFromV1'
 import { getSessionTokenFromNextRequestCookies } from '@app/web/auth/getSessionTokenFromCookies'
 import { getSessionUserFromSessionToken } from '@app/web/auth/getSessionUserFromSessionToken'
-import { fetchProconnectUserInfosFromV1 } from '@app/web/app/api/proconnect/users.csv/fetchProconnectUserInfosFromV1'
+import { stringify } from 'csv-stringify/sync'
+import { NextRequest } from 'next/server'
 
 /**
  * Cette API permet de télécharger les emails et structure autorisées à accéder à la coop

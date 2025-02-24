@@ -1,15 +1,15 @@
-import type { Metadata } from 'next'
 import MesActivitesListeEmptyPage from '@app/web/app/coop/(sidemenu-layout)/mes-activites/(liste)/MesActivitesListeEmptyPage'
-import { getActivitesListPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-activites/(liste)/getActivitesListPageData'
-import MesActivitesListePage from '@app/web/app/coop/(sidemenu-layout)/mes-activites/(liste)/MesActivitesListePage'
-import type { ActivitesDataTableSearchParams } from '@app/web/cra/ActivitesDataTable'
-import MesActivitesListeLayout from '@app/web/app/coop/(sidemenu-layout)/mes-activites/(liste)/MesActivitesListeLayout'
-import { validateActivitesFilters } from '@app/web/cra/ActivitesFilters'
-import { getFiltersOptionsForMediateur } from '@app/web/components/filters/getFiltersOptionsForMediateur'
-import { mediateurHasActivites } from '@app/web/cra/activitesQueries'
 import MesActivitesListeHeader from '@app/web/app/coop/(sidemenu-layout)/mes-activites/(liste)/MesActivitesListeHeader'
+import MesActivitesListeLayout from '@app/web/app/coop/(sidemenu-layout)/mes-activites/(liste)/MesActivitesListeLayout'
+import MesActivitesListePage from '@app/web/app/coop/(sidemenu-layout)/mes-activites/(liste)/MesActivitesListePage'
+import { getActivitesListPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-activites/(liste)/getActivitesListPageData'
 import { metadataTitle } from '@app/web/app/metadataTitle'
 import { authenticateMediateur } from '@app/web/auth/authenticateUser'
+import { getFiltersOptionsForMediateur } from '@app/web/components/filters/getFiltersOptionsForMediateur'
+import type { ActivitesDataTableSearchParams } from '@app/web/cra/ActivitesDataTable'
+import { validateActivitesFilters } from '@app/web/cra/ActivitesFilters'
+import { mediateurHasActivites } from '@app/web/cra/activitesQueries'
+import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: metadataTitle('Mes activités'),

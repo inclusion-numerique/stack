@@ -1,14 +1,14 @@
-import { z } from 'zod'
-import type { Genre } from '@prisma/client'
-import type { CellObject, WorkSheet } from 'xlsx'
-import * as XLSX from 'xlsx'
+import { anneeNaissanceValidation } from '@app/web/beneficiaire/BeneficiaireValidation'
+import { genreValues } from '@app/web/beneficiaire/beneficiaire'
 import {
   type Commune,
   type CommunesClient,
   createCommunesClient,
 } from '@app/web/communes/communesClient'
-import { anneeNaissanceValidation } from '@app/web/beneficiaire/BeneficiaireValidation'
-import { genreValues } from '@app/web/beneficiaire/beneficiaire'
+import type { Genre } from '@prisma/client'
+import type { CellObject, WorkSheet } from 'xlsx'
+import * as XLSX from 'xlsx'
+import { z } from 'zod'
 
 export const ParsedBeneficiaireRowSchema = z.object({
   values: z.object({
@@ -140,7 +140,6 @@ function getCellValueAsNumber(
 }
 
 const rowIsEmpty = (worksheet: WorkSheet, rowNumber: number): boolean => {
-  // eslint-disable-next-line no-plusplus
   for (let colNumber = 1; colNumber <= 10; colNumber++) {
     const value = getCellValueAsString(worksheet, rowNumber, colNumber)
     if (value) {

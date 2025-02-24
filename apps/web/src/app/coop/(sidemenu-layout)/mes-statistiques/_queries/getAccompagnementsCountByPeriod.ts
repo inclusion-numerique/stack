@@ -1,16 +1,16 @@
-import { Prisma } from '@prisma/client'
-import { prismaClient } from '@app/web/prismaClient'
+import { activitesMediateurIdsWhereCondition } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/activitesMediateurIdsWhereCondition'
 import type { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
 import {
   getActiviteFiltersSqlFragment,
   getActivitesFiltersWhereConditions,
 } from '@app/web/cra/activitesFiltersSqlWhereConditions'
+import { prismaClient } from '@app/web/prismaClient'
 import {
   MonthShortLabel,
   monthShortLabels,
 } from '@app/web/utils/monthShortLabels'
-import { activitesMediateurIdsWhereCondition } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/activitesMediateurIdsWhereCondition'
 import { UserProfile } from '@app/web/utils/user'
+import { Prisma } from '@prisma/client'
 import { LabelAndCount } from '../quantifiedShare'
 
 const EMPTY_ACCOMPAGNEMENTS_COUNT = monthShortLabels.map(

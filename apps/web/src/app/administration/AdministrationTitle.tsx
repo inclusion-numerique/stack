@@ -1,6 +1,6 @@
-import React, { PropsWithChildren, ReactNode } from 'react'
-import type { ButtonProps } from '@codegouvfr/react-dsfr/Button'
 import IconInSquare from '@app/web/components/IconInSquare'
+import type { ButtonProps } from '@codegouvfr/react-dsfr/Button'
+import React, { PropsWithChildren, ReactNode } from 'react'
 
 const AdministrationTitle = ({
   icon,

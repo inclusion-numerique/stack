@@ -1,15 +1,15 @@
-import { redirect } from 'next/navigation'
-import React from 'react'
-import { metadataTitle } from '@app/web/app/metadataTitle'
 import InscriptionCard from '@app/web/app/inscription/(steps)/InscriptionCard'
-import { getStructureEmployeuseForInscription } from '@app/web/app/inscription/getStructureEmployeuseForInscription'
+import { mediateurinscriptionStepsCount } from '@app/web/app/inscription/(steps)/mediateur/mediateurinscriptionSteps'
+import InscriptionRecapitulatif from '@app/web/app/inscription/InscriptionRecapitulatif'
 import RoleInscriptionNotice from '@app/web/app/inscription/RoleInscriptionNotice'
 import { getLieuxActiviteForInscription } from '@app/web/app/inscription/getLieuxActiviteForInscription'
-import InscriptionRecapitulatif from '@app/web/app/inscription/InscriptionRecapitulatif'
-import { allProfileInscriptionLabels } from '@app/web/inscription/profilInscription'
-import { fetchConseillersCoordonnes } from '@app/web/external-apis/conseiller-numerique/fetchConseillersCoordonnes'
+import { getStructureEmployeuseForInscription } from '@app/web/app/inscription/getStructureEmployeuseForInscription'
+import { metadataTitle } from '@app/web/app/metadataTitle'
 import { authenticateUser } from '@app/web/auth/authenticateUser'
-import { mediateurinscriptionStepsCount } from '@app/web/app/inscription/(steps)/mediateur/mediateurinscriptionSteps'
+import { fetchConseillersCoordonnes } from '@app/web/external-apis/conseiller-numerique/fetchConseillersCoordonnes'
+import { allProfileInscriptionLabels } from '@app/web/inscription/profilInscription'
+import { redirect } from 'next/navigation'
+import React from 'react'
 import {
   coordinateurInscriptionSteps,
   coordinateurInscriptionStepsCount,

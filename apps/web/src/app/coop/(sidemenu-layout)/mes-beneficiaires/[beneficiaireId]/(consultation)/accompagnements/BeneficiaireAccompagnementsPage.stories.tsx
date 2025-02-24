@@ -1,5 +1,3 @@
-import React from 'react'
-import type { Meta, StoryObj } from '@storybook/react'
 import {
   beneficiaireMaximaleMediateurAvecActivite,
   beneficiaireMinimaleMediateurAvecActivite,
@@ -8,6 +6,8 @@ import ViewBeneficiaireLayout from '@app/web/app/coop/(sidemenu-layout)/mes-bene
 import ViewBeneficiaireAccompagnementsPage from '@app/web/app/coop/(sidemenu-layout)/mes-beneficiaires/[beneficiaireId]/(consultation)/accompagnements/ViewBeneficiaireAccompagnementsPage'
 import { BeneficiaireAccompagnementsPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-beneficiaires/[beneficiaireId]/(consultation)/accompagnements/getBeneficiaireAccompagnementsPageData'
 import { testSessionUser } from '@app/web/test/testSessionUser'
+import type { Meta, StoryObj } from '@storybook/react'
+import React from 'react'
 
 const Template = ({ data }: { data: BeneficiaireAccompagnementsPageData }) => (
   <ViewBeneficiaireLayout

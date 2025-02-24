@@ -1,12 +1,12 @@
 'use client'
 
-import Button from '@codegouvfr/react-dsfr/Button'
-import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
-import React, { useState } from 'react'
 import { createToast } from '@app/ui/toast/createToast'
-import Notice from '@codegouvfr/react-dsfr/Notice'
-import { trpc } from '@app/web/trpc'
+import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
+import { trpc } from '@app/web/trpc'
+import Button from '@codegouvfr/react-dsfr/Button'
+import Notice from '@codegouvfr/react-dsfr/Notice'
+import React, { useState } from 'react'
 
 const RotateApiClientSecretForm = ({ clientId }: { clientId: string }) => {
   const mutation = trpc.apiClient.rotateApiClientSecret.useMutation()

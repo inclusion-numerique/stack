@@ -1,12 +1,12 @@
-import { UseFormReturn } from 'react-hook-form'
 import InputFormField from '@app/ui/components/Form/InputFormField'
 import RequiredFieldsDisclaimer from '@app/ui/components/Form/RequiredFieldsDisclaimer'
+import { InformationsGeneralesData } from '@app/web/app/structure/InformationsGeneralesValidation'
 import AdresseBanFormField, {
   type AdressBanFormFieldOption,
 } from '@app/web/components/form/AdresseBanFormField'
 import RnaInputInfo from '@app/web/rna/RnaInputInfo'
 import SiretInputInfo from '@app/web/siret/SiretInputInfo'
-import { InformationsGeneralesData } from '@app/web/app/structure/InformationsGeneralesValidation'
+import { UseFormReturn } from 'react-hook-form'
 
 export const InformationsGeneralesFields = <
   T extends Omit<InformationsGeneralesData, 'id'>,

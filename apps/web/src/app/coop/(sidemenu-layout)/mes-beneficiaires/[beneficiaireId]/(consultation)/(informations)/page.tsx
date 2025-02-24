@@ -1,7 +1,7 @@
-import { notFound } from 'next/navigation'
 import ViewBeneficiaireInformationsPage from '@app/web/app/coop/(sidemenu-layout)/mes-beneficiaires/[beneficiaireId]/(consultation)/(informations)/ViewBeneficiaireInformationsPage'
 import { getBeneficiaireInformationsPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-beneficiaires/[beneficiaireId]/(consultation)/(informations)/getBeneficiaireInformationsPageData'
 import { authenticateMediateur } from '@app/web/auth/authenticateUser'
+import { notFound } from 'next/navigation'
 
 const BeneficiaireInformationsPage = async ({
   params: { beneficiaireId },

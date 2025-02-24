@@ -1,8 +1,8 @@
+import InscriptionCard from '@app/web/app/inscription/(steps)/InscriptionCard'
+import { metadataTitle } from '@app/web/app/metadataTitle'
+import { authenticateUser } from '@app/web/auth/authenticateUser'
 import Notice from '@codegouvfr/react-dsfr/Notice'
 import React from 'react'
-import { metadataTitle } from '@app/web/app/metadataTitle'
-import InscriptionCard from '@app/web/app/inscription/(steps)/InscriptionCard'
-import { authenticateUser } from '@app/web/auth/authenticateUser'
 import { coordinateurInscriptionSteps } from '../coordinateurInscriptionSteps'
 import CoordinateurAndMediateur from './CoordinateurAndMediateur'
 

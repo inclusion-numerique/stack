@@ -1,5 +1,5 @@
-import type { Beneficiaire } from '@prisma/client'
 import { BeneficiaireData } from '@app/web/beneficiaire/BeneficiaireValidation'
+import type { Beneficiaire } from '@prisma/client'
 
 export const beneficiaireCommuneResidenceToPreviewBanData = ({
   commune,

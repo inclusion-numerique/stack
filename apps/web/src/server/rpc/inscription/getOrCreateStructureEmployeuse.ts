@@ -1,10 +1,10 @@
-import { v4 } from 'uuid'
 import { StructureCreationDataWithSiret } from '@app/web/app/structure/StructureValidation'
-import { prismaClient } from '@app/web/prismaClient'
+import type { SessionUser } from '@app/web/auth/sessionUser'
 import { searchAdresse } from '@app/web/external-apis/apiAdresse'
 import { banFeatureToAdresseBanData } from '@app/web/external-apis/ban/banFeatureToAdresseBanData'
-import type { SessionUser } from '@app/web/auth/sessionUser'
+import { prismaClient } from '@app/web/prismaClient'
 import { addMutationLog } from '@app/web/utils/addMutationLog'
+import { v4 } from 'uuid'
 
 export const getOrCreateStructureEmployeuse = async (
   structureEmployeuse: StructureCreationDataWithSiret,

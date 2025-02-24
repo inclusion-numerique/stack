@@ -1,9 +1,9 @@
-import { Metadata } from 'next'
-import Link from 'next/link'
-import Button from '@codegouvfr/react-dsfr/Button'
-import LogoCoop from '@app/web/components/LogoCoop'
 import { metadataTitle } from '@app/web/app/metadataTitle'
 import { authenticateUser } from '@app/web/auth/authenticateUser'
+import LogoCoop from '@app/web/components/LogoCoop'
+import Button from '@codegouvfr/react-dsfr/Button'
+import { Metadata } from 'next'
+import Link from 'next/link'
 import { CloseButton } from '../_components/CloseButton'
 
 export const metadata: Metadata = {

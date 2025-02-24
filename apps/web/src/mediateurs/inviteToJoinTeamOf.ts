@@ -1,6 +1,6 @@
+import type { CoordinateurUser } from '@app/web/auth/userTypeGuards'
 import { prismaClient } from '@app/web/prismaClient'
 import { encodeSerializableState } from '@app/web/utils/encodeSerializableState'
-import type { CoordinateurUser } from '@app/web/auth/userTypeGuards'
 import { sendInviteMediateurEmail } from './sendInviteMediateurEmail'
 import { sendInviteNewMediateurEmail } from './sendInviteNewMediateurEmail'
 

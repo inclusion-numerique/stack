@@ -1,6 +1,6 @@
-import { Prisma } from '@prisma/client'
-import { prismaClient } from '@app/web/prismaClient'
 import { createCommunesClient } from '@app/web/communes/communesClient'
+import { prismaClient } from '@app/web/prismaClient'
+import { Prisma } from '@prisma/client'
 
 export type CrasConseillerNumeriqueV1FilterOptions = {
   conseillerNumeriqueIds?: string[]

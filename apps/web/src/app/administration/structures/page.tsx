@@ -1,13 +1,13 @@
-import Link from 'next/link'
-import { metadataTitle } from '@app/web/app/metadataTitle'
-import { prismaClient } from '@app/web/prismaClient'
-import AdministrationSearchStructure from '@app/web/app/administration/structures/AdministrationSearchStructure'
-import { numberToString } from '@app/web/utils/formatNumber'
-import AdministrationCheckSiret from '@app/web/app/administration/structures/AdministrationCheckSiret'
-import { getServerUrl } from '@app/web/utils/baseUrl'
 import AdministrationBreadcrumbs from '@app/web/app/administration/AdministrationBreadcrumbs'
 import AdministrationTitle from '@app/web/app/administration/AdministrationTitle'
+import AdministrationCheckSiret from '@app/web/app/administration/structures/AdministrationCheckSiret'
+import AdministrationSearchStructure from '@app/web/app/administration/structures/AdministrationSearchStructure'
 import CoopPageContainer from '@app/web/app/coop/CoopPageContainer'
+import { metadataTitle } from '@app/web/app/metadataTitle'
+import { prismaClient } from '@app/web/prismaClient'
+import { getServerUrl } from '@app/web/utils/baseUrl'
+import { numberToString } from '@app/web/utils/formatNumber'
+import Link from 'next/link'
 
 export const metadata = {
   title: metadataTitle('Structures'),

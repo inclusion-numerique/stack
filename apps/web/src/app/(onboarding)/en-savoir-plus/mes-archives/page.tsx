@@ -1,5 +1,5 @@
-import { Metadata } from 'next'
 import { metadataTitle } from '@app/web/app/metadataTitle'
+import { Metadata } from 'next'
 import { OnboardingMesArchives } from './OnboardingMesArchives'
 
 export const dynamic = 'force-dynamic'

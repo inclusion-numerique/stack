@@ -1,15 +1,15 @@
-import React from 'react'
-import type { Metadata } from 'next'
-import { redirect } from 'next/navigation'
-import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
+import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
+import { metadataTitle } from '@app/web/app/metadataTitle'
 import { authenticateUser } from '@app/web/auth/authenticateUser'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
-import { prismaClient } from '@app/web/prismaClient'
-import { metadataTitle } from '@app/web/app/metadataTitle'
-import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
-import { StructureEmployeuse } from '@app/web/components/structure/StructureEmployeuse'
 import { ReferentStructure } from '@app/web/components/structure/ReferentStructure'
+import { StructureEmployeuse } from '@app/web/components/structure/StructureEmployeuse'
 import UpdateStructure from '@app/web/components/structure/UpdateStructure'
+import { prismaClient } from '@app/web/prismaClient'
+import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
+import type { Metadata } from 'next'
+import { redirect } from 'next/navigation'
+import React from 'react'
 
 export const metadata: Metadata = {
   title: metadataTitle('Ma structure employeuse'),

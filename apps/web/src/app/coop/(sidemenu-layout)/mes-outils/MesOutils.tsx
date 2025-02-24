@@ -1,11 +1,11 @@
-import React from 'react'
-import Image from 'next/image'
-import Notice from '@codegouvfr/react-dsfr/Notice'
-import Link from 'next/link'
+import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
+import CoopPageContainer from '@app/web/app/coop/CoopPageContainer'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
 import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
-import CoopPageContainer from '@app/web/app/coop/CoopPageContainer'
-import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
+import Notice from '@codegouvfr/react-dsfr/Notice'
+import Image from 'next/image'
+import Link from 'next/link'
+import React from 'react'
 import { CardOutil } from './_components/CardOutil'
 
 export const MesOutils = () => (

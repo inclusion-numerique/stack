@@ -1,15 +1,15 @@
-import { redirect } from 'next/navigation'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
-import { getHomepage } from '@app/web/security/getHomepage'
 import { isUserInscriptionEnCours } from '@app/web/auth/isUserInscriptionEnCours'
+import { getHomepage } from '@app/web/security/getHomepage'
+import { redirect } from 'next/navigation'
 import { Contexte } from './_components/Contexte'
 import { Faq } from './_components/Faq'
 import { Fonctionnalites } from './_components/Fonctionnalites'
 import { Hero } from './_components/Hero'
 import { Outils } from './_components/Outils'
 import { QuiSommesNous } from './_components/QuiSommesNous'
-import Webinaire from './_components/Webinaire'
 import { Solution } from './_components/Solution'
+import Webinaire from './_components/Webinaire'
 
 const LandingPage = async () => {
   // Redirect to custom homepage if user is logged in

@@ -1,41 +1,41 @@
 .tableContainer {
-    max-height: 480px; /* 10+header times a regular row height of 43px + showing part of below row */
-    overflow-y: auto;
-    position: relative;
+  max-height: 480px; /* 10+header times a regular row height of 43px + showing part of below row */
+  overflow-y: auto;
+  position: relative;
 
-    :global .fr-table {
-        margin-top: 0;
-    }
+  :global .fr-table {
+    margin-top: 0;
+  }
 
-    :global .fr-table__container {
-        overflow: visible !important;
-        position: static !important;
-    }
+  :global .fr-table__container {
+    overflow: visible !important;
+    position: static !important;
+  }
 }
 
 .thead th {
-    position: sticky;
-    top: 0;
-    background-color: var(--background-default-grey);
-    z-index: 2;
+  position: sticky;
+  top: 0;
+  background-color: var(--background-default-grey);
+  z-index: 2;
 }
 
 .thead tr {
-    position: sticky;
-    top: 0;
-    background-color: var(--background-default-grey);
-    z-index: 2;
+  position: sticky;
+  top: 0;
+  background-color: var(--background-default-grey);
+  z-index: 2;
 }
 
 .thead {
-    position: sticky;
-    top: 0;
-    background-color: var(--background-default-grey);
-    z-index: 2;
+  position: sticky;
+  top: 0;
+  background-color: var(--background-default-grey);
+  z-index: 2;
 }
 
 .cellError {
-    background-color: var(--background-contrast-error) !important;
-    color: var(--text-default-error);
-    font-weight: 500;
+  background-color: var(--background-contrast-error) !important;
+  color: var(--text-default-error);
+  font-weight: 500;
 }

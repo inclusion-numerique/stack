@@ -1,11 +1,11 @@
-import { prismaClient } from '@app/web/prismaClient'
-import { ApiClientScope } from '@prisma/client'
 import {
+  CreateApiClientOutput,
   authenticateApiCient,
   createApiClient,
-  CreateApiClientOutput,
   rotateApiClientSecret,
 } from '@app/web/api-client/apiClient'
+import { prismaClient } from '@app/web/prismaClient'
+import { ApiClientScope } from '@prisma/client'
 
 describe('apiClient', () => {
   const testClient = {

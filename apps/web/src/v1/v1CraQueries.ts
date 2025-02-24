@@ -1,8 +1,8 @@
-import { Prisma } from '@prisma/client'
-import { prismaClient } from '@app/web/prismaClient'
-import { fetchConseillerNumeriqueV1Data } from '@app/web/external-apis/conseiller-numerique/fetchConseillerNumeriqueV1Data'
 import { CrasConseillerNumeriqueV1FilterOptions } from '@app/web/app/coop/(full-width-layout)/archives-v1/crasConseillerNumeriqueV1Queries'
 import { ConseillerNumeriqueV1Data } from '@app/web/external-apis/conseiller-numerique/ConseillerNumeriqueV1Data'
+import { fetchConseillerNumeriqueV1Data } from '@app/web/external-apis/conseiller-numerique/fetchConseillerNumeriqueV1Data'
+import { prismaClient } from '@app/web/prismaClient'
+import { Prisma } from '@prisma/client'
 
 export const conseillersCoordonnesIdsFromV1CoordinateurData = ({
   v1CoordinateurData,

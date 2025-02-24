@@ -1,17 +1,17 @@
 import RequiredFieldsDisclamer from '@app/ui/components/Form/RequiredFieldsDisclamer'
-import { DefaultValues } from 'react-hook-form'
-import Notice from '@codegouvfr/react-dsfr/Notice'
-import Link from 'next/link'
+import BeneficiaireForm from '@app/web/app/coop/(full-width-layout)/mes-beneficiaires/BeneficiaireForm'
 import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
+import { authenticateMediateur } from '@app/web/auth/authenticateUser'
+import BackButton from '@app/web/components/BackButton'
+import IconInSquare from '@app/web/components/IconInSquare'
 import { CraIndividuelData } from '@app/web/cra/CraIndividuelValidation'
 import {
-  decodeSerializableState,
   EncodedState,
+  decodeSerializableState,
 } from '@app/web/utils/encodeSerializableState'
-import IconInSquare from '@app/web/components/IconInSquare'
-import BeneficiaireForm from '@app/web/app/coop/(full-width-layout)/mes-beneficiaires/BeneficiaireForm'
-import BackButton from '@app/web/components/BackButton'
-import { authenticateMediateur } from '@app/web/auth/authenticateUser'
+import Notice from '@codegouvfr/react-dsfr/Notice'
+import Link from 'next/link'
+import { DefaultValues } from 'react-hook-form'
 
 const PageCreerBeneficiaire = async ({
   searchParams: { cra, retour } = {},

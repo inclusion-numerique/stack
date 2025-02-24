@@ -1,33 +1,33 @@
-import { NextResponse } from 'next/server'
 import type {
   JsonApiItemResponse,
   JsonApiResource,
 } from '@app/web/app/api/v1/JsonApiTypes'
 import { apiV1Url } from '@app/web/app/api/v1/apiV1Url'
 import { createApiV1Route } from '@app/web/app/api/v1/createApiV1Route'
+import { serializeApiRequestParams } from '@app/web/app/api/v1/serializeApiRequestParams'
 import { ApiV1StatistiquesQueryParamsValidation } from '@app/web/app/api/v1/statistiques/ApiV1StatistiquesQueryParams'
 import {
   getAccompagnementsCountByDay,
   getAccompagnementsCountByMonth,
 } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/getAccompagnementsCountByPeriod'
 import {
-  BeneficiaireStats,
-  getBeneficiaireStats,
-} from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/getBeneficiaireStats'
-import {
   ActivitesStats,
   getActivitesStats,
 } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/getActivitesStats'
 import {
-  getTotalCountsStats,
+  BeneficiaireStats,
+  getBeneficiaireStats,
+} from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/getBeneficiaireStats'
+import {
   TotalCountsStats,
+  getTotalCountsStats,
 } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/getTotalCountsStats'
+import type { LabelAndCount } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/quantifiedShare'
 import {
   ChangeObjectKeysCaseRecursive,
   changeObjectKeysCaseRecursive,
 } from '@app/web/utils/changeObjectKeysCaseRecursive'
-import type { LabelAndCount } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/quantifiedShare'
-import { serializeApiRequestParams } from '@app/web/app/api/v1/serializeApiRequestParams'
+import { NextResponse } from 'next/server'
 
 /**
  * @openapi

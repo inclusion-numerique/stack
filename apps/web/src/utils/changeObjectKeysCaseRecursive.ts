@@ -25,8 +25,10 @@ type PascalCase<S extends string> = S extends `${infer First}${infer Rest}`
   : S
 
 // CONSTANT_CASE (tout majuscule, underscore)
-type ConstantCase<S extends string> =
-  SnakeCase<S> extends infer R extends string ? Uppercase<R> : never
+type ConstantCase<S extends string> = SnakeCase<S> extends infer R extends
+  string
+  ? Uppercase<R>
+  : never
 
 // on choisit la transformation
 type ChangeCase<S extends string, C extends CaseType> = C extends 'snake'
@@ -40,20 +42,20 @@ type ChangeCase<S extends string, C extends CaseType> = C extends 'snake'
         : S
 
 // le type récursif sur les clés d’un objet
-export type ChangeObjectKeysCaseRecursive<T, C extends CaseType> =
-  // si c’est un tableau, on applique récursivement à ses éléments
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  T extends readonly any[]
-    ? { [K in keyof T]: ChangeObjectKeysCaseRecursive<T[K], C> }
-    : // si c’est un objet "pur" (pas un tableau), on renomme les clés
-      T extends object
-      ? {
-          [K in keyof T as ChangeCase<
-            Extract<K, string>,
-            C
-          >]: ChangeObjectKeysCaseRecursive<T[K], C>
-        }
-      : T
+export type ChangeObjectKeysCaseRecursive<
+  T,
+  C extends CaseType,
+> = T extends readonly any[] // si c’est un tableau, on applique récursivement à ses éléments
+  ? { [K in keyof T]: ChangeObjectKeysCaseRecursive<T[K], C> }
+  : // si c’est un objet "pur" (pas un tableau), on renomme les clés
+    T extends object
+    ? {
+        [K in keyof T as ChangeCase<
+          Extract<K, string>,
+          C
+        >]: ChangeObjectKeysCaseRecursive<T[K], C>
+      }
+    : T
 const changeCaseFunctions = {
   snake: snakeCase,
   camel: camelCase,

@@ -14,8 +14,7 @@ describe('createEnumCountSelect', () => {
         as: 'truc',
         defaultEnumValue: Genre.NonCommunique,
       }).sql,
-    )
-      .toEqual(`COALESCE(SUM((table.genre = 'masculin')::int), 0)::int AS truc_masculin_count,
+    ).toEqual(`COALESCE(SUM((table.genre = 'masculin')::int), 0)::int AS truc_masculin_count,
 COALESCE(SUM((table.genre = 'feminin')::int), 0)::int AS truc_feminin_count,
 COALESCE(SUM((table.genre = 'non_communique' OR table.genre IS NULL)::int), 0)::int AS truc_non_communique_count`)
   })
@@ -27,8 +26,7 @@ COALESCE(SUM((table.genre = 'non_communique' OR table.genre IS NULL)::int), 0)::
         column: 'table.genre',
         as: 'truc',
       }).sql,
-    )
-      .toEqual(`COALESCE(SUM((table.genre = 'masculin')::int), 0)::int AS truc_masculin_count,
+    ).toEqual(`COALESCE(SUM((table.genre = 'masculin')::int), 0)::int AS truc_masculin_count,
 COALESCE(SUM((table.genre = 'feminin')::int), 0)::int AS truc_feminin_count,
 COALESCE(SUM((table.genre = 'non_communique')::int), 0)::int AS truc_non_communique_count`)
   })
@@ -42,8 +40,7 @@ describe('createEnumArrayCountSelect', () => {
         column: 'table.genre_array',
         as: 'truc',
       }).sql,
-    )
-      .toEqual(`COALESCE(SUM(('masculin' = ANY(table.genre_array))::int), 0)::int AS truc_masculin_count,
+    ).toEqual(`COALESCE(SUM(('masculin' = ANY(table.genre_array))::int), 0)::int AS truc_masculin_count,
 COALESCE(SUM(('feminin' = ANY(table.genre_array))::int), 0)::int AS truc_feminin_count,
 COALESCE(SUM(('non_communique' = ANY(table.genre_array))::int), 0)::int AS truc_non_communique_count`)
   })
@@ -57,8 +54,7 @@ describe('createIntArrayCountSelect', () => {
         as: 'truc',
         values: [1, 2, 3],
       }).sql,
-    )
-      .toEqual(`COALESCE(SUM((table.int_column = 1)::int), 0)::int AS truc_1_count,
+    ).toEqual(`COALESCE(SUM((table.int_column = 1)::int), 0)::int AS truc_1_count,
 COALESCE(SUM((table.int_column = 2)::int), 0)::int AS truc_2_count,
 COALESCE(SUM((table.int_column = 3)::int), 0)::int AS truc_3_count`)
   })

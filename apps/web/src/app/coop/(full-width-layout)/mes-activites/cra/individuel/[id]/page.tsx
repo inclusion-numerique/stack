@@ -1,10 +1,10 @@
-import { notFound } from 'next/navigation'
-import { getInitialBeneficiairesOptionsForSearch } from '@app/web/beneficiaire/getInitialBeneficiairesOptionsForSearch'
-import { getLieuxActiviteOptions } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
 import CraIndividuelPage from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/individuel/CraIndividuelPage'
 import { getCraIndividuelDataDefaultValuesFromExisting } from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/individuel/getCraIndividuelDataDefaultValuesFromExisting'
-import { getAdaptiveDureeOptions } from '@app/web/cra/getAdaptiveDureeOptions'
+import { getLieuxActiviteOptions } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
 import { authenticateMediateur } from '@app/web/auth/authenticateUser'
+import { getInitialBeneficiairesOptionsForSearch } from '@app/web/beneficiaire/getInitialBeneficiairesOptionsForSearch'
+import { getAdaptiveDureeOptions } from '@app/web/cra/getAdaptiveDureeOptions'
+import { notFound } from 'next/navigation'
 
 const UpdateCraIndividuelPage = async ({
   params: { id },

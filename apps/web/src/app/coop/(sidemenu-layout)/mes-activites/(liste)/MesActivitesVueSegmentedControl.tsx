@@ -1,8 +1,8 @@
 'use client'
 
 import { SegmentedControl } from '@codegouvfr/react-dsfr/SegmentedControl'
-import { type ComponentProps, FormEvent, FormEventHandler } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { type ComponentProps, FormEvent, FormEventHandler } from 'react'
 
 const MesActivitesVueSegmentedControl = ({
   current,

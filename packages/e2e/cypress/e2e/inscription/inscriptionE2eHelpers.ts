@@ -1,13 +1,11 @@
-/* eslint unicorn/prevent-abbreviations: 0 */
-
+import { appUrl } from '@app/e2e/support/helpers'
 import { CreateUserInput } from '@app/e2e/tasks/handlers/user.tasks'
+import { inscriptionRolesErrorTitles } from '@app/web/app/inscription/(steps)/identification/_components/inscriptionRole'
 import {
   allProfileInscriptionLabels,
   lowerCaseProfileInscriptionLabels,
   profileInscriptionSlugs,
 } from '@app/web/inscription/profilInscription'
-import { appUrl } from '@app/e2e/support/helpers'
-import { inscriptionRolesErrorTitles } from '@app/web/app/inscription/(steps)/identification/_components/inscriptionRole'
 
 export const startInscriptionAs = ({
   user,

@@ -1,12 +1,12 @@
-import React from 'react'
-import Image from 'next/image'
-import Link from 'next/link'
 import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 import {
+  type ProfileInscriptionSlug,
   allProfileInscriptionLabels,
   profileInscriptionFromSlug,
-  type ProfileInscriptionSlug,
 } from '@app/web/inscription/profilInscription'
+import Image from 'next/image'
+import Link from 'next/link'
+import React from 'react'
 
 const roleNextPageMap: Map<
   ProfileInscriptionSlug,

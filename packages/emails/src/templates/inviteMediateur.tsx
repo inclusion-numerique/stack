@@ -1,4 +1,7 @@
-import React from 'react'
+import Explanations from '@app/emails/components/Explanations'
+import LayoutWithFooter from '@app/emails/components/LayoutWithFooter'
+import { emailAssetUrl } from '@app/emails/emailAssetUrl'
+import { backgroundColor } from '@app/emails/styles'
 import {
   MjmlButton,
   MjmlColumn,
@@ -7,10 +10,7 @@ import {
   MjmlSpacer,
 } from '@faire/mjml-react'
 import { renderToMjml } from '@faire/mjml-react/utils/renderToMjml'
-import { emailAssetUrl } from '@app/emails/emailAssetUrl'
-import LayoutWithFooter from '@app/emails/components/LayoutWithFooter'
-import Explanations from '@app/emails/components/Explanations'
-import { backgroundColor } from '@app/emails/styles'
+import React from 'react'
 import Invitation from '../components/Invitation'
 
 export const inviteMediateur = {

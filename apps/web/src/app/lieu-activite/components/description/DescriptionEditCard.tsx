@@ -1,19 +1,19 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { createToast } from '@app/ui/toast/createToast'
-import { trpc } from '@app/web/trpc'
-import { withTrpc } from '@app/web/components/trpc/withTrpc'
+import {
+  DescriptionData,
+  DescriptionValidation,
+} from '@app/web/app/structure/DescriptionValidation'
 import EditCard from '@app/web/components/EditCard'
 import { DescriptionFields } from '@app/web/components/structure/fields/DescriptionFields'
-import {
-  DescriptionValidation,
-  DescriptionData,
-} from '@app/web/app/structure/DescriptionValidation'
+import { withTrpc } from '@app/web/components/trpc/withTrpc'
+import { trpc } from '@app/web/trpc'
 import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
 import { isEmpty } from '@app/web/utils/isEmpty'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter } from 'next/navigation'
+import { useForm } from 'react-hook-form'
 import { EmptyState } from '../EmptyState'
 import { DescriptionView } from './DescriptionView'
 

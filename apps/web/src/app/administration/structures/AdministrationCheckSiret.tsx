@@ -1,8 +1,8 @@
 'use client'
 
-import { useForm } from 'react-hook-form'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import SiretFormField from '@app/web/siret/SiretFormField'
+import { useForm } from 'react-hook-form'
 
 const AdministrationCheckSiret = () => {
   const form = useForm<{ siret: string; nom: string }>()

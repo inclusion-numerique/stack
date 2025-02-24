@@ -1,9 +1,9 @@
+import { useOnDiff } from '@app/web/hooks/useOnDiff'
+import { zodResolver } from '@hookform/resolvers/zod/dist/zod'
+import { Meta, StoryObj } from '@storybook/react'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import z from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod/dist/zod'
-import { Meta, StoryObj } from '@storybook/react'
-import { useOnDiff } from '@app/web/hooks/useOnDiff'
 import InputFormField, { InputFormFieldProps } from './InputFormField'
 
 const objectFormValidation = z
@@ -84,6 +84,7 @@ export const Success: Story = {
   },
 }
 
+// biome-ignore lint/suspicious/noShadowRestrictedNames: this is the story name
 export const Error: Story = {
   name: 'Etat erreur',
   render: (args) => <Template {...args} path="email2" />,

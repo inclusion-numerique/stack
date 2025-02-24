@@ -1,7 +1,7 @@
 'use client'
 
-import React from 'react'
 import InscriptionCard from '@app/web/app/inscription/(steps)/InscriptionCard'
+import React from 'react'
 
 const InscriptionError = () => (
   <InscriptionCard

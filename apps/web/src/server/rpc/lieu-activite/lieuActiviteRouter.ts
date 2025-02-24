@@ -1,10 +1,4 @@
-import { v4 } from 'uuid'
-import z from 'zod'
-import { SessionUser } from '@app/web/auth/sessionUser'
-import { prismaClient } from '@app/web/prismaClient'
-import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
-import { forbiddenError, invalidError } from '@app/web/server/rpc/trpcErrors'
-import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
+import { CreerLieuActiviteValidation } from '@app/web/app/lieu-activite/CreerLieuActiviteValidation'
 import {
   DescriptionData,
   DescriptionValidation,
@@ -22,10 +16,6 @@ import {
   ModalitesAccesAuServiceValidation,
 } from '@app/web/app/structure/ModalitesAccesAuServiceValidation'
 import {
-  itineranceStructureValues,
-  modalitesAccesStructureValues,
-} from '@app/web/app/structure/optionsStructure'
-import {
   ServicesEtAccompagnementData,
   ServicesEtAccompagnementValidation,
 } from '@app/web/app/structure/ServicesEtAccompagnementValidation'
@@ -37,9 +27,19 @@ import {
   VisiblePourCartographieNationaleData,
   VisiblePourCartographieNationaleValidation,
 } from '@app/web/app/structure/VisiblePourCartographieNationaleValidation'
-import { CreerLieuActiviteValidation } from '@app/web/app/lieu-activite/CreerLieuActiviteValidation'
-import { createStopwatch } from '@app/web/utils/stopwatch'
+import {
+  itineranceStructureValues,
+  modalitesAccesStructureValues,
+} from '@app/web/app/structure/optionsStructure'
+import { SessionUser } from '@app/web/auth/sessionUser'
+import { prismaClient } from '@app/web/prismaClient'
+import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
+import { forbiddenError, invalidError } from '@app/web/server/rpc/trpcErrors'
 import { addMutationLog } from '@app/web/utils/addMutationLog'
+import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
+import { createStopwatch } from '@app/web/utils/stopwatch'
+import { v4 } from 'uuid'
+import z from 'zod'
 import { lieuActiviteValidation } from './lieuActiviteValidation'
 
 const lieuActiviteToUpdate = async (

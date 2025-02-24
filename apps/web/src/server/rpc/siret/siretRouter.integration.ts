@@ -1,7 +1,7 @@
-import { v4 } from 'uuid'
-import { testSessionUser } from '@app/web/test/testSessionUser'
 import { siretRouter } from '@app/web/server/rpc/siret/siretRouter'
 import { createTestContext } from '@app/web/test/createTestContext'
+import { testSessionUser } from '@app/web/test/testSessionUser'
+import { v4 } from 'uuid'
 
 describe('siretRouter', () => {
   // Helper function to easily test procedures
@@ -16,7 +16,6 @@ describe('siretRouter', () => {
   }
 
   describe('checkSiret', () => {
-    // eslint-disable-next-line unicorn/consistent-function-scoping
     const executeSiretInfoProcedure = (input: { siret: string }) =>
       siretRouter
         .createCaller(createTestContext({ user: givenUser }))

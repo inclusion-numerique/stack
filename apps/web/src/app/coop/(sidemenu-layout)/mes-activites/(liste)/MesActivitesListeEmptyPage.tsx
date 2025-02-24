@@ -1,5 +1,5 @@
-import Button from '@codegouvfr/react-dsfr/Button'
 import { CreateCraModalDefinition } from '@app/web/app/coop/(full-width-layout)/mes-activites/CreateCraModalDefinition'
+import Button from '@codegouvfr/react-dsfr/Button'
 
 const MesActivitesListeEmptyPage = () => (
   <>

@@ -1,18 +1,18 @@
+import CustomSelect, {
+  CustomSelectProps,
+} from '@app/ui/components/CustomSelect/CustomSelect'
+import RedAsterisk from '@app/ui/components/Form/RedAsterisk'
+import { UiComponentProps } from '@app/ui/utils/uiComponentProps'
+import classNames from 'classnames'
 import React, { ReactNode, useCallback } from 'react'
 import { Control, Controller, FieldValues, PathValue } from 'react-hook-form'
 import { FieldPath } from 'react-hook-form/dist/types/path'
-import classNames from 'classnames'
 import type {
   GroupBase,
   OnChangeValue,
   Options,
   OptionsOrGroups,
 } from 'react-select'
-import { UiComponentProps } from '@app/ui/utils/uiComponentProps'
-import RedAsterisk from '@app/ui/components/Form/RedAsterisk'
-import CustomSelect, {
-  CustomSelectProps,
-} from '@app/ui/components/CustomSelect/CustomSelect'
 
 export type CustomSelectFormFieldProps<
   FormData extends FieldValues,
@@ -133,23 +133,18 @@ const CustomSelectFormField = <
   >) => {
   const id = `custom-select-form-field__${path}`
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const getOptionLabel = useCallback(
     getOptionLabelProperty ?? defaultGetOptionLabel,
     [],
   )
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const optionToFormValue = useCallback(
     optionToFormValueProperty ?? defaultOptionToFormValue,
     [],
   )
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const getOptionKey = useCallback(
     getOptionKeyProperty ?? defaultGetOptionKey,
     [],
   )
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const getValueKey = useCallback(getValueKeyProperty ?? defaultGetValueKey, [])
 
   const isOptionSelected: (
@@ -174,7 +169,6 @@ const CustomSelectFormField = <
 
         const result: Option[] = []
 
-        // eslint-disable-next-line no-unreachable-loop
         for (const oneOfMultiValue of multiValues) {
           const oneOfMultiValueKey = getValueKey(oneOfMultiValue)
           for (const optionOrGroup of optionsToMatch) {

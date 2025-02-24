@@ -1,55 +1,55 @@
 'use client'
 
-import { DefaultValues, useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
 import CheckboxGroupFormField from '@app/ui/components/Form/CheckboxGroupFormField'
-import RedAsterisk from '@app/ui/components/Form/RedAsterisk'
-import RadioFormField from '@app/ui/components/Form/RadioFormField'
-import InputFormField from '@app/ui/components/Form/InputFormField'
-import RichTextFormField from '@app/ui/components/Form/RichText/RichTextFormField'
-import Button from '@codegouvfr/react-dsfr/Button'
-import { createToast } from '@app/ui/toast/createToast'
-import { useRouter } from 'next/navigation'
-import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
 import CustomSelectFormField from '@app/ui/components/Form/CustomSelectFormField'
-import React, { useCallback, useMemo } from 'react'
+import InputFormField from '@app/ui/components/Form/InputFormField'
+import RadioFormField from '@app/ui/components/Form/RadioFormField'
+import RedAsterisk from '@app/ui/components/Form/RedAsterisk'
+import RichTextFormField from '@app/ui/components/Form/RichText/RichTextFormField'
+import type { SelectOption } from '@app/ui/components/Form/utils/options'
 import { useScrollToError } from '@app/ui/hooks/useScrollToError'
 import { useWatchSubscription } from '@app/ui/hooks/useWatchSubscription'
-import type { SelectOption } from '@app/ui/components/Form/utils/options'
+import { createToast } from '@app/ui/toast/createToast'
+import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
 import CraFormLabel from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/CraFormLabel'
+import CraBeneficiairesMultiplesForm from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/collectif/CraBeneficiairesMultiplesForm'
+import { craFormFieldsetClassname } from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/craFormFieldsetClassname'
+import type { LieuActiviteOption } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
+import type { BeneficiaireOption } from '@app/web/beneficiaire/BeneficiaireOption'
+import {
+  lieuActiviteFilterOption,
+  toLieuActiviteRichOptions,
+} from '@app/web/components/activite/lieuActiviteOptions'
 import AdresseBanFormField, {
   AdressBanFormFieldOption,
 } from '@app/web/components/form/AdresseBanFormField'
-import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
-import { trpc } from '@app/web/trpc'
+import CraDureeSubForm from '@app/web/components/form/CraDureeSubForm'
 import RichCardLabel, {
   richCardFieldsetElementClassName,
   richCardRadioGroupClassName,
 } from '@app/web/components/form/RichCardLabel'
+import { withTrpc } from '@app/web/components/trpc/withTrpc'
+import {
+  type CraCollectifData,
+  CraCollectifValidation,
+} from '@app/web/cra/CraCollectifValidation'
 import {
   materielOptions,
   niveauAtelierOptionsWithExtras,
   thematiqueOptionsWithExtras,
   typeLieuOptionsWithExtras,
 } from '@app/web/cra/cra'
-import { withTrpc } from '@app/web/components/trpc/withTrpc'
-import { craFormFieldsetClassname } from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/craFormFieldsetClassname'
-import { encodeSerializableState } from '@app/web/utils/encodeSerializableState'
-import { banMunicipalityLabel } from '@app/web/external-apis/ban/banMunicipalityLabel'
 import { banDefaultValueToAdresseBanData } from '@app/web/external-apis/ban/banDefaultValueToAdresseBanData'
-import {
-  type CraCollectifData,
-  CraCollectifValidation,
-} from '@app/web/cra/CraCollectifValidation'
-import CraBeneficiairesMultiplesForm from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/collectif/CraBeneficiairesMultiplesForm'
+import { banMunicipalityLabel } from '@app/web/external-apis/ban/banMunicipalityLabel'
+import { trpc } from '@app/web/trpc'
+import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
+import { encodeSerializableState } from '@app/web/utils/encodeSerializableState'
 import { replaceRouteWithoutRerender } from '@app/web/utils/replaceRouteWithoutRerender'
-import type { BeneficiaireOption } from '@app/web/beneficiaire/BeneficiaireOption'
-import CraDureeSubForm from '@app/web/components/form/CraDureeSubForm'
-import {
-  lieuActiviteFilterOption,
-  toLieuActiviteRichOptions,
-} from '@app/web/components/activite/lieuActiviteOptions'
-import type { LieuActiviteOption } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
+import Button from '@codegouvfr/react-dsfr/Button'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter } from 'next/navigation'
+import React, { useCallback, useMemo } from 'react'
+import { DefaultValues, useForm } from 'react-hook-form'
 import styles from '../CraForm.module.css'
 
 const CraCollectifForm = ({

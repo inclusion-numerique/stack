@@ -1,7 +1,7 @@
-import React, { PropsWithChildren } from 'react'
-import Link from 'next/link'
-import IconInSquare from '@app/web/components/IconInSquare'
 import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
+import IconInSquare from '@app/web/components/IconInSquare'
+import Link from 'next/link'
+import React, { PropsWithChildren } from 'react'
 
 const ArchivesV1Layout = ({ children }: PropsWithChildren) => (
   <div className="fr-container fr-container--800 fr-pb-50v">

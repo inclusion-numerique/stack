@@ -1,9 +1,9 @@
-import type { Prisma } from '@prisma/client'
 import {
   fixtureCrasCollectifs,
   fixtureCrasDemarchesAdministratives,
   fixtureCrasIndividuels,
 } from '@app/fixtures/activites'
+import type { Prisma } from '@prisma/client'
 
 export const upsertCraFixtures = async ({
   transaction,

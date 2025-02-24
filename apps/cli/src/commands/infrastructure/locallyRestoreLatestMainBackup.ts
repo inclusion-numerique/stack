@@ -1,15 +1,14 @@
-// eslint-disable-next-line unicorn/prevent-abbreviations
-import { promisify } from 'node:util'
 import { exec as callbackExec } from 'node:child_process'
-import path from 'node:path'
 import { createWriteStream } from 'node:fs'
+import path from 'node:path'
+import { promisify } from 'node:util'
+import { output } from '@app/cli/output'
+import { createVarDirectory } from '@app/config/createVarDirectory'
+import { varDirectory } from '@app/config/varDirectory'
+import { prismaClient } from '@app/web/prismaClient'
 import { Command } from '@commander-js/extra-typings'
 import axios from 'axios'
 import axiosRetry from 'axios-retry'
-import { varDirectory } from '@app/config/varDirectory'
-import { createVarDirectory } from '@app/config/createVarDirectory'
-import { prismaClient } from '@app/web/prismaClient'
-import { output } from '@app/cli/output'
 
 const exec = promisify(callbackExec)
 
@@ -134,11 +133,9 @@ export const locallyRestoreLatestMainBackup = new Command(
       if (waitCount > 10) {
         throw new Error('Timeout waiting for backup export')
       }
-      // eslint-disable-next-line no-await-in-loop
       await new Promise((resolve) => {
         setTimeout(resolve, 3000)
       })
-      // eslint-disable-next-line no-await-in-loop
       const statusResponse = await client.get<ScalewayDatabaseBackup>(
         `/backups/${latestBackup.id}`,
       )
@@ -207,7 +204,6 @@ export const locallyRestoreLatestMainBackup = new Command(
     // Delete all enum types
     if (enums.length > 0) {
       for (const { name } of enums) {
-        // eslint-disable-next-line no-await-in-loop
         await prismaClient.$queryRawUnsafe(
           `DROP TYPE IF EXISTS "${name}" CASCADE`,
         )

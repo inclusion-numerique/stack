@@ -1,11 +1,11 @@
-import classNames from 'classnames'
-import React from 'react'
-import Header from '@app/web/components/Header'
+import CreateCraModal from '@app/web/app/coop/(full-width-layout)/mes-activites/CreateCraModal'
 import styles from '@app/web/app/coop/CoopLayout.module.css'
 import CoopSideMenu from '@app/web/app/coop/CoopSideMenu'
-import CreateCraModal from '@app/web/app/coop/(full-width-layout)/mes-activites/CreateCraModal'
 import MinimalFooter from '@app/web/app/coop/MinimalFooter'
 import { authenticateUser } from '@app/web/auth/authenticateUser'
+import Header from '@app/web/components/Header'
+import classNames from 'classnames'
+import React from 'react'
 
 const CoopSidemenuLayout = async ({
   children,

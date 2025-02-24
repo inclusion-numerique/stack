@@ -1,14 +1,14 @@
-import type { Prisma } from '@prisma/client'
-import { v4 } from 'uuid'
-import type { SessionUser } from '@app/web/auth/sessionUser'
-import type { ConseillerNumeriqueV1DataWithActiveMiseEnRelation } from '@app/web/external-apis/conseiller-numerique/isConseillerNumeriqueV1WithActiveMiseEnRelation'
-import { prismaClient } from '@app/web/prismaClient'
+import { importStructureEmployeuseFromV1Data } from '@app/web/app/inscription/(steps)/identification/importStructureEmployeuseFromV1Data'
 import {
   findConseillerNumeriquesFromConseillersCoordonnesV1,
   upsertCoordinationsForCoordinateur,
 } from '@app/web/app/inscription/importFromConseillerNumerique/importFromConseillerNumerique.queries'
-import { importStructureEmployeuseFromV1Data } from '@app/web/app/inscription/(steps)/identification/importStructureEmployeuseFromV1Data'
 import { sessionUserSelect } from '@app/web/auth/getSessionUserFromSessionToken'
+import type { SessionUser } from '@app/web/auth/sessionUser'
+import type { ConseillerNumeriqueV1DataWithActiveMiseEnRelation } from '@app/web/external-apis/conseiller-numerique/isConseillerNumeriqueV1WithActiveMiseEnRelation'
+import { prismaClient } from '@app/web/prismaClient'
+import type { Prisma } from '@prisma/client'
+import { v4 } from 'uuid'
 
 /**
  * Will only import the basic data from v1 if the user is a coordinateur

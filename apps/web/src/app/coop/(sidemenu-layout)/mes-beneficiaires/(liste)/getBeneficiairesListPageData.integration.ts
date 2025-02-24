@@ -1,3 +1,9 @@
+import {
+  beneficiaireMaximaleConseillerNumerique,
+  beneficiaireMinimaleConseillerNumerique,
+  beneficiaireSansAccompagnementsConseillerNumerique,
+} from '@app/fixtures/beneficiaires'
+import { resetFixtureUser } from '@app/fixtures/resetFixtureUser'
 import { seedStructures } from '@app/fixtures/structures'
 import {
   conseillerNumerique,
@@ -8,14 +14,8 @@ import {
   mediateurSansActivites,
   mediateurSansActivitesMediateurId,
 } from '@app/fixtures/users/mediateurSansActivites'
-import { prismaClient } from '@app/web/prismaClient'
-import { resetFixtureUser } from '@app/fixtures/resetFixtureUser'
 import { getBeneficiairesListPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-beneficiaires/(liste)/getBeneficiairesListPageData'
-import {
-  beneficiaireMaximaleConseillerNumerique,
-  beneficiaireMinimaleConseillerNumerique,
-  beneficiaireSansAccompagnementsConseillerNumerique,
-} from '@app/fixtures/beneficiaires'
+import { prismaClient } from '@app/web/prismaClient'
 
 describe('getBeneficiairesListPageData', () => {
   beforeAll(async () => {

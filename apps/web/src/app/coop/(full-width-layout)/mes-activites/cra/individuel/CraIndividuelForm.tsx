@@ -1,45 +1,47 @@
 'use client'
 
-import {
-  Control,
-  DefaultValues,
-  useForm,
-  UseFormGetValues,
-  UseFormSetValue,
-  UseFormWatch,
-} from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
 import CheckboxFormField from '@app/ui/components/Form/CheckboxFormField'
 import CheckboxGroupFormField from '@app/ui/components/Form/CheckboxGroupFormField'
-import RedAsterisk from '@app/ui/components/Form/RedAsterisk'
-import RadioFormField from '@app/ui/components/Form/RadioFormField'
-import InputFormField from '@app/ui/components/Form/InputFormField'
-import RichTextFormField from '@app/ui/components/Form/RichText/RichTextFormField'
-import Button from '@codegouvfr/react-dsfr/Button'
-import { createToast } from '@app/ui/toast/createToast'
-import { useRouter } from 'next/navigation'
-import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
 import CustomSelectFormField from '@app/ui/components/Form/CustomSelectFormField'
-import React, { useCallback, useMemo, useState } from 'react'
+import InputFormField from '@app/ui/components/Form/InputFormField'
+import RadioFormField from '@app/ui/components/Form/RadioFormField'
+import RedAsterisk from '@app/ui/components/Form/RedAsterisk'
+import RichTextFormField from '@app/ui/components/Form/RichText/RichTextFormField'
+import type { SelectOption } from '@app/ui/components/Form/utils/options'
 import { useScrollToError } from '@app/ui/hooks/useScrollToError'
 import { useWatchSubscription } from '@app/ui/hooks/useWatchSubscription'
-import Link from 'next/link'
-import type { SelectOption } from '@app/ui/components/Form/utils/options'
+import { createToast } from '@app/ui/toast/createToast'
+import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
+import CraBeneficiaryForm, {
+  type CraDataWithBeneficiaire,
+} from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/CraBeneficiaryForm'
 import CraFormLabel from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/CraFormLabel'
-import AdresseBanFormField, {
-  type AdressBanFormFieldOption,
-} from '@app/web/components/form/AdresseBanFormField'
+import { craFormFieldsetClassname } from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/craFormFieldsetClassname'
+import type { LieuActiviteOption } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
+import type { BeneficiaireOption } from '@app/web/beneficiaire/BeneficiaireOption'
 import {
   genreOptions,
   statutSocialOptions,
   trancheAgeOptions,
 } from '@app/web/beneficiaire/beneficiaire'
-import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
-import { trpc } from '@app/web/trpc'
+import { isBeneficiaireAnonymous } from '@app/web/beneficiaire/isBeneficiaireAnonymous'
+import {
+  lieuActiviteFilterOption,
+  toLieuActiviteRichOptions,
+} from '@app/web/components/activite/lieuActiviteOptions'
+import AdresseBanFormField, {
+  type AdressBanFormFieldOption,
+} from '@app/web/components/form/AdresseBanFormField'
+import CraDureeSubForm from '@app/web/components/form/CraDureeSubForm'
 import RichCardLabel, {
   richCardFieldsetElementClassName,
   richCardRadioGroupClassName,
 } from '@app/web/components/form/RichCardLabel'
+import { withTrpc } from '@app/web/components/trpc/withTrpc'
+import {
+  type CraIndividuelData,
+  CraIndividuelValidation,
+} from '@app/web/cra/CraIndividuelValidation'
 import {
   autonomieOptionsWithExtras,
   materielOptions,
@@ -47,28 +49,26 @@ import {
   thematiqueOptionsWithExtras,
   typeLieuOptionsWithExtras,
 } from '@app/web/cra/cra'
-import {
-  type CraIndividuelData,
-  CraIndividuelValidation,
-} from '@app/web/cra/CraIndividuelValidation'
-import { withTrpc } from '@app/web/components/trpc/withTrpc'
-import { yesNoBooleanOptions } from '@app/web/utils/yesNoBooleanOptions'
-import { craFormFieldsetClassname } from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/craFormFieldsetClassname'
-import CraBeneficiaryForm, {
-  type CraDataWithBeneficiaire,
-} from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/CraBeneficiaryForm'
-import { encodeSerializableState } from '@app/web/utils/encodeSerializableState'
-import { banMunicipalityLabel } from '@app/web/external-apis/ban/banMunicipalityLabel'
 import { banDefaultValueToAdresseBanData } from '@app/web/external-apis/ban/banDefaultValueToAdresseBanData'
+import { banMunicipalityLabel } from '@app/web/external-apis/ban/banMunicipalityLabel'
+import { trpc } from '@app/web/trpc'
+import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
+import { encodeSerializableState } from '@app/web/utils/encodeSerializableState'
 import { replaceRouteWithoutRerender } from '@app/web/utils/replaceRouteWithoutRerender'
-import type { BeneficiaireOption } from '@app/web/beneficiaire/BeneficiaireOption'
-import { isBeneficiaireAnonymous } from '@app/web/beneficiaire/isBeneficiaireAnonymous'
-import CraDureeSubForm from '@app/web/components/form/CraDureeSubForm'
-import type { LieuActiviteOption } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
+import { yesNoBooleanOptions } from '@app/web/utils/yesNoBooleanOptions'
+import Button from '@codegouvfr/react-dsfr/Button'
+import { zodResolver } from '@hookform/resolvers/zod'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import React, { useCallback, useMemo, useState } from 'react'
 import {
-  lieuActiviteFilterOption,
-  toLieuActiviteRichOptions,
-} from '@app/web/components/activite/lieuActiviteOptions'
+  Control,
+  DefaultValues,
+  UseFormGetValues,
+  UseFormSetValue,
+  UseFormWatch,
+  useForm,
+} from 'react-hook-form'
 import styles from '../CraForm.module.css'
 
 /**

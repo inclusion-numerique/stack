@@ -1,10 +1,10 @@
-import { PrismaClient } from '@prisma/client'
 import { output } from '@app/cli/output'
+import { createBrevoContact } from '@app/web/external-apis/brevo/api'
 import {
   onlyWithBrevoRole,
   toBrevoContact,
 } from '@app/web/external-apis/brevo/contact'
-import { createBrevoContact } from '@app/web/external-apis/brevo/api'
+import { PrismaClient } from '@prisma/client'
 
 const userListId = Number.parseInt(process.env.BREVO_USERS_LIST_ID!, 10)
 const prisma = new PrismaClient()

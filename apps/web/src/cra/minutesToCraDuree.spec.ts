@@ -1,8 +1,8 @@
+import type { CraDureeData } from '@app/web/cra/CraDureeValidation'
 import {
   craDureeDataToMinutes,
   minutesToCraDureeData,
 } from '@app/web/cra/minutesToCraDuree'
-import type { CraDureeData } from '@app/web/cra/CraDureeValidation'
 
 describe('minutesToCraDuree', () => {
   describe('craDureeDataToMinutes Function', () => {
@@ -63,7 +63,6 @@ describe('minutesToCraDuree', () => {
 
   describe('minutesToCraDureeData Function', () => {
     it('should return null when minutes is undefined', () => {
-      // eslint-disable-next-line unicorn/no-useless-undefined
       expect(minutesToCraDureeData(undefined)).toBeNull()
     })
 

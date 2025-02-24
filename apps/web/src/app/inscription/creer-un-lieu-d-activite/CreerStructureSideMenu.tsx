@@ -1,5 +1,5 @@
-import React from 'react'
 import CompactNavigationSideMenu from '@app/ui/components/CompactNavigationSideMenu'
+import React from 'react'
 
 const CreerStructureSideMenu = () => (
   <CompactNavigationSideMenu

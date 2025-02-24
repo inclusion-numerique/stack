@@ -1,11 +1,11 @@
 'use client'
 
-import React, { ReactNode } from 'react'
-import { useRouter } from 'next/navigation'
-import ToggleSwitch from '@codegouvfr/react-dsfr/ToggleSwitch'
 import { createToast } from '@app/ui/toast/createToast'
-import { trpc } from '@app/web/trpc'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
+import { trpc } from '@app/web/trpc'
+import ToggleSwitch from '@codegouvfr/react-dsfr/ToggleSwitch'
+import { useRouter } from 'next/navigation'
+import React, { ReactNode } from 'react'
 
 const VisiblePourCartographieNationaleFields = ({
   id,

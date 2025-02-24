@@ -1,9 +1,9 @@
-import { notFound } from 'next/navigation'
-import { authenticateConseillerNumeriqueOrCoordinateur } from '@app/web/auth/authenticateUser'
-import { getArchivesV1PageDataWithCras } from '@app/web/app/coop/(full-width-layout)/archives-v1/getArchivesV1PageData'
-import ArchivesV1PageContent from '@app/web/app/coop/(full-width-layout)/archives-v1/ArchivesV1PageContent'
 import ArchivesV1CoordinateurPageContent from '@app/web/app/coop/(full-width-layout)/archives-v1/ArchivesV1CoordinateurPageContent'
+import ArchivesV1PageContent from '@app/web/app/coop/(full-width-layout)/archives-v1/ArchivesV1PageContent'
 import { getArchivesV1CoordinateurPageData } from '@app/web/app/coop/(full-width-layout)/archives-v1/getArchivesV1CoordinateurPageData'
+import { getArchivesV1PageDataWithCras } from '@app/web/app/coop/(full-width-layout)/archives-v1/getArchivesV1PageData'
+import { authenticateConseillerNumeriqueOrCoordinateur } from '@app/web/auth/authenticateUser'
+import { notFound } from 'next/navigation'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0

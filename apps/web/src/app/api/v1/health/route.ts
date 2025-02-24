@@ -1,5 +1,5 @@
-import { NextResponse } from 'next/server'
 import { createApiV1Route } from '@app/web/app/api/v1/createApiV1Route'
+import { NextResponse } from 'next/server'
 
 export type HealthResponse = {
   status: 'ok' | 'error'

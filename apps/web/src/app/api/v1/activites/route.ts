@@ -1,17 +1,14 @@
-import { NextResponse } from 'next/server'
-import { z, type ZodError } from 'zod'
+import {
+  JsonApiCursorPaginationQueryParamsValidation,
+  createCompositeCursor,
+  parseCompositeCursor,
+  prismaCursorPagination,
+} from '@app/web/app/api/v1/CursorPagination'
 import type {
   JsonApiListResponse,
   JsonApiResource,
 } from '@app/web/app/api/v1/JsonApiTypes'
-import { prismaClient } from '@app/web/prismaClient'
 import { apiV1Url } from '@app/web/app/api/v1/apiV1Url'
-import {
-  createCompositeCursor,
-  JsonApiCursorPaginationQueryParamsValidation,
-  parseCompositeCursor,
-  prismaCursorPagination,
-} from '@app/web/app/api/v1/CursorPagination'
 import { createApiV1Route } from '@app/web/app/api/v1/createApiV1Route'
 import {
   autonomieApiValues,
@@ -24,7 +21,10 @@ import {
   typeActiviteApiValues,
   typeLieuApiValues,
 } from '@app/web/cra/cra'
+import { prismaClient } from '@app/web/prismaClient'
 import { encodeSerializableState } from '@app/web/utils/encodeSerializableState'
+import { NextResponse } from 'next/server'
+import { type ZodError, z } from 'zod'
 
 /**
  * API response types MUST be manually defined to NOT be infered

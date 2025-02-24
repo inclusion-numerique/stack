@@ -1,17 +1,17 @@
-import Button from '@codegouvfr/react-dsfr/Button'
-import Notice from '@codegouvfr/react-dsfr/Notice'
-import React, { ReactNode } from 'react'
+import InscriptionInvalidInformationContactSupportLink from '@app/web/app/inscription/InscriptionInvalidInformationContactSupportLink'
+import ValiderInscriptionForm from '@app/web/app/inscription/ValiderInscriptionForm'
+import { StructureData } from '@app/web/app/structure/StructureValidation'
+import { SessionUser } from '@app/web/auth/sessionUser'
 import IconInSquare from '@app/web/components/IconInSquare'
 import InfoLabelValue from '@app/web/components/InfoLabelValue'
+import StructureCard from '@app/web/components/structure/StructureCard'
 import {
   allProfileInscriptionLabels,
   computeUserProfile,
 } from '@app/web/inscription/profilInscription'
-import StructureCard from '@app/web/components/structure/StructureCard'
-import ValiderInscriptionForm from '@app/web/app/inscription/ValiderInscriptionForm'
-import { SessionUser } from '@app/web/auth/sessionUser'
-import { StructureData } from '@app/web/app/structure/StructureValidation'
-import InscriptionInvalidInformationContactSupportLink from '@app/web/app/inscription/InscriptionInvalidInformationContactSupportLink'
+import Button from '@codegouvfr/react-dsfr/Button'
+import Notice from '@codegouvfr/react-dsfr/Notice'
+import React, { ReactNode } from 'react'
 
 const InscriptionRecapitulatif = ({
   editLieuxActiviteHref,

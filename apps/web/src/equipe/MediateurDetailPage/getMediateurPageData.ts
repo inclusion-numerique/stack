@@ -1,11 +1,11 @@
-import { prismaClient } from '@app/web/prismaClient'
-import type { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
-import { getStructureEmployeuseAddress } from '@app/web/structure/getStructureEmployeuseAddress'
-import { getContractInfo } from '@app/web/conseiller-numerique/getContractInfo'
-import { getLieuxActivites } from '@app/web/lieu-activite/getLieuxActivites'
-import { authenticateUser } from '@app/web/auth/authenticateUser'
 import { getTotalCountsStats } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/getTotalCountsStats'
+import { authenticateUser } from '@app/web/auth/authenticateUser'
+import { getContractInfo } from '@app/web/conseiller-numerique/getContractInfo'
+import type { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
 import { findConseillerNumeriqueV1 } from '@app/web/external-apis/conseiller-numerique/searchConseillerNumeriqueV1'
+import { getLieuxActivites } from '@app/web/lieu-activite/getLieuxActivites'
+import { prismaClient } from '@app/web/prismaClient'
+import { getStructureEmployeuseAddress } from '@app/web/structure/getStructureEmployeuseAddress'
 
 const activitesFiltersLastDays = (daysCount: number) => {
   const currentDate = new Date()

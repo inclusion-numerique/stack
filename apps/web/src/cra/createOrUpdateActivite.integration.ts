@@ -1,25 +1,23 @@
-/* eslint @typescript-eslint/no-unsafe-assignment: 0 */
-
+import { resetFixtureUser } from '@app/fixtures/resetFixtureUser'
+import { seedStructures } from '@app/fixtures/structures'
 import {
   mediateurAvecActivite,
   mediateurAvecActiviteMediateurId,
 } from '@app/fixtures/users/mediateurAvecActivite'
-import { resetFixtureUser } from '@app/fixtures/resetFixtureUser'
-import { prismaClient } from '@app/web/prismaClient'
-import { seedStructures } from '@app/fixtures/structures'
-import {
-  createOrUpdateActivite,
-  type CreateOrUpdateActiviteInput,
-} from '@app/web/cra/createOrUpdateActivite'
-import { banDefaultValueToAdresseBanData } from '@app/web/external-apis/ban/banDefaultValueToAdresseBanData'
+import { CraCollectifData } from '@app/web/cra/CraCollectifValidation'
+import type { CraIndividuelData } from '@app/web/cra/CraIndividuelValidation'
 import {
   type ActiviteForList,
   activiteListSelect,
 } from '@app/web/cra/activitesQueries'
-import type { CraIndividuelData } from '@app/web/cra/CraIndividuelValidation'
+import {
+  type CreateOrUpdateActiviteInput,
+  createOrUpdateActivite,
+} from '@app/web/cra/createOrUpdateActivite'
 import { craDureeDataToMinutes } from '@app/web/cra/minutesToCraDuree'
-import { CraCollectifData } from '@app/web/cra/CraCollectifValidation'
 import { participantsAnonymesDefault } from '@app/web/cra/participantsAnonymes'
+import { banDefaultValueToAdresseBanData } from '@app/web/external-apis/ban/banDefaultValueToAdresseBanData'
+import { prismaClient } from '@app/web/prismaClient'
 
 const nullActivite: Omit<
   ActiviteForList,

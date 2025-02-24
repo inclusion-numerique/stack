@@ -1,49 +1,49 @@
 'use client'
 
-import { DefaultValues, useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import InputFormField from '@app/ui/components/Form/InputFormField'
-import Button from '@codegouvfr/react-dsfr/Button'
-import { createToast } from '@app/ui/toast/createToast'
-import { useRouter } from 'next/navigation'
-import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
-import React, { Fragment, useCallback } from 'react'
-import { useScrollToError } from '@app/ui/hooks/useScrollToError'
-import Link from 'next/link'
 import CheckboxFormField from '@app/ui/components/Form/CheckboxFormField'
+import InputFormField from '@app/ui/components/Form/InputFormField'
 import RadioFormField from '@app/ui/components/Form/RadioFormField'
 import RichTextFormField from '@app/ui/components/Form/RichText/RichTextFormField'
+import { useScrollToError } from '@app/ui/hooks/useScrollToError'
 import { useWatchSubscription } from '@app/ui/hooks/useWatchSubscription'
-import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
-import { trpc } from '@app/web/trpc'
-import { CraIndividuelData } from '@app/web/cra/CraIndividuelValidation'
-import { encodeSerializableState } from '@app/web/utils/encodeSerializableState'
+import { createToast } from '@app/ui/toast/createToast'
+import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
+import CraFormLabel from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/CraFormLabel'
+import { craFormFieldsetClassname } from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/craFormFieldsetClassname'
+import FormSection from '@app/web/app/coop/(full-width-layout)/mes-beneficiaires/FormSection'
 import {
+  type BeneficiaireCraData,
+  type BeneficiaireData,
+  BeneficiaireValidation,
   anneeNaissanceMax,
   anneeNaissanceMin,
-  BeneficiaireCraData,
-  BeneficiaireData,
-  BeneficiaireValidation,
 } from '@app/web/beneficiaire/BeneficiaireValidation'
-import FormSection from '@app/web/app/coop/(full-width-layout)/mes-beneficiaires/FormSection'
-import RichCardLabel, {
-  richCardFieldsetElementClassName,
-  richCardRadioGroupClassName,
-} from '@app/web/components/form/RichCardLabel'
-import { craFormFieldsetClassname } from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/craFormFieldsetClassname'
-import AdresseBanFormField, {
-  AdressBanFormFieldOption,
-} from '@app/web/components/form/AdresseBanFormField'
-import CraFormLabel from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/CraFormLabel'
 import {
   genreOptions,
   statutSocialOptions,
   trancheAgeOptions,
 } from '@app/web/beneficiaire/beneficiaire'
-import { withTrpc } from '@app/web/components/trpc/withTrpc'
-import { trancheAgeFromAnneeNaissance } from '@app/web/beneficiaire/trancheAgeFromAnneeNaissance'
 import { beneficiaireCommuneResidenceToPreviewBanData } from '@app/web/beneficiaire/prismaBeneficiaireToBeneficiaireData'
+import { trancheAgeFromAnneeNaissance } from '@app/web/beneficiaire/trancheAgeFromAnneeNaissance'
+import AdresseBanFormField, {
+  type AdressBanFormFieldOption,
+} from '@app/web/components/form/AdresseBanFormField'
+import RichCardLabel, {
+  richCardFieldsetElementClassName,
+  richCardRadioGroupClassName,
+} from '@app/web/components/form/RichCardLabel'
+import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import type { CraCollectifData } from '@app/web/cra/CraCollectifValidation'
+import { CraIndividuelData } from '@app/web/cra/CraIndividuelValidation'
+import { trpc } from '@app/web/trpc'
+import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
+import { encodeSerializableState } from '@app/web/utils/encodeSerializableState'
+import Button from '@codegouvfr/react-dsfr/Button'
+import { zodResolver } from '@hookform/resolvers/zod'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import React, { useCallback } from 'react'
+import { DefaultValues, useForm } from 'react-hook-form'
 import styles from './BeneficiaireForm.module.css'
 
 const BeneficiaireForm = ({
@@ -318,7 +318,8 @@ const BeneficiaireForm = ({
           searchOptions={{ type: 'municipality' }}
           defaultOptions={communeResidenceDefaultOptions}
           defaultValue={
-            communeResidenceDefaultOptions?.length
+            communeResidenceDefaultOptions &&
+            communeResidenceDefaultOptions.length > 0
               ? communeResidenceDefaultOptions[0]
               : undefined
           }

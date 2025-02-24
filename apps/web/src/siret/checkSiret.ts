@@ -1,5 +1,5 @@
-import { requiredSiretValidation } from '@app/web/siret/siretValidation'
 import { fetchSiretData } from '@app/web/siret/fetchSiretData'
+import { requiredSiretValidation } from '@app/web/siret/siretValidation'
 
 /**
  * Takes a SIRET

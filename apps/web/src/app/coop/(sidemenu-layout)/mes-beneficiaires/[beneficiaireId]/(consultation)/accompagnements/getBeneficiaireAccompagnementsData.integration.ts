@@ -1,18 +1,18 @@
-import { getBeneficiaireAccompagnementsPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-beneficiaires/[beneficiaireId]/(consultation)/accompagnements/getBeneficiaireAccompagnementsPageData'
-import { resetFixtureUser } from '@app/fixtures/resetFixtureUser'
-import { conseillerNumerique } from '@app/fixtures/users/conseillerNumerique'
-import { mediateurAvecActivite } from '@app/fixtures/users/mediateurAvecActivite'
-import { mediateurSansActivites } from '@app/fixtures/users/mediateurSansActivites'
-import {
-  beneficiaireMaximaleMediateurAvecActivite,
-  beneficiaireSansAccompagnementsMediateurAvecActivite,
-} from '@app/fixtures/beneficiaires'
 import {
   mediateurAvecActiviteCrasCollectifs,
   mediateurAvecActiviteCrasDemarchesAdministratives,
   mediateurAvecActiviteCrasIndividuels,
 } from '@app/fixtures/activites'
+import {
+  beneficiaireMaximaleMediateurAvecActivite,
+  beneficiaireSansAccompagnementsMediateurAvecActivite,
+} from '@app/fixtures/beneficiaires'
+import { resetFixtureUser } from '@app/fixtures/resetFixtureUser'
 import { seedStructures } from '@app/fixtures/structures'
+import { conseillerNumerique } from '@app/fixtures/users/conseillerNumerique'
+import { mediateurAvecActivite } from '@app/fixtures/users/mediateurAvecActivite'
+import { mediateurSansActivites } from '@app/fixtures/users/mediateurSansActivites'
+import { getBeneficiaireAccompagnementsPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-beneficiaires/[beneficiaireId]/(consultation)/accompagnements/getBeneficiaireAccompagnementsPageData'
 import { prismaClient } from '@app/web/prismaClient'
 
 describe('getBeneficiaireAccompagnementsData', () => {

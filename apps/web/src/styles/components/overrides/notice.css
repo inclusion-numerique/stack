@@ -34,8 +34,8 @@
 }
 
 .fr-notice--success .fr-notice__title::before {
-  mask-image: url('/dsfr/icons/system/check-line.svg') !important;
-  content: '';
+  mask-image: url("/dsfr/icons/system/check-line.svg") !important;
+  content: "";
 }
 
 .fr-notice--warning {
@@ -48,8 +48,8 @@
 }
 
 .fr-notice--warning .fr-notice__title::before {
-  mask-image: url('/dsfr/icons/system/fr--warning-fill.svg') !important;
-  content: '';
+  mask-image: url("/dsfr/icons/system/fr--warning-fill.svg") !important;
+  content: "";
 }
 
 .fr-notice--new {
@@ -71,8 +71,8 @@
 }
 
 .fr-notice--new .fr-notice__title::before {
-  mask-image: url('/dsfr/icons/weather/flashlight-fill.svg') !important;
-  content: '';
+  mask-image: url("/dsfr/icons/weather/flashlight-fill.svg") !important;
+  content: "";
 }
 
 .fr-notice.fr-notice--no-icon {
@@ -95,6 +95,6 @@
 }
 
 .fr-notice--error .fr-notice__title::before {
-  mask-image: url('/dsfr/icons/system/fr--error-line.svg') !important;
-  content: '';
+  mask-image: url("/dsfr/icons/system/fr--error-line.svg") !important;
+  content: "";
 }

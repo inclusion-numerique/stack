@@ -1,5 +1,5 @@
-import { participantsAnonymesDefault } from '@app/web/cra/participantsAnonymes'
 import { createParticipantsAnonymesForBeneficiaires } from '@app/web/beneficiaire/createParticipantsAnonymesForBeneficiaires'
+import { participantsAnonymesDefault } from '@app/web/cra/participantsAnonymes'
 import { Beneficiaire } from '@prisma/client'
 
 describe('createParticipantsAnonymesForBeneficiaires', () => {

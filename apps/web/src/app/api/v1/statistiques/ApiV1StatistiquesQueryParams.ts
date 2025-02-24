@@ -1,5 +1,5 @@
-import z from 'zod'
 import { ActivitesFilterValidations } from '@app/web/cra/ActivitesFilters'
+import z from 'zod'
 
 export const ApiV1StatistiquesQueryParamsValidation = z.object({
   filter: z.object({ ...ActivitesFilterValidations }).default({}),

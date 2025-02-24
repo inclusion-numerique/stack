@@ -1,12 +1,12 @@
+import AdministrationBreadcrumbs from '@app/web/app/administration/AdministrationBreadcrumbs'
+import { metadataTitle } from '@app/web/app/metadataTitle'
+import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
+import StructureEdition from '@app/web/structure/StructureEdition'
+import { getStructureDataForForm } from '@app/web/structure/getStructureDataForForm'
+import { contentId } from '@app/web/utils/skipLinks'
+import { toTitleCase } from '@app/web/utils/toTitleCase'
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { metadataTitle } from '@app/web/app/metadataTitle'
-import AdministrationBreadcrumbs from '@app/web/app/administration/AdministrationBreadcrumbs'
-import { toTitleCase } from '@app/web/utils/toTitleCase'
-import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
-import { contentId } from '@app/web/utils/skipLinks'
-import { getStructureDataForForm } from '@app/web/structure/getStructureDataForForm'
-import StructureEdition from '@app/web/structure/StructureEdition'
 
 export const metadata: Metadata = {
   title: metadataTitle('Modifier une structure'),

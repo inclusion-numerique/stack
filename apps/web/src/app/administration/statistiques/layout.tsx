@@ -1,8 +1,8 @@
-import { PropsWithChildren } from 'react'
-import { metadataTitle } from '@app/web/app/metadataTitle'
 import AdministrationBreadcrumbs from '@app/web/app/administration/AdministrationBreadcrumbs'
 import AdministrationTitle from '@app/web/app/administration/AdministrationTitle'
 import CoopPageContainer from '@app/web/app/coop/CoopPageContainer'
+import { metadataTitle } from '@app/web/app/metadataTitle'
+import { PropsWithChildren } from 'react'
 
 export const metadata = {
   title: metadataTitle('Statistiques'),

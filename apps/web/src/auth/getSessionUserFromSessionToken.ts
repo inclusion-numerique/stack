@@ -1,7 +1,7 @@
-import type { Prisma } from '@prisma/client'
+import { serializePrismaSessionUser } from '@app/web/auth/serializePrismaSessionUser'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import { prismaClient } from '@app/web/prismaClient'
-import { serializePrismaSessionUser } from '@app/web/auth/serializePrismaSessionUser'
+import type { Prisma } from '@prisma/client'
 
 export const sessionUserSelect = {
   id: true,

@@ -1,26 +1,25 @@
-
 .container {
-    --side-nav-width: 296px;
+  --side-nav-width: 296px;
 
-    display: flex;
+  display: flex;
 }
 
 .sideNavContainer {
-    width: 100%;
+  width: 100%;
 
-    @media (min-width: 48em) {
-        width: var(--side-nav-width)
-    }
+  @media (min-width: 48em) {
+    width: var(--side-nav-width);
+  }
 }
 
 .pageContainer {
-    min-height: 100%;
-    padding: 0 16px;
+  min-height: 100%;
+  padding: 0 16px;
 
-    @media (min-width: 48em) {
-        width: calc(100% - var(--side-nav-width));
-        padding: 0 32px 0 0;
-    }
+  @media (min-width: 48em) {
+    width: calc(100% - var(--side-nav-width));
+    padding: 0 32px 0 0;
+  }
 
-    padding-bottom: 120px;
+  padding-bottom: 120px;
 }

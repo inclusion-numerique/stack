@@ -1,18 +1,18 @@
-import { NextRequest, NextResponse } from 'next/server'
-import axios from 'axios'
+import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
+import { getSessionTokenFromNextRequestCookies } from '@app/web/auth/getSessionTokenFromCookies'
+import { getSessionUserFromSessionToken } from '@app/web/auth/getSessionUserFromSessionToken'
+import { prismaClient } from '@app/web/prismaClient'
 import {
   rdvServicePublicOAuthConfig,
   rdvServicePublicOAuthTokenEndpoint,
 } from '@app/web/rdv-service-public/rdvServicePublicOauth'
-import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
-import {
-  decodeSerializableState,
-  EncodedState,
-} from '@app/web/utils/encodeSerializableState'
-import { getSessionTokenFromNextRequestCookies } from '@app/web/auth/getSessionTokenFromCookies'
-import { getSessionUserFromSessionToken } from '@app/web/auth/getSessionUserFromSessionToken'
-import { prismaClient } from '@app/web/prismaClient'
 import { getServerUrl } from '@app/web/utils/baseUrl'
+import {
+  EncodedState,
+  decodeSerializableState,
+} from '@app/web/utils/encodeSerializableState'
+import axios from 'axios'
+import { NextRequest, NextResponse } from 'next/server'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -44,11 +44,6 @@ export const GET = async (request: NextRequest) => {
     })
   }
 
-  // Log all request params
-  console.log(
-    'Request params',
-    Object.fromEntries(request.nextUrl.searchParams.entries()),
-  )
   // I should have code and state (for the code workflow)
   const code = request.nextUrl.searchParams.get('code')
   const state = request.nextUrl.searchParams.get('state')

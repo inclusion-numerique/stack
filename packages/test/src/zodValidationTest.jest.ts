@@ -22,6 +22,7 @@ export const expectZodValidationToFail = <
   const result = validation.safeParse({ ...validObject, ...fields })
 
   if (result.success) {
+    // biome-ignore lint/suspicious/noConsole: needed as jest output is not clear enough in failure case
     console.error(
       `Fields should not be valid. Expected errors: ${errors
         .map((error) => error.message)

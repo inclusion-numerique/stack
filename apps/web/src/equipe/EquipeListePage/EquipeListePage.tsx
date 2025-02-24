@@ -1,18 +1,18 @@
-import React from 'react'
-import Link from 'next/link'
-import Button from '@codegouvfr/react-dsfr/Button'
 import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
-import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
-import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
 import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
+import { EquipeVide } from '@app/web/app/coop/EquipeVide'
+import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
 import DataSearchBar from '@app/web/data-table/DataSearchBar'
-import { generatePageSizeSelectOptions } from '@app/web/data-table/pageSizeSelectOptions'
 import PaginationNavWithPageSizeSelect from '@app/web/data-table/PaginationNavWithPageSizeSelect'
 import SortSelect from '@app/web/data-table/SortSelect'
-import { EquipeVide } from '@app/web/app/coop/EquipeVide'
-import { MonEquipePageData } from './getEquipePageData'
+import { generatePageSizeSelectOptions } from '@app/web/data-table/pageSizeSelectOptions'
+import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
+import Button from '@codegouvfr/react-dsfr/Button'
+import Link from 'next/link'
+import React from 'react'
 import LeaveTeamButton from './LeaveTeamButton'
 import { MediateurList } from './MediateurList'
+import { MonEquipePageData } from './getEquipePageData'
 
 const pluralize = (expression: string, count: number) =>
   expression
@@ -105,7 +105,9 @@ const EquipeListePage = ({
           />
         </div>
         {total === 0 && mediateurs?.length === 0 && <EquipeVide />}
-        {(total !== 0 || totalAncien !== 0 || mediateurs?.length !== 0) && (
+        {(total !== 0 ||
+          totalAncien !== 0 ||
+          (!!mediateurs && mediateurs.length > 0)) && (
           <>
             <div className="fr-flex fr-justify-content-space-between fr-align-items-center fr-mb-4w">
               {totalAncien === 0 && (

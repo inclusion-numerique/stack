@@ -1,10 +1,10 @@
+import { metadataTitle } from '@app/web/app/metadataTitle'
+import LogoCoop from '@app/web/components/LogoCoop'
+import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
+import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
+import Button from '@codegouvfr/react-dsfr/Button'
 import type { Metadata } from 'next'
 import Image from 'next/image'
-import Button from '@codegouvfr/react-dsfr/Button'
-import { metadataTitle } from '@app/web/app/metadataTitle'
-import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
-import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
-import LogoCoop from '@app/web/components/LogoCoop'
 
 export const metadata: Metadata = {
   title: metadataTitle('Migration vers la nouvelle version de la plateforme !'),

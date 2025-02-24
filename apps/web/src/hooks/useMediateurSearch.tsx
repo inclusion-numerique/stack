@@ -1,8 +1,8 @@
-import { useCallback, useRef } from 'react'
 import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
-import { trpc } from '@app/web/trpc'
 import type { MediateurOption } from '@app/web/mediateurs/MediateurOption'
+import { trpc } from '@app/web/trpc'
 import { getUserDisplayName } from '@app/web/utils/user'
+import { useCallback, useRef } from 'react'
 
 type UserRef = {
   name: string | null
@@ -80,7 +80,7 @@ export const useMediateursSearch = ({
           : []),
       ]
     },
-    [mediateursMapRef, trpcClient],
+    [trpcClient, allowTextValue],
   )
 
   return {

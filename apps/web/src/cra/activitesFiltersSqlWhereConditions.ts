@@ -1,7 +1,7 @@
-import { Sql } from '@prisma/client/runtime/library'
-import { Prisma } from '@prisma/client'
 import type { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
 import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
+import { Prisma } from '@prisma/client'
+import { Sql } from '@prisma/client/runtime/library'
 
 export type ActivitesFiltersWhereConditions = {
   [key in keyof ActivitesFilters]: Sql | null

@@ -6,7 +6,7 @@
   "scripts": {
     "load": "dotenv -e ../../.env -- tsx src/load.ts",
     "load:erase-all-data": "dotenv -e ../../.env -- tsx src/load.ts --erase-all-data",
-    "lint": "eslint src",
+    "lint": "biome check src",
     "tsc": "tsc --noEmit",
     "test": "jest --passWithNoTests"
   },

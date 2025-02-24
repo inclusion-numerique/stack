@@ -1,5 +1,7 @@
 'use client'
 
+import Tag from '@codegouvfr/react-dsfr/Tag'
+import classNames from 'classnames'
 import {
   MouseEventHandler,
   PropsWithChildren,
@@ -8,14 +10,12 @@ import {
   useRef,
   useState,
 } from 'react'
-import Tag from '@codegouvfr/react-dsfr/Tag'
-import classNames from 'classnames'
 import { useOnClickOutside } from 'usehooks-ts'
 import styles from './FilterTag.module.css'
 
 type FilterTagState = 'idle' | 'open' | 'active'
 
-const FilterTag = <T = unknown,>({
+const FilterTag = <T = unknown>({
   label,
   children,
   value,

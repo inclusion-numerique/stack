@@ -1,16 +1,16 @@
 'use client'
 
 import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
+import BackButton from '@app/web/components/BackButton'
+import { withTrpc } from '@app/web/components/trpc/withTrpc'
+import { trpc } from '@app/web/trpc'
+import { dateAsDay } from '@app/web/utils/dateAsDay'
 import Badge from '@codegouvfr/react-dsfr/Badge'
 import { ButtonProps } from '@codegouvfr/react-dsfr/Button'
-import { useRouter } from 'next/navigation'
-import React from 'react'
 import ButtonsGroup from '@codegouvfr/react-dsfr/ButtonsGroup'
 import { createModal } from '@codegouvfr/react-dsfr/Modal'
-import { trpc } from '@app/web/trpc'
-import { withTrpc } from '@app/web/components/trpc/withTrpc'
-import BackButton from '@app/web/components/BackButton'
-import { dateAsDay } from '@app/web/utils/dateAsDay'
+import { useRouter } from 'next/navigation'
+import React from 'react'
 import { UserInfoLine } from './UserInfoLine'
 
 const Identity = ({

@@ -1,8 +1,8 @@
-import React from 'react'
-import { metadataTitle } from '@app/web/app/metadataTitle'
-import { getStructureEmployeuseAddress } from '@app/web/structure/getStructureEmployeuseAddress'
 import espaceFranceNumeriqueEnsemblePageData from '@app/web/app/coop/(sidemenu-layout)/mes-outils/_data/espaceFranceNumeriqueEnsemblePageData'
+import { metadataTitle } from '@app/web/app/metadataTitle'
 import { authenticateMediateurOrCoordinateur } from '@app/web/auth/authenticateUser'
+import { getStructureEmployeuseAddress } from '@app/web/structure/getStructureEmployeuseAddress'
+import React from 'react'
 import { OutilEspaceFranceNumeriqueEnsemble } from './OutilEspaceFranceNumeriqueEnsemble'
 
 export const metadata = {

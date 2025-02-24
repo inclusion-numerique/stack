@@ -1,15 +1,15 @@
 'use client'
 
-import React from 'react'
-import Notice from '@codegouvfr/react-dsfr/Notice'
-import Button from '@codegouvfr/react-dsfr/Button'
-import classNames from 'classnames'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
-import CreateOrUpdateRdvServicepublicAccountButton from '@app/web/rdv-service-public/CreateOrUpdateRdvServicePublicAccountButton'
-import { Spinner } from '@app/web/ui/Spinner'
-import { rdvOauthLinkAccountFlowUrl } from '@app/web/rdv-service-public/rdvServicePublicOauth'
 import { useRdvOauthStatus } from '@app/web/hooks/useRdvOauthStatus'
+import CreateOrUpdateRdvServicepublicAccountButton from '@app/web/rdv-service-public/CreateOrUpdateRdvServicePublicAccountButton'
+import { rdvOauthLinkAccountFlowUrl } from '@app/web/rdv-service-public/rdvServicePublicOauth'
+import { Spinner } from '@app/web/ui/Spinner'
+import Button from '@codegouvfr/react-dsfr/Button'
+import Notice from '@codegouvfr/react-dsfr/Notice'
+import classNames from 'classnames'
+import React from 'react'
 
 const statusIcons = {
   success: (

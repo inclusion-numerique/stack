@@ -1,11 +1,11 @@
-import DataTable from '@app/web/data-table/DataTable'
-import PaginationNavWithPageSizeSelect from '@app/web/data-table/PaginationNavWithPageSizeSelect'
-import { generatePageSizeSelectOptions } from '@app/web/data-table/pageSizeSelectOptions'
 import {
   UtilisateursDataTable,
   UtilisateursDataTableSearchParams,
 } from '@app/web/app/administration/utilisateurs/UtilisateursDataTable'
 import { SearchUtilisateurResult } from '@app/web/app/administration/utilisateurs/searchUtilisateur'
+import DataTable from '@app/web/data-table/DataTable'
+import PaginationNavWithPageSizeSelect from '@app/web/data-table/PaginationNavWithPageSizeSelect'
+import { generatePageSizeSelectOptions } from '@app/web/data-table/pageSizeSelectOptions'
 import styles from './UtilisateursPage.module.css'
 
 const defaultPageSize = 100

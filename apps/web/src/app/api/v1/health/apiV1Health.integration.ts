@@ -1,8 +1,8 @@
 import { createTestApiV1Request } from '@app/web/app/api/v1/createTestApiV1Request'
 import {
   expect403ApiResponse,
-  expectV1ApiResponse,
-} from '@app/web/app/api/v1/expectV1ApiResponse'
+  expectV1ApiResponseJest,
+} from '@app/web/app/api/v1/expectV1ApiResponse.jest'
 import {
   createTestApiClientWithScopes,
   testApiClient,
@@ -36,7 +36,7 @@ describe('api v1 /health', () => {
       }),
     )
 
-    await expectV1ApiResponse(response, {
+    await expectV1ApiResponseJest(response, {
       data: {
         status: 'ok',
       },

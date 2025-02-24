@@ -1,10 +1,10 @@
-import { redirect } from 'next/navigation'
-import { metadataTitle } from '@app/web/app/metadataTitle'
 import InscriptionCard from '@app/web/app/inscription/(steps)/InscriptionCard'
+import { mediateurinscriptionStepsCount } from '@app/web/app/inscription/(steps)/mediateur/mediateurinscriptionSteps'
 import LieuxActiviteForm from '@app/web/app/inscription/LieuxActiviteForm'
 import { getLieuxActiviteForInscription } from '@app/web/app/inscription/getLieuxActiviteForInscription'
+import { metadataTitle } from '@app/web/app/metadataTitle'
 import { authenticateUser } from '@app/web/auth/authenticateUser'
-import { mediateurinscriptionStepsCount } from '@app/web/app/inscription/(steps)/mediateur/mediateurinscriptionSteps'
+import { redirect } from 'next/navigation'
 import { coordinateurInscriptionSteps } from '../coordinateurInscriptionSteps'
 
 export const metadata = {

@@ -1,6 +1,6 @@
-import type { Prisma } from '@prisma/client'
 import { extractIdsFromCartographieNationaleStructure } from '@app/web/data/cartographie-nationale/extractIdsFromCartographieNationaleStructure'
 import type { LieuStandardMediationNumerique } from '@app/web/data/standard-mediation-numerique/LieuStandardMediationNumerique'
+import type { Prisma } from '@prisma/client'
 
 export const structureCartographieNationaleToPrismaModel = (
   structure: LieuStandardMediationNumerique,

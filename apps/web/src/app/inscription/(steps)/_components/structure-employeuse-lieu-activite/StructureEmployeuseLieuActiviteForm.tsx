@@ -1,12 +1,12 @@
 'use client'
 
-import React, { useState } from 'react'
-import Button from '@codegouvfr/react-dsfr/Button'
 import { createToast } from '@app/ui/toast/createToast'
-import { useRouter } from 'next/navigation'
 import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { trpc } from '@app/web/trpc'
+import Button from '@codegouvfr/react-dsfr/Button'
+import { useRouter } from 'next/navigation'
+import React, { useState } from 'react'
 
 const StructureEmployeuseLieuActiviteForm = ({
   userId,

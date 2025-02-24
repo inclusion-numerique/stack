@@ -2,15 +2,15 @@
 
 import type { SelectOption } from '@app/ui/components/Form/utils/options'
 import { createToast } from '@app/ui/toast/createToast'
+import type { LieuActiviteOption } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
+import type { BeneficiaireOption } from '@app/web/beneficiaire/BeneficiaireOption'
+import type { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
+import { generateActivitesFiltersLabels } from '@app/web/cra/generateActivitesFiltersLabels'
+import { MediateurOption } from '@app/web/mediateurs/MediateurOption'
+import { download } from '@app/web/utils/download'
 import Button from '@codegouvfr/react-dsfr/Button'
 import { createModal } from '@codegouvfr/react-dsfr/Modal'
 import Tag from '@codegouvfr/react-dsfr/Tag'
-import { generateActivitesFiltersLabels } from '@app/web/cra/generateActivitesFiltersLabels'
-import type { BeneficiaireOption } from '@app/web/beneficiaire/BeneficiaireOption'
-import { MediateurOption } from '@app/web/mediateurs/MediateurOption'
-import type { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
-import { download } from '@app/web/utils/download'
-import type { LieuActiviteOption } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
 
 const ExportStatistiquesModal = createModal({
   id: 'export-statistiques',

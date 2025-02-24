@@ -1,15 +1,15 @@
-import { v4 } from 'uuid'
-import type { Prisma } from '@prisma/client'
 import {
   createMediateurEnActivites,
   createStructures,
   findExistingStructuresCartoFromPermanencesV1,
   toId,
 } from '@app/web/app/inscription/importFromConseillerNumerique/importFromConseillerNumerique.queries'
-import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
-import { toStructureFromCartoStructure } from '@app/web/structure/toStructureFromCartoStructure'
 import type { ConseillerNumeriqueV1Data } from '@app/web/external-apis/conseiller-numerique/ConseillerNumeriqueV1Data'
 import type { PermanenceConseillerNumerique } from '@app/web/external-apis/conseiller-numerique/PermanenceConseillerNumerique'
+import { toStructureFromCartoStructure } from '@app/web/structure/toStructureFromCartoStructure'
+import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
+import type { Prisma } from '@prisma/client'
+import { v4 } from 'uuid'
 
 const createStructureDataFromPermanence = (
   permanence: PermanenceConseillerNumerique,

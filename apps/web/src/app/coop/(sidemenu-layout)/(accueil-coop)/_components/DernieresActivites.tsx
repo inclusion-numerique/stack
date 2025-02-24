@@ -1,9 +1,9 @@
-import React from 'react'
-import Link from 'next/link'
-import { Button } from '@codegouvfr/react-dsfr/Button'
 import { CreateCraModalDefinition } from '@app/web/app/coop/(full-width-layout)/mes-activites/CreateCraModalDefinition'
-import { ActiviteForList } from '@app/web/cra/activitesQueries'
 import ActiviteMediateurCard from '@app/web/app/coop/(sidemenu-layout)/mes-activites/(liste)/ActiviteMediateurCard'
+import { ActiviteForList } from '@app/web/cra/activitesQueries'
+import { Button } from '@codegouvfr/react-dsfr/Button'
+import Link from 'next/link'
+import React from 'react'
 
 const ActiviteEmptyState = () => (
   <div className="fr-text--center fr-background-alt--blue-france fr-p-6w fr-border-radius--16">

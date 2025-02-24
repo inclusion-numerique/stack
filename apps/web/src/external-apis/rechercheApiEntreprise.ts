@@ -1,7 +1,5 @@
-/* eslint @typescript-eslint/no-redundant-type-constituents: 0 */
-
-import pRetry from 'p-retry'
 import type { UniteLegale } from '@app/web/external-apis/apiEntrepriseApiModels'
+import pRetry from 'p-retry'
 
 const rechercheApiEntrepriseEndpoint =
   'https://recherche-entreprises.api.gouv.fr/search'

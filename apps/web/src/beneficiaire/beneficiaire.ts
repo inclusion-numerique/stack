@@ -1,5 +1,5 @@
-import type { Genre, StatutSocial, TrancheAge } from '@prisma/client'
 import { labelsToOptions } from '@app/ui/components/Form/utils/options'
+import type { Genre, StatutSocial, TrancheAge } from '@prisma/client'
 
 export const genreLabels: { [key in Genre]: string } = {
   Masculin: 'Masculin',

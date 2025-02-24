@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "cli": "dotenv -e ../../.env -- tsx src/index.ts",
-    "lint": "eslint src",
+    "lint": "biome check src",
     "tsc": "tsc --noEmit",
     "test": "jest --passWithNoTests",
     "build": "tsc"

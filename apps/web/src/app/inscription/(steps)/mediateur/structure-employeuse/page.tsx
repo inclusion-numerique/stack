@@ -1,11 +1,11 @@
-import { redirect } from 'next/navigation'
-import { metadataTitle } from '@app/web/app/metadataTitle'
+import { StructureEmployeusePage } from '@app/web/app/inscription/(steps)/_components/structure-employeuse/StructureEmployeusePage'
 import {
   mediateurInscriptionSteps,
   mediateurinscriptionStepsCount,
 } from '@app/web/app/inscription/(steps)/mediateur/mediateurinscriptionSteps'
+import { metadataTitle } from '@app/web/app/metadataTitle'
 import { authenticateUser } from '@app/web/auth/authenticateUser'
-import { StructureEmployeusePage } from '@app/web/app/inscription/(steps)/_components/structure-employeuse/StructureEmployeusePage'
+import { redirect } from 'next/navigation'
 
 export const metadata = {
   title: metadataTitle('Structure employeuse - Finaliser mon inscription'),

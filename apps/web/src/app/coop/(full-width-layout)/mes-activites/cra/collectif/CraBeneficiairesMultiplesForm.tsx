@@ -1,26 +1,26 @@
 'use client'
 
+import CustomSelectFormField from '@app/ui/components/Form/CustomSelectFormField'
+import { useWatchSubscription } from '@app/ui/hooks/useWatchSubscription'
+import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
+import CraBeneficiairesAnonymesForm from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/collectif/CraBeneficiairesAnonymesForm'
+import { useCraBeneficiaireLoadOptions } from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/useCraBeneficiaireLoadOptions'
+import type { BeneficiaireOption } from '@app/web/beneficiaire/BeneficiaireOption'
+import type { BeneficiaireData } from '@app/web/beneficiaire/BeneficiaireValidation'
+import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
+import IconInSquare from '@app/web/components/IconInSquare'
+import type { CraCollectifData } from '@app/web/cra/CraCollectifValidation'
+import { encodeSerializableState } from '@app/web/utils/encodeSerializableState'
+import Tag from '@codegouvfr/react-dsfr/Tag'
+import { useRouter } from 'next/navigation'
+import { useCallback, useRef } from 'react'
 import {
   Control,
-  useFieldArray,
   UseFormGetValues,
   UseFormSetValue,
   UseFormWatch,
+  useFieldArray,
 } from 'react-hook-form'
-import CustomSelectFormField from '@app/ui/components/Form/CustomSelectFormField'
-import { useRouter } from 'next/navigation'
-import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
-import Tag from '@codegouvfr/react-dsfr/Tag'
-import { useCallback, useRef } from 'react'
-import { useWatchSubscription } from '@app/ui/hooks/useWatchSubscription'
-import IconInSquare from '@app/web/components/IconInSquare'
-import { encodeSerializableState } from '@app/web/utils/encodeSerializableState'
-import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
-import type { CraCollectifData } from '@app/web/cra/CraCollectifValidation'
-import { useCraBeneficiaireLoadOptions } from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/useCraBeneficiaireLoadOptions'
-import CraBeneficiairesAnonymesForm from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/collectif/CraBeneficiairesAnonymesForm'
-import type { BeneficiaireData } from '@app/web/beneficiaire/BeneficiaireValidation'
-import type { BeneficiaireOption } from '@app/web/beneficiaire/BeneficiaireOption'
 
 const CraBeneficiairesMultiplesForm = ({
   control,
@@ -94,7 +94,7 @@ const CraBeneficiairesMultiplesForm = ({
           }, 0)
         }
       },
-      [append, mediateurId, participantsIds, setValue],
+      [append, mediateurId, setValue],
     ),
   )
 

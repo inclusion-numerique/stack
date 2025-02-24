@@ -1,3 +1,5 @@
+import { fixturesActivitesConseillerNumerique } from '@app/fixtures/activites'
+import { resetFixtureUser } from '@app/fixtures/resetFixtureUser'
 import { seedStructures } from '@app/fixtures/structures'
 import {
   conseillerNumerique,
@@ -8,10 +10,8 @@ import {
   mediateurSansActivites,
   mediateurSansActivitesMediateurId,
 } from '@app/fixtures/users/mediateurSansActivites'
-import { prismaClient } from '@app/web/prismaClient'
-import { resetFixtureUser } from '@app/fixtures/resetFixtureUser'
-import { fixturesActivitesConseillerNumerique } from '@app/fixtures/activites'
 import { getActivitesListPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-activites/(liste)/getActivitesListPageData'
+import { prismaClient } from '@app/web/prismaClient'
 
 describe('getActivitesListPageData', () => {
   beforeAll(async () => {
@@ -69,7 +69,6 @@ describe('getActivitesListPageData', () => {
         isFiltered: false,
         searchResult: {
           activites: sortedActivites.map((fixture) =>
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
             expect.objectContaining({
               id: fixture.activite.id,
             }),

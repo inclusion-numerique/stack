@@ -1,10 +1,10 @@
-import React from 'react'
-import Notice from '@codegouvfr/react-dsfr/Notice'
-import Button from '@codegouvfr/react-dsfr/Button'
 import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
 import CoopPageContainer from '@app/web/app/coop/CoopPageContainer'
 import BackButton from '@app/web/components/BackButton'
 import ContactSupportLink from '@app/web/components/ContactSupportLink'
+import Button from '@codegouvfr/react-dsfr/Button'
+import Notice from '@codegouvfr/react-dsfr/Notice'
+import React from 'react'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0

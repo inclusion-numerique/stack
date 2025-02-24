@@ -1,5 +1,5 @@
-import { getOrCreateStructureEmployeuse } from '@app/web/server/rpc/inscription/getOrCreateStructureEmployeuse'
 import { prismaClient } from '@app/web/prismaClient'
+import { getOrCreateStructureEmployeuse } from '@app/web/server/rpc/inscription/getOrCreateStructureEmployeuse'
 
 describe('getOrCreateStructureEmployeuse', () => {
   const testSiret = '93429789600011'
@@ -35,7 +35,6 @@ describe('getOrCreateStructureEmployeuse', () => {
     }
     const result = await getOrCreateStructureEmployeuse(input)
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     expect(result).toEqual(expect.objectContaining({ id: expect.any(String) }))
     const { id } = result
 

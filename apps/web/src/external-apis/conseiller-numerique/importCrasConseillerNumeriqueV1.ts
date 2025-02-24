@@ -1,6 +1,6 @@
 import { getConseillerNumeriqueCrasFromMongo } from '@app/web/external-apis/conseiller-numerique/conseillersNumeriquesCraQueries'
-import { prismaClient } from '@app/web/prismaClient'
 import { craConseillerNumeriqueToPrismaModel } from '@app/web/external-apis/conseiller-numerique/crasConseillerNumeriqueToPrismaModel' // no v1 cras before this date
+import { prismaClient } from '@app/web/prismaClient'
 
 // no v1 cras before this date
 export const firstV1CrasMonth = new Date('2021-06-01')

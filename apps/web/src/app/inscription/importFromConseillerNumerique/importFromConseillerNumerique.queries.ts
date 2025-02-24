@@ -1,13 +1,12 @@
-import { type Prisma } from '@prisma/client'
-import { v4 } from 'uuid'
-import type { ObjectId } from 'mongodb'
-import { prismaClient } from '@app/web/prismaClient'
 import type { ConseillerNumeriqueV1Data } from '@app/web/external-apis/conseiller-numerique/ConseillerNumeriqueV1Data'
 import type { MiseEnRelationConseillerNumeriqueV1MinimalProjection } from '@app/web/external-apis/conseiller-numerique/MiseEnRelationConseillerNumeriqueV1'
+import { prismaClient } from '@app/web/prismaClient'
+import { type Prisma } from '@prisma/client'
+import type { ObjectId } from 'mongodb'
+import { v4 } from 'uuid'
 
 export const toId = ({ id }: { id: string | ObjectId }) => id.toString()
 
-// eslint-disable-next-line unicorn/prevent-abbreviations
 export type MiseEnRelationWithStructureAdministrativeInfo = {
   structureObj: Pick<
     MiseEnRelationConseillerNumeriqueV1MinimalProjection['structureObj'],
@@ -174,7 +173,7 @@ export const createMediateurEnActivites = ({
 export const findCoordinateursFor = ({
   conseiller: { coordinateurs },
 }: ConseillerNumeriqueV1Data) => {
-  if (!coordinateurs?.length) {
+  if (!coordinateurs || coordinateurs.length === 0) {
     return []
   }
 

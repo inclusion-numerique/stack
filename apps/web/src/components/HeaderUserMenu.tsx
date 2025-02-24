@@ -1,17 +1,17 @@
 'use client'
 
-import classNames from 'classnames'
-import Link from 'next/link'
-import { KeyboardEvent, MouseEvent as ReactMouseEvent, useRef } from 'react'
-import { useOnClickOutside } from 'usehooks-ts'
-import { SessionUser } from '@app/web/auth/sessionUser'
-import { getUserDisplayName } from '@app/web/utils/user'
-import TerminerUsurpationHeaderUserMenuItem from '@app/web/components/TerminerUsurpationHeaderUserMenuItem'
 import { isLimitedToInscription } from '@app/web/app/administration/utilisateurs/getUserLifecycle'
+import { SessionUser } from '@app/web/auth/sessionUser'
 import {
   isConseillerNumerique,
   isCoordinateurConseillerNumerique,
 } from '@app/web/auth/userTypeGuards'
+import TerminerUsurpationHeaderUserMenuItem from '@app/web/components/TerminerUsurpationHeaderUserMenuItem'
+import { getUserDisplayName } from '@app/web/utils/user'
+import classNames from 'classnames'
+import Link from 'next/link'
+import { KeyboardEvent, MouseEvent as ReactMouseEvent, useRef } from 'react'
+import { useOnClickOutside } from 'usehooks-ts'
 import styles from './HeaderUserMenu.module.css'
 
 const toMediateurId = ({ mediateurId }: { mediateurId: string }) => mediateurId
@@ -256,7 +256,6 @@ export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
       >
         {displayName}
       </button>
-      {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
       <div
         role="navigation"
         className={classNames('fr-collapse', 'fr-menu', styles.collapse)}

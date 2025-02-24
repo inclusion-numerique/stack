@@ -1,8 +1,8 @@
+import { Typologies } from '@app/web/components/structure/Typologies'
+import { dateAsDay } from '@app/web/utils/dateAsDay'
+import Button from '@codegouvfr/react-dsfr/Button'
 import Image from 'next/image'
 import Link from 'next/link'
-import Button from '@codegouvfr/react-dsfr/Button'
-import { dateAsDay } from '@app/web/utils/dateAsDay'
-import { Typologies } from '@app/web/components/structure/Typologies'
 import DeleteMediateurActivite from './DeleteMediateurActivite'
 
 export const LieuActivite = ({

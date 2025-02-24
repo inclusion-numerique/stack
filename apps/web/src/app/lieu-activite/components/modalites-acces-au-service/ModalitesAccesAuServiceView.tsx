@@ -1,5 +1,5 @@
-import Link from 'next/link'
 import Tag from '@codegouvfr/react-dsfr/Tag'
+import Link from 'next/link'
 
 export const ModalitesAccesAuServiceView = ({
   fraisACharge = [],

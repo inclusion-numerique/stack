@@ -1,12 +1,12 @@
-import { Fragment, Suspense } from 'react'
-import type { ActivitesListPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-activites/(liste)/getActivitesListPageData'
-import { groupActivitesByDate } from '@app/web/cra/activitesQueries'
-import { formatActiviteDayDate } from '@app/web/utils/activiteDayDateFormat'
 import ActiviteMediateurCard from '@app/web/app/coop/(sidemenu-layout)/mes-activites/(liste)/ActiviteMediateurCard'
+import type { ActivitesListPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-activites/(liste)/getActivitesListPageData'
+import { getActivitesResultCountLabel } from '@app/web/app/coop/(sidemenu-layout)/mes-activites/(liste)/getActivitesResultCountLabel'
+import { groupActivitesByDate } from '@app/web/cra/activitesQueries'
 import PaginationNavWithPageSizeSelect from '@app/web/data-table/PaginationNavWithPageSizeSelect'
 import { generatePageSizeSelectOptions } from '@app/web/data-table/pageSizeSelectOptions'
 import { Spinner } from '@app/web/ui/Spinner'
-import { getActivitesResultCountLabel } from '@app/web/app/coop/(sidemenu-layout)/mes-activites/(liste)/getActivitesResultCountLabel'
+import { formatActiviteDayDate } from '@app/web/utils/activiteDayDateFormat'
+import { Fragment, Suspense } from 'react'
 
 const pageSizeOptions = generatePageSizeSelectOptions([10, 20, 50, 100])
 

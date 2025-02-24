@@ -1,5 +1,5 @@
-import type { Metadata } from 'next'
 import { metadataTitle } from '@app/web/app/metadataTitle'
+import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: metadataTitle('Vous avez refusé de rejoindre cette équipe'),

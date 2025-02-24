@@ -1,10 +1,10 @@
-import type { Metadata } from 'next'
-import Link from 'next/link'
+import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 import { metadataTitle } from '@app/web/app/metadataTitle'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
 import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
-import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
+import type { Metadata } from 'next'
+import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: metadataTitle('Mentions légales'),
@@ -41,8 +41,7 @@ const LegalPage = () => (
       <h2>Hébergement de la plateforme</h2>
       <p>La plateforme est hébergée par :</p>
       <p>
-        Scaleway SAS <br />
-        8 rue de la Ville l’Evêque <br />
+        Scaleway SAS <br />8 rue de la Ville l’Evêque <br />
         75008 Paris <br />
         France <br />
         <br />

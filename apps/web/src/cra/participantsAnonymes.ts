@@ -1,5 +1,5 @@
-import type { DefaultValues } from 'react-hook-form'
 import type { ParticipantsAnonymesCraCollectifData } from '@app/web/cra/ParticipantsAnonymesCraCollectifValidation'
+import type { DefaultValues } from 'react-hook-form'
 
 export const participantsAnonymesDefault: ParticipantsAnonymesCraCollectifData =
   {

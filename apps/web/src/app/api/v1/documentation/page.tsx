@@ -1,5 +1,5 @@
-import type { Metadata } from 'next'
 import { metadataTitle } from '@app/web/app/metadataTitle'
+import type { Metadata } from 'next'
 import '@stoplight/elements/styles.min.css'
 import ApiDocsPageContent from '@app/web/app/api/v1/documentation/ApiDocsPageContent'
 

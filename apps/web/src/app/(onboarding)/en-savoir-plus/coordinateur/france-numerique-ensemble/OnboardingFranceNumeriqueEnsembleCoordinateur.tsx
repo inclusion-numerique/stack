@@ -1,6 +1,6 @@
+import Onboarding from '@app/web/app/(onboarding)/_components/Onboarding'
 import Image from 'next/image'
 import Link from 'next/link'
-import Onboarding from '@app/web/app/(onboarding)/_components/Onboarding'
 
 export const OnboardingFranceNumeriqueEnsembleCoordinateur = () => (
   <Onboarding

@@ -1,7 +1,7 @@
-import type { NextRequest } from 'next/server'
-import type { infer as ZodInfer, ZodError } from 'zod'
-import { transformJsonApiQueryParamsToObject } from '@app/web/app/api/v1/transformJsonApiQueryParamsToObject'
 import type { ApiV1QueryParamsSchema } from '@app/web/app/api/v1/ApiV1QueryParams'
+import { transformJsonApiQueryParamsToObject } from '@app/web/app/api/v1/transformJsonApiQueryParamsToObject'
+import type { NextRequest } from 'next/server'
+import type { ZodError, infer as ZodInfer } from 'zod'
 
 export const getApiRequestParams = <
   QueryParamsSchema extends ApiV1QueryParamsSchema = ApiV1QueryParamsSchema,

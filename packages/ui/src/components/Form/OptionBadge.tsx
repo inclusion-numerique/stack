@@ -1,7 +1,7 @@
-import React, { MouseEventHandler } from 'react'
 import classNames from 'classnames'
-import { SelectOption } from './utils/options'
+import React, { MouseEventHandler } from 'react'
 import styles from './OptionBadge.module.css'
+import { SelectOption } from './utils/options'
 
 export type SelectOptionValid = SelectOption<string> & { invalid?: boolean }
 const OptionBadge = ({

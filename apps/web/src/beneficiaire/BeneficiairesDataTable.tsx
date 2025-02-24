@@ -1,4 +1,4 @@
-import type { Prisma } from '@prisma/client'
+import type { BeneficiaireForList } from '@app/web/beneficiaire/queryBeneficiairesForList'
 import type {
   DataTableConfiguration,
   DataTableFilterValues,
@@ -6,7 +6,7 @@ import type {
 } from '@app/web/data-table/DataTableConfiguration'
 import { dateAsIsoDay } from '@app/web/utils/dateAsIsoDay'
 import { numberToString } from '@app/web/utils/formatNumber'
-import type { BeneficiaireForList } from '@app/web/beneficiaire/queryBeneficiairesForList'
+import type { Prisma } from '@prisma/client'
 
 export type BeneficiairesDataTableConfiguration = DataTableConfiguration<
   BeneficiaireForList,

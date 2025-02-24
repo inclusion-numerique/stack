@@ -1,14 +1,14 @@
 'use client'
 
-import Button from '@codegouvfr/react-dsfr/Button'
-import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
 import { createToast } from '@app/ui/toast/createToast'
+import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
 import { SessionUser } from '@app/web/auth/sessionUser'
-import { hasFeatureFlag } from '@app/web/security/hasFeatureFlag'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { useRdvOauthStatus } from '@app/web/hooks/useRdvOauthStatus'
+import { hasFeatureFlag } from '@app/web/security/hasFeatureFlag'
 import { trpc } from '@app/web/trpc'
 import { getServerUrl } from '@app/web/utils/baseUrl'
+import Button from '@codegouvfr/react-dsfr/Button'
 
 const PrendreRendezVousAvecBeneficiaireButton = ({
   beneficiaire,
@@ -39,8 +39,6 @@ const PrendreRendezVousAvecBeneficiaireButton = ({
         beneficiaireId: beneficiaire.id,
         returnUrl: getServerUrl(returnPath, { absolutePath: true }),
       })
-
-      console.log('TRPC RESULT', result)
 
       // TODO push when return URL works (CF rdvRouter)
       // router.push(result.rdv_plan.url)

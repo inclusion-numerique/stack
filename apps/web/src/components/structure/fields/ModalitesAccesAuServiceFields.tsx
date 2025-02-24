@@ -1,10 +1,10 @@
-import React from 'react'
-import { UseFormReturn } from 'react-hook-form'
 import CheckboxFormField from '@app/ui/components/Form/CheckboxFormField'
 import CheckboxGroupFormField from '@app/ui/components/Form/CheckboxGroupFormField'
 import InputFormField from '@app/ui/components/Form/InputFormField'
 import { ModalitesAccesAuServiceData } from '@app/web/app/structure/ModalitesAccesAuServiceValidation'
 import { fraisAChargeStructureOptions } from '@app/web/app/structure/optionsStructure'
+import React from 'react'
+import { UseFormReturn } from 'react-hook-form'
 
 export const ModalitesAccesAuServiceFields = <
   T extends Omit<ModalitesAccesAuServiceData, 'id'>,

@@ -1,15 +1,15 @@
-import type { DefaultValues } from 'react-hook-form'
-import type { CraIndividuelData } from '@app/web/cra/CraIndividuelValidation'
-import {
-  decodeSerializableState,
-  type EncodedState,
-} from '@app/web/utils/encodeSerializableState'
-import { banDefaultValueToAdresseBanData } from '@app/web/external-apis/ban/banDefaultValueToAdresseBanData'
-import { getInitialBeneficiairesOptionsForSearch } from '@app/web/beneficiaire/getInitialBeneficiairesOptionsForSearch'
-import { getLieuxActiviteOptions } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
 import CraIndividuelPage from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/individuel/CraIndividuelPage'
-import { getAdaptiveDureeOptions } from '@app/web/cra/getAdaptiveDureeOptions'
+import { getLieuxActiviteOptions } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
 import { authenticateMediateur } from '@app/web/auth/authenticateUser'
+import { getInitialBeneficiairesOptionsForSearch } from '@app/web/beneficiaire/getInitialBeneficiairesOptionsForSearch'
+import type { CraIndividuelData } from '@app/web/cra/CraIndividuelValidation'
+import { getAdaptiveDureeOptions } from '@app/web/cra/getAdaptiveDureeOptions'
+import { banDefaultValueToAdresseBanData } from '@app/web/external-apis/ban/banDefaultValueToAdresseBanData'
+import {
+  type EncodedState,
+  decodeSerializableState,
+} from '@app/web/utils/encodeSerializableState'
+import type { DefaultValues } from 'react-hook-form'
 
 const CreateCraIndividuelPage = async ({
   searchParams: { v, retour } = {},

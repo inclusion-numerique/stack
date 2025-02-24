@@ -1,11 +1,11 @@
-import { DefaultValues } from 'react-hook-form'
-import { prismaClient } from '@app/web/prismaClient'
 import { getBeneficiaireDefaulCratDataFromExisting } from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/getBeneficiaireDefaulCratDataFromExisting'
-import { banDefaultValueToAdresseBanData } from '@app/web/external-apis/ban/banDefaultValueToAdresseBanData'
-import { dateAsIsoDay } from '@app/web/utils/dateAsIsoDay'
 import { CraIndividuelData } from '@app/web/cra/CraIndividuelValidation'
-import { optionalBooleanToYesNo } from '@app/web/utils/yesNoBooleanOptions'
 import { minutesToCraDureeData } from '@app/web/cra/minutesToCraDuree'
+import { banDefaultValueToAdresseBanData } from '@app/web/external-apis/ban/banDefaultValueToAdresseBanData'
+import { prismaClient } from '@app/web/prismaClient'
+import { dateAsIsoDay } from '@app/web/utils/dateAsIsoDay'
+import { optionalBooleanToYesNo } from '@app/web/utils/yesNoBooleanOptions'
+import { DefaultValues } from 'react-hook-form'
 
 export const getCraIndividuelDataDefaultValuesFromExisting = async ({
   id,

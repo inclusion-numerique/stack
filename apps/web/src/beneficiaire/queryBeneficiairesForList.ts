@@ -1,8 +1,8 @@
-import type { Prisma } from '@prisma/client'
-import { prismaClient } from '@app/web/prismaClient'
-import { beneficiaireCommuneResidenceToPreviewBanData } from '@app/web/beneficiaire/prismaBeneficiaireToBeneficiaireData'
 import type { BeneficiaireData } from '@app/web/beneficiaire/BeneficiaireValidation'
 import { beneficiaireAccompagnementsCountSelect } from '@app/web/beneficiaire/beneficiaireQueries'
+import { beneficiaireCommuneResidenceToPreviewBanData } from '@app/web/beneficiaire/prismaBeneficiaireToBeneficiaireData'
+import { prismaClient } from '@app/web/prismaClient'
+import type { Prisma } from '@prisma/client'
 
 export const searchBeneficiaireSelect = {
   id: true,

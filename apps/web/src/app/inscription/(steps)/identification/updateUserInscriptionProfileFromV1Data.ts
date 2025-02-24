@@ -1,11 +1,11 @@
-import type { ProfilInscription } from '@prisma/client'
-import { prismaClient } from '@app/web/prismaClient'
 import {
   PrismaSessionUser,
   sessionUserSelect,
 } from '@app/web/auth/getSessionUserFromSessionToken'
-import { isConseillerNumeriqueV1DataWithActiveMiseEnRelation } from '@app/web/external-apis/conseiller-numerique/isConseillerNumeriqueV1WithActiveMiseEnRelation'
 import type { ConseillerNumeriqueV1Data } from '@app/web/external-apis/conseiller-numerique/ConseillerNumeriqueV1Data'
+import { isConseillerNumeriqueV1DataWithActiveMiseEnRelation } from '@app/web/external-apis/conseiller-numerique/isConseillerNumeriqueV1WithActiveMiseEnRelation'
+import { prismaClient } from '@app/web/prismaClient'
+import type { ProfilInscription } from '@prisma/client'
 
 export const getProfileInscriptionFromV1Data = ({
   // intendedProfileInscription,

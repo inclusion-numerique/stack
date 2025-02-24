@@ -1,5 +1,5 @@
-import Image from 'next/image'
 import Notice from '@codegouvfr/react-dsfr/Notice'
+import Image from 'next/image'
 import Onboarding from '../../_components/Onboarding'
 
 export const OnboardingMesOutils = ({

@@ -1,10 +1,10 @@
 import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
-import classNames from 'classnames'
-import { typeActiviteIllustrations, typeActiviteLabels } from '@app/web/cra/cra'
 import ActiviteBeneficiaireCardOpenModalLink from '@app/web/app/coop/(sidemenu-layout)/mes-beneficiaires/[beneficiaireId]/(consultation)/accompagnements/ActiviteBeneficiaireCardOpenModalLink'
-import type { ActiviteForList } from '@app/web/cra/activitesQueries'
 import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
+import type { ActiviteForList } from '@app/web/cra/activitesQueries'
+import { typeActiviteIllustrations, typeActiviteLabels } from '@app/web/cra/cra'
 import { formatActiviteDayDate } from '@app/web/utils/activiteDayDateFormat'
+import classNames from 'classnames'
 
 const ActiviteMediateurCard = ({
   activite,
@@ -18,7 +18,6 @@ const ActiviteMediateurCard = ({
   return (
     <div className="fr-py-2v fr-px-4v fr-flex fr-align-items-center fr-my-2v fr-enlarge-button fr-border-radius--8 fr-justify-content-start">
       <div className="fr-background-alt--blue-france fr-p-1v fr-border-radius--8 fr-flex fr-mr-4v">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           className="fr-display-block"
           alt=""

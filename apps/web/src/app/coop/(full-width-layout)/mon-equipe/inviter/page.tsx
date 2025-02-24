@@ -1,10 +1,10 @@
-import React from 'react'
-import type { Metadata } from 'next'
-import { metadataTitle } from '@app/web/app/metadataTitle'
-import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
 import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
-import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
+import { metadataTitle } from '@app/web/app/metadataTitle'
 import BackButton from '@app/web/components/BackButton'
+import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
+import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
+import type { Metadata } from 'next'
+import React from 'react'
 import { InviterMembresPage } from './InviterMembresPage'
 
 export const metadata: Metadata = {

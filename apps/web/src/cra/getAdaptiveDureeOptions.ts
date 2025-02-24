@@ -1,6 +1,6 @@
 import { labelsToOptions } from '@app/ui/components/Form/utils/options'
-import { prismaClient } from '@app/web/prismaClient'
 import { dureeAccompagnementParDefautLabels } from '@app/web/cra/cra'
+import { prismaClient } from '@app/web/prismaClient'
 import { dureeAsString } from '@app/web/utils/dureeAsString'
 
 export const getAdaptiveDureeOptions = async ({

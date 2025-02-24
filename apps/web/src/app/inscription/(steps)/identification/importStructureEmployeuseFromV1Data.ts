@@ -3,8 +3,8 @@ import {
   findExistingStructureForMiseEnRelationActive,
   findStructureCartographieNationaleFromMiseEnRelation,
 } from '@app/web/app/inscription/importFromConseillerNumerique/importFromConseillerNumerique.queries'
-import type { ConseillerNumeriqueV1DataWithActiveMiseEnRelation } from '@app/web/external-apis/conseiller-numerique/isConseillerNumeriqueV1WithActiveMiseEnRelation'
 import type { SessionUser } from '@app/web/auth/sessionUser'
+import type { ConseillerNumeriqueV1DataWithActiveMiseEnRelation } from '@app/web/external-apis/conseiller-numerique/isConseillerNumeriqueV1WithActiveMiseEnRelation'
 import { prismaClient } from '@app/web/prismaClient'
 
 /**

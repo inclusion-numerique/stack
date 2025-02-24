@@ -1,16 +1,16 @@
-import { DefaultValues } from 'react-hook-form'
-import {
-  decodeSerializableState,
-  EncodedState,
-} from '@app/web/utils/encodeSerializableState'
-import { CraCollectifData } from '@app/web/cra/CraCollectifValidation'
-import { participantsAnonymesDefault } from '@app/web/cra/participantsAnonymes'
-import { AdressBanFormFieldOption } from '@app/web/components/form/AdresseBanFormField'
-import { getInitialBeneficiairesOptionsForSearch } from '@app/web/beneficiaire/getInitialBeneficiairesOptionsForSearch'
-import { getLieuxActiviteOptions } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
 import CraCollectifPage from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/collectif/CraCollectifPage'
-import { getAdaptiveDureeOptions } from '@app/web/cra/getAdaptiveDureeOptions'
+import { getLieuxActiviteOptions } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
 import { authenticateMediateur } from '@app/web/auth/authenticateUser'
+import { getInitialBeneficiairesOptionsForSearch } from '@app/web/beneficiaire/getInitialBeneficiairesOptionsForSearch'
+import { AdressBanFormFieldOption } from '@app/web/components/form/AdresseBanFormField'
+import { CraCollectifData } from '@app/web/cra/CraCollectifValidation'
+import { getAdaptiveDureeOptions } from '@app/web/cra/getAdaptiveDureeOptions'
+import { participantsAnonymesDefault } from '@app/web/cra/participantsAnonymes'
+import {
+  EncodedState,
+  decodeSerializableState,
+} from '@app/web/utils/encodeSerializableState'
+import { DefaultValues } from 'react-hook-form'
 
 const CreateCraCollectifPage = async ({
   searchParams: { v, retour } = {},

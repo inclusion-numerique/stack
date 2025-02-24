@@ -1,10 +1,10 @@
-import React from 'react'
-import type { Meta, StoryObj } from '@storybook/react'
+import MesActivitesListeEmptyPage from '@app/web/app/coop/(sidemenu-layout)/mes-activites/(liste)/MesActivitesListeEmptyPage'
 import MesActivitesListeLayout from '@app/web/app/coop/(sidemenu-layout)/mes-activites/(liste)/MesActivitesListeLayout'
 import MesActivitesListePage from '@app/web/app/coop/(sidemenu-layout)/mes-activites/(liste)/MesActivitesListePage'
 import { ActivitesListPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-activites/(liste)/getActivitesListPageData'
-import MesActivitesListeEmptyPage from '@app/web/app/coop/(sidemenu-layout)/mes-activites/(liste)/MesActivitesListeEmptyPage'
 import { activitesForModalStories } from '@app/web/components/activite/ActiviteDetailsModal/ActiviteDetailsModalStoriesData'
+import type { Meta, StoryObj } from '@storybook/react'
+import React from 'react'
 
 const TemplateListe = ({ data }: { data: ActivitesListPageData }) => (
   <MesActivitesListeLayout vue="liste">

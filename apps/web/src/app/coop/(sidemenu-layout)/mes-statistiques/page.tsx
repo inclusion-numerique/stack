@@ -1,14 +1,14 @@
-import type { Metadata } from 'next'
 import { metadataTitle } from '@app/web/app/metadataTitle'
-import { getStructureEmployeuseAddress } from '@app/web/structure/getStructureEmployeuseAddress'
+import { authenticateMediateurOrCoordinateur } from '@app/web/auth/authenticateUser'
 import {
   type ActivitesFilters,
   validateActivitesFilters,
 } from '@app/web/cra/ActivitesFilters'
 import { mediateurCoordonnesIdsFor } from '@app/web/mediateurs/mediateurCoordonnesIdsFor'
-import { authenticateMediateurOrCoordinateur } from '@app/web/auth/authenticateUser'
-import { getMesStatistiquesPageData } from './getMesStatistiquesPageData'
+import { getStructureEmployeuseAddress } from '@app/web/structure/getStructureEmployeuseAddress'
+import type { Metadata } from 'next'
 import { MesStatistiques } from './MesStatistiques'
+import { getMesStatistiquesPageData } from './getMesStatistiquesPageData'
 
 export const metadata: Metadata = {
   title: metadataTitle('Mes statistiques'),

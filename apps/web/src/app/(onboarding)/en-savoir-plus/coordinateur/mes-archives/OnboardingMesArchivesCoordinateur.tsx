@@ -1,5 +1,5 @@
-import Image from 'next/image'
 import Onboarding from '@app/web/app/(onboarding)/_components/Onboarding'
+import Image from 'next/image'
 
 export const OnboardingMesArchivesCoordinateur = () => (
   <Onboarding

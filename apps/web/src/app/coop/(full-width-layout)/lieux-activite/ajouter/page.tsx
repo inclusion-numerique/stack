@@ -1,11 +1,11 @@
-import React from 'react'
-import { redirect } from 'next/navigation'
-import { authenticateUser } from '@app/web/auth/authenticateUser'
-import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
-import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
-import IconInSquare from '@app/web/components/IconInSquare'
 import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
+import { authenticateUser } from '@app/web/auth/authenticateUser'
 import BackButton from '@app/web/components/BackButton'
+import IconInSquare from '@app/web/components/IconInSquare'
+import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
+import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
+import { redirect } from 'next/navigation'
+import React from 'react'
 import LieuxActiviteForm from './_components/LieuxActiviteForm'
 
 const AjouterLieuPage = async () => {

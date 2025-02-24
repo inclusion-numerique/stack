@@ -1,9 +1,9 @@
-import type { Workbook, Worksheet } from 'exceljs'
-import { getUserRoleLabel } from '@app/web/utils/getUserRoleLabel'
 import type { SessionUser } from '@app/web/auth/sessionUser'
-import type { ActivitesFiltersLabels } from '@app/web/cra/generateActivitesFiltersLabels'
-import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
 import type { MediateurUser } from '@app/web/auth/userTypeGuards'
+import type { ActivitesFiltersLabels } from '@app/web/cra/generateActivitesFiltersLabels'
+import { getUserRoleLabel } from '@app/web/utils/getUserRoleLabel'
+import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
+import type { Workbook, Worksheet } from 'exceljs'
 
 export type WorksheetUser = Pick<
   SessionUser,
@@ -78,15 +78,10 @@ export const autosizeColumns = (
 export const setWorkbookMetadata =
   (workbook: Workbook) =>
   ({ worksheetGenerationDate }: { worksheetGenerationDate: Date }) => {
-    // eslint-disable-next-line no-param-reassign
     workbook.creator = 'La coop de la médiation numérique'
-    // eslint-disable-next-line no-param-reassign
     workbook.lastModifiedBy = 'La coop de la médiation numérique'
-    // eslint-disable-next-line no-param-reassign
     workbook.created = worksheetGenerationDate
-    // eslint-disable-next-line no-param-reassign
     workbook.modified = worksheetGenerationDate
-    // eslint-disable-next-line no-param-reassign
     workbook.lastPrinted = worksheetGenerationDate
   }
 

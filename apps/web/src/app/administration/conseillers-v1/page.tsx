@@ -1,11 +1,11 @@
-import { Suspense } from 'react'
-import { metadataTitle } from '@app/web/app/metadataTitle'
 import AdministrationBreadcrumbs from '@app/web/app/administration/AdministrationBreadcrumbs'
-import AdministrationSearchUtilisateur from '@app/web/app/administration/utilisateurs/AdministrationSearchUtilisateur'
-import { Spinner } from '@app/web/ui/Spinner'
-import AdministrationConseillersNumeriquesV1 from '@app/web/app/administration/conseillers-v1/AdministrationConseillersNumeriquesV1'
 import AdministrationTitle from '@app/web/app/administration/AdministrationTitle'
+import AdministrationConseillersNumeriquesV1 from '@app/web/app/administration/conseillers-v1/AdministrationConseillersNumeriquesV1'
+import AdministrationSearchUtilisateur from '@app/web/app/administration/utilisateurs/AdministrationSearchUtilisateur'
 import CoopPageContainer from '@app/web/app/coop/CoopPageContainer'
+import { metadataTitle } from '@app/web/app/metadataTitle'
+import { Spinner } from '@app/web/ui/Spinner'
+import { Suspense } from 'react'
 
 export const metadata = {
   title: metadataTitle('Conseillers V1'),

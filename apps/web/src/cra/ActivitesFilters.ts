@@ -1,10 +1,10 @@
-import z from 'zod'
 import {
   ProfilSlug,
-  profilSlugValues,
   TypeActiviteSlug,
+  profilSlugValues,
   typeActiviteSlugValues,
 } from '@app/web/cra/cra'
+import z from 'zod'
 
 const isoDayRegex = /^\d{4}-\d{2}-\d{2}$/
 

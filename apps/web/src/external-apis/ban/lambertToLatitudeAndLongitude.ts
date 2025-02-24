@@ -12,7 +12,6 @@ export const lambertToLatitudeAndLongitude = ([x, y]: [number, number]) => {
 
   let phi = 2 * Math.atan(Math.exp(latiso)) - Math.PI / 2
 
-  // eslint-disable-next-line no-plusplus
   for (let index = 0; index < 7; index++) {
     phi =
       2 * Math.atan(Math.exp(latiso + Math.atanh(E * Math.sin(phi)) * E)) -

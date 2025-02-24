@@ -1,5 +1,5 @@
-import { prismaClient } from '@app/web/prismaClient'
 import { StructureData } from '@app/web/app/structure/StructureValidation'
+import { prismaClient } from '@app/web/prismaClient'
 
 export const getLieuxActiviteForInscription = async ({
   mediateurId,

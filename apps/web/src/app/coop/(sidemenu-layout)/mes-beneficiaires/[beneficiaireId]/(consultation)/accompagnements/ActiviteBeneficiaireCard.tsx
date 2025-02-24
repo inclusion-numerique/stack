@@ -1,4 +1,6 @@
-import Tag from '@codegouvfr/react-dsfr/Tag'
+import ActiviteBeneficiaireCardOpenModalLink from '@app/web/app/coop/(sidemenu-layout)/mes-beneficiaires/[beneficiaireId]/(consultation)/accompagnements/ActiviteBeneficiaireCardOpenModalLink'
+import Stars from '@app/web/components/Stars'
+import type { ActiviteForList } from '@app/web/cra/activitesQueries'
 import {
   autonomieStars,
   niveauAtelierStars,
@@ -7,9 +9,7 @@ import {
   typeActiviteIllustrations,
   typeActiviteLabels,
 } from '@app/web/cra/cra'
-import Stars from '@app/web/components/Stars'
-import ActiviteBeneficiaireCardOpenModalLink from '@app/web/app/coop/(sidemenu-layout)/mes-beneficiaires/[beneficiaireId]/(consultation)/accompagnements/ActiviteBeneficiaireCardOpenModalLink'
-import type { ActiviteForList } from '@app/web/cra/activitesQueries'
+import Tag from '@codegouvfr/react-dsfr/Tag'
 
 const ActiviteBeneficiaireCard = ({
   activite,
@@ -44,7 +44,6 @@ const ActiviteBeneficiaireCard = ({
   return (
     <div className="fr-py-2v fr-px-4v fr-flex fr-align-items-center fr-flex-gap-4v fr-my-2v fr-enlarge-button fr-border-radius--8">
       <div className="fr-background-alt--blue-france fr-p-2v fr-border-radius--8 fr-flex">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           className="fr-display-block"
           alt=""

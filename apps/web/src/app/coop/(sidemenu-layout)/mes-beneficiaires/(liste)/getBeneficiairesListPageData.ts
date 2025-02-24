@@ -1,5 +1,5 @@
-import { searchBeneficiaire } from '@app/web/beneficiaire/searchBeneficiaire'
 import { BeneficiairesDataTableSearchParams } from '@app/web/beneficiaire/BeneficiairesDataTable'
+import { searchBeneficiaire } from '@app/web/beneficiaire/searchBeneficiaire'
 import { isEmptySearchParams } from '@app/web/data-table/isEmptySearchParams'
 
 export const getBeneficiairesListPageData = async ({

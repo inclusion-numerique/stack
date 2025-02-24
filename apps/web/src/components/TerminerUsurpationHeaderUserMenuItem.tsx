@@ -1,10 +1,10 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
 import { createToast } from '@app/ui/toast/createToast'
 import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { trpc } from '@app/web/trpc'
+import { useRouter } from 'next/navigation'
 
 const TerminerUsurpationHeaderUserMenuItem = () => {
   const mutation = trpc.usurpation.stopUsurpation.useMutation()
@@ -32,7 +32,6 @@ const TerminerUsurpationHeaderUserMenuItem = () => {
   return (
     <li>
       <button
-        // eslint-disable-next-line react/jsx-props-no-spreading
         {...buttonLoadingClassname(
           mutation.isPending || mutation.isSuccess,
           'fr-nav__link fr-border--bottom fr-display-block',

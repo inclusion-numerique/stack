@@ -1,6 +1,6 @@
+import { dureeAccompagnementStatisticsRanges } from '@app/web/cra/cra'
 import { Prisma } from '@prisma/client'
 import { snakeCase } from 'change-case'
-import { dureeAccompagnementStatisticsRanges } from '@app/web/cra/cra'
 
 export const createEnumCountSelect = <T extends string>({
   column,

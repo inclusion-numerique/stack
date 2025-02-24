@@ -1,5 +1,5 @@
-import z from 'zod'
 import { apiClientScopeValues } from '@app/web/app/administration/clients-api/apiClient'
+import z from 'zod'
 
 // Represents an object returned by the BAN API
 export const ClientApiValidation = z.object({

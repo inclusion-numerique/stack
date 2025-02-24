@@ -1,11 +1,11 @@
-import React from 'react'
-import type { StructureDataForForm } from '@app/web/structure/getStructureDataForForm'
-import StructureInfosGeneralesForm from '@app/web/structure/StructureInfosGeneralesForm'
-import StructurePresentationForm from '@app/web/structure/StructurePresentationForm'
-import StructureInfosPratiquesForm from '@app/web/structure/StructureInfosPratiquesForm'
-import StructureHorairesForm from '@app/web/structure/StructureHorairesForm'
-import StructureSuppressionForm from '@app/web/structure/StructureSuppressionForm'
 import StructureEditionSideMenu from '@app/web/structure/EditStructureSideMenu'
+import StructureHorairesForm from '@app/web/structure/StructureHorairesForm'
+import StructureInfosGeneralesForm from '@app/web/structure/StructureInfosGeneralesForm'
+import StructureInfosPratiquesForm from '@app/web/structure/StructureInfosPratiquesForm'
+import StructurePresentationForm from '@app/web/structure/StructurePresentationForm'
+import StructureSuppressionForm from '@app/web/structure/StructureSuppressionForm'
+import type { StructureDataForForm } from '@app/web/structure/getStructureDataForForm'
+import React from 'react'
 
 const StructureEdition = ({
   structure,

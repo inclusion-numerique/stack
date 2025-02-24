@@ -11,8 +11,6 @@ export const createRdvServicePublicAccount = async ({
 }: {
   user: Pick<SessionUser, 'id' | 'rdvAccount'>
 }) => {
-  console.log('creating rdv service public account for user', user)
-
   const userData = await getUserRdvApiData({
     userId: user.id,
   })

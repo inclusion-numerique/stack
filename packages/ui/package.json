@@ -5,8 +5,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "lint": "eslint src",
-    "lint:style": "../../packages/lint/node_modules/.bin/stylelint \"src/**/*.css\"",
+    "lint": "biome check src",
     "test": "jest --passWithNoTests",
     "tsc": "tsc --noEmit",
     "postinstall": "pnpm --silent setup:dsfr",

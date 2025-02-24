@@ -1,10 +1,10 @@
-import classNames from 'classnames'
-import type { FieldValues } from 'react-hook-form'
-import { type RefObject, useRef } from 'react'
-import type { UiComponentProps } from '@app/ui/utils/uiComponentProps'
 import InputFormField, {
   type InputFormFieldProps,
 } from '@app/ui/components/Form/InputFormField'
+import type { UiComponentProps } from '@app/ui/utils/uiComponentProps'
+import classNames from 'classnames'
+import { type RefObject, useRef } from 'react'
+import type { FieldValues } from 'react-hook-form'
 import styles from './PlusMinusNumberFormField.module.css'
 
 const getInputFromRef = (
@@ -58,7 +58,6 @@ const PlusMinusNumberFormField = <T extends FieldValues = FieldValues>({
           input: classNames(styles.input, classes?.input),
         }}
       />
-      {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
       <button
         className={classNames(
           'fr-icon-add-line fr-text-title--blue-france',
@@ -70,7 +69,6 @@ const PlusMinusNumberFormField = <T extends FieldValues = FieldValues>({
         disabled={props.disabled || disabledAdd}
         tabIndex={-1}
       />
-      {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
       <button
         className={classNames(
           'fr-icon-subtract-line  fr-text-title--blue-france',

@@ -1,8 +1,8 @@
-import React from 'react'
+import { getOutilsPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-outils/[slug]/outilsPageData'
+import { metadataTitle } from '@app/web/app/metadataTitle'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { metadataTitle } from '@app/web/app/metadataTitle'
-import { getOutilsPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-outils/[slug]/outilsPageData'
+import React from 'react'
 import { Outil } from './Outil'
 
 export const generateMetadata = ({

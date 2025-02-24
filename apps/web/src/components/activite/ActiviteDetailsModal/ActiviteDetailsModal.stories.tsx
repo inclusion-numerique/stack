@@ -1,7 +1,4 @@
-import React, { useEffect } from 'react'
-import type { Meta, StoryObj } from '@storybook/react'
 import { useDsfrModalIsBound } from '@app/ui/hooks/useDsfrModalIsBound'
-import { expect, waitFor, within } from '@storybook/test'
 import {
   ActiviteDetailsDynamicModal,
   ActiviteDetailsDynamicModalState,
@@ -14,6 +11,9 @@ import {
   activiteIndividuelleBeneficiaireSuivi,
   activiteIndividuelleInfosMinimum,
 } from '@app/web/components/activite/ActiviteDetailsModal/ActiviteDetailsModalStoriesData'
+import type { Meta, StoryObj } from '@storybook/react'
+import { expect, waitFor, within } from '@storybook/test'
+import React, { useEffect } from 'react'
 
 const Template = ({
   initialState,

@@ -1,5 +1,14 @@
 'use client'
 
+import { createToast } from '@app/ui/toast/createToast'
+import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
+import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
+import { getBeneficiaireImportAnalysis } from '@app/web/app/coop/(full-width-layout)/mes-beneficiaires/importer/analyse/beneficiaireImportAnalysisStorage'
+import { withTrpc } from '@app/web/components/trpc/withTrpc'
+import { trpc } from '@app/web/trpc'
+import Button from '@codegouvfr/react-dsfr/Button'
+import Notice from '@codegouvfr/react-dsfr/Notice'
+import classNames from 'classnames'
 import { useRouter } from 'next/navigation'
 import React, {
   PropsWithChildren,
@@ -8,15 +17,6 @@ import React, {
   useMemo,
   useRef,
 } from 'react'
-import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
-import Notice from '@codegouvfr/react-dsfr/Notice'
-import classNames from 'classnames'
-import Button from '@codegouvfr/react-dsfr/Button'
-import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
-import { createToast } from '@app/ui/toast/createToast'
-import { trpc } from '@app/web/trpc'
-import { getBeneficiaireImportAnalysis } from '@app/web/app/coop/(full-width-layout)/mes-beneficiaires/importer/analyse/beneficiaireImportAnalysisStorage'
-import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import styles from './ImportBeneficiairesAnalyseContent.module.css'
 
 const analysisTableHeaders = [
@@ -78,7 +78,7 @@ const ImportBeneficiairesAnalyseContent = ({
         `/coop/mes-beneficiaires/importer/erreur?message=Aucun bénéficiaire détecté`,
       )
     }
-  }, [analysisResponse])
+  }, [analysisResponse, router.push])
 
   const tableContainerRef = useRef<HTMLDivElement>(null)
   useLayoutEffect(() => {
@@ -95,7 +95,7 @@ const ImportBeneficiairesAnalyseContent = ({
 
     // Apply a negative margin-right to extend the container to the right edge of the window
     tableContainerRef.current.style.marginRight = `-${distanceToWindowRight}px`
-  }, [tableContainerRef])
+  }, [])
 
   const mutation = trpc.beneficiaires.import.useMutation()
 
@@ -184,7 +184,6 @@ const ImportBeneficiairesAnalyseContent = ({
                   </thead>
                   <tbody className={styles.tbody}>
                     {rows.map((row, index) => (
-                      // eslint-disable-next-line react/no-array-index-key
                       <tr key={index}>
                         <td>
                           {row.errors ? (

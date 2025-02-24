@@ -1,14 +1,14 @@
-import z from 'zod'
+import { BeneficiaireCraValidation } from '@app/web/beneficiaire/BeneficiaireValidation'
+import { CraDureeValidation } from '@app/web/cra/CraDureeValidation'
+import { ParticipantsAnonymesCraCollectifValidation } from '@app/web/cra/ParticipantsAnonymesCraCollectifValidation'
 import {
   materielValues,
   niveauAtelierValues,
   thematiqueValues,
   typeLieuValues,
 } from '@app/web/cra/cra'
-import { BeneficiaireCraValidation } from '@app/web/beneficiaire/BeneficiaireValidation'
 import { AdresseBanValidation } from '@app/web/external-apis/ban/AdresseBanValidation'
-import { ParticipantsAnonymesCraCollectifValidation } from '@app/web/cra/ParticipantsAnonymesCraCollectifValidation'
-import { CraDureeValidation } from '@app/web/cra/CraDureeValidation'
+import z from 'zod'
 
 export const CraCollectifValidation = z
   .object({

@@ -1,10 +1,10 @@
 import { compileMjml } from '@app/emails/mjml'
 import { inviteMediateur } from '@app/emails/templates/inviteMediateur'
-import { SessionUser } from '@app/web/auth/sessionUser'
+import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
+import { SessionUser } from '@app/web/auth/sessionUser'
 import { emailTransport } from '@app/web/server/email/emailTransport'
 import { throwOnSendMailFailure } from '@app/web/server/email/throwOnSendMailFailure'
-import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 
 export const sendInviteMediateurEmail = async ({
   url,

@@ -1,17 +1,18 @@
-import type { Prisma } from '@prisma/client'
-import {
-  coordinations,
-  fixtureUsers,
-  teamAdministrateurs,
-} from '@app/fixtures/users'
-import { seedStructures } from '@app/fixtures/structures'
-import { fixtureBeneficiaires } from '@app/fixtures/beneficiaires'
 import {
   fixtureCrasCollectifs,
   fixtureCrasDemarchesAdministratives,
   fixtureCrasIndividuels,
 } from '@app/fixtures/activites'
+import { fixtureBeneficiaires } from '@app/fixtures/beneficiaires'
+import { output } from '@app/fixtures/output'
+import { seedStructures } from '@app/fixtures/structures'
 import { upsertCraFixtures } from '@app/fixtures/upsertCraFixtures'
+import {
+  coordinations,
+  fixtureUsers,
+  teamAdministrateurs,
+} from '@app/fixtures/users'
+import type { Prisma } from '@prisma/client'
 import { upsertCoordinationFixtures } from './upsertCoordinationFixture'
 
 export const deleteAll = async (transaction: Prisma.TransactionClient) => {
@@ -48,7 +49,7 @@ export const seed = async (transaction: Prisma.TransactionClient) => {
           update: user,
         })
         .catch((error) => {
-          console.error('Error upserting user fixture', user)
+          output.error('Error upserting user fixture', user)
           throw error
         }),
     ),
@@ -63,7 +64,7 @@ export const seed = async (transaction: Prisma.TransactionClient) => {
           update: team,
         })
         .catch((error) => {
-          console.error('Error upserting team administrator fixture', team)
+          output.error('Error upserting team administrator fixture', team)
           throw error
         }),
     ),
@@ -78,7 +79,7 @@ export const seed = async (transaction: Prisma.TransactionClient) => {
           update: beneficiaire,
         })
         .catch((error) => {
-          console.error('Error upserting beneficiaire fixture', beneficiaire)
+          output.error('Error upserting beneficiaire fixture', beneficiaire)
           throw error
         }),
     ),

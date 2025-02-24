@@ -1,11 +1,11 @@
 import styles from '@app/web/app/coop/(sidemenu-layout)/mes-activites/(liste)/MesActivitesListePage.module.css'
-import { dateAsIsoDay } from '@app/web/utils/dateAsIsoDay'
-import { dateAsDay } from '@app/web/utils/dateAsDay'
 import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
+import type { ActivitesDataTableConfiguration } from '@app/web/cra/ActivitesDataTableConfiguration'
 import type { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
 import { typeActiviteLabels } from '@app/web/cra/cra'
 import type { DataTableSearchParams } from '@app/web/data-table/DataTableConfiguration'
-import type { ActivitesDataTableConfiguration } from '@app/web/cra/ActivitesDataTableConfiguration'
+import { dateAsDay } from '@app/web/utils/dateAsDay'
+import { dateAsIsoDay } from '@app/web/utils/dateAsIsoDay'
 
 export const ActivitesDataTable = {
   csvFilename: () => `coop-${dateAsIsoDay(new Date())}-activites`,

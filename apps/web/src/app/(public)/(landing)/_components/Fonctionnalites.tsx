@@ -1,7 +1,7 @@
-import Image from 'next/image'
-import Link from 'next/link'
 import Badge from '@codegouvfr/react-dsfr/Badge'
 import Button from '@codegouvfr/react-dsfr/Button'
+import Image from 'next/image'
+import Link from 'next/link'
 
 export const Fonctionnalites = () => (
   <div className="fr-container">

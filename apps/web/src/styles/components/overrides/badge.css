@@ -6,8 +6,8 @@
   background-color: var(--green-emeraude-950-100);
   color: var(--green-emeraude-sun-425-moon-753);
 
-  [class^='ri-'],
-  [class*=' ri-'] {
+  [class^="ri-"],
+  [class*=" ri-"] {
     color: var(--green-emeraude-main-632) !important;
   }
 }

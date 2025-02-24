@@ -1,7 +1,7 @@
-import classNames from 'classnames'
-import { Materiel } from '@prisma/client'
 import { materielIcons } from '@app/web/cra/cra'
 import { numberToPercentage, numberToString } from '@app/web/utils/formatNumber'
+import { Materiel } from '@prisma/client'
+import classNames from 'classnames'
 
 export const StatistiqueMateriel = ({
   label,

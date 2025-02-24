@@ -1,8 +1,8 @@
-import { redirect } from 'next/navigation'
-import { metadataTitle } from '@app/web/app/metadataTitle'
-import { authenticateUser } from '@app/web/auth/authenticateUser'
 import { StructureEmployeusePage } from '@app/web/app/inscription/(steps)/_components/structure-employeuse/StructureEmployeusePage'
 import { mediateurinscriptionStepsCount } from '@app/web/app/inscription/(steps)/mediateur/mediateurinscriptionSteps'
+import { metadataTitle } from '@app/web/app/metadataTitle'
+import { authenticateUser } from '@app/web/auth/authenticateUser'
+import { redirect } from 'next/navigation'
 import {
   coordinateurInscriptionSteps,
   coordinateurInscriptionStepsCount,

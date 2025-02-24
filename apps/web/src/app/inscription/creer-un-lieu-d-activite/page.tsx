@@ -1,7 +1,7 @@
-import { redirect } from 'next/navigation'
-import { metadataTitle } from '@app/web/app/metadataTitle'
 import CreerStructurePageContent from '@app/web/app/inscription/creer-un-lieu-d-activite/CreerStructurePageContent'
+import { metadataTitle } from '@app/web/app/metadataTitle'
 import { authenticateUser } from '@app/web/auth/authenticateUser'
+import { redirect } from 'next/navigation'
 
 export const metadata = {
   title: metadataTitle('Finaliser mon inscription'),

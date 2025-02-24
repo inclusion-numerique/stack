@@ -1,7 +1,7 @@
-import type { Metadata } from 'next'
-import React from 'react'
 import { metadataTitle } from '@app/web/app/metadataTitle'
 import { authenticateMediateurOrCoordinateur } from '@app/web/auth/authenticateUser'
+import type { Metadata } from 'next'
+import React from 'react'
 import { Accueil } from './Accueil'
 import { getAccueilPageDataFor } from './getAccueilPageDataFor'
 
