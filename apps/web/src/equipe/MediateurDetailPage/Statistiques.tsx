@@ -1,6 +1,7 @@
 import React from 'react'
 import classNames from 'classnames'
 import Button from '@codegouvfr/react-dsfr/Button'
+import { dateAsDay } from '@app/web/utils/dateAsDay'
 
 const StatistiqueElement = ({
   name,
@@ -34,10 +35,12 @@ export const Statistiques = ({
   mediateurId,
   beneficiairesAccompagnes,
   accompagnements,
+  coordinationEnd,
 }: {
   mediateurId: string
   beneficiairesAccompagnes: number
   accompagnements: number
+  coordinationEnd?: Date
 }) => (
   <>
     <span className="fr-flex fr-direction-column fr-direction-md-row fr-flex-gap-3v fr-mb-6v">
@@ -47,7 +50,10 @@ export const Statistiques = ({
           aria-hidden
         />
         <h2 className="fr-h6 fr-text-mention--grey fr-mb-0">
-          Statistiques d’activité sur les 30 derniers jours
+          Statistiques d’activité{' '}
+          {coordinationEnd == null
+            ? 'sur les 30 derniers jours'
+            : `jusqu’au ${dateAsDay(coordinationEnd)}`}
         </h2>
       </span>
       <Button

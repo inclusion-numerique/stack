@@ -29,29 +29,31 @@ const coordinationFor =
       ),
     )
 
+const areMediateursCoordonnes = async (
+  mediateurIds: string[],
+  coordinateurId?: string,
+) => {
+  if (coordinateurId == null) return false
+  const mediateursCoordonnes =
+    await coordinationFor(coordinateurId)(mediateurIds)
+  return mediateursCoordonnes.some(isNull)
+}
+
 export const getMediateurPageData = async (
   mediateurId: string,
   coordinateurId?: string,
 ) => {
   const user = await authenticateUser()
 
-  if (coordinateurId != null && user.mediateur?.id != null) {
-    const mediateursCoordonnes = await coordinationFor(coordinateurId)([
-      mediateurId,
-      user.mediateur.id,
-    ])
-
-    if (mediateursCoordonnes.some(isNull)) return null
-  }
-
   if (
-    coordinateurId == null &&
-    (user.coordinateur == null ||
-      !user.coordinateur.mediateursCoordonnes
-        .map(({ mediateurId: id }) => id)
-        .includes(mediateurId))
-  )
+    (await areMediateursCoordonnes(
+      [mediateurId, ...(user.mediateur?.id ? [user.mediateur?.id] : [])],
+      coordinateurId,
+    )) ||
+    (await areMediateursCoordonnes([mediateurId], user.coordinateur?.id))
+  ) {
     return null
+  }
 
   const mediateur = await prismaClient.mediateur.findUnique({
     where: { id: mediateurId },
@@ -62,6 +64,10 @@ export const getMediateurPageData = async (
       },
       conseillerNumerique: {
         select: { id: true, idPg: true },
+      },
+      coordinations: {
+        select: { suppression: true },
+        where: { coordinateurId: coordinateurId ?? user.coordinateur?.id },
       },
     },
   })

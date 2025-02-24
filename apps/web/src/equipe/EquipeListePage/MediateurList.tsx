@@ -22,8 +22,7 @@ export const MediateurList = ({
 }) => (
   <ul className="fr-list-group fr-border--top fr-my-0">
     {mediateurs.map((mediateur) =>
-      mediateur.type === 'coordinated' &&
-      !mediateur.status.startsWith('Ancien') ? (
+      mediateur.type === 'coordinated' ? (
         <li
           className="fr-border--bottom fr-link--background-on-hover"
           key={mediateur.email}
