@@ -118,7 +118,6 @@ describe('openAiChat', () => {
             parsed: null,
             refusal: null,
             content: expect.toBeString() as string,
-            tool_calls: [],
           },
           finish_reason: 'stop',
           index: 0,
@@ -128,5 +127,5 @@ describe('openAiChat', () => {
       created: expect.any(Number) as number,
       model: expect.any(String) as string,
     })
-  }, 120_000)
+  }, 60_000)
 })

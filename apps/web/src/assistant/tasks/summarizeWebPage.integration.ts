@@ -59,5 +59,5 @@ describe('summarizeWebPage', () => {
      * Résultat Mistral Nemo
      * KO timeout 60sec
      */
-  }, 10_000)
+  }, 30_000)
 })

@@ -36,8 +36,10 @@ export const summarizeWebPage = async ({
     },
   ]
 
+  const completionModel = model ?? defaultModel
+
   const result = await openAiClient.chat.completions.create({
-    model: model ?? defaultModel,
+    model: completionModel,
     messages: completionMessages,
     stream: false,
     temperature: 0.2,
