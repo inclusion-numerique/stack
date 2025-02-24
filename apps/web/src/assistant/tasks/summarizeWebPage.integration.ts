@@ -2,24 +2,29 @@ import { readFileSync } from 'node:fs'
 import { summarizeWebPage } from '@app/web/assistant/tasks/summarizeWebPage'
 
 describe('summarizeWebPage', () => {
-  const legiFranceHtml = readFileSync(
-    `${__dirname}/_test/testCase.legifrance.html`,
+  const testHtml = readFileSync(
+    // This is a huge html file, you can use it to test bigger files locally
+    //   `${__dirname}/_test/testCase.legifrance.html`,
+    // This is a smaller html file
+    `${__dirname}/_test/testCase.ants.html`,
     'utf8',
   )
 
   it('should summarize a web page', async () => {
     const { summary } = await summarizeWebPage({
       url: "https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006074075/LEGISCTA000006143404/1973-11-13#:~:text=La%20demande%20de%20permis%20de,pour%20cause%20d'utilité%20publique.",
-      html: legiFranceHtml,
+      html: testHtml,
       objectif:
-        'l’utilisateur veut savoir quels sont les documents à fournir pour une demande de permis de construire',
+        // 'l’utilisateur veut savoir quels sont les documents à fournir pour une demande de permis de construire',
+        `renouveller son permis de conduire`,
     })
 
     expect(summary).toBeString()
     expect(summary?.length).toBeGreaterThan(500)
-    expect(summary).toContain('demande de permis de construire')
-    expect(summary).toContain('plans')
-    expect(summary).toContain('documents')
+    expect(summary).toContain('permis de conduire')
+    // expect(summary).toContain('demande de permis de construire')
+    // expect(summary).toContain('plans')
+    // expect(summary).toContain('documents')
 
     /**
      * Résultat LLAMA 3.3 70B
