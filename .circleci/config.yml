@@ -140,7 +140,13 @@ workflows:
     when:
       equal: [ project_stack_deployment, << pipeline.parameters.trigger_workflow >> ]
     jobs:
-      - prepare_workspace_dependencies
+      - prepare_workspace_dependencies:
+          executor: node
+          resource_class: large
+          steps:
+            - checkout
+            - skip/skip_unchanged:
+              paths: pnpm-lock.yaml .circleci/config.yml
       - lint_and_test_cdk_package:
           requires:
             - prepare_workspace_dependencies
