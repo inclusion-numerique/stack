@@ -180,7 +180,7 @@ jobs:
     steps:
       - checkout
       - skip/skip_unchanged:
-          paths: pnpm-lock.yaml
+          paths: pnpm-lock.yaml .circleci/config.yml
       - install_dependencies
       - run:
           name: 'Fetch dependencies'
