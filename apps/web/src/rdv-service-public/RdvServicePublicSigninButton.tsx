@@ -32,12 +32,10 @@ const RdvServicePublicSigninButton = ({
     if (isLoading) return
     setIsLoading(true)
 
-    console.log('CREATE ACCOUNT')
     try {
-      const createAccountResult = await createAccountMutation.mutateAsync({
+      await createAccountMutation.mutateAsync({
         userId: user.id,
       })
-      console.log('CREATE ACCOUNT RESULT', createAccountResult)
 
       router.push(rdvOauthLinkAccountFlowUrl({ redirectTo: callbackUrl }))
     } catch {

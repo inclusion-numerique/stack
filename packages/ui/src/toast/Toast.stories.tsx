@@ -30,17 +30,14 @@ const Template = ({ action }: { action?: boolean }) => {
     })
   }
 
-  useEffect(
-    () => {
-      createToast({
-        priority: 'success',
-        message: 'Un nouveau toast de succès total',
-        action: actionParams,
-      })
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
-  )
+  // biome-ignore lint/correctness/useExhaustiveDependencies: we don't want to trigger the effect  when actionParams change
+  useEffect(() => {
+    createToast({
+      priority: 'success',
+      message: 'Un nouveau toast de succès total',
+      action: actionParams,
+    })
+  }, [])
 
   return (
     <>

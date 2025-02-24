@@ -93,6 +93,7 @@ export const executeImportCrasConseillerNumeriqueV1 = (
     if (Sentry.captureException) {
       Sentry.captureException(error)
     }
+    // biome-ignore lint/suspicious/noConsole: we need output from job executions
     console.error(error)
   })
 

@@ -44,11 +44,6 @@ export const GET = async (request: NextRequest) => {
     })
   }
 
-  // Log all request params
-  console.log(
-    'Request params',
-    Object.fromEntries(request.nextUrl.searchParams.entries()),
-  )
   // I should have code and state (for the code workflow)
   const code = request.nextUrl.searchParams.get('code')
   const state = request.nextUrl.searchParams.get('state')

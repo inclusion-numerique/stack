@@ -4,6 +4,7 @@ import {
   isSelectionOkForLink,
   linkCommandHandler,
 } from '@app/ui/components/Form/RichText/richTextLinkFeature'
+import { noop } from '@app/web/utils/noop'
 import { Editor } from '@tiptap/react'
 import classNames from 'classnames'
 import React, { MouseEventHandler, useState } from 'react'
@@ -46,7 +47,7 @@ const MenuButton = ({
 
 const RichTextFormMenuBar = ({ editor }: { editor: Editor }) => {
   const [editLink, setEditLink] = useState<EditLinkOptions>({
-    onSubmit: () => {},
+    onSubmit: noop,
   })
 
   const onLinkClick = linkCommandHandler(editor, setEditLink)

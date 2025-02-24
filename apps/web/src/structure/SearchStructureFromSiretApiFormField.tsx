@@ -57,6 +57,7 @@ const SearchStructureFromSiretApiFormField = <
 
   const { isPending, mutateAsync } = checkSiretMutation
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: we only need to run this effect when siret changes
   useEffect(() => {
     if (!requiredSiretValidation.safeParse(siret).success) {
       // Value is invalid siret, do nothing

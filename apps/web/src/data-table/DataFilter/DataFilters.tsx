@@ -104,7 +104,7 @@ const DataFilters = <Configuration extends DataTableConfiguration>({
                 label: `${name} : ${value}`,
               }}
               size="sm"
-              onClick={() => onRemoveFilter(name, value)}
+              onClick={() => onRemoveFilter()}
               key={`${name}_${value}`}
             />
           ))}

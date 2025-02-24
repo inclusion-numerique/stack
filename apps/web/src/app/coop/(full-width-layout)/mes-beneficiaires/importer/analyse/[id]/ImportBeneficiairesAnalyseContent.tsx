@@ -78,7 +78,7 @@ const ImportBeneficiairesAnalyseContent = ({
         `/coop/mes-beneficiaires/importer/erreur?message=Aucun bénéficiaire détecté`,
       )
     }
-  }, [analysisResponse])
+  }, [analysisResponse, router.push])
 
   const tableContainerRef = useRef<HTMLDivElement>(null)
   useLayoutEffect(() => {
@@ -95,7 +95,7 @@ const ImportBeneficiairesAnalyseContent = ({
 
     // Apply a negative margin-right to extend the container to the right edge of the window
     tableContainerRef.current.style.marginRight = `-${distanceToWindowRight}px`
-  }, [tableContainerRef])
+  }, [])
 
   const mutation = trpc.beneficiaires.import.useMutation()
 

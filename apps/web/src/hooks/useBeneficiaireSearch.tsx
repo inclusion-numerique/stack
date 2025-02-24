@@ -87,7 +87,7 @@ export const useBeneficiaireSearch = ({
           : []),
       ]
     },
-    [initialBeneficiairesOptions, beneficiairesMapRef, trpcClient],
+    [trpcClient],
   )
 
   return {

@@ -71,6 +71,7 @@ export const executeOAuthRdvApiCall = async <ResponseType = unknown>({
         const retryResponse = await axios<ResponseType>(retryConfig)
         return retryResponse.data
       }
+      // biome-ignore lint/suspicious/noConsole: we log this until feature is not in production
       console.error(`RDV API ERROR FOR ENDPOINT ${path}`, error.toJSON())
     }
     // otherwise rethrow

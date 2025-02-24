@@ -27,6 +27,7 @@ export const useFileUpload = ({
       })
       .catch((error) => {
         // TODO Sentry capture exception
+        // biome-ignore lint/suspicious/noConsole: needed for edge case debugging
         console.error(error)
         setUploadError(
           "Une erreur est survenue lors de l'envoi du fichier. Veuillez réessayer.",
@@ -64,6 +65,7 @@ export const useFileUpload = ({
       })
       .catch((error) => {
         // TODO Sentry capture exception
+        // biome-ignore lint/suspicious/noConsole: needed for edge case debugging
         console.error(error)
         setUploadError(
           "Une erreur est survenue lors de l'envoi du fichier. Veuillez réessayer.",

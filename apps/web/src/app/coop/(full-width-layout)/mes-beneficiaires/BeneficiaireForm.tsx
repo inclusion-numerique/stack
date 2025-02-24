@@ -12,8 +12,8 @@ import CraFormLabel from '@app/web/app/coop/(full-width-layout)/mes-activites/cr
 import { craFormFieldsetClassname } from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/craFormFieldsetClassname'
 import FormSection from '@app/web/app/coop/(full-width-layout)/mes-beneficiaires/FormSection'
 import {
-  BeneficiaireCraData,
-  BeneficiaireData,
+  type BeneficiaireCraData,
+  type BeneficiaireData,
   BeneficiaireValidation,
   anneeNaissanceMax,
   anneeNaissanceMin,
@@ -26,7 +26,7 @@ import {
 import { beneficiaireCommuneResidenceToPreviewBanData } from '@app/web/beneficiaire/prismaBeneficiaireToBeneficiaireData'
 import { trancheAgeFromAnneeNaissance } from '@app/web/beneficiaire/trancheAgeFromAnneeNaissance'
 import AdresseBanFormField, {
-  AdressBanFormFieldOption,
+  type AdressBanFormFieldOption,
 } from '@app/web/components/form/AdresseBanFormField'
 import RichCardLabel, {
   richCardFieldsetElementClassName,
@@ -42,7 +42,7 @@ import Button from '@codegouvfr/react-dsfr/Button'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import React, { Fragment, useCallback } from 'react'
+import React, { useCallback } from 'react'
 import { DefaultValues, useForm } from 'react-hook-form'
 import styles from './BeneficiaireForm.module.css'
 
@@ -318,7 +318,8 @@ const BeneficiaireForm = ({
           searchOptions={{ type: 'municipality' }}
           defaultOptions={communeResidenceDefaultOptions}
           defaultValue={
-            communeResidenceDefaultOptions?.length
+            communeResidenceDefaultOptions &&
+            communeResidenceDefaultOptions.length > 0
               ? communeResidenceDefaultOptions[0]
               : undefined
           }

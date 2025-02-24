@@ -18,6 +18,7 @@ export const useRdvOauthStatus = ({
     'loading' | 'success' | 'empty' | 'error'
   >(hasOauthTokens ? 'loading' : 'empty')
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: oauthApiCallMutation.isPending is not in dependencies as it should not retrigger the call
   useEffect(() => {
     if (!hasOauthTokens || oauthApiCallMutation.isPending) return
     // eslint-disable-next-line promise/catch-or-return

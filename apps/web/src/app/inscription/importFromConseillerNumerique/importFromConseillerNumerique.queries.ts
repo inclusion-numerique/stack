@@ -174,7 +174,7 @@ export const createMediateurEnActivites = ({
 export const findCoordinateursFor = ({
   conseiller: { coordinateurs },
 }: ConseillerNumeriqueV1Data) => {
-  if (!coordinateurs?.length) {
+  if (!coordinateurs || coordinateurs.length === 0) {
     return []
   }
 

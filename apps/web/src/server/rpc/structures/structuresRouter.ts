@@ -24,9 +24,6 @@ export const structuresRouter = router({
     .query(({ input: { query, except } }) =>
       searchStructureCartographieNationale(query, {
         except: except ?? undefined,
-      }).catch((error) => {
-        console.error('Error searching carto nationale structures', error)
-        throw error
       }),
     ),
 

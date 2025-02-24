@@ -65,13 +65,13 @@ const SearchableSelect = <T extends string>({
       setInputValue(option.name)
       setSelected(option.value)
     },
-    [setInputValue, setSelected],
+    [setSelected],
   )
 
   const unselect = useCallback(() => {
     setInputValue('')
     setSelected('')
-  }, [setInputValue, setSelected])
+  }, [setSelected])
 
   const onInternalFocus = useCallback(() => {
     unselect()

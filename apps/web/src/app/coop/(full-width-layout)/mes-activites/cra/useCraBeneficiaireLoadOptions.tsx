@@ -91,7 +91,7 @@ export const useCraBeneficiaireLoadOptions = ({
           : []),
       ]
     },
-    [beneficiairesMapRef, trpcClient],
+    [trpcClient],
   )
 
   return {

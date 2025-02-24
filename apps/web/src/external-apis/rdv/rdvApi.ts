@@ -187,6 +187,7 @@ export const createAccount = async ({
       },
     })
     .catch((error: AxiosError) => {
+      // biome-ignore lint/suspicious/noConsole: needed for debugging while not in prod
       console.error('RDV API ERROR', error.toJSON())
       throw error
     })

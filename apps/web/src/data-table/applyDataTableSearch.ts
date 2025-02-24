@@ -1,4 +1,4 @@
-import {
+import type {
   DataTableConfiguration,
   DataTableRow,
 } from '@app/web/data-table/DataTableConfiguration'
@@ -6,6 +6,7 @@ import {
 const normalizeSearchString = (searchQuery: string) =>
   searchQuery
     .normalize('NFD')
+    // biome-ignore lint/suspicious/noMisleadingCharacterClass: i don't know how to make this regex work
     .replaceAll(/[\u0300-\u036F]/g, '')
     .toLowerCase()
     .trim()

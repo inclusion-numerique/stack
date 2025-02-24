@@ -40,8 +40,6 @@ const PrendreRendezVousAvecBeneficiaireButton = ({
         returnUrl: getServerUrl(returnPath, { absolutePath: true }),
       })
 
-      console.log('TRPC RESULT', result)
-
       // TODO push when return URL works (CF rdvRouter)
       // router.push(result.rdv_plan.url)
       window.open(result.rdv_plan.url, '_blank')

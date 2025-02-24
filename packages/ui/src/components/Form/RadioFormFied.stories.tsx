@@ -117,6 +117,7 @@ export const Hints: Story = {
   },
 }
 
+// biome-ignore lint/suspicious/noShadowRestrictedNames: this is the story name
 export const Error: Story = {
   name: "État d'erreur",
   render: (args) => <Template {...args} path="choiceError" />,

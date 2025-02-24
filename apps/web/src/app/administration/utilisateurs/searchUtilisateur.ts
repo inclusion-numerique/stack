@@ -1,6 +1,6 @@
 import {
   UtilisateursDataTable,
-  UtilisateursDataTableSearchParams,
+  type UtilisateursDataTableSearchParams,
 } from '@app/web/app/administration/utilisateurs/UtilisateursDataTable'
 import { queryUtilisateursForList } from '@app/web/app/administration/utilisateurs/queryUtilisateursForList'
 import { getDataTableOrderBy } from '@app/web/data-table/getDataTableOrderBy'
@@ -17,11 +17,11 @@ type SearchUtilisateurOptions = {
 
 // List utilisateurs
 export const utilisateursListWhere = (
-  // eslint-disable-next-line no-empty-pattern
+  // TODO Does this need to be implemented ?
   {
-    // mediateurId,
+    mediateurId: _mediateurId,
   }: {
-    // mediateurId?: string
+    mediateurId?: string
   },
 ) => ({}) satisfies Prisma.UserWhereInput
 

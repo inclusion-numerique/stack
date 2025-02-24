@@ -94,7 +94,7 @@ const CraBeneficiairesMultiplesForm = ({
           }, 0)
         }
       },
-      [append, mediateurId, participantsIds, setValue],
+      [append, mediateurId, setValue],
     ),
   )
 

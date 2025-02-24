@@ -1,5 +1,5 @@
 import {
-  Analysis,
+  type Analysis,
   analyseImportBeneficiairesExcel,
 } from '@app/web/beneficiaire/import/analyseImportBeneficiairesExcel'
 import { getBeneficiaireImportSheet } from '@app/web/beneficiaire/import/getBeneficiaireImportSheet'
@@ -44,6 +44,7 @@ export const POST = async (request: NextRequest) => {
       status: 200,
     })
   } catch (error) {
+    // biome-ignore lint/suspicious/noConsole: need to log this output for debug in container logs
     console.error(error)
     Sentry.captureException(error)
 

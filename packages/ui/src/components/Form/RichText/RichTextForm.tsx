@@ -44,7 +44,7 @@ const RichTextForm = <T extends FieldValues>({
   ariaDescribedBy?: string
   placeholder?: string
   disabled?: boolean
-  ['data-testid']?: string
+  'data-testid'?: string
   onChange?: (text: PathValue<T, Path<T>>) => void
 }) => {
   const editor = useEditor({
