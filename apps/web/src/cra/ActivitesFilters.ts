@@ -1,7 +1,7 @@
 import {
   ProfilSlug,
-  profilSlugValues,
   TypeActiviteSlug,
+  profilSlugValues,
   typeActiviteSlugValues,
 } from '@app/web/cra/cra'
 import z from 'zod'

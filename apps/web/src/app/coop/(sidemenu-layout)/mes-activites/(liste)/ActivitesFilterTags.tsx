@@ -4,17 +4,17 @@ import type { SelectOption } from '@app/ui/components/Form/utils/options'
 import type { LieuActiviteOption } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
 import type { BeneficiaireOption } from '@app/web/beneficiaire/BeneficiaireOption'
 import ActiviteTypeFilter from '@app/web/components/filters/ActiviteTypeFilter'
-import ProfilFilter from '@app/web/components/filters/ProfilFilter'
 import BeneficiaireFilter from '@app/web/components/filters/BeneficiaireFilter'
 import LocationFilter, {
   LocationFilterValue,
 } from '@app/web/components/filters/LocationFilter'
-import { ProfilSlug, TypeActiviteSlug } from '@app/web/cra/cra'
 import MediateurFilter from '@app/web/components/filters/MediateurFilter'
 import PeriodFilter, {
   PeriodFilterValue,
 } from '@app/web/components/filters/PeriodFilter'
+import ProfilFilter from '@app/web/components/filters/ProfilFilter'
 import type { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
+import { ProfilSlug, TypeActiviteSlug } from '@app/web/cra/cra'
 import { MediateurOption } from '@app/web/mediateurs/MediateurOption'
 import classNames from 'classnames'
 import type { ReadonlyURLSearchParams } from 'next/dist/client/components/navigation.react-server'
