@@ -69,7 +69,6 @@ const linkToCoopStructure =
       })
 
       if (!existingStructure) {
-        output(`Skipping non-existent structureId: ${structureId}`)
         return
       }
 
