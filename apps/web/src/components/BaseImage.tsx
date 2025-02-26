@@ -8,6 +8,7 @@ const avatarSizeByPictureSize: {
   24: 16,
   32: 18,
   48: 24,
+  56: 24,
   96: 48,
   116: 58,
   128: 64,

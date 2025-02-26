@@ -23,6 +23,8 @@ import { collectionTitleMaxLength } from '@app/web/server/collections/collection
 import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import VisibilityField from '@app/web/components/VisibilityField'
+import RoundProfileImage from '@app/web/components/RoundProfileImage'
+import BaseImage from '@app/web/components/BaseImage'
 import AddOrRemoveResourceFromCollection from './AddOrRemoveResourceFromCollection'
 import SaveInNestedCollection from './SaveInNestedCollection'
 import styles from './SaveResourceInCollectionModal.module.css'
@@ -126,7 +128,6 @@ const SaveResourceInCollectionModal = ({ user }: { user: SessionUser }) => {
   const cancelCollectionCreation = () => {
     setInCollectionCreation(false)
   }
-
   /**
    * Reset modal state when the resource changes
    */
@@ -303,14 +304,18 @@ const SaveResourceInCollectionModal = ({ user }: { user: SessionUser }) => {
     createCollectionForm.formState.isSubmitting ||
     createCollectionForm.formState.isSubmitSuccessful
 
+  const withoutFavoriteCollections = user.collections.filter(
+    (c) => !c.isFavorites,
+  )
+  const favoriteCollection = user.collections.find((c) => c.isFavorites)
   return (
     <form onSubmit={onSubmit}>
       <RawModal
         className={styles.modal}
         title={
           inCollectionCreation
-            ? 'Ajouter à une nouvelle collection'
-            : 'Ajouter à une collection'
+            ? 'Enregistrer cette ressource dans une nouvelle collection :'
+            : 'Enregistrer cette ressource dans :'
         }
         id={SaveResourceInCollectionDynamicModal.id}
         buttons={
@@ -343,7 +348,7 @@ const SaveResourceInCollectionModal = ({ user }: { user: SessionUser }) => {
                     children: 'Créer une collection',
                     type: 'button',
                     priority: 'secondary',
-                    iconId: 'fr-icon-add-line',
+                    iconId: 'ri-folder-add-line',
                     doClosesModal: false,
                     className: styles.createCollectionButton,
                     onClick: () => viewCollectionCreation(inBaseDirectory?.id),
@@ -366,7 +371,7 @@ const SaveResourceInCollectionModal = ({ user }: { user: SessionUser }) => {
             onClick={goBackFromDirectory}
             data-testid="back-to-bases-button"
           >
-            <div>
+            <div className="fr-flex fr-flex-gap-4v">
               <span
                 className={classNames(
                   'fr-icon-arrow-left-s-line',
@@ -375,6 +380,13 @@ const SaveResourceInCollectionModal = ({ user }: { user: SessionUser }) => {
                   styles.arrow,
                 )}
               />
+              {inBaseDirectory ? (
+                // TODO - handle base image there
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any
+                <BaseImage base={{ id: inBaseDirectory.id } as any} size={56} />
+              ) : (
+                <RoundProfileImage user={user} size={56} borderWidth={1} />
+              )}
               <b className="fr-text-title--grey fr-ml-1w">
                 {inBaseDirectory
                   ? inBaseDirectory.title
@@ -453,26 +465,55 @@ const SaveResourceInCollectionModal = ({ user }: { user: SessionUser }) => {
             </>
           ) : inProfileDirectory || profileOnly ? (
             <>
-              {user.collections.map((collection) => (
-                <AddOrRemoveResourceFromCollection
-                  user={user}
-                  loading={pendingMutationCollectionId === collection.id}
-                  key={collection.id}
-                  collection={collection}
-                  resourceId={resourceId}
-                  onAdd={onAddToCollection}
-                  onRemove={onRemoveFromCollection}
-                />
-              ))}
+              {!!favoriteCollection && profileOnly && (
+                <div
+                  className={classNames(
+                    withoutFavoriteCollections.length > 0 &&
+                      'fr-border--bottom',
+                  )}
+                >
+                  <AddOrRemoveResourceFromCollection
+                    loading={
+                      pendingMutationCollectionId === favoriteCollection.id
+                    }
+                    key={favoriteCollection.id}
+                    collection={favoriteCollection}
+                    resourceId={resourceId}
+                    user={user}
+                    onAdd={onAddToCollection}
+                    onRemove={onRemoveFromCollection}
+                  />
+                </div>
+              )}
+              {withoutFavoriteCollections.length > 0 && (
+                <>
+                  <div className="fr-mt-4v">
+                    <span className="fr-text--xs fr-text--bold fr-text-mention--grey">
+                      MES COLLECTIONS
+                    </span>
+                  </div>
+                  {withoutFavoriteCollections.map((collection) => (
+                    <AddOrRemoveResourceFromCollection
+                      loading={pendingMutationCollectionId === collection.id}
+                      key={collection.id}
+                      user={user}
+                      collection={collection}
+                      resourceId={resourceId}
+                      onAdd={onAddToCollection}
+                      onRemove={onRemoveFromCollection}
+                    />
+                  ))}
+                </>
+              )}
             </>
           ) : inBaseDirectory ? (
             inBaseDirectory.collections.length > 0 ? (
               inBaseDirectory.collections.map((collection) => (
                 <AddOrRemoveResourceFromCollection
-                  user={user}
                   loading={pendingMutationCollectionId === collection.id}
                   key={collection.id}
                   collection={collection}
+                  user={user}
                   resourceId={resourceId}
                   onAdd={onAddToCollection}
                   onRemove={onRemoveFromCollection}
@@ -488,6 +529,26 @@ const SaveResourceInCollectionModal = ({ user }: { user: SessionUser }) => {
             )
           ) : (
             <>
+              {!!favoriteCollection && (
+                <div
+                  className={classNames(
+                    withoutFavoriteCollections.length > 0 &&
+                      'fr-border--bottom',
+                  )}
+                >
+                  <AddOrRemoveResourceFromCollection
+                    loading={
+                      pendingMutationCollectionId === favoriteCollection.id
+                    }
+                    user={user}
+                    key={favoriteCollection.id}
+                    collection={favoriteCollection}
+                    resourceId={resourceId}
+                    onAdd={onAddToCollection}
+                    onRemove={onRemoveFromCollection}
+                  />
+                </div>
+              )}
               <SaveInNestedCollection
                 user={user}
                 onClick={viewProfileDirectory}
