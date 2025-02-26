@@ -5,7 +5,6 @@ import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { trpc } from '@app/web/trpc'
-import type { FrIconClassName } from '@codegouvfr/react-dsfr'
 import Button from '@codegouvfr/react-dsfr/Button'
 import classNames from 'classnames'
 import { useRouter } from 'next/navigation'
@@ -13,17 +12,21 @@ import React, { useState } from 'react'
 
 /**
  * This creates an account for the user email if it does not exist yet.
- * It sends organization (team) and lieux activités to the rdv service public api so the account is set up correctly.
+ * It sends organization (team) and lieux activités to the RDV Aide Numérique api so the account is set up correctly.
  * If the account already exists, it just updates the organization and lieux activités.
  */
 const CreateOrUpdateRdvServicepublicAccountButton = ({
   className,
   user,
   variant,
+  nextUrl,
+  successToast,
 }: {
   className?: string
   user: Pick<SessionUser, 'id' | 'rdvAccount'>
   variant?: 'creation' | 'synchronisation'
+  nextUrl?: string
+  successToast?: boolean
 }) => {
   const [isLoading, setIsLoading] = useState(false)
 
@@ -47,12 +50,14 @@ const CreateOrUpdateRdvServicepublicAccountButton = ({
         userId: user.id,
       })
 
-      createToast({
-        priority: 'success',
-        message: creation
-          ? 'Votre compte à bien été créé sur RDV Service Public. Veuillez finaliser la création de votre compte depuis l’email d’invitation que nous vous avons envoyé.'
-          : 'Votre compte à bien été synchronisé RDV Service Public.',
-      })
+      if (successToast) {
+        createToast({
+          priority: 'success',
+          message: creation
+            ? 'Votre compte à bien été créé sur RDV Aide Numérique. Veuillez finaliser la création de votre compte depuis l’email d’invitation que nous vous avons envoyé.'
+            : 'Votre compte à bien été synchronisé RDV Aide Numérique.',
+        })
+      }
     } catch {
       createToast({
         priority: 'error',
@@ -60,17 +65,18 @@ const CreateOrUpdateRdvServicepublicAccountButton = ({
           'Une erreur est survenue lors de la création de votre compte, veuillez réessayer ultérieurement.',
       })
     }
-    setIsLoading(false)
+    if (nextUrl) {
+      // Component will deload on navigation
+      router.push(nextUrl)
+    } else {
+      setIsLoading(false)
+    }
     router.refresh()
   }
 
   const title = creation
-    ? 'Créer mon compte RDV Service Public'
+    ? 'Créer mon compte RDV Aide Numérique'
     : 'Synchroniser mon compte'
-
-  const iconId: FrIconClassName = creation
-    ? 'fr-icon-user-add-line'
-    : 'fr-icon-refresh-line'
 
   return (
     <div
@@ -83,7 +89,6 @@ const CreateOrUpdateRdvServicepublicAccountButton = ({
         type="button"
         {...buttonLoadingClassname(isLoading, 'fr-mb-4v')}
         onClick={onClick}
-        iconId={iconId}
         priority={creation ? 'primary' : 'tertiary'}
       >
         {title}

@@ -126,7 +126,7 @@ export const Outils = () => (
             alt=""
           />
           <div className="fr-my-3w">
-            <h3 className="fr-h6 fr-mb-2w">RDV Service Public</h3>
+            <h3 className="fr-h6 fr-mb-2w">RDV Aide Numérique</h3>
             <p className="fr-mb-0 fr-text-mention--grey">
               Faciliter la gestion des rendez-vous avec vos bénéficiaires.
             </p>
@@ -137,7 +137,7 @@ export const Outils = () => (
               href="https://www.rdv-aide-numerique.fr"
               target="_blank"
               rel="noreferrer"
-              title="Accéder à RDV Service Public - nouvel onglet"
+              title="Accéder à RDV Aide Numérique - nouvel onglet"
             >
               Découvrir
             </Link>
