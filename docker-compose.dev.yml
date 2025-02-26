@@ -10,12 +10,14 @@ services:
       - "1080:1080"
       - "1025:1025"
   db:
-    image: postgres:12.14-alpine
+    image: pgvector/pgvector:pg17
     container_name: coop_pg
     environment:
       - POSTGRES_DB=${NEXT_PUBLIC_APP_SLUG}
       - POSTGRES_USER=${NEXT_PUBLIC_APP_SLUG}
       - POSTGRES_PASSWORD=password
+      - POSTGRES_SHARED_BUFFERS=128MB  # Adjust the shared_buffers parameter
+
     ports:
       - '5433:5432'
     volumes:
