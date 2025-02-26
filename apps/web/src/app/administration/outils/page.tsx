@@ -2,9 +2,8 @@ import AdministrationBreadcrumbs from '@app/web/app/administration/Administratio
 import AdministrationTitle from '@app/web/app/administration/AdministrationTitle'
 import CoopPageContainer from '@app/web/app/coop/CoopPageContainer'
 import { metadataTitle } from '@app/web/app/metadataTitle'
-import Button from '@codegouvfr/react-dsfr/Button'
-import DatePickerDownload from './DatePickerDownload'
 import Card from '@app/web/components/Card'
+import DatePickerDownload from './DatePickerDownload'
 
 export const metadata = {
   title: metadataTitle('Outils administrateur'),

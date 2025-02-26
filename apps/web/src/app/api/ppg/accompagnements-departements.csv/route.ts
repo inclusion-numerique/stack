@@ -1,10 +1,8 @@
-import { fetchProconnectUserInfosFromV1 } from '@app/web/app/api/proconnect/users.csv/fetchProconnectUserInfosFromV1'
+import { fetchAccompagnement } from '@app/web/app/api/ppg/fetchAccompagnement'
 import { getSessionTokenFromNextRequestCookies } from '@app/web/auth/getSessionTokenFromCookies'
 import { getSessionUserFromSessionToken } from '@app/web/auth/getSessionUserFromSessionToken'
 import { stringify } from 'csv-stringify/sync'
 import { NextRequest } from 'next/server'
-import { fetchAccompagnements } from '@app/cli/fetchAccompagnement'
-import { fetchAccompagnement } from '@app/web/app/api/ppg/fetchAccompagnement'
 
 /**
  * Cette API permet de télécharger les accompagnements réalisés sur la Coop par les Conums et les médiateurs à une date donnée
