@@ -45,7 +45,7 @@ const CollectionView = ({
                 attributionWording="collection"
               />
             )}
-            <div className="fr-flex fr-justify-content-space-between fr-flex-gap-4v fr-direction-column">
+            <div className="fr-flex fr-justify-content-space-between fr-flex-gap-4v fr-direction-column fr-direction-md-row-reverse">
               {!!collection.image && (
                 <div className={styles.imageContainer}>
                   <Images
@@ -56,7 +56,7 @@ const CollectionView = ({
                   />
                 </div>
               )}
-              <div className="fr-flex fr-flex-gap-2v">
+              <div className="fr-flex fr-flex-gap-2v fr-col-md-8">
                 {collection.isFavorites && (
                   <div className="fr-hidden fr-unhidden-md fr-background-contrast--pink-tuile fr-p-8v fr-border-radius--8 fr-flex fr-justify-content-center fr-align-items-center fr-mr-4v">
                     <HeartIconSvg />

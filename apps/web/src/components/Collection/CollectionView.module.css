@@ -1,5 +1,6 @@
 .imageContainer {
   width: 100%;
+  margin-top: auto;
 
   /* 576px breakpoint - padding */
   max-width: 544px;

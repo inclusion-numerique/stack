@@ -73,7 +73,7 @@ const CollectionPage = async ({ params }: { params: { slug: string } }) => {
         }
       >
         <div className="fr-container fr-pt-2w fr-hidden fr-unhidden-md">
-          <CollectionBreadcrumbs collection={collection} />
+          <CollectionBreadcrumbs collection={collection} className="fr-my-0" />
         </div>
         <div className="fr-hidden-md">
           <BackButton />
