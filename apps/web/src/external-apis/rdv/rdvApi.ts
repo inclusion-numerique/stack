@@ -79,7 +79,7 @@ export const getUserRdvApiData = async ({ userId }: { userId: string }) => {
     return null
   }
 
-  // L’organisation côté RDV service public sera l'équipe de l'utilisateur
+  // L’organisation côté RDV Aide Numérique sera l'équipe de l'utilisateur
   // Sinon l'utilisateur lui meme si il est coordinateur ou sans équipe
 
   const coordinationLaPlusRecente = user.mediateur?.coordinations?.at(0)

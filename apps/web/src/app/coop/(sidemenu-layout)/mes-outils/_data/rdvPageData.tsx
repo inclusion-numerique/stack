@@ -3,10 +3,8 @@ import RdvServicePublicMesOutilsMore from '@app/web/rdv-service-public/RdvServic
 
 export default {
   notice:
-    ' Vos données seront partagées entre votre profil sur La Coop de la\n' +
-    '          médiation numérique et RDV Service Public afin d’éviter les doubles\n' +
-    '          saisies',
-  title: 'RDV Service Public',
+    'Vos données seront partagées entre votre profil sur La Coop de la médiation numérique et RDV Aide Numérique afin d’éviter les doubles saisies.',
+  title: 'RDV Aide Numérique',
   description:
     'Un outil de prise de rendez-vous en ligne, simplifiant votre organisation et rappelant aux usagers leurs rendez-vous par SMS.',
   website: 'https://www.rdv-aide-numerique.fr',
@@ -28,7 +26,7 @@ export default {
     {
       title: 'Importer vos RDVs sur votre agenda',
       description:
-        'Synchronisez RDV Service Public et votre agenda du quotidien.',
+        'Synchronisez RDV Aide Numérique et votre agenda du quotidien.',
       icon: 'ri-loop-right-line',
     },
   ],
@@ -38,6 +36,10 @@ export default {
     info: {
       label: 'En savoir plus sur ProConnect',
       link: 'https://www.proconnect.gouv.fr',
+    },
+    callToAction: {
+      label: 'Se connecter',
+      link: '/coop/mes-outils/rdv-aide-numerique/se-connecter',
     },
   },
   more: <RdvServicePublicMesOutilsMore />,

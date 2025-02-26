@@ -36,7 +36,7 @@ const getContextForOAuthApiCall = async ({
   const { rdvAccount } = userWithSecretData
 
   if (!rdvAccount || !user.rdvAccount?.hasOauthTokens) {
-    throw invalidError('Compte RDV Service Public non connecté')
+    throw invalidError('Compte RDV Aide Numérique non connecté')
   }
 
   return { ...userWithSecretData, rdvAccount }
@@ -140,7 +140,7 @@ export const rdvServicePublicRouter = router({
               phone_number: beneficiaire.telephone ?? undefined,
               // birth_date: beneficiaire.anneeNaissance // We don't have this field in the beneficiaire
             },
-            // TODO Reactivate this after localhost is implemented in the RDV Service Public
+            // TODO Reactivate this after localhost is implemented in the RDV Aide Numérique
             // return_url: returnUrl,
             // dossier_url: getServerUrl(`/coop/beneficiaire/${beneficiaireId}`, {
             //   absolutePath: true,
@@ -158,7 +158,7 @@ export const rdvServicePublicRouter = router({
             },
           })
 
-        // Update beneficiaire with id from RDV Service Public if needed
+        // Update beneficiaire with id from RDV Aide Numérique if needed
         // The rest of beneficiaire data could be updated after
         // the plan is created (on redirection), to fetch email, tel, etc... if needed
 

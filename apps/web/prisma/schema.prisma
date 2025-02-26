@@ -690,7 +690,7 @@ enum StatutSocial {
 model Beneficiaire {
   id String @id @default(uuid()) @db.Uuid
 
-  // Identifiant chez RDV service public si le bénéficiaire est synchronisé avec RDV Service Public
+  // Identifiant chez RDV Aide Numérique si le bénéficiaire est synchronisé avec RDV Aide Numérique
   rdvServicePublicId Int? @map("rdv_service_public_id")
 
   // Relation avec le médiateur à qui est "rattaché" le bénéficiaire
