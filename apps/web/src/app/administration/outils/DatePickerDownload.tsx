@@ -26,6 +26,7 @@ const DatePickerDownload = () => {
       window.URL.revokeObjectURL(downloadUrl)
       a.remove()
     } catch (_error) {
+      alert('Une erreur est survenue lors du téléchargement')
     } finally {
       setIsDownloading(false)
     }
