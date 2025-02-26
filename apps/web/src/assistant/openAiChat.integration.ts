@@ -52,7 +52,7 @@ describe('openAiChat', () => {
     )
 
     expect(response.choices.length).toBe(1)
-  })
+  }, 30_000)
 
   it('should trigger functions tools in streaming mode', async () => {
     const chunksList: OpenAiChunkChoice[] = []
