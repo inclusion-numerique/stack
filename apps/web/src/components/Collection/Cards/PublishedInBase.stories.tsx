@@ -33,7 +33,7 @@ const VisitorCollectionInBaseArguments: ComponentProps<typeof CollectionCard> =
       ...dates,
     },
     user: testSessionUser,
-    isOwner: false,
+    canWrite: false,
   }
 
 // contributeur qui voit une collection privée dans une base
@@ -48,7 +48,7 @@ const ContributorPrivateCollectionInBaseArguments: ComponentProps<
     ...dates,
   },
   user: creatorUser,
-  isOwner: false,
+  canWrite: true,
 }
 
 export const PublishedInBase: Story = mediumContainerStory({

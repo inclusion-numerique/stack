@@ -11,11 +11,11 @@ import styles from './CollectionCard.module.css'
 const CollectionCard = ({
   collection,
   user,
-  isOwner,
+  canWrite,
 }: {
   collection: CollectionListItem
   user: SessionUser | null
-  isOwner: boolean
+  canWrite: boolean
 }) => {
   // eslint-disable-next-line no-underscore-dangle
   const resourcesCount = collection._count.resources
@@ -84,7 +84,7 @@ const CollectionCard = ({
             {!collection.isFavorites && (
               <CollectionActions
                 collection={collection}
-                isOwner={isOwner}
+                canWrite={canWrite}
                 user={user}
                 context="card"
               />

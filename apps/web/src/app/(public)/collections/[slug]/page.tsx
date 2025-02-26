@@ -53,6 +53,7 @@ const CollectionPage = async ({ params }: { params: { slug: string } }) => {
   const canReadGeneralInformation = hasPermission(
     CollectionPermissions.ReadGeneralCollectionInformation,
   )
+  const canWrite = hasPermission(CollectionPermissions.WriteCollection)
   if (!canReadGeneralInformation) {
     notFound()
   }
@@ -85,6 +86,7 @@ const CollectionPage = async ({ params }: { params: { slug: string } }) => {
             collection={collection}
             user={user}
             isOwner={isOwner}
+            canWrite={canWrite}
           />
         ) : (
           <div className="fr-container fr-container--medium fr-my-4w">

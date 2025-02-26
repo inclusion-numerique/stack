@@ -40,7 +40,7 @@ const VisitorCollectionInProfileArguments: ComponentProps<
     ...dates,
   },
   user: testSessionUser,
-  isOwner: false,
+  canWrite: false,
 }
 
 // contributeur qui voit une collection privée dans un profil
@@ -55,7 +55,7 @@ const ContributorPrivateCollectionInProfileArguments: ComponentProps<
     ...dates,
   },
   user: creatorUser,
-  isOwner: false,
+  canWrite: false,
 }
 
 // contributeur qui voit une collection depuis son profil et qui est propriétaire de la collection

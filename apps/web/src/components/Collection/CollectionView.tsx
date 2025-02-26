@@ -22,10 +22,12 @@ const CollectionView = ({
   collection,
   user,
   isOwner = false,
+  canWrite = false,
 }: {
   collection: Omit<CollectionPageData, 'image'> & WithMinimalImageData
   user: SessionUser | null
   isOwner?: boolean
+  canWrite?: boolean
 }) => (
   <>
     <div
@@ -101,7 +103,7 @@ const CollectionView = ({
                 {!collection.isFavorites && (
                   <CollectionActions
                     collection={collection}
-                    isOwner={isOwner}
+                    canWrite={isOwner || canWrite}
                     user={user}
                     context="view"
                   />
@@ -117,7 +119,7 @@ const CollectionView = ({
             <CollectionActions
               className="fr-justify-content-space-between"
               collection={collection}
-              isOwner={isOwner}
+              canWrite={isOwner || canWrite}
               user={user}
               context="view"
             />

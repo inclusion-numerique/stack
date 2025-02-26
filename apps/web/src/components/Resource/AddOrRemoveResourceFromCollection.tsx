@@ -46,7 +46,7 @@ const AddOrRemoveResourceFromCollection = ({
             {!collection.isFavorites && (
               <CollectionActions
                 collection={collection}
-                isOwner={isOwner}
+                canWrite={isOwner}
                 user={user}
                 context="card"
               />

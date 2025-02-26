@@ -7,7 +7,7 @@ import { getServerUrl } from '@app/web/utils/baseUrl'
 
 const CollectionActions = ({
   collection,
-  isOwner,
+  canWrite,
   user,
   className,
   context,
@@ -21,13 +21,13 @@ const CollectionActions = ({
     created?: Date
     updated?: Date
   }
-  isOwner: boolean
+  canWrite: boolean
   user: SessionUser | null
   context: 'view' | 'card'
   className?: string
 }) => (
   <div className={classNames('fr-flex fr-flex-gap-2v', className)}>
-    {isOwner ? (
+    {canWrite ? (
       <CollectionMoreActionsDropdown
         priority={context === 'view' ? 'secondary' : 'tertiary no outline'}
         modalPriority={context === 'view' ? 'secondary' : 'tertiary no outline'}
