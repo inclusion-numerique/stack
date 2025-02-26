@@ -36,7 +36,7 @@ const SaveCollectionButton = ({
   user: SessionUser | null
   collection: { id: string; slug: string }
   'data-testid'?: string
-  context: 'card' | 'view'
+  context: 'card' | 'view' | 'contextModal'
   priority: 'primary' | 'secondary' | 'tertiary' | 'tertiary no outline'
   buttonTitle?: string
 }) => {

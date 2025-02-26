@@ -32,7 +32,7 @@ const BaseCollectionsPage = async ({
       emptyBox={
         canWrite ? (
           <EmptyBox
-            title="Vous n’avez pas de collections dans cette base"
+            title="Vous n’avez pas de collection dans cette base"
             titleAs="h3"
           >
             <p>
@@ -43,7 +43,10 @@ const BaseCollectionsPage = async ({
               </Link>
             </p>
             <div data-testid="create-resource-button">
-              <CreateCollectionButton baseId={id} />
+              <CreateCollectionButton
+                baseId={id}
+                title="Créer une collection de base"
+              />
             </div>
           </EmptyBox>
         ) : (

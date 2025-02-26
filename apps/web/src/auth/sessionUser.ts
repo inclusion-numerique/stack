@@ -24,6 +24,10 @@ export type SessionUserBase = Pick<
 > & {
   collections: SessionUserCollectionFragment[]
   savedCollections: SessionUserSavedCollectionFragment[]
+  image: {
+    id: string
+    altText: string | null
+  } | null
 }
 
 export type SessionUserSavedCollectionFragment = Pick<

@@ -23,7 +23,7 @@ const CollectionActions = ({
   }
   canWrite: boolean
   user: SessionUser | null
-  context: 'view' | 'card'
+  context: 'view' | 'card' | 'contextModal'
   className?: string
 }) => (
   <div className={classNames('fr-flex fr-flex-gap-2v', className)}>

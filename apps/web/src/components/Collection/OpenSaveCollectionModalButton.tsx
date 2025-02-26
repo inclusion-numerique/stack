@@ -14,7 +14,7 @@ const OpenSaveCollectionModalButton = ({
 }: ButtonProps.Common &
   ButtonProps.AsButton & {
     collectionId: string
-    context: 'view' | 'card'
+    context: 'view' | 'card' | 'contextModal'
     buttonTitle?: string
     iconId: string
   }) => {

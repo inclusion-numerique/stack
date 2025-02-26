@@ -50,6 +50,11 @@ const Collections = ({
                 <CreateCollectionButton
                   className="fr-btn--secondary fr-width-full fr-justify-content-center"
                   baseId={baseId}
+                  title={
+                    baseId
+                      ? 'Créer une collection de base'
+                      : 'Créer une collection de profil'
+                  }
                 />
               </div>
             )}

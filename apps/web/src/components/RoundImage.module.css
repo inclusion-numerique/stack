@@ -28,6 +28,10 @@
   --size: 48px;
 }
 
+.size56 {
+  --size: 56px;
+}
+
 .size96 {
   --size: 96px;
 }
