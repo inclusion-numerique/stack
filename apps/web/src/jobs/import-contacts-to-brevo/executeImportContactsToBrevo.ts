@@ -1,6 +1,6 @@
 import { output } from '@app/cli/output'
-import { createBrevoContact } from '@app/web/external-apis/brevo/api'
 import {
+  createContact,
   onlyWithBrevoRole,
   toBrevoContact,
 } from '@app/web/external-apis/brevo/contact'
@@ -27,7 +27,9 @@ export const executeImportContactsToBrevo = async () => {
   output('Importing contacts to Brevo...')
 
   const results = await Promise.allSettled(
-    contacts.map((contact) => createBrevoContact(userListId)(contact)),
+    contacts.map((contact) =>
+      createContact({ contact, listIds: [userListId] }),
+    ),
   )
 
   const failures = results.filter((result) => result.status === 'rejected')

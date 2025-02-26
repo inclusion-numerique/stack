@@ -1,4 +1,6 @@
+import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
 import axios, { AxiosResponse } from 'axios'
+import pThrottle from 'p-throttle'
 
 type User = {
   id: string
@@ -54,24 +56,33 @@ export const onlyWithBrevoRole = (contact: {
   attributes: BrevoContactAttibutes
 }) => contact.attributes.ROLES.length > 0
 
-export const createContact =
-  (apiKey: string) =>
-  (...listIds: number[]) =>
-  async (
-    contact: BrevoContact,
-    updateEnabled: boolean = true,
-  ): Promise<AxiosResponse> =>
-    axios.post(
-      'https://api.brevo.com/v3/contacts',
-      {
-        ...contact,
-        listIds,
-        updateEnabled,
+const brevoApiThrottle = pThrottle({
+  limit: 10,
+  interval: 1100, // 10/1000 but adding a margin of error
+})
+
+const createContactImmediate = ({
+  listIds,
+  contact,
+  updateEnabled = true,
+}: {
+  listIds: number[]
+  contact: BrevoContact
+  updateEnabled?: boolean
+}): Promise<AxiosResponse> =>
+  axios.post(
+    'https://api.brevo.com/v3/contacts',
+    {
+      ...contact,
+      listIds,
+      updateEnabled,
+    },
+    {
+      headers: {
+        'api-key': ServerWebAppConfig.Brevo.apiKey,
+        'Content-Type': 'application/json',
       },
-      {
-        headers: {
-          'api-key': apiKey,
-          'Content-Type': 'application/json',
-        },
-      },
-    )
+    },
+  )
+
+export const createContact = brevoApiThrottle(createContactImmediate)
