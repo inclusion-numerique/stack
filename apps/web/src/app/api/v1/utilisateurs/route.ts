@@ -609,12 +609,18 @@ export const GET = createApiV1Route
           conseiller_numerique: u.mediateur?.conseillerNumerique?.id
             ? {
                 id: u.mediateur.conseillerNumerique.id,
-                id_pg: u.mediateur.conseillerNumerique.idPg ?? null,
+                id_pg:
+                  u.mediateur.conseillerNumerique.idPg ??
+                  u.coordinateur?.conseillerNumeriqueIdPg ?? // wierd edge case where we may not have id_pg depending on timing of signup
+                  null,
               }
             : u.coordinateur?.conseillerNumeriqueId
               ? {
                   id: u.coordinateur.conseillerNumeriqueId,
-                  id_pg: u.coordinateur.conseillerNumeriqueIdPg ?? null,
+                  id_pg:
+                    u.coordinateur.conseillerNumeriqueIdPg ??
+                    u.mediateur?.conseillerNumerique?.idPg ?? // wierd edge case where we may not have id_pg depending on timing of signup
+                    null,
                 }
               : null,
         },
