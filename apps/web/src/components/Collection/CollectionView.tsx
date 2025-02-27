@@ -1,4 +1,5 @@
 import React from 'react'
+import classNames from 'classnames'
 import { CollectionPageData } from '@app/web/server/collections/getCollection'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import { WithMinimalImageData } from '@app/web/server/image/imageTypes'
@@ -47,7 +48,12 @@ const CollectionView = ({
                 attributionWording="collection"
               />
             )}
-            <div className="fr-flex fr-justify-content-space-between fr-flex-gap-4v fr-direction-column fr-direction-md-row-reverse">
+            <div
+              className={classNames(
+                'fr-flex fr-justify-content-space-between fr-flex-gap-4v fr-direction-column',
+                !!collection.image && 'fr-direction-md-row-reverse',
+              )}
+            >
               {!!collection.image && (
                 <div className={styles.imageContainer}>
                   <Images
