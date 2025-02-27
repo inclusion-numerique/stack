@@ -7,10 +7,10 @@ import { prismaClient } from '@app/web/prismaClient'
 
 export const getInitialBeneficiairesOptionsForSearch = async ({
   mediateurId,
-  includeBeneficiaireId,
+  includeBeneficiaireIds,
 }: {
   mediateurId?: string
-  includeBeneficiaireId?: string
+  includeBeneficiaireIds?: string[]
 }) => {
   if (mediateurId == null) return []
 
@@ -19,8 +19,8 @@ export const getInitialBeneficiairesOptionsForSearch = async ({
   const beneficiariesForSelect = await prismaClient.beneficiaire.findMany({
     // If we require an included beneficiaire, we exclude it from the search
     // as it will be added in subsequent query
-    where: includeBeneficiaireId
-      ? { AND: [{ id: { not: includeBeneficiaireId } }, whereBeneficiaire] }
+    where: includeBeneficiaireIds
+      ? { AND: [{ id: { notIn: includeBeneficiaireIds } }, whereBeneficiaire] }
       : whereBeneficiaire,
     select: searchBeneficiaireSelect,
     orderBy: [
@@ -31,17 +31,17 @@ export const getInitialBeneficiairesOptionsForSearch = async ({
     take: 20,
   })
 
-  if (includeBeneficiaireId) {
-    const includedBeneficiaire = await prismaClient.beneficiaire.findUnique({
+  if (includeBeneficiaireIds) {
+    const includedBeneficiaires = await prismaClient.beneficiaire.findMany({
       where: {
         ...whereBeneficiaire,
-        id: includeBeneficiaireId,
+        id: { in: includeBeneficiaireIds },
       },
       select: searchBeneficiaireSelect,
     })
-    if (includedBeneficiaire) {
-      // prepend
-      beneficiariesForSelect.unshift(includedBeneficiaire)
+
+    if (includedBeneficiaires) {
+      beneficiariesForSelect.unshift(...includedBeneficiaires)
     }
   }
 

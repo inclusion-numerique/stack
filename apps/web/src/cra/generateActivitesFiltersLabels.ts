@@ -1,13 +1,13 @@
 import type { SelectOption } from '@app/ui/components/Form/utils/options'
 import type { BeneficiaireOption } from '@app/web/beneficiaire/BeneficiaireOption'
-import type { LocationFilterType } from '@app/web/components/filters/LocationFilter'
+import { LieuFilterType } from '@app/web/components/filters/LieuFilter'
 import type { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
 import { profilSlugLabels, typeActiviteSlugLabels } from '@app/web/cra/cra'
 import type { MediateurOption } from '@app/web/mediateurs/MediateurOption'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
 
 export const locationTypeLabels: {
-  [key in LocationFilterType]: string
+  [key in LieuFilterType]: string
 } = {
   lieu: 'Lieu d’activité',
   commune: 'Commune',
@@ -20,96 +20,91 @@ export const generateActivitesPeriodeFilterLabel = ({
 }: {
   au: string
   du: string
-}) => `${dateAsDay(new Date(du))} - ${dateAsDay(new Date(au))}`
-
-export const generateActivitesLocationTypeFilterLabel = ({
-  commune,
-  departement,
-  lieu,
-}: Pick<ActivitesFilters, 'commune' | 'departement' | 'lieu'>) => {
-  if (commune) {
-    return locationTypeLabels.commune
-  }
-  if (departement) {
-    return locationTypeLabels.departement
-  }
-  if (lieu) {
-    return locationTypeLabels.lieu
-  }
-  return null
-}
-
-export const generateActivitesLocationNameFilterLabel = (
-  {
-    commune,
-    departement,
-    lieu,
-  }: Pick<ActivitesFilters, 'commune' | 'departement' | 'lieu'>,
-  {
-    communesOptions,
-    departementsOptions,
-    lieuxActiviteOptions,
-  }: {
-    communesOptions: SelectOption[]
-    lieuxActiviteOptions: SelectOption[]
-    departementsOptions: SelectOption[]
-  },
-) => {
-  if (commune) {
-    return (
-      communesOptions.find((option) => option.value === commune)?.label ?? null
-    )
-  }
-  if (departement) {
-    return (
-      departementsOptions.find((option) => option.value === departement)
-        ?.label ?? null
-    )
-  }
-  if (lieu) {
-    return (
-      lieuxActiviteOptions.find((option) => option.value === lieu)?.label ??
-      null
-    )
-  }
-  return null
-}
+}) => ({
+  label: `${dateAsDay(new Date(du))} - ${dateAsDay(new Date(au))}`,
+  key: ['du', 'au'],
+  type: 'periode',
+})
 
 const generateBeneficiaireFilterLabel = (
-  { beneficiaire }: Pick<ActivitesFilters, 'beneficiaire'>,
-  { beneficiairesOptions }: { beneficiairesOptions: BeneficiaireOption[] },
-) => {
-  if (!beneficiaire) {
-    return null
-  }
-
-  return (
-    beneficiairesOptions.find((option) => option.value?.id === beneficiaire)
-      ?.label ?? null
-  )
-}
+  { beneficiaires = [] }: Pick<ActivitesFilters, 'beneficiaires'>,
+  { beneficiairesOptions = [] }: { beneficiairesOptions: BeneficiaireOption[] },
+) =>
+  beneficiairesOptions
+    .filter(({ value }) => value?.id && beneficiaires.includes(value.id))
+    .map(({ label, value }) => ({
+      label,
+      key: value?.id,
+      type: 'beneficiaires',
+    }))
 
 const generateMediateurFilterLabel = (
-  { mediateur }: Pick<ActivitesFilters, 'mediateur'>,
+  { mediateurs = [] }: Pick<ActivitesFilters, 'mediateurs'>,
   { mediateursOptions = [] }: { mediateursOptions: MediateurOption[] },
-) => {
-  if (!mediateur) return null
+) =>
+  mediateursOptions
+    .filter(
+      ({ value }) =>
+        value?.mediateurId && mediateurs.includes(value.mediateurId),
+    )
+    .map(({ label, value }) => ({
+      label,
+      key: value?.mediateurId,
+      type: 'mediateurs',
+    }))
 
-  return (
-    mediateursOptions.find((option) => option.value?.mediateurId === mediateur)
-      ?.label ?? null
-  )
-}
+const generateLieuxLabels = (
+  {
+    communes = [],
+    departements = [],
+    lieux = [],
+  }: {
+    communes?: string[]
+    departements?: string[]
+    lieux?: string[]
+  },
+  {
+    communesOptions = [],
+    departementsOptions = [],
+    lieuxActiviteOptions = [],
+  }: {
+    communesOptions: SelectOption<string>[]
+    departementsOptions: SelectOption<string>[]
+    lieuxActiviteOptions: SelectOption<string>[]
+  },
+) => [
+  ...lieuxActiviteOptions
+    .filter(({ value }) => lieux?.includes(value))
+    .map(({ label, value }) => ({
+      label: `Lieu d’activité : ${label}`,
+      key: value,
+      type: 'lieux',
+    })),
+  ...communesOptions
+    .filter(({ value }) => communes?.includes(value))
+    .map(({ label, value }) => ({
+      label: `Commune : ${label}`,
+      key: value,
+      type: 'communes',
+    })),
+  ...departementsOptions
+    .filter(({ value }) => departements?.includes(value))
+    .map(({ label, value }) => ({
+      label: `Département : ${label}`,
+      key: value,
+      type: 'departements',
+    })),
+]
 
 export const generateActivitesFiltersLabels = (
   {
-    beneficiaire,
-    mediateur,
-    type,
+    beneficiaires,
+    mediateurs,
+    types,
     profil,
-    departement,
-    commune,
-    lieu,
+    departements,
+    communes,
+    lieux,
     au,
     du,
   }: ActivitesFilters,
@@ -135,48 +130,45 @@ export const generateActivitesFiltersLabels = (
         })
       : null
 
-  const typeLabel = type ? typeActiviteSlugLabels[type] : null
-  const profilLabel = profil ? profilSlugLabels[profil] : null
+  const typesLabel = types
+    ? types.map((type) => ({
+        label: typeActiviteSlugLabels[type],
+        key: type,
+        type: 'types',
+      }))
+    : []
 
-  const beneficiaireLabel = generateBeneficiaireFilterLabel(
-    { beneficiaire },
+  const profilLabel = profil
+    ? {
+        label: profilSlugLabels[profil],
+        key: profil,
+        type: 'profil',
+      }
+    : null
+
+  const beneficiairesLabels = generateBeneficiaireFilterLabel(
+    { beneficiaires },
     { beneficiairesOptions },
   )
 
-  const mediateurLabel = generateMediateurFilterLabel(
-    { mediateur },
+  const mediateursLabels = generateMediateurFilterLabel(
+    { mediateurs },
     { mediateursOptions },
   )
 
-  const typeLieu = generateActivitesLocationTypeFilterLabel({
-    commune,
-    departement,
-    lieu,
-  })
-
-  const nomLieu = generateActivitesLocationNameFilterLabel(
-    {
-      commune,
-      departement,
-      lieu,
-    },
-    { departementsOptions, communesOptions, lieuxActiviteOptions },
+  const lieuxLabels = generateLieuxLabels(
+    { communes, departements, lieux },
+    { communesOptions, departementsOptions, lieuxActiviteOptions },
   )
 
-  const lieuFull = typeLieu ? `${typeLieu} : ${nomLieu}` : null
-
-  return {
-    du: du ? dateAsDay(new Date(du)) : null,
-    au: au ? dateAsDay(new Date(au)) : null,
-    periode,
-    type: typeLabel,
-    profil: profilLabel,
-    mediateur: mediateurLabel,
-    beneficiaire: beneficiaireLabel,
-    typeLieu,
-    nomLieu,
-    lieu: lieuFull,
-  }
+  return [
+    ...mediateursLabels,
+    ...(profilLabel == null ? [] : [profilLabel]),
+    ...(periode == null ? [] : [periode]),
+    ...lieuxLabels,
+    ...typesLabel,
+    ...beneficiairesLabels,
+  ]
 }
 
 export type ActivitesFiltersLabels = ReturnType<

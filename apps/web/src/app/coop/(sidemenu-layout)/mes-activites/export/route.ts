@@ -1,7 +1,10 @@
 import { getSessionTokenFromNextRequestCookies } from '@app/web/auth/getSessionTokenFromCookies'
 import { getSessionUserFromSessionToken } from '@app/web/auth/getSessionUserFromSessionToken'
 import type { MediateurUser } from '@app/web/auth/userTypeGuards'
-import { ActivitesFilterValidations } from '@app/web/cra/ActivitesFilters'
+import {
+  ActivitesFilterValidations,
+  ActivitesFilters,
+} from '@app/web/cra/ActivitesFilters'
 import { dateAsIsoDay } from '@app/web/utils/dateAsIsoDay'
 import { buildActivitesWorksheet } from '@app/web/worksheet/activites/buildActivitesWorksheet'
 import { getActivitesWorksheetInput } from '@app/web/worksheet/activites/getActivitesWorksheetInput'
@@ -48,10 +51,14 @@ export const GET = async (request: NextRequest) => {
     })
   }
 
-  const { mediateur: exportForMediateurId, ...filters } = parsedQueryParams.data
+  const { mediateurs: exportForMediateurIds, ...filters } =
+    parsedQueryParams.data as ActivitesFilters
 
   // For now we only support exporting for current user
-  if (exportForMediateurId && exportForMediateurId !== user.mediateur.id) {
+  if (
+    exportForMediateurIds &&
+    !exportForMediateurIds.includes(user.mediateur.id)
+  ) {
     return new Response('Cannot export for another mediateur', {
       status: 403,
     })

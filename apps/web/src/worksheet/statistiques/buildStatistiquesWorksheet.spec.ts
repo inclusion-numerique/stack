@@ -366,18 +366,23 @@ const STATISTIQUES_WORKSHEET_INPUT_FOR_MEDIATEUR: BuildStatistiquesWorksheetInpu
       },
       coordinateur: null,
     },
-    filters: {
-      du: '01/08/2024',
-      au: '31/08/2024',
-      typeLieu: 'Commune',
-      nomLieu: 'Lyon',
-      type: 'Accompagnement',
-      beneficiaire: null,
-      mediateur: null,
-      lieu: null,
-      periode: null,
-      profil: 'mediateur',
-    },
+    filters: [
+      {
+        key: '69382',
+        label: 'Commune : Lyon 2eme · 69002',
+        type: 'communes',
+      },
+      {
+        label: 'Accompagnement individuel',
+        key: 'individuel',
+        type: 'types',
+      },
+      {
+        label: 'Médiateur',
+        key: 'mediateur',
+        type: 'profil',
+      },
+    ],
   }
 
 const STATISTIQUES_WORKSHEET_INPUT_FOR_COORDINATEUR: BuildStatistiquesWorksheetInput =
@@ -395,18 +400,28 @@ const STATISTIQUES_WORKSHEET_INPUT_FOR_COORDINATEUR: BuildStatistiquesWorksheetI
         mediateursCoordonnes: [],
       },
     },
-    filters: {
-      du: '01/08/2024',
-      au: '31/08/2024',
-      typeLieu: 'Commune',
-      nomLieu: 'Lyon',
-      type: 'Accompagnement',
-      beneficiaire: null,
-      mediateur: 'Marie Doe',
-      lieu: null,
-      periode: null,
-      profil: 'mediateur',
-    },
+    filters: [
+      {
+        key: '69382',
+        label: 'Commune : Lyon 2eme · 69002',
+        type: 'communes',
+      },
+      {
+        label: 'Accompagnement individuel',
+        key: 'individuel',
+        type: 'types',
+      },
+      {
+        label: 'Marie Doe',
+        key: '303381cc-3da7-433d-a553-1a5f76465989',
+        type: 'mediateurs',
+      },
+      {
+        label: 'Médiateur',
+        key: 'mediateur',
+        type: 'profil',
+      },
+    ],
   }
 
 const expectQuantifiedShareRows = (

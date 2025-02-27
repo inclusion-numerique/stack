@@ -1,67 +1,134 @@
 'use client'
 
 import CustomSelect from '@app/ui/components/CustomSelect/CustomSelect'
-import FilterTag from '@app/web/components/filters/FilterTag'
-import { withTrpc } from '@app/web/components/trpc/withTrpc'
+import { SelectOption } from '@app/ui/components/Form/utils/options'
+import { Popover } from '@app/web/components/Popover'
 import { MediateurOption } from '@app/web/mediateurs/MediateurOption'
-import { ReactNode, useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import React, { useEffect, useState } from 'react'
+import { FilterFooter } from './elements/FilterFooter'
+import { FilterSelection } from './elements/FilterSelection'
+import TriggerButton from './elements/TriggerButton'
+import {
+  availableOptionsIn,
+  defautValuesFrom,
+  matchingOption,
+  update,
+} from './elements/helpers'
 
-export type MediateurFilterValue = string // uuid of the mediateur
+type MediateurOptionWithId = MediateurOption & {
+  value: { mediateurId: string }
+}
 
-export type MediateurFilterOnChange = (
-  value: MediateurFilterValue | null,
-) => void
+const onlyDefinedIds = (
+  mediateurOption: MediateurOption,
+): mediateurOption is MediateurOptionWithId =>
+  mediateurOption.value?.mediateurId != null
 
-const MediateurFilter = ({
-  onChange,
+const toSelectOption = ({
+  label,
+  value: { mediateurId: value },
+}: MediateurOptionWithId): SelectOption => ({
+  label,
+  value,
+})
+
+export const MediateurFilter = ({
   defaultValue,
   initialMediateursOptions,
 }: {
-  onChange: MediateurFilterOnChange
-  defaultValue?: string
+  defaultValue: string[]
   initialMediateursOptions: MediateurOption[]
 }) => {
-  const [mediateur, setMediateur] = useState<MediateurOption | null>(
-    initialMediateursOptions.find(
-      (option) => option.value?.mediateurId === defaultValue,
-    ) ?? null,
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const params = new URLSearchParams(searchParams.toString())
+
+  const [isOpen, setIsOpen] = useState(false)
+
+  const mediateursOptions: SelectOption[] = initialMediateursOptions
+    .filter(onlyDefinedIds)
+    .map(toSelectOption)
+
+  const selectedMediateurs = mediateursOptions.filter(
+    defautValuesFrom(new Set(defaultValue)),
   )
 
-  const onClear = () => {
-    onChange(null)
-    setMediateur(null)
+  const [mediateurs, setMediateurs] = useState(selectedMediateurs)
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: we want to trigger when props options change
+  useEffect(() => {
+    setMediateurs(selectedMediateurs)
+  }, [initialMediateursOptions])
+
+  const hasFilters = mediateurs.length > 0
+
+  const closePopover = (close: boolean = false) => {
+    close && setIsOpen(false)
+    router.replace(`?${params}`, { scroll: false })
   }
 
-  const valueLabel = (option: MediateurOption | null): ReactNode =>
-    option?.label ?? null
-
-  const onSelectChange = (option: MediateurOption | null) => {
-    if (option?.value?.mediateurId == null) {
-      return onClear()
-    }
-
-    setMediateur(option)
-    onChange(option.value.mediateurId)
+  const handleSubmit = (close: boolean = false) => {
+    update(params)('mediateurs', mediateurs)
+    closePopover(close)
   }
+
+  const handleClearFilters = () => {
+    setMediateurs([])
+    update(params)('mediateurs', [])
+    closePopover(true)
+  }
+
+  const handleSelectFilter = (option: SelectOption | null) => {
+    if (!option) return handleClearFilters()
+    setMediateurs([...mediateurs, option])
+  }
+
+  const handleRemoveFilter = (option: SelectOption) =>
+    setMediateurs(mediateurs.filter(matchingOption(option)))
 
   return (
-    <FilterTag
-      value={mediateur}
-      valueLabel={valueLabel}
-      onClear={onClear}
-      label="Tous les médiateurs"
+    <Popover
+      open={isOpen}
+      onOpenChange={setIsOpen}
+      onInteractOutside={() => handleSubmit()}
+      onEscapeKeyDown={() => handleSubmit()}
+      trigger={
+        <TriggerButton isOpen={isOpen} isFilled={hasFilters}>
+          Médiateur{hasFilters && ` · ${mediateurs.length}`}
+        </TriggerButton>
+      }
     >
-      <div style={{ width: 460 }}>
-        <CustomSelect
+      <form style={{ width: 384 }} action={() => handleSubmit(true)}>
+        <label
+          className="fr-label fr-mb-1v fr-text--bold"
+          htmlFor="mediateur-filter"
+        >
+          Filtrer par&nbsp;:
+        </label>
+        <CustomSelect<SelectOption>
+          inputId="mediateur-filter"
           instanceId="mediateur-filter-search"
-          placeholder="Rechercher un médiateur"
+          placeholder="Choisir un médiateur numérique"
           className="fr-mb-2v fr-mt-3v"
-          options={initialMediateursOptions}
-          onChange={onSelectChange}
+          options={mediateursOptions.filter(availableOptionsIn(mediateurs))}
+          onChange={handleSelectFilter}
+          value={[]}
         />
-      </div>
-    </FilterTag>
+        {hasFilters && (
+          <>
+            <FilterSelection
+              options={mediateurs}
+              onRemoveFilter={handleRemoveFilter}
+              label={{
+                singular: 'médiateur sélectionné',
+                plural: 'médiateurs sélectionnés',
+              }}
+            />
+            <FilterFooter onClearFilters={handleClearFilters} />
+          </>
+        )}
+      </form>
+    </Popover>
   )
 }
-
-export default withTrpc(MediateurFilter)

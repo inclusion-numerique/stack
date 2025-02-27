@@ -34,18 +34,28 @@ describe('buildActivitesWorksheet', () => {
         },
         coordinateur: null,
       },
-      filters: {
-        du: '01/01/2023',
-        au: '31/01/2023',
-        periode: null, // unused in worksheet
-        typeLieu: 'Commune',
-        nomLieu: 'Lyon',
-        lieu: null, // unused in worksheet
-        type: 'Accompagnement',
-        beneficiaire: 'Beneficiaire Name',
-        mediateur: null,
-        profil: 'Conseiller',
-      },
+      filters: [
+        {
+          key: '69382',
+          label: 'Commune : Lyon 2eme · 69002',
+          type: 'communes',
+        },
+        {
+          label: 'Accompagnement individuel',
+          key: 'individuel',
+          type: 'types',
+        },
+        {
+          label: 'Conseiller',
+          key: 'conseiller',
+          type: 'profil',
+        },
+        {
+          label: 'Beneficiaire Name',
+          key: '7d6091bc-dc91-4d1b-b357-f101e9eb6217',
+          type: 'beneficiaires',
+        },
+      ],
       activites: [], // empty activities for now
     } satisfies BuildActivitesWorksheetInput
   })

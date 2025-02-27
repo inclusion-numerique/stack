@@ -119,6 +119,9 @@ export const addExportMetadata =
     )
   }
 
+const onlyType = (type: string) => (filter: { type: string }) =>
+  filter.type === type
+
 export const addFilters =
   (worksheet: Worksheet) =>
   (
@@ -133,16 +136,33 @@ export const addFilters =
 
     return worksheet.addRows(
       [
-        ['Début de période', filters.du ?? '-'],
-        ['Fin de période', filters.au ?? '-'],
-        ['Type de lieu', filters.typeLieu ?? '-'],
-        ['Nom du lieu', filters.nomLieu ?? '-'],
-        ['Type d’accompagnement', filters.type ?? '-'],
-        ['Profil', filters.profil ?? '-'],
-        filters.beneficiaire
-          ? ['Bénéficiaire', filters.beneficiaire]
-          : undefined,
-        filters.mediateur ? ['Médiateur', `${filters.mediateur}`] : undefined,
+        ['Période', filters.find((filter) => filter.type === 'periode') ?? '-'],
+        [
+          'Lieux d’accompagnement',
+          filters.filter(onlyType('lieux')).join(', ') ?? '-',
+        ],
+        ['Communes', filters.filter(onlyType('communes')).join(', ') ?? '-'],
+        [
+          'Départements',
+          filters.filter(onlyType('departements')).join(', ') ?? '-',
+        ],
+        [
+          'Type d’accompagnement',
+          filters.filter(onlyType('types')).join(', ') ?? '-',
+        ],
+        ['Profil', filters.find((filter) => filter.type === 'profil') ?? '-'],
+        filters.filter(onlyType('beneficiaires')).length > 0
+          ? [
+              'Bénéficiaires',
+              filters.filter(onlyType('beneficiaires')).join(', ') ?? '-',
+            ]
+          : [],
+        filters.filter(onlyType('mediateurs')).length > 0
+          ? [
+              'Médiateurs',
+              filters.filter(onlyType('mediateurs')).join(', ') ?? '-',
+            ]
+          : [],
         mediateurScope
           ? [
               'Médiateur',

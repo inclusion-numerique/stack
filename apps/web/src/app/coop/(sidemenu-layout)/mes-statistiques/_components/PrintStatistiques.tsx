@@ -17,20 +17,16 @@ export const PrintStatistiques = (
     lieuxActiviteOptions,
   } = mesStatistiquesProps
 
-  const filterLabelsToDisplay = Object.entries(
-    generateActivitesFiltersLabels(activitesFilters, {
+  const filterLabelsToDisplay = generateActivitesFiltersLabels(
+    activitesFilters,
+    {
       communesOptions,
       departementsOptions,
       lieuxActiviteOptions,
       beneficiairesOptions: [],
       mediateursOptions: initialMediateursOptions,
-    }),
+    },
   )
-    .filter(
-      ([key]) =>
-        key !== 'du' && key !== 'au' && key !== 'typeLieu' && key !== 'nomLieu',
-    )
-    .filter((entry): entry is [string, string] => !!entry[1])
 
   return (
     <div className="fr-print" aria-hidden>
@@ -38,11 +34,14 @@ export const PrintStatistiques = (
       {filterLabelsToDisplay.length > 0 && (
         <section>
           <h2 className="fr-h3">Filtres activés</h2>
-          <ul>
-            {filterLabelsToDisplay.map(([key, value]) => (
-              <Tag key={key} small>
-                {value}
-              </Tag>
+          <ul className="fr-tags-group">
+            {filterLabelsToDisplay.map((filter) => (
+              <li
+                className="fr-line-height-1"
+                key={`${filter.type}-${filter.key}`}
+              >
+                <Tag small>{filter.label}</Tag>
+              </li>
             ))}
           </ul>
         </section>

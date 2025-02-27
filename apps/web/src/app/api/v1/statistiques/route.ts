@@ -23,6 +23,7 @@ import {
   getTotalCountsStats,
 } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/getTotalCountsStats'
 import type { LabelAndCount } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/quantifiedShare'
+import { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
 import {
   ChangeObjectKeysCaseRecursive,
   changeObjectKeysCaseRecursive,
@@ -384,7 +385,7 @@ export const GET = createApiV1Route
   })
   .queryParams(ApiV1StatistiquesQueryParamsValidation)
   .handle(async ({ params }) => {
-    const activitesFilters = params.filter
+    const activitesFilters = params.filter as ActivitesFilters
 
     const [
       accompagnementsParJour,

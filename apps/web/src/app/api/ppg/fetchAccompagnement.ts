@@ -12,7 +12,7 @@ export const fetchAccompagnement = async (
       async (departement) => {
         const total = await getTotalCountsStats({
           activitesFilters: {
-            departement: departement.code,
+            departements: [departement.code],
             profil,
             au: date || new Date().toISOString(),
           },
