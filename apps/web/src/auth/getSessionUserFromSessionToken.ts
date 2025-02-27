@@ -7,6 +7,8 @@ const userCollectionFragment = {
     id: true,
     slug: true,
     isPublic: true,
+    created: true,
+    updated: true,
     isFavorites: true,
     title: true,
     resources: {
@@ -36,6 +38,8 @@ const baseCollectionFragment = {
     id: true,
     isPublic: true,
     isFavorites: true,
+    created: true,
+    updated: true,
     title: true,
     slug: true,
     resources: {

@@ -27,9 +27,9 @@ const ProfileCollectionsPage = async ({ params }: ProfilRouteParams) => {
     <Collections
       user={user}
       collections={collections}
+      isOwner={isOwner}
       savedCollections={savedCollections.map(({ collection }) => collection)}
       withCreation={canWrite}
-      isOwner={isOwner}
       collectionsLabel={isOwner ? 'Mes collections' : 'Collections du profil'}
       emptyBox={
         canWrite ? (

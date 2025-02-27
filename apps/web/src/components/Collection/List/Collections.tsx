@@ -64,7 +64,7 @@ const Collections = ({
                 user={user}
                 collection={collection}
                 key={collection.id}
-                isOwner={isOwner}
+                canWrite={isOwner || withCreation}
               />
             ))}
             {combinedCollections.length === 1 && !!favoriteCollection && (

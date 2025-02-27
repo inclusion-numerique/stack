@@ -5,6 +5,8 @@
   overflow: hidden;
   aspect-ratio: 1.66;
   background: var(--background-contrast-info) !important;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
 }
 
 .container,

@@ -1,21 +1,11 @@
-.header {
-  display: flex;
-  justify-content: space-between;
-  gap: 24px;
-  flex-direction: column;
-
-  @media (min-width: 768px) {
-    flex-direction: row-reverse;
-  }
-}
-
 .imageContainer {
   width: 100%;
+  margin-top: auto;
 
   /* 576px breakpoint - padding */
   max-width: 544px;
 
- @media (min-width: 768px) {
-   width: 280px;
- }
+  @media (min-width: 768px) {
+    width: 280px;
+  }
 }

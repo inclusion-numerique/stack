@@ -4,6 +4,7 @@ import Collections from '@app/web/components/Collection/List/Collections'
 import EmptyBox from '@app/web/components/EmptyBox'
 import { CreateCollectionButton } from '@app/web/components/Collection/CreateCollectionButton'
 import { getBasePageContext } from '@app/web/app/(public)/bases/[slug]/(consultation)/getBasePageContext'
+import { BasePermissions } from '@app/web/authorization/models/baseAuthorization'
 
 const BaseCollectionsPage = async ({
   params,
@@ -16,7 +17,7 @@ const BaseCollectionsPage = async ({
     base,
   } = await getBasePageContext(params.slug)
 
-  const canWrite = hasPermission('WriteBase')
+  const canWrite = hasPermission(BasePermissions.WriteBase)
 
   const { collections, savedCollections, id } = base
 
@@ -36,7 +37,7 @@ const BaseCollectionsPage = async ({
           >
             <p>
               Créez une collection pour organiser et partager facilement des
-              ressources.&nsbp;
+              ressources.&nbsp;
               <Link href="/centre-d-aide/les-collections" className="fr-link">
                 En savoir plus
               </Link>

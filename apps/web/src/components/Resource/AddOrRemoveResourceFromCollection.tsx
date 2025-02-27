@@ -1,6 +1,7 @@
 import React from 'react'
 import Button from '@codegouvfr/react-dsfr/Button'
 import { SessionUser } from '@app/web/auth/sessionUser'
+import CollectionActions from '@app/web/components/Collection/CollectionActions'
 import CollectionMetaData from '../Collection/CollectionMetaData'
 import styles from './SaveResourceInCollectionModal.module.css'
 
@@ -28,19 +29,29 @@ const AddOrRemoveResourceFromCollection = ({
       <b>{collection.title}</b>
       <div className={styles.collections}>
         {collection.slug && (
-          <CollectionMetaData
-            isOwner={isOwner}
-            user={user}
-            collection={{
-              title: collection.title,
-              id: collection.id,
-              slug: collection.slug,
-              isFavorites: collection.isFavorites,
-              isPublic: collection.isPublic,
-            }}
-            count={collection.resources.length}
-            context="collectionModal"
-          />
+          <div className="fr-flex fr-justify-content-space-between fr-align-items-center fr-my-2v">
+            <CollectionMetaData
+              collection={{
+                title: collection.title,
+                id: collection.id,
+                slug: collection.slug,
+                isFavorites: collection.isFavorites,
+                isPublic: collection.isPublic,
+                created: collection.created,
+                updated: collection.updated,
+              }}
+              count={collection.resources.length}
+              context="card"
+            />
+            {!collection.isFavorites && (
+              <CollectionActions
+                collection={collection}
+                canWrite={isOwner}
+                user={user}
+                context="card"
+              />
+            )}
+          </div>
         )}
       </div>
     </div>

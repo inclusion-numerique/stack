@@ -2,6 +2,7 @@ import classNames from 'classnames'
 import React from 'react'
 import Link from 'next/link'
 import { CollectionListItem } from '@app/web/server/collections/getCollectionsList'
+import CollectionActions from '@app/web/components/Collection/CollectionActions'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import CollectionMetaData from '../CollectionMetaData'
 import Images from '../Images'
@@ -10,11 +11,11 @@ import styles from './CollectionCard.module.css'
 const CollectionCard = ({
   collection,
   user,
-  isOwner,
+  canWrite,
 }: {
   collection: CollectionListItem
   user: SessionUser | null
-  isOwner: boolean
+  canWrite: boolean
 }) => {
   // eslint-disable-next-line no-underscore-dangle
   const resourcesCount = collection._count.resources
@@ -65,20 +66,30 @@ const CollectionCard = ({
           </span>
         )}
         {collection.slug && (
-          <CollectionMetaData
-            user={user}
-            isOwner={isOwner}
-            collection={{
-              title: collection.title,
-              id: collection.id,
-              slug: collection.slug,
-              isPublic: collection.isPublic,
-              isFavorites: collection.isFavorites,
-            }}
-            count={resourcesCount}
-            context="card"
-            hideRessourceLabelOnSmallDevices
-          />
+          <div className="fr-flex fr-justify-content-space-between fr-align-items-center fr-my-2v">
+            <CollectionMetaData
+              collection={{
+                title: collection.title,
+                id: collection.id,
+                slug: collection.slug,
+                isPublic: collection.isPublic,
+                isFavorites: collection.isFavorites,
+                created: collection.created,
+                updated: collection.updated,
+              }}
+              count={resourcesCount}
+              context="card"
+              hideRessourceLabelOnSmallDevices
+            />
+            {!collection.isFavorites && (
+              <CollectionActions
+                collection={collection}
+                canWrite={canWrite}
+                user={user}
+                context="card"
+              />
+            )}
+          </div>
         )}
       </div>
     </article>

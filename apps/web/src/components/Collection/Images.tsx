@@ -10,10 +10,10 @@ const collectionImageBreakpoints = [
   { media: '(max-width: 320px)', width: 325 },
 ]
 
-const HeartIconSvg = () => (
+export const HeartIconSvg = ({ width = 68, height = 62 }) => (
   <svg
-    width="68"
-    height="62"
+    width={width}
+    height={height}
     viewBox="0 0 68 62"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -66,7 +66,7 @@ const Images = ({
     : classNames(styles.container, className)
 
   return (
-    <div className={classNames(cn)}>
+    <div className={cn}>
       {isFavoriteCollection && (
         <div className="fr-flex fr-justify-content-center fr-align-items-center fr-width-full">
           <HeartIconSvg />

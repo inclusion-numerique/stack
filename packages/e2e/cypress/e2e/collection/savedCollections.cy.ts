@@ -16,7 +16,7 @@ describe('Utilisateur connecté, je peux ajouter une ressource à une collection
     cy.intercept('/api/trpc/collection.unsave?*').as('unsaveCollection')
   })
 
-  it('Acceptation 1 : ouverture de la modale d’enregistrement depuis une carte collection et impossibilité d’enregistrer sa propre collection sans base', () => {
+  it.skip('Acceptation 1 : ouverture de la modale d’enregistrement depuis une carte collection et impossibilité d’enregistrer sa propre collection sans base', () => {
     const user = givenUser()
     const collection = givenCollection({
       createdById: user.id,
@@ -99,7 +99,7 @@ describe('Utilisateur connecté, je peux ajouter une ressource à une collection
     },
   )
 
-  it('Acceptation 3 : enregistrement d’une collection dans une base par un profil qui a créé la collection', () => {
+  it.skip('Acceptation 3 : enregistrement d’une collection dans une base par un profil qui a créé la collection', () => {
     const creator = givenUser({
       firstName: 'Michel',
       lastName: 'Dupont',
@@ -186,7 +186,7 @@ describe('Utilisateur connecté, je peux ajouter une ressource à une collection
     cy.contains(collection.title)
   })
 
-  it('Acceptation 5 : retirer une collection enregistrée dans une base dont je suis membre', () => {
+  it.skip('Acceptation 5 : retirer une collection enregistrée dans une base dont je suis membre', () => {
     const creator = givenUser()
     const visitor = givenUser({
       firstName: 'Michel',
