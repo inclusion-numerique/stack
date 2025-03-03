@@ -87,8 +87,8 @@ describe('buildActivitesWorksheet', () => {
     // Check a specific filter, e.g., "Type de lieu: Commune"
     const filterTypeLieuCell = worksheet.getCell('A12')
     const filterTypeLieuValueCell = worksheet.getCell('B12')
-    expect(filterTypeLieuCell.value).toBe('Type de lieu')
-    expect(filterTypeLieuValueCell.value).toBe('Commune')
+    expect(filterTypeLieuCell.value).toBe('Communes')
+    expect(filterTypeLieuValueCell.value).toBe('Commune : Lyon 2eme · 69002')
   })
 
   it('should include the mediateur if different from user', () => {

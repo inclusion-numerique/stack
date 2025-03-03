@@ -191,18 +191,18 @@ describe('generate activites filters labels', () => {
         type: 'periode',
       },
       {
-        label: 'Lieu d’activité : Exemple de Mediateque',
+        label: 'Exemple de Mediateque',
         key: '36929ed7-3b6f-4ed3-9924-b5e1a6c27096',
         type: 'lieux',
       },
       {
         key: '69382',
-        label: 'Commune : Lyon 2eme · 69002',
+        label: 'Lyon 2eme · 69002',
         type: 'communes',
       },
       {
         key: '69',
-        label: 'Département : 69 · Rhône',
+        label: '69 · Rhône',
         type: 'departements',
       },
       {

@@ -122,6 +122,8 @@ export const addExportMetadata =
 const onlyType = (type: string) => (filter: { type: string }) =>
   filter.type === type
 
+const toLabel = ({ label }: { label: string }) => label
+
 export const addFilters =
   (worksheet: Worksheet) =>
   (
@@ -136,33 +138,50 @@ export const addFilters =
 
     return worksheet.addRows(
       [
-        ['Période', filters.find((filter) => filter.type === 'periode') ?? '-'],
+        [
+          'Période',
+          filters.find((filter) => filter.type === 'periode')?.label ?? '-',
+        ],
         [
           'Lieux d’accompagnement',
-          filters.filter(onlyType('lieux')).join(', ') ?? '-',
+          filters
+            .filter(onlyType('lieux'))
+            .map(({ label }) => label)
+            .join(', ') || '-',
         ],
-        ['Communes', filters.filter(onlyType('communes')).join(', ') ?? '-'],
+        [
+          'Communes',
+          filters.filter(onlyType('communes')).map(toLabel).join(', ') || '-',
+        ],
         [
           'Départements',
-          filters.filter(onlyType('departements')).join(', ') ?? '-',
+          filters.filter(onlyType('departements')).map(toLabel).join(', ') ||
+            '-',
         ],
         [
           'Type d’accompagnement',
-          filters.filter(onlyType('types')).join(', ') ?? '-',
+          filters.filter(onlyType('types')).map(toLabel).join(', ') || '-',
         ],
-        ['Profil', filters.find((filter) => filter.type === 'profil') ?? '-'],
+        [
+          'Profil',
+          filters.find((filter) => filter.type === 'profil')?.label ?? '-',
+        ],
         filters.filter(onlyType('beneficiaires')).length > 0
           ? [
               'Bénéficiaires',
-              filters.filter(onlyType('beneficiaires')).join(', ') ?? '-',
+              filters
+                .filter(onlyType('beneficiaires'))
+                .map(toLabel)
+                .join(', ') || '-',
             ]
-          : [],
+          : undefined,
         filters.filter(onlyType('mediateurs')).length > 0
           ? [
               'Médiateurs',
-              filters.filter(onlyType('mediateurs')).join(', ') ?? '-',
+              filters.filter(onlyType('mediateurs')).map(toLabel).join(', ') ||
+                '-',
             ]
-          : [],
+          : undefined,
         mediateurScope
           ? [
               'Médiateur',

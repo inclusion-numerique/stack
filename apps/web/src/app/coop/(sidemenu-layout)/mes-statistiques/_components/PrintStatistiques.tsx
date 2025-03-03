@@ -1,5 +1,8 @@
 import type { MesStatistiquesPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/getMesStatistiquesPageData'
-import { generateActivitesFiltersLabels } from '@app/web/cra/generateActivitesFiltersLabels'
+import {
+  generateActivitesFiltersLabels,
+  toLieuPrefix,
+} from '@app/web/cra/generateActivitesFiltersLabels'
 import Tag from '@codegouvfr/react-dsfr/Tag'
 import React from 'react'
 import { StatistiquesActivitesPrint } from '../_sections/StatistiquesActivitesPrint'
@@ -26,7 +29,7 @@ export const PrintStatistiques = (
       beneficiairesOptions: [],
       mediateursOptions: initialMediateursOptions,
     },
-  )
+  ).map(toLieuPrefix)
 
   return (
     <div className="fr-print" aria-hidden>

@@ -4,7 +4,10 @@ import type { SelectOption } from '@app/ui/components/Form/utils/options'
 import type { LieuActiviteOption } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
 import type { BeneficiaireOption } from '@app/web/beneficiaire/BeneficiaireOption'
 import type { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
-import { generateActivitesFiltersLabels } from '@app/web/cra/generateActivitesFiltersLabels'
+import {
+  generateActivitesFiltersLabels,
+  toLieuPrefix,
+} from '@app/web/cra/generateActivitesFiltersLabels'
 import { MediateurOption } from '@app/web/mediateurs/MediateurOption'
 import Button from '@codegouvfr/react-dsfr/Button'
 import Tag from '@codegouvfr/react-dsfr/Tag'
@@ -35,7 +38,7 @@ export const FilterTags = ({
     lieuxActiviteOptions,
     beneficiairesOptions,
     mediateursOptions,
-  })
+  }).map(toLieuPrefix)
 
   const handleRemoveFilter = (key: string, value: string | string[]) => {
     if (Array.isArray(value)) {

@@ -75,25 +75,13 @@ const generateLieuxLabels = (
 ) => [
   ...lieuxActiviteOptions
     .filter(({ value }) => lieux?.includes(value))
-    .map(({ label, value }) => ({
-      label: `Lieu d’activité : ${label}`,
-      key: value,
-      type: 'lieux',
-    })),
+    .map(({ label, value }) => ({ label, key: value, type: 'lieux' })),
   ...communesOptions
     .filter(({ value }) => communes?.includes(value))
-    .map(({ label, value }) => ({
-      label: `Commune : ${label}`,
-      key: value,
-      type: 'communes',
-    })),
+    .map(({ label, value }) => ({ label, key: value, type: 'communes' })),
   ...departementsOptions
     .filter(({ value }) => departements?.includes(value))
-    .map(({ label, value }) => ({
-      label: `Département : ${label}`,
-      key: value,
-      type: 'departements',
-    })),
+    .map(({ label, value }) => ({ label, key: value, type: 'departements' })),
 ]
 
 export const generateActivitesFiltersLabels = (
@@ -170,6 +158,26 @@ export const generateActivitesFiltersLabels = (
     ...beneficiairesLabels,
   ]
 }
+
+const labelPrefixes: Record<string, string> = {
+  communes: 'Commune : ',
+  departements: 'Département : ',
+  lieux: 'Lieu d’activité : ',
+}
+
+export const toLieuPrefix = ({
+  label,
+  type,
+  key,
+}: {
+  label: string
+  type: string
+  key?: string[] | string | null
+}) => ({
+  label: labelPrefixes[type] ? `${labelPrefixes[type]}${label}` : label,
+  type,
+  key,
+})
 
 export type ActivitesFiltersLabels = ReturnType<
   typeof generateActivitesFiltersLabels
