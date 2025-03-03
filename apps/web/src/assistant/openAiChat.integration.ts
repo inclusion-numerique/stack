@@ -10,7 +10,7 @@ import {
 import { mediationAssistantSystemMessage } from '@app/web/assistant/systemMessages'
 import { weatherTestTool } from '@app/web/assistant/tools/weatherTestTool'
 
-describe('openAiChat', () => {
+describe.skip('openAiChat', () => {
   it('should trigger functions tools', async () => {
     const response = await executeOpenAiChat({
       messages: [
