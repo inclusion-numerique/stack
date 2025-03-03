@@ -37,7 +37,7 @@ export const activitesBeneficiaireInnerJoin = (
   return Prisma.sql`
     INNER JOIN accompagnements acc 
     ON acc.activite_id = act.id 
-    AND acc.beneficiaire_id = ANY(${Prisma.join(beneficiaireIds)})
+    AND acc.beneficiaire_id = ANY(ARRAY[${Prisma.join(beneficiaireIds)}]::UUID[])
   `
 }
 

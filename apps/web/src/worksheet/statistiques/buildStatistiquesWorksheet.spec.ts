@@ -1015,6 +1015,6 @@ describe('build statistiques worksheet for coordinateur', () => {
   it('should contains médiateur filter in Statistiques worksheet in row 16 when', () => {
     const rows = worksheet.getRows(15, 2)?.map((row) => row.values)
 
-    expect(rows).toEqual([[undefined, 'Médiateur', 'Marie Doe'], []])
+    expect(rows).toEqual([[undefined, 'Médiateurs', 'Marie Doe'], []])
   })
 })
