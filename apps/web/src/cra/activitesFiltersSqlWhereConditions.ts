@@ -72,7 +72,6 @@ export const getActivitesFiltersWhereConditions = ({
   departements,
   lieux,
   types,
-  profil,
   conseiller_numerique,
 }: ActivitesFilters): ActivitesFiltersWhereConditions => ({
   du: du ? Prisma.raw(`act.date >= '${du}'::timestamp`) : null,
@@ -83,9 +82,6 @@ export const getActivitesFiltersWhereConditions = ({
           `act.type IN (${types.map((type) => `'${type}'`).join(', ')})`,
         )
       : null,
-  profil: profil
-    ? Prisma.raw(`cn.id is ${profil === 'mediateur' ? '' : 'not'} null`)
-    : null,
   lieux:
     lieux && lieux.length > 0
       ? Prisma.raw(

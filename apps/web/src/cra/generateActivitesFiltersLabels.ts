@@ -2,9 +2,19 @@ import type { SelectOption } from '@app/ui/components/Form/utils/options'
 import type { BeneficiaireOption } from '@app/web/beneficiaire/BeneficiaireOption'
 import { LieuFilterType } from '@app/web/components/filters/LieuFilter'
 import type { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
-import { profilSlugLabels, typeActiviteSlugLabels } from '@app/web/cra/cra'
+import { typeActiviteSlugLabels } from '@app/web/cra/cra'
 import type { MediateurOption } from '@app/web/mediateurs/MediateurOption'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
+
+export type FilterType =
+  | 'lieux'
+  | 'communes'
+  | 'departements'
+  | 'beneficiaires'
+  | 'mediateurs'
+  | 'periode'
+  | 'types'
+  | 'conseiller_numerique'
 
 export const locationTypeLabels: {
   [key in LieuFilterType]: string
@@ -23,7 +33,7 @@ export const generateActivitesPeriodeFilterLabel = ({
 }) => ({
   label: `${dateAsDay(new Date(du))} - ${dateAsDay(new Date(au))}`,
   key: ['du', 'au'],
-  type: 'periode',
+  type: 'periode' as const,
 })
 
 const generateBeneficiaireFilterLabel = (
@@ -35,7 +45,7 @@ const generateBeneficiaireFilterLabel = (
     .map(({ label, value }) => ({
       label,
       key: value?.id,
-      type: 'beneficiaires',
+      type: 'beneficiaires' as const,
     }))
 
 const generateMediateurFilterLabel = (
@@ -50,7 +60,7 @@ const generateMediateurFilterLabel = (
     .map(({ label, value }) => ({
       label,
       key: value?.mediateurId,
-      type: 'mediateurs',
+      type: 'mediateurs' as const,
     }))
 
 const generateLieuxLabels = (
@@ -75,13 +85,21 @@ const generateLieuxLabels = (
 ) => [
   ...lieuxActiviteOptions
     .filter(({ value }) => lieux?.includes(value))
-    .map(({ label, value }) => ({ label, key: value, type: 'lieux' })),
+    .map(({ label, value }) => ({ label, key: value, type: 'lieux' as const })),
   ...communesOptions
     .filter(({ value }) => communes?.includes(value))
-    .map(({ label, value }) => ({ label, key: value, type: 'communes' })),
+    .map(({ label, value }) => ({
+      label,
+      key: value,
+      type: 'communes' as const,
+    })),
   ...departementsOptions
     .filter(({ value }) => departements?.includes(value))
-    .map(({ label, value }) => ({ label, key: value, type: 'departements' })),
+    .map(({ label, value }) => ({
+      label,
+      key: value,
+      type: 'departements' as const,
+    })),
 ]
 
 export const generateActivitesFiltersLabels = (
@@ -89,7 +107,7 @@ export const generateActivitesFiltersLabels = (
     beneficiaires,
     mediateurs,
     types,
-    profil,
+    conseiller_numerique,
     departements,
     communes,
     lieux,
@@ -122,15 +140,18 @@ export const generateActivitesFiltersLabels = (
     ? types.map((type) => ({
         label: typeActiviteSlugLabels[type],
         key: type,
-        type: 'types',
+        type: 'types' as const,
       }))
     : []
 
-  const profilLabel = profil
+  const roleLabel = conseiller_numerique
     ? {
-        label: profilSlugLabels[profil],
-        key: profil,
-        type: 'profil',
+        label:
+          conseiller_numerique === '1'
+            ? 'Conseiller numérique'
+            : 'Médiateur numérique',
+        key: conseiller_numerique,
+        type: 'conseiller_numerique' as const,
       }
     : null
 
@@ -151,7 +172,7 @@ export const generateActivitesFiltersLabels = (
 
   return [
     ...mediateursLabels,
-    ...(profilLabel == null ? [] : [profilLabel]),
+    ...(roleLabel == null ? [] : [roleLabel]),
     ...(periode == null ? [] : [periode]),
     ...lieuxLabels,
     ...typesLabel,
@@ -171,7 +192,7 @@ export const toLieuPrefix = ({
   key,
 }: {
   label: string
-  type: string
+  type: FilterType
   key?: string[] | string | null
 }) => ({
   label: labelPrefixes[type] ? `${labelPrefixes[type]}${label}` : label,

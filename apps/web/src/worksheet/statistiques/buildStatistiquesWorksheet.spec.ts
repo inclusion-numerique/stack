@@ -404,8 +404,8 @@ const STATISTIQUES_WORKSHEET_INPUT_FOR_MEDIATEUR: BuildStatistiquesWorksheetInpu
       },
       {
         label: 'Médiateur',
-        key: 'mediateur',
-        type: 'profil',
+        key: '0',
+        type: 'conseiller_numerique',
       },
       {
         label: 'Coordinateur Inscrit avec tout (Mes statistiques)',
@@ -463,8 +463,8 @@ const STATISTIQUES_WORKSHEET_INPUT_FOR_COORDINATEUR: BuildStatistiquesWorksheetI
       },
       {
         label: 'Médiateur',
-        key: 'mediateur',
-        type: 'profil',
+        key: '0',
+        type: 'conseiller_numerique',
       },
     ],
   }
@@ -489,7 +489,7 @@ const expectQuantifiedShareRows = (
 const mainTitle = { start: 1, length: 1 }
 const info = { start: mainTitle.start + mainTitle.length, length: 6 }
 const filterTitle = { start: info.start + info.length, length: 1 }
-const filters = { start: filterTitle.start + filterTitle.length, length: 9 }
+const filters = { start: filterTitle.start + filterTitle.length, length: 8 }
 const generalesTitle = { start: filters.start + filters.length, length: 1 }
 const generales = {
   start: generalesTitle.start + generalesTitle.length,
@@ -660,12 +660,7 @@ describe('build statistiques worksheet for médiateur', () => {
         'Type d’accompagnement',
         'Accompagnement individuel, Atelier collectif',
       ],
-      [undefined, 'Profil', 'Médiateur'],
-      [
-        undefined,
-        'Bénéficiaires',
-        'Marcel Sans accompagnements, Georges Maximal',
-      ],
+      [undefined, 'Rôle', 'Médiateur'],
       [
         undefined,
         'Médiateurs',

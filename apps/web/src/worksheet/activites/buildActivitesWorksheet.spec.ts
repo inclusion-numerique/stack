@@ -47,8 +47,8 @@ describe('buildActivitesWorksheet', () => {
         },
         {
           label: 'Conseiller',
-          key: 'conseiller',
-          type: 'profil',
+          key: '1',
+          type: 'conseiller_numerique',
         },
         {
           label: 'Beneficiaire Name',

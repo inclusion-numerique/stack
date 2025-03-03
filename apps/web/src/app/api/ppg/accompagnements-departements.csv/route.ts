@@ -22,8 +22,8 @@ export const GET = async (request: NextRequest) => {
   const dateParam = searchParams.get('date')
   const date = dateParam ?? undefined
 
-  const data_conum = await fetchAccompagnement('conseiller-numerique', date)
-  const data_mediateur = await fetchAccompagnement('mediateur', date)
+  const data_conum = await fetchAccompagnement(true, date)
+  const data_mediateur = await fetchAccompagnement(false, date)
 
   if (!data_conum || !data_mediateur) {
     return new Response('No data available', {

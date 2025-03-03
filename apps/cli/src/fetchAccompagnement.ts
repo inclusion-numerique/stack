@@ -121,7 +121,7 @@ export const fetchAccompagnements = new Command()
         const total = await getTotalCountsStats({
           activitesFilters: {
             departements: [departement],
-            conseiller_numerique: `${conum}`,
+            conseiller_numerique: `${conum as '0' | '1'}`,
             au: `${date}`,
           },
         })

@@ -1,28 +1,27 @@
 'use client'
 
 import { Popover } from '@app/web/components/Popover'
-import { ProfilSlug, profilOptions, profilSlugOptions } from '@app/web/cra/cra'
 import classNames from 'classnames'
 import { useRouter, useSearchParams } from 'next/navigation'
 import React, { ChangeEvent, useEffect, useState } from 'react'
-import { FilterFooter } from './elements/FilterFooter'
 import TriggerButton from './elements/TriggerButton'
 
-export const ProfilFilter = ({
-  defaultValue,
-}: {
-  defaultValue?: ProfilSlug
-}) => {
+const roleOptions = [
+  { label: 'Conseillers numériques', value: '1' },
+  { label: 'Médiateurs numériques', value: '0' },
+]
+
+export const RoleFilter = ({ defaultValue }: { defaultValue?: '0' | '1' }) => {
   const router = useRouter()
   const searchParams = useSearchParams()
   const params = new URLSearchParams(searchParams.toString())
 
   const [isOpen, setIsOpen] = useState(false)
 
-  const [profil, setProfil] = useState(defaultValue)
+  const [role, setRole] = useState(defaultValue)
 
   useEffect(() => {
-    setProfil(defaultValue)
+    setRole(defaultValue)
   }, [defaultValue])
 
   const closePopover = (close: boolean = false) => {
@@ -31,20 +30,21 @@ export const ProfilFilter = ({
   }
 
   const handleSubmit = (close: boolean = false) => {
-    profil == null ? params.delete('profil') : params.set('profil', profil)
+    role == null
+      ? params.delete('conseiller_numerique')
+      : params.set('conseiller_numerique', role)
     closePopover(close)
   }
 
   const handleClearFilters = () => {
-    setProfil(undefined)
-    params.delete('profil')
-    closePopover(true)
+    setRole(undefined)
+    params.delete('conseiller_numerique')
   }
 
   const handleSelectFilter = (option: ChangeEvent<HTMLInputElement>) => {
     option.target.checked
-      ? setProfil(option.target.value as ProfilSlug)
-      : setProfil(undefined)
+      ? setRole(option.target?.value as '0' | '1')
+      : setRole(undefined)
   }
 
   return (
@@ -54,30 +54,43 @@ export const ProfilFilter = ({
       onInteractOutside={() => handleSubmit()}
       onEscapeKeyDown={() => handleSubmit()}
       trigger={
-        <TriggerButton isOpen={isOpen} isFilled={profil != null}>
-          Profil
-          {profil && (
-            <>
-              &nbsp;·&nbsp;
-              <span className="ri-check-line" aria-hidden="true" />
-            </>
-          )}
+        <TriggerButton isOpen={isOpen} isFilled={role != null}>
+          Rôle
+          {role && <>&nbsp;·&nbsp;1</>}
         </TriggerButton>
       }
     >
-      <form style={{ width: 384 }} action={() => handleSubmit(true)}>
+      <form style={{ width: 384 }}>
         <fieldset className="fr-fieldset fr-mb-0">
           <label className="fr-label fr-mb-2v fr-text--bold">
             Filtrer par&nbsp;:
           </label>
-          {profilSlugOptions.map(({ label, value: optionValue }, index) => {
+          <div className="fr-fieldset__element">
+            <div className="fr-radio-group">
+              <input
+                type="radio"
+                id="activite-filter-radio-clear"
+                name="role"
+                value="clear"
+                defaultChecked={defaultValue == null}
+                onChange={handleClearFilters}
+              />
+              <label
+                className="fr-label fr-whitespace-nowrap"
+                htmlFor="activite-filter-radio-clear"
+              >
+                Tous les rôles
+              </label>
+            </div>
+          </div>
+          {roleOptions.map(({ label, value: optionValue }, index) => {
             const id = `activite-filter-radio-${optionValue}`
 
             return (
               <div
                 className={classNames(
                   'fr-fieldset__element',
-                  index === profilOptions.length - 1 && 'fr-mb-0',
+                  index === roleOptions.length - 1 && 'fr-mb-0',
                 )}
                 key={optionValue}
               >
@@ -85,7 +98,7 @@ export const ProfilFilter = ({
                   <input
                     type="radio"
                     id={id}
-                    name="profil"
+                    name="role"
                     value={optionValue}
                     defaultChecked={defaultValue === optionValue}
                     onChange={handleSelectFilter}
@@ -98,7 +111,6 @@ export const ProfilFilter = ({
             )
           })}
         </fieldset>
-        <FilterFooter onClearFilters={handleClearFilters} />
       </form>
     </Popover>
   )

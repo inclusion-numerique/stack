@@ -143,7 +143,7 @@ describe('generate activites filters labels', () => {
           '1ae07d95-316c-489f-893a-d17052c883b7',
           '303381cc-3da7-433d-a553-1a5f76465989',
         ],
-        profil: 'mediateur',
+        conseiller_numerique: '0',
         du: '2025-01-29',
         au: '2025-02-11',
         lieux: ['36929ed7-3b6f-4ed3-9924-b5e1a6c27096'],
@@ -181,9 +181,9 @@ describe('generate activites filters labels', () => {
         type: 'mediateurs',
       },
       {
-        label: 'Médiateur',
-        key: 'mediateur',
-        type: 'profil',
+        label: 'Médiateur numérique',
+        key: '0',
+        type: 'conseiller_numerique',
       },
       {
         label: '29.01.2025 - 11.02.2025',

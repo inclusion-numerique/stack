@@ -8,7 +8,7 @@ import { BeneficiaireFilter } from '@app/web/components/filters/BeneficiaireFilt
 import { LieuFilter } from '@app/web/components/filters/LieuFilter'
 import { MediateurFilter } from '@app/web/components/filters/MediateurFilter'
 import { PeriodeFilter } from '@app/web/components/filters/PeriodeFilter'
-import { ProfilFilter } from '@app/web/components/filters/ProfilFilter'
+import { RoleFilter } from '@app/web/components/filters/RoleFilter'
 import type { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
 import { MediateurOption } from '@app/web/mediateurs/MediateurOption'
 import classNames from 'classnames'
@@ -45,13 +45,10 @@ const Filters = ({
     )}
   >
     {isCoordinateur && (
-      <>
-        <MediateurFilter
-          initialMediateursOptions={initialMediateursOptions}
-          defaultValue={defaultFilters.mediateurs ?? []}
-        />
-        <ProfilFilter defaultValue={defaultFilters.profil} />
-      </>
+      <MediateurFilter
+        initialMediateursOptions={initialMediateursOptions}
+        defaultValue={defaultFilters.mediateurs ?? []}
+      />
     )}
     <PeriodeFilter
       minDate={minDate ?? new Date()}
@@ -86,6 +83,9 @@ const Filters = ({
       departementsOptions={departementsOptions}
     />
     <ActiviteTypeFilter defaultValue={defaultFilters.types ?? []} />
+    {isCoordinateur && (
+      <RoleFilter defaultValue={defaultFilters.conseiller_numerique} />
+    )}
     {isMediateur && beneficiairesFilter && (
       <BeneficiaireFilter
         initialBeneficiairesOptions={initialBeneficiairesOptions}

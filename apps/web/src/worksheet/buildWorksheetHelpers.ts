@@ -1,6 +1,9 @@
 import type { SessionUser } from '@app/web/auth/sessionUser'
 import type { MediateurUser } from '@app/web/auth/userTypeGuards'
-import type { ActivitesFiltersLabels } from '@app/web/cra/generateActivitesFiltersLabels'
+import type {
+  ActivitesFiltersLabels,
+  FilterType,
+} from '@app/web/cra/generateActivitesFiltersLabels'
 import { getUserRoleLabel } from '@app/web/utils/getUserRoleLabel'
 import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
 import type { Workbook, Worksheet } from 'exceljs'
@@ -130,42 +133,61 @@ export const addFilters =
     filters: ActivitesFiltersLabels,
     {
       mediateurScope,
+      excludeFilters = [],
     }: {
       mediateurScope: null | Pick<SessionUser, 'firstName' | 'lastName'>
+      excludeFilters?: FilterType[]
     },
   ) => {
     addTitleRow(worksheet)('Filtres')
 
     return worksheet.addRows(
       [
-        [
-          'Période',
-          filters.find((filter) => filter.type === 'periode')?.label ?? '-',
-        ],
-        [
-          'Lieux d’accompagnement',
-          filters
-            .filter(onlyType('lieux'))
-            .map(({ label }) => label)
-            .join(', ') || '-',
-        ],
-        [
-          'Communes',
-          filters.filter(onlyType('communes')).map(toLabel).join(', ') || '-',
-        ],
-        [
-          'Départements',
-          filters.filter(onlyType('departements')).map(toLabel).join(', ') ||
-            '-',
-        ],
-        [
-          'Type d’accompagnement',
-          filters.filter(onlyType('types')).map(toLabel).join(', ') || '-',
-        ],
-        [
-          'Profil',
-          filters.find((filter) => filter.type === 'profil')?.label ?? '-',
-        ],
+        !excludeFilters.includes('periode')
+          ? [
+              'Période',
+              filters.find((filter) => filter.type === 'periode')?.label ?? '-',
+            ]
+          : undefined,
+        !excludeFilters.includes('lieux')
+          ? [
+              'Lieux d’accompagnement',
+              filters
+                .filter(onlyType('lieux'))
+                .map(({ label }) => label)
+                .join(', ') || '-',
+            ]
+          : undefined,
+        !excludeFilters.includes('communes')
+          ? [
+              'Communes',
+              filters.filter(onlyType('communes')).map(toLabel).join(', ') ||
+                '-',
+            ]
+          : undefined,
+        !excludeFilters.includes('departements')
+          ? [
+              'Départements',
+              filters
+                .filter(onlyType('departements'))
+                .map(toLabel)
+                .join(', ') || '-',
+            ]
+          : undefined,
+        !excludeFilters.includes('types')
+          ? [
+              'Type d’accompagnement',
+              filters.filter(onlyType('types')).map(toLabel).join(', ') || '-',
+            ]
+          : undefined,
+        !excludeFilters.includes('conseiller_numerique')
+          ? [
+              'Rôle',
+              filters.find((filter) => filter.type === 'conseiller_numerique')
+                ?.label ?? '-',
+            ]
+          : undefined,
+        !excludeFilters.includes('beneficiaires') &&
         filters.filter(onlyType('beneficiaires')).length > 0
           ? [
               'Bénéficiaires',
@@ -175,6 +197,7 @@ export const addFilters =
                 .join(', ') || '-',
             ]
           : undefined,
+        !excludeFilters.includes('mediateurs') &&
         filters.filter(onlyType('mediateurs')).length > 0
           ? [
               'Médiateurs',
