@@ -16,6 +16,7 @@ import {
 } from '../data/cartographie-nationale/cartographieNationaleStructures'
 import { executeImportContactsToBrevo } from './import-contacts-to-brevo/executeImportContactsToBrevo'
 import { output } from './output'
+import { executeUpdateLieuxActivitesADistance } from './update-lieu-activite-a-distance/executeUpdateLieuxActivitesADistance'
 
 export type JobExecutor<Name extends JobName, Result = unknown> = (
   job: Job & { name: Name; payload: JobPayload<Name> },
@@ -53,6 +54,7 @@ export const jobExecutors: {
   'import-contacts-to-brevo': executeImportContactsToBrevo,
   'ingest-les-bases-in-rag': executeIngestLesBasesInRag,
   'set-servcies-to-shared-lieux': executeSetServciesToSharedLieux,
+  'update-lieux-activites-a-distance': executeUpdateLieuxActivitesADistance,
 }
 
 export const executeJob = async (job: Job) => {
