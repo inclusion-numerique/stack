@@ -1,4 +1,3 @@
-import ActivitesFilterTags from '@app/web/app/coop/(sidemenu-layout)/mes-activites/(liste)/ActivitesFilterTags'
 import { StatistiquesActivites } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_sections/StatistiquesActivites'
 import { StatistiquesBeneficiaires } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_sections/StatistiquesBeneficiaires'
 import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
@@ -6,6 +5,8 @@ import CoopPageContainer from '@app/web/app/coop/CoopPageContainer'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
 import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
+import { FilterTags } from '../mes-activites/(liste)/FilterTags'
+import Filters from '../mes-activites/(liste)/Filters'
 import { ExportStatistiques } from './_components/ExportStatistiques'
 import { PrintStatistiques } from './_components/PrintStatistiques'
 import { StatistiquesTerritoriales } from './_components/StatistiquesTerritoriales'
@@ -24,6 +25,7 @@ export const MesStatistiques = (
     communesOptions,
     departementsOptions,
     initialMediateursOptions,
+    initialBeneficiairesOptions,
     lieuxActiviteOptions,
     activiteDates,
     user,
@@ -35,17 +37,17 @@ export const MesStatistiques = (
       <SkipLinksPortal links={defaultSkipLinks} />
       <PrintStatistiques {...mesStatistiquesProps} />
       <main className="fr-no-print" id={contentId}>
-        <h1 className="fr-text-title--blue-france fr-mb-2w">
+        <h1 className="fr-text-title--blue-france fr-mb-6v">
           Mes statistiques
         </h1>
         <div className="fr-flex fr-justify-content-space-between fr-align-items-center fr-flex-gap-4v fr-mb-3w">
-          <ActivitesFilterTags
+          <Filters
             defaultFilters={activitesFilters}
             communesOptions={communesOptions}
             departementsOptions={departementsOptions}
             lieuxActiviteOptions={lieuxActiviteOptions}
             initialMediateursOptions={initialMediateursOptions}
-            initialBeneficiairesOptions={[]}
+            initialBeneficiairesOptions={initialBeneficiairesOptions}
             beneficiairesFilter={false}
             minDate={activiteDates.first}
             isCoordinateur={user.coordinateur?.id != null}
@@ -60,7 +62,15 @@ export const MesStatistiques = (
             beneficiairesOptions={[]}
           />
         </div>
-        <hr />
+        <hr className="fr-pb-4v" />
+        <FilterTags
+          filters={activitesFilters}
+          communesOptions={communesOptions}
+          departementsOptions={departementsOptions}
+          lieuxActiviteOptions={lieuxActiviteOptions}
+          mediateursOptions={initialMediateursOptions}
+          beneficiairesOptions={[]}
+        />
         <section className="fr-mb-6w">
           <StatistiquesGenerales {...mesStatistiquesProps} />
         </section>

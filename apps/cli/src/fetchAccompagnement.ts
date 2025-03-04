@@ -120,8 +120,8 @@ export const fetchAccompagnements = new Command()
       departements.map(async (departement) => {
         const total = await getTotalCountsStats({
           activitesFilters: {
-            departement,
-            conseiller_numerique: `${conum}`,
+            departements: [departement],
+            conseiller_numerique: `${conum as '0' | '1'}`,
             au: `${date}`,
           },
         })

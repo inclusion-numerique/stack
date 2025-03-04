@@ -29,7 +29,7 @@ export const getStatistiquesWorksheetInput = async ({
   } = await getFiltersOptionsForMediateur({
     user,
     mediateurCoordonnesIds,
-    includeBeneficiaireId: filters.beneficiaire,
+    includeBeneficiaireIds: filters.beneficiaires,
   })
 
   const activitesFiltersLabels = generateActivitesFiltersLabels(filters, {

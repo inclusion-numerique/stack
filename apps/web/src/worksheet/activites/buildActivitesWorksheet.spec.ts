@@ -34,18 +34,28 @@ describe('buildActivitesWorksheet', () => {
         },
         coordinateur: null,
       },
-      filters: {
-        du: '01/01/2023',
-        au: '31/01/2023',
-        periode: null, // unused in worksheet
-        typeLieu: 'Commune',
-        nomLieu: 'Lyon',
-        lieu: null, // unused in worksheet
-        type: 'Accompagnement',
-        beneficiaire: 'Beneficiaire Name',
-        mediateur: null,
-        profil: 'Conseiller',
-      },
+      filters: [
+        {
+          key: '69382',
+          label: 'Commune : Lyon 2eme · 69002',
+          type: 'communes',
+        },
+        {
+          label: 'Accompagnement individuel',
+          key: 'individuel',
+          type: 'types',
+        },
+        {
+          label: 'Conseiller',
+          key: '1',
+          type: 'conseiller_numerique',
+        },
+        {
+          label: 'Beneficiaire Name',
+          key: '7d6091bc-dc91-4d1b-b357-f101e9eb6217',
+          type: 'beneficiaires',
+        },
+      ],
       activites: [], // empty activities for now
     } satisfies BuildActivitesWorksheetInput
   })
@@ -77,8 +87,8 @@ describe('buildActivitesWorksheet', () => {
     // Check a specific filter, e.g., "Type de lieu: Commune"
     const filterTypeLieuCell = worksheet.getCell('A12')
     const filterTypeLieuValueCell = worksheet.getCell('B12')
-    expect(filterTypeLieuCell.value).toBe('Type de lieu')
-    expect(filterTypeLieuValueCell.value).toBe('Commune')
+    expect(filterTypeLieuCell.value).toBe('Communes')
+    expect(filterTypeLieuValueCell.value).toBe('Commune : Lyon 2eme · 69002')
   })
 
   it('should include the mediateur if different from user', () => {

@@ -1,7 +1,10 @@
 import { getSessionTokenFromNextRequestCookies } from '@app/web/auth/getSessionTokenFromCookies'
 import { getSessionUserFromSessionToken } from '@app/web/auth/getSessionUserFromSessionToken'
 import { SessionUser } from '@app/web/auth/sessionUser'
-import { ActivitesFilterValidations } from '@app/web/cra/ActivitesFilters'
+import {
+  ActivitesFilterValidations,
+  ActivitesFilters,
+} from '@app/web/cra/ActivitesFilters'
 import { dateAsIsoDay } from '@app/web/utils/dateAsIsoDay'
 import { buildStatistiquesWorksheet } from '@app/web/worksheet/statistiques/buildStatistiquesWorksheet'
 import { getStatistiquesWorksheetInput } from '@app/web/worksheet/statistiques/getStatistiquesWorksheetInput'
@@ -16,12 +19,13 @@ const ExportActivitesValidation = z.object(ActivitesFilterValidations)
 const toMediateurId = ({ mediateurId }: { mediateurId: string }) => mediateurId
 
 const disallowExportFor =
-  (user: SessionUser) => (exportForMediateurId?: string) =>
-    exportForMediateurId &&
-    exportForMediateurId !== user.mediateur?.id &&
-    !user.coordinateur?.mediateursCoordonnes
-      .map(toMediateurId)
-      .includes(exportForMediateurId)
+  (user: SessionUser) => (exportForMediateurIds?: string[]) =>
+    exportForMediateurIds &&
+    user.mediateur?.id &&
+    !exportForMediateurIds.includes(user.mediateur.id) &&
+    !exportForMediateurIds.some((id) =>
+      user.coordinateur?.mediateursCoordonnes.map(toMediateurId).includes(id),
+    )
 
 export const GET = async (request: NextRequest) => {
   const sessionToken = getSessionTokenFromNextRequestCookies(request.cookies)
@@ -43,9 +47,9 @@ export const GET = async (request: NextRequest) => {
     return new Response('Invalid query params', { status: 400 })
   }
 
-  const filters = parsedQueryParams.data
+  const filters = parsedQueryParams.data as ActivitesFilters
 
-  if (disallowExportFor(user)(filters.mediateur)) {
+  if (disallowExportFor(user)(filters.mediateurs)) {
     return new Response('Cannot export for another mediateur', { status: 403 })
   }
 

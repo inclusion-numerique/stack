@@ -187,6 +187,7 @@ export const buildStatistiquesWorksheet = ({
   addFilters(worksheet)(filters, {
     // only display the mediateur name if the user is NOT the mediateur used for export
     mediateurScope: user.id === mediateur.id ? null : mediateur,
+    excludeFilters: ['beneficiaires'],
   })
   addStatistiquesGenerales(worksheet)(statistiques)
   addStatistiquesActivites(worksheet)(statistiques)

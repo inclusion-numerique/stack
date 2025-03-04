@@ -28,7 +28,7 @@ const ExportActivitesButton = ({
 
     for (const [key, value] of Object.entries(filters)) {
       if (!value) continue
-      searchParams.set(key, value)
+      searchParams.set(key, Array.isArray(value) ? value.join(',') : value)
     }
 
     const pathWithSearchParams =
@@ -43,15 +43,6 @@ const ExportActivitesButton = ({
       message: `Le téléchargement de vos ${matchesCount} activités est en cours.`,
     })
   }
-
-  const filterLabelsToDisplay = Object.entries(filterLabels)
-    // we hide filters that give to much granular information
-    .filter(
-      ([key]) =>
-        key !== 'du' && key !== 'au' && key !== 'typeLieu' && key !== 'nomLieu',
-    )
-    // only keep applied filters
-    .filter((entry): entry is [string, string] => !!entry[1])
 
   return (
     <>
@@ -89,18 +80,21 @@ const ExportActivitesButton = ({
           },
         ]}
       >
-        {filterLabelsToDisplay.length > 0 ? (
+        {filterLabels.length > 0 ? (
           <>
             <p className="fr-mb-2v">
               Vous avez appliqué les filtres suivants&nbsp;:
             </p>
-            <div className="fr-flex fr-flex-wrap fr-flex-gap-2v">
-              {filterLabelsToDisplay.map(([key, value]) => (
-                <Tag key={key} small>
-                  {value}
-                </Tag>
+            <ul className="fr-tags-group">
+              {filterLabels.map((filter) => (
+                <li
+                  className="fr-line-height-1"
+                  key={`${filter.type}-${filter.key}`}
+                >
+                  <Tag small>{filter.label}</Tag>
+                </li>
               ))}
-            </div>
+            </ul>
           </>
         ) : (
           <p className="fr-mb-2v">

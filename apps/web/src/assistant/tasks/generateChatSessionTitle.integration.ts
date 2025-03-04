@@ -16,6 +16,7 @@ describe('generateChatSessionTitle', () => {
     })
     expect(title).toBeOneOf([
       'Faon de biche',
+      'Faons de biche',
       'Bébés des biches',
       'Bébés de biches',
       'Nom des bébés biches',

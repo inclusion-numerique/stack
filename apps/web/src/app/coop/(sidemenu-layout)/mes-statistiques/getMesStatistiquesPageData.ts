@@ -80,7 +80,7 @@ export const getMesStatistiquesPageData = async ({
   } = await getFiltersOptionsForMediateur({
     user,
     mediateurCoordonnesIds,
-    includeBeneficiaireId: activitesFilters.beneficiaire,
+    includeBeneficiaireIds: activitesFilters.beneficiaires,
   })
 
   return {

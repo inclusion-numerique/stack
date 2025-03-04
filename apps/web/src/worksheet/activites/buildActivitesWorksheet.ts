@@ -76,6 +76,7 @@ export const buildActivitesWorksheet = ({
   addFilters(worksheet)(filters, {
     // only display the mediateur name if the user is NOT the mediateur used for export
     mediateurScope: user.id === mediateur.id ? null : mediateur,
+    excludeFilters: ['conseiller_numerique'],
   })
 
   const activitesTableHeaders = [

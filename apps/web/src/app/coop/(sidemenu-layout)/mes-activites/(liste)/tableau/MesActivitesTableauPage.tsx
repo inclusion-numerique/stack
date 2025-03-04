@@ -13,7 +13,7 @@ const SuspensedContent = async ({
 
   return (
     <>
-      <p className="fr-text--bold fr-text--lg fr-mb-6v">
+      <p className="fr-text--bold fr-text--lg fr-mb-6v fr-mt-2v">
         {getActivitesResultCountLabel({ isFiltered, searchResult })}
       </p>
       <ActivitesTable
@@ -31,7 +31,6 @@ const MesActivitesTableauPage = ({
   data: Promise<ActivitesListPageData>
 }) => (
   <>
-    <hr className="fr-separator-6v" />
     <Suspense fallback={<Spinner />}>
       <SuspensedContent data={data} />
     </Suspense>

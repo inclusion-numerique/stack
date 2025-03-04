@@ -14,7 +14,7 @@ export const getActivitesWorksheetInput = async ({
 }): Promise<BuildActivitesWorksheetInput> => {
   const { activites, totalPages } = await searchActivite({
     mediateurId: user.mediateur?.id,
-    beneficiaireId: filters.beneficiaire,
+    beneficiaireIds: filters.beneficiaires,
     searchParams: {
       ...filters,
       lignes: '10000000',
@@ -33,7 +33,7 @@ export const getActivitesWorksheetInput = async ({
     lieuxActiviteOptions,
   } = await getFiltersOptionsForMediateur({
     user,
-    includeBeneficiaireId: filters.beneficiaire,
+    includeBeneficiaireIds: filters.beneficiaires,
   })
 
   const activitesFiltersLabels = generateActivitesFiltersLabels(filters, {

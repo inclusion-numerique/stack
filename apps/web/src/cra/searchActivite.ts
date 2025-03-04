@@ -24,7 +24,7 @@ import { orderItemsByIndexedValues } from '@app/web/utils/orderItemsByIndexedVal
 
 type SearchActiviteOptions = {
   mediateurId?: string
-  beneficiaireId?: string
+  beneficiaireIds?: string[]
   searchParams?: ActivitesDataTableSearchParams
 }
 
@@ -63,7 +63,7 @@ export const searchActivite = async (options: SearchActiviteOptions) => {
              ${crasLieuLabelSelect}                as lieu
 
       FROM activites act
-               ${activitesBeneficiaireInnerJoin(options.beneficiaireId)}
+               ${activitesBeneficiaireInnerJoin(options.beneficiaireIds)}
                LEFT JOIN structures str ON act.structure_id = str.id
                LEFT JOIN mediateurs med ON act.mediateur_id = med.id
                LEFT JOIN conseillers_numeriques cn ON med.id = cn.mediateur_id
@@ -95,7 +95,7 @@ export const searchActivite = async (options: SearchActiviteOptions) => {
   const countQueryResult = await prismaClient.$queryRaw<{ count: number }[]>`
       SELECT COUNT(act.id)::INT as count
       FROM activites act
-          ${activitesBeneficiaireInnerJoin(options.beneficiaireId)}
+          ${activitesBeneficiaireInnerJoin(options.beneficiaireIds)}
           LEFT JOIN structures str ON act.structure_id = str.id
           LEFT JOIN mediateurs med ON act.mediateur_id = med.id
           LEFT JOIN conseillers_numeriques cn ON med.id = cn.mediateur_id

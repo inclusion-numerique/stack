@@ -59,7 +59,9 @@ const CreateCraDemarcheAdministrativePage = async ({
   const initialBeneficiairesOptions =
     await getInitialBeneficiairesOptionsForSearch({
       mediateurId: user.mediateur.id,
-      includeBeneficiaireId: defaultValues.beneficiaire?.id ?? undefined,
+      includeBeneficiaireIds: defaultValues.beneficiaire?.id
+        ? [defaultValues.beneficiaire.id]
+        : [],
     })
 
   const dureeOptions = await getAdaptiveDureeOptions({
