@@ -853,6 +853,7 @@ enum Materiel {
 enum Thematique {
   DiagnosticNumerique      @map("diagnostic_numerique")
   PrendreEnMainDuMateriel  @map("prendre_en_main_du_materiel")
+  MaintenanceDeMateriel    @map("maintenance_de_materiel")
   NavigationSurInternet    @map("navigation_sur_internet")
   Email                    @map("email")
   Bureautique              @map("bureautique")
@@ -1059,10 +1060,10 @@ model AssistantConfiguration {
 
   systemMessage String? @map("system_message")
 
-  searchToolDescription       String?                @map("search_tool_description")
-  chatSessions                AssistantChatSession[]
+  searchToolDescription String?                @map("search_tool_description")
+  chatSessions          AssistantChatSession[]
 
-  currentConfigurationFor User?                  @relation(name: "user_current_configuration")
+  currentConfigurationFor User? @relation(name: "user_current_configuration")
 
   @@map("assistant_configurations")
 }

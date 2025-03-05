@@ -193,6 +193,7 @@
                   "enum": [
                     "diagnostic_numerique",
                     "prendre_en_main_du_materiel",
+                    "maintenance_de_materiel",
                     "navigation_sur_internet",
                     "email",
                     "bureautique",
