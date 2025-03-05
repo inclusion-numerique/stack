@@ -273,36 +273,36 @@ import { NextResponse } from 'next/server'
  *           example: '2022-01-31'
  *
  *       - in: query
- *         name: filter[type]
+ *         name: filter[types]
  *         required: false
- *         description: Type d’activité (individuel, démarche ou collectif)
+ *         description: Types d’activités (individuel, démarche et/ou collectif) séparés par des virgules
  *         schema:
  *           type: string
  *           enum: [Individuel, Demarche, Collectif]
  *           example: 'Individuel'
  *
  *       - in: query
- *         name: filter[mediateur]
+ *         name: filter[mediateurs]
  *         required: false
- *         description: UUID du médiateur ayant réalisé l’activité
+ *         description: UUID des médiateurs ayant réalisé les activités séparés par des virgules
  *         schema:
  *           type: string
  *           format: uuid
  *           example: '123e4567-e89b-12d3-a456-426614174000'
  *
  *       - in: query
- *         name: filter[beneficiaire]
+ *         name: filter[beneficiaires]
  *         required: false
- *         description: UUID du bénéficiaire de l’activité
+ *         description: UUID des bénéficiaire des activités séparés par des virgules
  *         schema:
  *           type: string
  *           format: uuid
  *           example: '123e4567-e89b-12d3-a456-426614174000'
  *
  *       - in: query
- *         name: filter[commune]
+ *         name: filter[communes]
  *         required: false
- *         description: Code INSEE de la commune où l’activité a été réalisée (5 caractères)
+ *         description: Code INSEE des communes où les activités ont étés réalisées (5 caractères) séparés par des virgules
  *         schema:
  *           type: string
  *           minLength: 5
@@ -310,18 +310,18 @@ import { NextResponse } from 'next/server'
  *           example: '69385'
  *
  *       - in: query
- *         name: filter[departement]
+ *         name: filter[departements]
  *         required: false
- *         description: Code du département où l’activité a été réalisée (1 à 3 caractères)
+ *         description: Code des départements où les activités ont étés réalisées (1 à 3 caractères) séparés par des virgules
  *         schema:
  *           type: string
  *           maxLength: 3
  *           example: '69'
  *
  *       - in: query
- *         name: filter[lieu]
+ *         name: filter[lieux]
  *         required: false
- *         description: UUID du lieu où l’activité a été réalisée
+ *         description: UUID des lieux où les activités ont étés réalisées séparés par des virgules
  *         schema:
  *           type: string
  *           format: uuid
