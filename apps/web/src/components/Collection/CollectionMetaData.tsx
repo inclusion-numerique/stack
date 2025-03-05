@@ -28,7 +28,7 @@ const CollectionMetaData = ({
 }) => (
   <div
     className={classNames(
-      'fr-flex fr-my-2v fr-text--sm fr-mb-0 fr-text-mention--grey',
+      'fr-flex fr-text--sm fr-mb-0 fr-text-mention--grey',
       context === 'view' && styles.container,
       ['card', 'contextModal'].includes(context) && 'fr-flex-gap-2v',
     )}

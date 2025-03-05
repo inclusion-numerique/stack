@@ -38,7 +38,7 @@ const AddOrRemoveResourceFromCollection = ({
 
   return (
     <div className={styles.container} data-testid="add-in-collection-section">
-      <div className="fr-flex fr-flex-gap-4v fr-align-items-center">
+      <div className="fr-flex fr-flex-gap-6v fr-align-items-center">
         <IconInSquare {...iconInSquareProps} />
         <div className={styles.content}>
           <b>{collection.title}</b>

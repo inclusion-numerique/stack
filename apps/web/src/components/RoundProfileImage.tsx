@@ -8,7 +8,6 @@ const fontSizeByPictureSize: {
   24: 10,
   32: 12,
   48: 18,
-  56: 24,
   96: 36,
   116: 42,
   128: 48,

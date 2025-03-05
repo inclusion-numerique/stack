@@ -12,7 +12,7 @@ const RoundImage = ({
   fallback,
 }: {
   image: { id: string; altText?: string | null } | null
-  size?: 24 | 32 | 48 | 56 | 96 | 116 | 128
+  size?: 24 | 32 | 48 | 96 | 116 | 128
   radius?: 'full' | 'half' | 'quarter'
   borderWidth?: 1 | 2
   className?: string
@@ -24,7 +24,6 @@ const RoundImage = ({
       size === 24 && styles.size24,
       size === 32 && styles.size32,
       size === 48 && styles.size48,
-      size === 56 && styles.size56,
       size === 96 && styles.size96,
       size === 116 && styles.size116,
       size === 128 && styles.size128,

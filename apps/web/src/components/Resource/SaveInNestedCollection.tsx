@@ -20,7 +20,10 @@ const SaveInNestedCollection = ({
   alreadyInCollections: number
 }) => {
   const isMobile = useIsMobile()
-  const avatarSize = isMobile ? 32 : 56
+  const avatarSize = isMobile ? 32 : 48
+  const withoutFavoriteCollections = user.collections.filter(
+    (collection) => !collection.isFavorites,
+  )
 
   return (
     <button
@@ -30,12 +33,12 @@ const SaveInNestedCollection = ({
       data-testid="add-in-collection-bases"
     >
       <div className={styles.content}>
-        <div className="fr-flex fr-justify fr-align-items-center fr-flex-gap-4v">
+        <div className="fr-flex fr-justify fr-align-items-center fr-flex-gap-6v">
           {!base && (
             <RoundProfileImage user={user} size={avatarSize} borderWidth={1} />
           )}
           {!!base && <BaseImage base={base} size={avatarSize} />}
-          <div className="fr-flex fr-direction-column fr-flex-gap-2v">
+          <div className="fr-flex fr-direction-column fr-flex-gap-1v">
             <b className="fr-text-title--grey">
               {base ? base.title : `${user.name} - Mes collections`}
             </b>
@@ -43,8 +46,10 @@ const SaveInNestedCollection = ({
               <div className={styles.collections}>
                 <span className="fr-icon-folder-2-line fr-icon--sm" />
                 &nbsp;
-                {base ? base.collections.length : user.collections.length}&nbsp;
-                Collections&nbsp;
+                {base
+                  ? base.collections.length
+                  : withoutFavoriteCollections.length}
+                &nbsp; Collections&nbsp;
               </div>
               {alreadyInCollections > 0 ? (
                 <Tag small>

@@ -13,6 +13,7 @@ import RawModal from '@app/ui/components/Modal/RawModal'
 import { useModalVisibility } from '@app/ui/hooks/useModalVisibility'
 import * as Sentry from '@sentry/nextjs'
 import Link from 'next/link'
+import Button from '@codegouvfr/react-dsfr/Button'
 import type { SessionUser, SessionUserBase } from '@app/web/auth/sessionUser'
 import { trpc } from '@app/web/trpc'
 import { getBasesFromSessionUser } from '@app/web/bases/getBasesFromSessionUser'
@@ -314,7 +315,7 @@ const SaveResourceInCollectionModal = ({ user }: { user: SessionUser }) => {
 
   const favoriteCollection = user.collections.find((c) => c.isFavorites)
   const isMobile = useIsMobile()
-  const avatarSize = isMobile ? 32 : 56
+  const avatarSize = isMobile ? 32 : 48
   return (
     <form onSubmit={onSubmit}>
       <RawModal
@@ -352,7 +353,9 @@ const SaveResourceInCollectionModal = ({ user }: { user: SessionUser }) => {
             : showCreateCollectionButton
               ? [
                   {
-                    children: 'Créer une collection de profil',
+                    children: `Créer une collection de ${
+                      inBaseDirectory ? 'base' : 'profil'
+                    }`,
                     type: 'button',
                     priority: 'secondary',
                     iconId: 'ri-folder-add-line',
@@ -393,8 +396,8 @@ const SaveResourceInCollectionModal = ({ user }: { user: SessionUser }) => {
               ) : (
                 <RoundProfileImage
                   user={user}
-                  size={avatarSize}
                   borderWidth={1}
+                  size={avatarSize}
                 />
               )}
               <div className="fr-flex fr-direction-column fr-flex-gap-1v">
@@ -408,7 +411,7 @@ const SaveResourceInCollectionModal = ({ user }: { user: SessionUser }) => {
                   &nbsp;
                   {inBaseDirectory
                     ? inBaseDirectory.collections.length
-                    : user.collections.length}
+                    : withoutFavoriteCollections.length}
                   &nbsp;Collections
                 </div>
               </div>
@@ -582,7 +585,16 @@ const SaveResourceInCollectionModal = ({ user }: { user: SessionUser }) => {
                   </Link>
                 </p>
                 <div data-testid="create-resource-button">
-                  <CreateCollectionButton baseId={inBaseDirectory.id} />
+                  <Button
+                    type="button"
+                    onClick={() => viewCollectionCreation(inBaseDirectory?.id)}
+                    nativeButtonProps={{
+                      key: 'view-collection-creation',
+                    }}
+                  >
+                    <span className="ri-folder-add-line fr-mr-1w" />
+                    Créer une collection de base
+                  </Button>
                 </div>
               </EmptyBox>
             )
@@ -614,7 +626,7 @@ const SaveResourceInCollectionModal = ({ user }: { user: SessionUser }) => {
                   user={user}
                   onClick={viewProfileDirectory}
                   alreadyInCollections={
-                    user.collections.filter(({ resources }) =>
+                    withoutFavoriteCollections.filter(({ resources }) =>
                       resources.some(
                         (collectionResource) =>
                           collectionResource.resourceId === resourceId,
