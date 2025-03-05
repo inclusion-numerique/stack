@@ -3,12 +3,12 @@ import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
 import classNames from 'classnames'
 import CollectionDates from '@app/web/components/Collection/CollectionDates'
 import { PrivacyTag } from '../PrivacyTags'
-import styles from './CollectionMetaData.module.css'
 
 const CollectionMetaData = ({
   collection,
   count,
   context,
+  className,
   hideRessourceLabelOnSmallDevices = false,
   withPrivacyTag = true,
 }: {
@@ -24,13 +24,15 @@ const CollectionMetaData = ({
   count: number
   context: 'card' | 'view' | 'contextModal'
   hideRessourceLabelOnSmallDevices?: boolean
-  withPrivacyTag?: boolean
+  className?: string
 }) => (
   <div
     className={classNames(
-      'fr-flex fr-text--sm fr-mb-0 fr-text-mention--grey',
-      context === 'view' && styles.container,
+      'fr-flex fr-my-2v fr-text--sm fr-mb-0 fr-text-mention--grey',
+      context === 'view' &&
+        'fr-justify-content-start fr-direction-column fr-justify-content-md-space-between fr-direction-md-row',
       ['card', 'contextModal'].includes(context) && 'fr-flex-gap-2v',
+      className,
     )}
   >
     <div className="fr-flex fr-flex-gap-2v">

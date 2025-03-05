@@ -8,3 +8,10 @@
     grid-template-columns: repeat(2, 1fr); /* 2 columns */
   }
 }
+
+.actionsButtons {
+  @media (max-width: 48em) {
+    width: 100% !important;
+    justify-content: center;
+  }
+}
