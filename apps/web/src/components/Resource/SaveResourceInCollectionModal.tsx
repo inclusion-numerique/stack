@@ -127,6 +127,16 @@ const SaveResourceInCollectionModal = ({ user }: { user: SessionUser }) => {
       baseId,
       title: '',
     })
+    const selectedBase = bases.find((base) => base.id === baseId)
+    if (selectedBase) {
+      createCollectionForm.reset({
+        addResourceId: resourceId,
+        isPublic: selectedBase.isPublic ? undefined : false,
+        baseId: selectedBase.id,
+        title: '',
+      })
+    }
+
     setInCollectionCreation(true)
   }
 
