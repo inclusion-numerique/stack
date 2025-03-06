@@ -10,6 +10,7 @@ const CollectionMetaData = ({
   count,
   context,
   hideRessourceLabelOnSmallDevices = false,
+  withPrivacyTag = true,
 }: {
   collection: {
     isPublic: boolean
@@ -21,14 +22,15 @@ const CollectionMetaData = ({
     updated: Date
   }
   count: number
-  context: 'card' | 'view'
+  context: 'card' | 'view' | 'contextModal'
   hideRessourceLabelOnSmallDevices?: boolean
+  withPrivacyTag?: boolean
 }) => (
   <div
     className={classNames(
-      'fr-flex fr-my-2v fr-text--sm fr-mb-0 fr-text-mention--grey',
+      'fr-flex fr-text--sm fr-mb-0 fr-text-mention--grey',
       context === 'view' && styles.container,
-      context === 'card' && 'fr-flex-gap-2v',
+      ['card', 'contextModal'].includes(context) && 'fr-flex-gap-2v',
     )}
   >
     <div className="fr-flex fr-flex-gap-2v">
@@ -49,14 +51,16 @@ const CollectionMetaData = ({
           <CollectionDates collection={collection} />
         </div>
       )}
-      <div className="fr-flex fr-flex-gap-2v">
-        <span>•</span>
-        <PrivacyTag
-          isPublic={collection.isPublic}
-          small
-          label={collection.isPublic ? 'Publique' : 'Privée'}
-        />
-      </div>
+      {!!withPrivacyTag && (
+        <div className="fr-flex fr-flex-gap-2v">
+          <span>•</span>
+          <PrivacyTag
+            isPublic={collection.isPublic}
+            small
+            label={collection.isPublic ? 'Publique' : 'Privée'}
+          />
+        </div>
+      )}
     </div>
   </div>
 )

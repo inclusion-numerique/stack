@@ -145,9 +145,14 @@ export const getProfileCollections = async (
   return prismaClient.collection.findMany({
     select: collectionSelect(user),
     where,
-    orderBy: {
-      created: 'desc',
-    },
+    orderBy: [
+      {
+        isFavorites: 'desc',
+      },
+      {
+        created: 'desc',
+      },
+    ],
   })
 }
 
