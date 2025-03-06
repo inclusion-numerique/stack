@@ -58,7 +58,7 @@ export const webAppStackSensitiveVariables = [
   'RDV_SERVICE_PUBLIC_PREVIEW_API_KEY',
   'RDV_SERVICE_PUBLIC_PREVIEW_OAUTH_CLIENT_ID',
   'RDV_SERVICE_PUBLIC_PREVIEW_OAUTH_CLIENT_SECRET',
-  'RDV_SERVICE_PUBLIC_MAIN_API_KEY',
+  'RDV_API_KEY',
   'RDV_SERVICE_PUBLIC_MAIN_OAUTH_CLIENT_ID',
   'RDV_SERVICE_PUBLIC_MAIN_OAUTH_CLIENT_SECRET',
 ] as const
@@ -232,7 +232,7 @@ export class WebAppStack extends TerraformStack {
           : sensitiveEnvironmentVariables
               .RDV_SERVICE_PUBLIC_PREVIEW_OAUTH_CLIENT_SECRET.value,
         RDV_SERVICE_PUBLIC_API_KEY: isMain
-          ? sensitiveEnvironmentVariables.RDV_SERVICE_PUBLIC_MAIN_API_KEY.value
+          ? sensitiveEnvironmentVariables.RDV_API_KEY.value
           : sensitiveEnvironmentVariables.RDV_SERVICE_PUBLIC_PREVIEW_API_KEY
               .value,
         INTERNAL_API_PRIVATE_KEY:
