@@ -2,8 +2,8 @@
 
 import Button from '@codegouvfr/react-dsfr/Button'
 import { Input } from '@codegouvfr/react-dsfr/Input'
-import { useState } from 'react'
 import * as Sentry from '@sentry/nextjs'
+import { useState } from 'react'
 
 const DatePickerDownload = () => {
   const [date, setDate] = useState('')
