@@ -2,18 +2,21 @@
 
 import React, { useRef, useState } from 'react'
 import { AnimatePresence, Reorder } from 'framer-motion'
+import { useRouter } from 'next/navigation'
 import { createToast } from '@app/ui/toast/createToast'
 import { CollectionListItem } from '@app/web/server/collections/getCollectionsList'
 import DraggableCollectionOrderRow from '@app/web/components/Collection/Edition/Order/DraggableCollectionOrderRow'
 import styles from '@app/web/components/Collection/Edition/Order/CollectionOrder.module.css'
 import { trpc } from '@app/web/trpc'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
+import { useOnDiff } from '@app/web/hooks/useOnDiff'
 
 const CollectionListEdition = ({
   collections,
 }: {
   collections: CollectionListItem[]
 }) => {
+  const router = useRouter()
   const updateOrdersMutation = trpc.collection.updateOrders.useMutation()
   const [orderedCollections, setOrderedCollections] = useState(collections)
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
@@ -21,6 +24,8 @@ const CollectionListEdition = ({
 
   const onReorder = (items: CollectionListItem[]) =>
     setOrderedCollections(items)
+
+  useOnDiff(collections, setOrderedCollections)
 
   const sendCommand = async () => {
     try {
@@ -34,6 +39,7 @@ const CollectionListEdition = ({
         priority: 'success',
         message: 'Collections réorganisées avec succès',
       })
+      router.refresh()
     } catch {
       createToast({
         priority: 'error',
