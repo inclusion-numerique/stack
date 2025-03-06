@@ -1,6 +1,6 @@
 import { Prisma } from '@prisma/client'
-import { prismaClient } from '@app/web/prismaClient'
 import { SessionUser } from '@app/web/auth/sessionUser'
+import { prismaClient } from '@app/web/prismaClient'
 import { imageCropSelect } from '@app/web/server/image/imageCropSelect'
 import {
   computeResourcesListWhereForUser,
@@ -84,9 +84,12 @@ export const baseSelect = (user: Pick<SessionUser, 'id'> | null) =>
     collections: {
       select: collectionSelect(user),
       where: computeCollectionsListWhereForUser(user),
-      orderBy: {
-        updated: 'desc',
-      },
+      orderBy: [
+        { order: 'asc' },
+        {
+          created: 'asc',
+        },
+      ],
     },
     savedCollections: {
       select: {
