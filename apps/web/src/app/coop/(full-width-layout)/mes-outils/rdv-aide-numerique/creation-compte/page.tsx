@@ -37,7 +37,7 @@ const RdvAideNumeriqueCreationComptePage = async () => {
             Vos lieux d’activités dans l’onglet Lieux.
           </p>
           <p className="fr-text-mention--grey fr-mb-10v fr-text--center">
-            Votre équipe sera renseigné en tant qu’organisation.
+            Votre équipe sera renseignée en tant qu’organisation.
           </p>
           <ComingSoon
             className="fr-mb-10v"
