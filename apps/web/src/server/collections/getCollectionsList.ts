@@ -153,7 +153,7 @@ export const getProfileCollections = async (
         order: 'asc',
       },
       {
-        created: 'asc',
+        created: 'desc',
       },
     ],
   })

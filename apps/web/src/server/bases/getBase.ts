@@ -87,7 +87,7 @@ export const baseSelect = (user: Pick<SessionUser, 'id'> | null) =>
       orderBy: [
         { order: 'asc' },
         {
-          created: 'asc',
+          created: 'desc',
         },
       ],
     },
