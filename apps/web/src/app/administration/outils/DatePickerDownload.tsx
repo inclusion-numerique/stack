@@ -1,11 +1,10 @@
 'use client'
 
+import { createToast } from '@app/ui/toast/createToast'
+import { download } from '@app/web/utils/download'
 import Button from '@codegouvfr/react-dsfr/Button'
 import { Input } from '@codegouvfr/react-dsfr/Input'
 import { useState } from 'react'
-import { download } from '@app/web/utils/download'
-import { createToast } from '@app/ui/toast/createToast'
-import { useRouter } from 'next/navigation'
 
 const DatePickerDownload = () => {
   const [date, setDate] = useState('')
