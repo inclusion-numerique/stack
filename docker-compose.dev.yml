@@ -16,7 +16,6 @@ services:
       - POSTGRES_DB=${NEXT_PUBLIC_APP_SLUG}
       - POSTGRES_USER=${NEXT_PUBLIC_APP_SLUG}
       - POSTGRES_PASSWORD=password
-      - POSTGRES_SHARED_BUFFERS=128MB  # Adjust the shared_buffers parameter
 
     ports:
       - '5433:5432'

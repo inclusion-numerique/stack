@@ -23,6 +23,7 @@ export const GET = async (request: NextRequest) => {
   const date = dateParam ?? undefined
 
   const data_conum = await fetchAccompagnement(true, date)
+  await new Promise((resolve) => setTimeout(resolve, 100))
   const data_mediateur = await fetchAccompagnement(false, date)
 
   if (!data_conum || !data_mediateur) {
