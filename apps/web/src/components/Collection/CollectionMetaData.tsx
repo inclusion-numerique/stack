@@ -25,6 +25,7 @@ const CollectionMetaData = ({
   context: 'card' | 'view' | 'contextModal'
   hideRessourceLabelOnSmallDevices?: boolean
   className?: string
+  withPrivacyTag?: boolean
 }) => (
   <div
     className={classNames(
