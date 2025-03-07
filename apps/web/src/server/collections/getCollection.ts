@@ -3,6 +3,7 @@ import { SessionUser } from '@app/web/auth/sessionUser'
 import { prismaClient } from '@app/web/prismaClient'
 import {
   computeResourcesListWhereForUser,
+  ResourceListItem,
   resourceListSelect,
   toResourceWithFeedbackAverage,
 } from '@app/web/server/resources/getResourcesList'
@@ -65,9 +66,14 @@ export const collectionSelect = (user: Pick<SessionUser, 'id'> | null) =>
       },
     },
     resources: {
-      select: { resource: { select: resourceListSelect(user) } },
+      select: {
+        order: true,
+        id: true,
+        resource: { select: resourceListSelect(user) },
+      },
       where: { resource: computeResourcesListWhereForUser(user) },
       orderBy: [
+        { order: 'asc' },
         { resource: { lastPublished: 'desc' } },
         { resource: { updated: 'desc' } },
       ],
@@ -100,6 +106,8 @@ export const getCollection = async (
         ...collection,
         resources: collection.resources.map((resource) => ({
           resource: toResourceWithFeedbackAverage(resource.resource),
+          order: resource.order,
+          collectionResourceId: resource.id,
         })),
       }
 }
@@ -108,3 +116,7 @@ export type CollectionPageData = Exclude<
   Awaited<ReturnType<typeof getCollection>>,
   null
 >
+
+export type CollectionResourceListItem = ResourceListItem & {
+  collectionResourceId: string
+}

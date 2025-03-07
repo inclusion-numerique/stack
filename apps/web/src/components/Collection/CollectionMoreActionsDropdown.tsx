@@ -1,5 +1,5 @@
 import React from 'react'
-import Button, { ButtonProps } from '@codegouvfr/react-dsfr/Button'
+import { ButtonProps } from '@codegouvfr/react-dsfr/Button'
 import Link from 'next/link'
 import { Dropdown } from '@app/web/components/Dropdown/Dropdown'
 import OpenDeleteCollectionModalButton from '@app/web/components/Collection/OpenDeleteCollectionModalButton'
@@ -49,7 +49,10 @@ export const CollectionMoreActionsDropdown = ({
   >
     <ul>
       <li>
-        <Button className="fr-btn fr-btn--sm wip">
+        <Link
+          className="fr-btn fr-btn--sm"
+          href={`/collections/${collection.slug}/gerer`}
+        >
           <div>
             <span
               className="ri-folder-open-line fr-mr-1w fr-text-label--blue-france"
@@ -57,7 +60,7 @@ export const CollectionMoreActionsDropdown = ({
             />
             Gérer les ressources
           </div>
-        </Button>
+        </Link>
       </li>
       <hr className="fr-hidden fr-unhidden-sm fr-mx-3v fr-pb-1v" />
       <li>
