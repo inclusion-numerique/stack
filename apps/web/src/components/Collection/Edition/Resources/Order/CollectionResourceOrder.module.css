@@ -13,6 +13,7 @@
   position: absolute;
   pointer-events: none;
   cursor: grab;
+
   /* height - (padding top/bottom * 2) /2 = 100 - (16 * 2) / 2 = 24 */
   top: 34px;
   transition: opacity 200ms ease-in-out;
