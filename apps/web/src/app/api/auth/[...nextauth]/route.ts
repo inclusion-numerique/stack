@@ -4,6 +4,7 @@ import { ProConnectProvider } from '@app/web/auth/ProConnectProvider'
 import { authenticationViaProconnect } from '@app/web/auth/authenticationProvider'
 import { nextAuthAdapter } from '@app/web/auth/nextAuthAdapter'
 import { sendVerificationRequest } from '@app/web/auth/sendVerificationRequest'
+import { updateUserData } from '@app/web/auth/updateUserData'
 import { registerLastLogin } from '@app/web/security/registerLastLogin'
 import * as Sentry from '@sentry/nextjs'
 import NextAuth, { type NextAuthOptions } from 'next-auth'
@@ -12,6 +13,12 @@ import type { NextRequest } from 'next/server'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
+
+const isOutdatedUserData =
+  (user: { id: string; firstName: string; lastName: string }) =>
+  (profile: { given_name: string; usual_name: string }) =>
+    user.firstName !== profile.given_name ||
+    user.lastName !== profile.usual_name
 
 const authOptions: NextAuthOptions = {
   // debug: process.env.NODE_ENV !== 'production',
@@ -33,8 +40,21 @@ const authOptions: NextAuthOptions = {
         }),
       ],
   callbacks: {
-    signIn({ user }) {
-      // Everyone is allowed to sign in
+    signIn(params) {
+      const { user, profile } = params as unknown as {
+        user: { id: string; firstName: string; lastName: string }
+        profile: { given_name: string; usual_name: string }
+      }
+
+      if (isOutdatedUserData(user)(profile)) {
+        updateUserData({
+          userId: user.id,
+          firstName: profile.given_name,
+          lastName: profile.usual_name,
+        }).catch((error) => {
+          Sentry.captureException(error)
+        })
+      }
 
       registerLastLogin({ userId: user.id }).catch((error) => {
         Sentry.captureException(error)
