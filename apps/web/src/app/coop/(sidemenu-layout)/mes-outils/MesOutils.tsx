@@ -21,7 +21,7 @@ export const MesOutils = () => (
         chacun de ces outils en cliquant sur ‘En savoir plus’.
       </p>
       <Notice
-        className="fr-text-label--blue-france"
+        className="fr-notice--new fr-notice--flex"
         isClosable
         title={
           <span className="fr-text--regular">
