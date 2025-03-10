@@ -40,7 +40,15 @@ export const MediateurListItem = ({
               Invitation envoyée
             </Badge>
           ) : (
-            <Badge severity={statusSeverity(status)} noIcon>
+            <Badge
+              severity={statusSeverity(status)}
+              noIcon
+              className={
+                statusSeverity(status) === undefined
+                  ? 'fr-text-mention--grey'
+                  : ''
+              }
+            >
               {status}
             </Badge>
           )}
@@ -80,7 +88,13 @@ export const MediateurListItem = ({
           Invitation envoyée
         </Badge>
       ) : (
-        <Badge severity={statusSeverity(status)} noIcon>
+        <Badge
+          severity={statusSeverity(status)}
+          noIcon
+          className={
+            statusSeverity(status) === undefined ? 'fr-text-mention--grey' : ''
+          }
+        >
           {status}
         </Badge>
       )}
