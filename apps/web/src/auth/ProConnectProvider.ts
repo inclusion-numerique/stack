@@ -13,6 +13,7 @@ export type ProConnectProfile = {
   email: string
   given_name: string
   usual_name: string
+  phone_number: string
   aud: string
   exp: number
   iat: number
@@ -38,7 +39,7 @@ export const ProConnectProvider = () =>
       url: `${issuer}/api/v2/authorize`,
       params: {
         // https://github.com/numerique-gouv/agentconnect-documentation/blob/main/doc_fs/scope-claims.md#correspondance-entre-scope-et-claims-sur-agentconnect
-        scope: 'openid given_name usual_name email',
+        scope: 'openid given_name usual_name email phone',
         // 'openid given_name usual_name email uid siret siren organizational_unit belonging_population phone chorusdt',
 
         acr_values: 'eidas1',
@@ -88,12 +89,13 @@ export const ProConnectProvider = () =>
         return jwt.decode(r.data) as ProConnectProfile
       },
     },
-    profile: ({ email, sub, given_name, usual_name }) => ({
+    profile: ({ email, sub, given_name, usual_name, phone_number }) => ({
       id: sub,
       name: `${given_name} ${usual_name}`.trim(),
       firstName: given_name,
       lastName: usual_name,
       email: email.toLowerCase(),
+      phone: phone_number,
       provider: proConnectProviderId,
     }),
   }) satisfies OAuthConfig<ProConnectProfile>
