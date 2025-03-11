@@ -15,7 +15,7 @@ import { ObjectId } from 'mongodb'
 const convertToLocalDate = (
   isoDate: Date,
   timeZone: string = 'Europe/Paris',
-): Date => new Date(new Date(isoDate).toLocaleString('fr-FR', { timeZone }))
+): Date => new Date(new Date(isoDate).toLocaleString('en-US', { timeZone }))
 
 const convertToLocalDateOrNull = (isoDate: Date | null) =>
   isoDate == null ? null : convertToLocalDate(isoDate)
