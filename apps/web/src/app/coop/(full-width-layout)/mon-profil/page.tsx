@@ -7,7 +7,6 @@ import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
 import Contract from '@app/web/components/conseiller-numerique/Contract'
 import { getContractInfo } from '@app/web/conseiller-numerique/getContractInfo'
 import { findConseillerNumeriqueV1 } from '@app/web/external-apis/conseiller-numerique/searchConseillerNumeriqueV1'
-import { getUserRoleLabel } from '@app/web/utils/getUserRoleLabel'
 import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
 import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
@@ -65,7 +64,6 @@ const MonProfilPage = async () => {
               name={user.name}
               email={user.email}
               phone={user.phone}
-              userRole={getUserRoleLabel(user)}
             />
           </section>
           {user.coordinateur ? (
