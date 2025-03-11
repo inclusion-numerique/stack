@@ -99,7 +99,6 @@ const VisiblePourCartographieNationaleFields = ({
           />
         </div>
       )}
-
       {visiblePourCartographieNationale && (
         <>
           {canChangeVisibility && <hr className="fr-separator-1px" />}
