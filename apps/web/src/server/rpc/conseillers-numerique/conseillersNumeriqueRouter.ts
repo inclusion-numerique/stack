@@ -57,20 +57,19 @@ export const conseillersNumeriqueRouter = router({
 
       const stopwatch = createStopwatch()
 
-      const misesEnRelationCollection =
-        await conseillerNumeriqueMongoCollection('misesEnRelation')
+      const conseillerNumeriqueInfo = await findConseillerNumeriqueV1({
+        id: user.mediateur.conseillerNumerique.id,
+        includeDeleted: false,
+      })
 
-      const miseEnRelation = (await misesEnRelationCollection.findOne(
-        {
-          'conseillerObj._id': new ObjectId(
-            user.mediateur.conseillerNumerique.id,
-          ),
-        },
-        { projection: MiseEnRelationV1MinimalProjection },
-      )) as unknown as MiseEnRelationConseillerNumeriqueV1MinimalProjection
+      if (conseillerNumeriqueInfo?.miseEnRelationActive == null) {
+        throw new Error(
+          `Le conseiller numérique ${user.id} n'a pas de mise en relation active`,
+        )
+      }
 
       const structure = await miseAJourStructureEmployeuseFor(user.id)(
-        miseEnRelation,
+        conseillerNumeriqueInfo?.miseEnRelationActive,
       )
 
       addMutationLog({
