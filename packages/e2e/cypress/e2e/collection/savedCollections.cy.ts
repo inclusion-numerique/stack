@@ -181,7 +181,10 @@ describe('Utilisateur connecté, je peux ajouter une ressource à une collection
 
     cy.visit(`/bases/${base.slug}`)
     cy.contains('Collections · 1')
-    cy.findByRole('link', { name: /collections/i }).click()
+    cy.findAllByRole('link', { name: /collections/i })
+      .should('have.length.at.least', 1)
+      .last()
+      .click()
 
     cy.contains(collection.title)
   })

@@ -19,8 +19,7 @@ const BaseCollectionsPage = async ({
 
   const canWrite = hasPermission(BasePermissions.WriteBase)
 
-  const { collections, savedCollections, id } = base
-
+  const { collections, savedCollections, id, slug } = base
   return (
     <Collections
       user={user}
@@ -28,6 +27,7 @@ const BaseCollectionsPage = async ({
       savedCollections={savedCollections.map(({ collection }) => collection)}
       withCreation={canWrite}
       baseId={id}
+      baseSlug={slug}
       collectionsLabel="Collections"
       emptyBox={
         canWrite ? (

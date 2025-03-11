@@ -554,6 +554,9 @@ model Collection {
   slug        String  @unique
   title       String
   description String?
+
+  order Int?
+
   isPublic    Boolean @default(false) @map("is_public")
   isFavorites Boolean @default(false) @map("is_favorites")
 

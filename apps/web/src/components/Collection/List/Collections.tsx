@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react'
 import Link from 'next/link'
+import classNames from 'classnames'
 import { CollectionListItem } from '@app/web/server/collections/getCollectionsList'
 import SaveCollectionModal from '@app/web/components/Collection/SaveCollectionModal'
 import { SessionUser } from '@app/web/auth/sessionUser'
@@ -7,6 +8,7 @@ import CollectionCard from '@app/web/components/Collection/Cards/CollectionCard'
 import IconInSquare from '@app/web/components/IconInSquare'
 import EmptyBox from '@app/web/components/EmptyBox'
 import DeleteCollectionModal from '@app/web/components/Collection/DeleteCollection/DeleteCollectionModal'
+import { ManageCollectionButton } from '@app/web/components/Collection/ManageCollectionButton'
 import { CreateCollectionButton } from '../CreateCollectionButton'
 import styles from './Collections.module.css'
 
@@ -17,6 +19,7 @@ const Collections = ({
   collectionsLabel,
   emptyBox,
   baseId,
+  baseSlug,
   user,
   isOwner = false,
 }: {
@@ -27,6 +30,7 @@ const Collections = ({
   withCreation: boolean
   emptyBox?: ReactNode
   baseId?: string
+  baseSlug?: string
   isOwner?: boolean
 }) => {
   const favoriteCollection = collections.find((c) => c.isFavorites)
@@ -46,15 +50,26 @@ const Collections = ({
               </div>
             </div>
             {withCreation && (
-              <div className="fr-col-sm-auto fr-col-12 fr-mb-5w fr-mb-md-2w">
+              <div className="fr-flex fr-direction-sm-row fr-direction-column fr-align-items-center fr-flex-gap-2v fr-mb-5w fr-mb-md-0">
                 <CreateCollectionButton
-                  className="fr-btn--secondary fr-width-full fr-justify-content-center"
+                  className={classNames(
+                    styles.actionsButtons,
+                    'fr-btn--secondary',
+                  )}
                   baseId={baseId}
                   title={
                     baseId
                       ? 'Créer une collection de base'
                       : 'Créer une collection de profil'
                   }
+                />
+                <ManageCollectionButton
+                  className={classNames(
+                    styles.actionsButtons,
+                    'fr-btn--secondary',
+                    'fr-hidden fr-unhidden-sm',
+                  )}
+                  baseSlug={baseSlug}
                 />
               </div>
             )}

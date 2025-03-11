@@ -150,6 +150,9 @@ export const getProfileCollections = async (
         isFavorites: 'desc',
       },
       {
+        order: 'asc',
+      },
+      {
         created: 'desc',
       },
     ],
