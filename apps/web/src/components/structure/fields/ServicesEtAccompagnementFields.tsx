@@ -13,18 +13,18 @@ export const ServicesEtAccompagnementFields = <
   T extends Omit<ServicesEtAccompagnementData, 'id'>,
 >({
   form,
+  isServicesRequired = false,
 }: {
   form: UseFormReturn<T>
+  isServicesRequired?: boolean
 }) => {
   const { control, formState } =
     form as unknown as UseFormReturn<ServicesEtAccompagnementData>
 
   return (
     <>
-      <p className="fr-mb-4w fr-text--sm fr-text-mention--grey">
-        Ces champs sont optionnels
-      </p>
       <MultipleSelectFormField
+        asterisk={isServicesRequired}
         path="services"
         options={optionsWithEmptyValue(servicesStructureOptions)}
         label="Thématiques des services d’inclusion numérique"

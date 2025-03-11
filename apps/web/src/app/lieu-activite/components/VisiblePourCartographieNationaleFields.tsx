@@ -1,11 +1,22 @@
 'use client'
 
 import { createToast } from '@app/ui/toast/createToast'
+import { servicesStructureLabels } from '@app/web/app/structure/optionsStructure'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { trpc } from '@app/web/trpc'
 import ToggleSwitch from '@codegouvfr/react-dsfr/ToggleSwitch'
 import { useRouter } from 'next/navigation'
 import React, { ReactNode } from 'react'
+
+const DEFAULT_SERVICES = [
+  servicesStructureLabels['Aide aux démarches administratives'],
+  servicesStructureLabels['Maîtrise des outils numériques du quotidien'],
+  servicesStructureLabels['Insertion professionnelle via le numérique'],
+  servicesStructureLabels['Utilisation sécurisée du numérique'],
+  servicesStructureLabels['Parentalité et éducation avec le numérique'],
+  servicesStructureLabels['Loisirs et créations numériques'],
+  servicesStructureLabels['Comprehension du monde numérique'],
+]
 
 const VisiblePourCartographieNationaleFields = ({
   id,
@@ -23,12 +34,23 @@ const VisiblePourCartographieNationaleFields = ({
   children?: ReactNode
 }) => {
   const router = useRouter()
-  const mutate =
+  const mutateCartographieNationaleVisibility =
     trpc.lieuActivite.updateVisiblePourCartographieNationale.useMutation()
+
+  const mutateServicesEtAccompagnement =
+    trpc.lieuActivite.updateServicesEtAccompagnement.useMutation()
 
   const handleChange = async () => {
     try {
-      await mutate.mutateAsync({
+      if (!visiblePourCartographieNationale) {
+        await mutateServicesEtAccompagnement.mutateAsync({
+          id,
+          services: DEFAULT_SERVICES,
+          modalitesAccompagnement: [],
+        })
+      }
+
+      await mutateCartographieNationaleVisibility.mutateAsync({
         id,
         visiblePourCartographieNationale: !visiblePourCartographieNationale,
       })
@@ -64,7 +86,7 @@ const VisiblePourCartographieNationaleFields = ({
         <div className={className}>
           <ToggleSwitch
             inputTitle="Visibilité du lieu d’activité sur la cartographie"
-            disabled={mutate.isPending}
+            disabled={mutateCartographieNationaleVisibility.isPending}
             checked={visiblePourCartographieNationale}
             label={
               <span className="fr-text--medium fr-my-auto">

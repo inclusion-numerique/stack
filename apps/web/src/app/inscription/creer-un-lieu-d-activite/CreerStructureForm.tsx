@@ -147,10 +147,11 @@ const CreerStructureForm = ({
           <div className="fr-px-4w">
             <CompleteFields
               id="services-et-accompagnement"
+              defaultCanComplete
               title="Services & types d’accompagnement"
               description="Renseignez ici les services et les types d’accompagnements proposés dans ce lieu."
             >
-              <ServicesEtAccompagnementFields form={form} />
+              <ServicesEtAccompagnementFields form={form} isServicesRequired />
             </CompleteFields>
             <hr className="fr-separator-1px" />
             <CompleteFields

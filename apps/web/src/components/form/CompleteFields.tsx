@@ -5,14 +5,16 @@ export const CompleteFields = ({
   title,
   description,
   id,
+  defaultCanComplete = false,
   children,
 }: {
   title: string
   description: string
   id: string
+  defaultCanComplete?: boolean
   children: ReactNode
 }) => {
-  const [canComplete, setCanComplete] = useState<boolean>(false)
+  const [canComplete, setCanComplete] = useState<boolean>(defaultCanComplete)
 
   return (
     <div className="fr-py-4w">
