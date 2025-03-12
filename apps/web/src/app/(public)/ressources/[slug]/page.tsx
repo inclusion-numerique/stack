@@ -15,6 +15,7 @@ import {
   ResourcePermissions,
 } from '@app/web/authorization/models/resourceAuthorization'
 import { uploadedImageLoader } from '@app/web/utils/uploadedImageLoader'
+import { getServerUrl } from '@app/web/utils/baseUrl'
 import ResourceView from './_components/ResourceView'
 import PrivateResourceView from './_components/PrivateResourceView'
 
@@ -49,7 +50,7 @@ export const generateMetadata = async ({
         description: resource.description || undefined,
         images: [
           {
-            url: imageUrl,
+            url: getServerUrl(imageUrl),
           },
         ],
       },
