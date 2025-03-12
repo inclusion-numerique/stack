@@ -1,11 +1,11 @@
+import { lookup, type LookupAddress } from 'node:dns'
 import { Agent as HttpAgent } from 'node:http'
 import { Agent as HttpsAgent } from 'node:https'
-import { lookup, type LookupAddress } from 'node:dns'
 import type { LookupFunction } from 'node:net'
-import type { NextRequest } from 'next/server'
-import axios from 'axios'
 import * as Sentry from '@sentry/nextjs'
+import axios from 'axios'
 import { LRUCache } from 'lru-cache'
+import type { NextRequest } from 'next/server'
 import pThrottle from 'p-throttle'
 
 const notFoundResponse = () =>
@@ -90,6 +90,16 @@ export const GET = async (request: NextRequest) => {
       return new Response('', {
         status,
         statusText,
+      })
+    }
+
+    if (status !== 200) {
+      return new Response(null, {
+        status: 307,
+        headers: {
+          Location: '/images/image-error-placeholder.svg',
+          'Cache-Control': 'public, max-age=31536000, immutable',
+        },
       })
     }
 
