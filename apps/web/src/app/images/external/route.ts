@@ -93,16 +93,6 @@ export const GET = async (request: NextRequest) => {
       })
     }
 
-    if (status !== 200) {
-      return new Response(null, {
-        status: 307,
-        headers: {
-          Location: '/images/image-error-placeholder.svg',
-          'Cache-Control': 'public, max-age=31536000, immutable',
-        },
-      })
-    }
-
     const contentType = headers['content-type'] as string
     const cacheControl = headers['cache-control'] as string
 
@@ -115,6 +105,12 @@ export const GET = async (request: NextRequest) => {
     })
   } catch (error) {
     Sentry.captureException(error)
-    return notFoundResponse()
+    return new Response(null, {
+      status: 307,
+      headers: {
+        Location: '/images/image-error-placeholder.svg',
+        'Cache-Control': 'public, max-age=31536000, immutable',
+      },
+    })
   }
 }
