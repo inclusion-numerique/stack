@@ -6,7 +6,7 @@ import { createCollectionUrl } from '@app/web/collections/createCollectionUrl'
 export const CreateCollectionButton = ({
   className,
   baseId,
-  title = 'Créer une collection de profil',
+  title = 'Créer une collection',
 }: {
   className?: string
   baseId?: string
