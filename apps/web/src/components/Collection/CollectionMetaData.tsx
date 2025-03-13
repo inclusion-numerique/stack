@@ -11,6 +11,7 @@ const CollectionMetaData = ({
   className,
   hideRessourceLabelOnSmallDevices = false,
   withPrivacyTag = true,
+  withCollectionDates = true,
 }: {
   collection: {
     isPublic: boolean
@@ -26,6 +27,7 @@ const CollectionMetaData = ({
   hideRessourceLabelOnSmallDevices?: boolean
   className?: string
   withPrivacyTag?: boolean
+  withCollectionDates?: boolean
 }) => (
   <div
     className={classNames(
@@ -36,7 +38,12 @@ const CollectionMetaData = ({
       className,
     )}
   >
-    <div className="fr-flex fr-flex-gap-2v">
+    <div
+      className={classNames(
+        'fr-flex fr-flex-gap-2v',
+        !withCollectionDates && 'fr-mr-2v',
+      )}
+    >
       <span className="fr-icon-file-text-line fr-icon--sm" />
       <span>{count}</span>
       <span
@@ -48,7 +55,7 @@ const CollectionMetaData = ({
       </span>
     </div>
     <div className="fr-flex fr-flex-gap-2v">
-      {context === 'view' && (
+      {withCollectionDates && context === 'view' && (
         <div className="fr-flex fr-flex-gap-2v fr-ml-md-2v">
           <span className="fr-hidden fr-unhidden-md">•</span>
           <CollectionDates collection={collection} />

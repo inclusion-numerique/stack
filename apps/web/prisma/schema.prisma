@@ -519,6 +519,8 @@ model CollectionResource {
 
   added DateTime @default(now())
 
+  order Int?
+
   @@unique([resourceId, collectionId])
   @@index([resourceId])
   @@index([collectionId])

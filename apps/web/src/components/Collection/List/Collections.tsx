@@ -60,7 +60,7 @@ const Collections = ({
                   title={
                     baseId
                       ? 'Créer une collection de base'
-                      : 'Créer une collection de profil'
+                      : 'Créer une collection'
                   }
                 />
                 <ManageCollectionButton

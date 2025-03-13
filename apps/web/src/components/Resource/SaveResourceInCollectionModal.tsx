@@ -559,7 +559,7 @@ const SaveResourceInCollectionModal = ({ user }: { user: SessionUser }) => {
                     </Link>
                   </p>
                   <div data-testid="create-resource-button">
-                    <CreateCollectionButton />
+                    <CreateCollectionButton title="Créer une collection de profil" />
                   </div>
                 </EmptyBox>
               )}
