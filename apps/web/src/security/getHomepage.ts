@@ -33,7 +33,7 @@ export const getLoginRedirectUrl = (
     return '/connexion'
   }
 
-  if (user.role === 'Admin') {
+  if (user.role === 'Admin' || user.role === 'Support') {
     return '/administration/utilisateurs'
   }
 

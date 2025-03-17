@@ -3,6 +3,7 @@ import { AuthCard } from '@app/web/app/(public)/(authentication)/AuthCard'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
 import Link from 'next/link'
 
+export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 const errorMessage = (error?: string): string | undefined => {

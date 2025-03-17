@@ -10,18 +10,22 @@ const Layout = async ({ children }: PropsWithChildren) => {
   const user = await authenticateUser()
 
   // Admin users are not allowed to access this page
-  if (user.role === 'Admin') {
-    // Admins cannot access the coop features
+  if (user.role === 'Admin' || user.role === 'Support') {
+    // Admins and support cannot access the coop features
     return (
       <div className="fr-layout">
         <div id="skip-links" />
         <Header user={user} fullWidth variant="coop" />
         <InscriptionStepsLayout>
           <div className="fr-mb-32v fr-p-12v fr-width-full fr-border-radius--8 fr-background-default--grey fr-mt-32v">
-            <h2>Vous êtes connecté en tant qu’administrateur</h2>
+            <h2>
+              Vous êtes connecté en tant{' '}
+              {user.role === 'Admin'
+                ? 'qu’administrateur'
+                : 'que membre de l’équipe de support'}
+            </h2>
             <p className="fr-text--xl">
-              Les administrateurs n’ont pas accès au fonctionnalités de la coop
-              😬
+              Vous n’avez pas accès au fonctionnalités de la coop 😬
             </p>
             <Link className="fr-link" href="/administration/usurpation">
               Accéder à l’usurpation pour accéder aux fonctionnalités de la coop
