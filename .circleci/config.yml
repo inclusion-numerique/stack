@@ -368,7 +368,7 @@ jobs:
       - add_secrets_to_dotenv_file
       - run:
           name: 'Run Cypress component testing'
-          command: pnpm --silent -F @app/e2e cy run --component --record --parallel --group components
+          command: pnpm --silent -F @app/e2e cy run --component --record --parallel --group components-$CIRCLE_WORKFLOW_ID
 
   test_web_e2e:
     executor: node-e2e
@@ -432,7 +432,7 @@ jobs:
       - run:
           name: 'Run cypress e2e tests'
           command: |
-            pnpm --silent -F @app/e2e cy run --record --parallel --group e2e
+            pnpm --silent -F @app/e2e cy run --record --parallel --group e2e-$CIRCLE_WORKFLOW_ID
   test_web_integration:
     executor: node-e2e
     resource_class: large
