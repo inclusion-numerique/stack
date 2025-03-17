@@ -25,6 +25,8 @@ export const authenticateUser = async (redirectTo = '/connexion') => {
       throw error
     }
 
+    // biome-ignore lint/suspicious/noConsole: XXX DEBUG REMOVE ME
+    console.log('no authenticated user, redirecting to ', redirectTo)
     redirect(redirectTo)
   }
 }
@@ -50,6 +52,15 @@ export const authenticateMediateurOrCoordinateur = async (
 ): Promise<MediateurUser | CoordinateurUser> => {
   const user = await authenticateUser(redirectTo)
   if (isMediateur(user) || isCoordinateur(user)) return user
+
+  // biome-ignore lint/suspicious/noConsole: XXX DEBUG REMOVE ME
+  console.log('no domain role for user, redirecting to ', redirectTo)
+  // biome-ignore lint/suspicious/noConsole: XXX DEBUG REMOVE ME
+  console.log('user', user)
+  // biome-ignore lint/suspicious/noConsole: XXX DEBUG REMOVE ME
+  console.log('mediateur ? ', isMediateur(user))
+  // biome-ignore lint/suspicious/noConsole: XXX DEBUG REMOVE ME
+  console.log('coordinateur ? ', isCoordinateur(user))
   redirect(redirectTo)
 }
 
