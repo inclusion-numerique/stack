@@ -317,7 +317,22 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
           title="Inexistant dans la base de données des conseillers numériques V1"
         />
       )}
-      <AdministrationInfoCard title="Détails de l'utilisateur">
+      <AdministrationInfoCard
+        title="Détails de l'utilisateur"
+        actions={
+          <Button
+            title="Fusionner avec un autre utilisateur"
+            iconId="fr-icon-git-merge-line"
+            priority="tertiary"
+            size="small"
+            linkProps={{
+              href: `/administration/utilisateurs/${user.id}/merge`,
+            }}
+          >
+            Fusionner avec un autre utilisateur
+          </Button>
+        }
+      >
         <AdministrationInlineLabelsValues
           items={[
             {
@@ -498,18 +513,22 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
         </AdministrationInfoCard>
       )}
       {emplois.length > 0 ? (
-        <AdministrationInfoCard title="Structures employeuses">
-          <Button
-            title="Modifier la structure employeuse"
-            iconId="fr-icon-edit-line"
-            priority="tertiary"
-            size="small"
-            linkProps={{
-              href: `/administration/utilisateurs/${user.id}/structure-employeuse`,
-            }}
-          >
-            Modifier la structure employeuse
-          </Button>
+        <AdministrationInfoCard
+          title="Structures employeuses"
+          actions={
+            <Button
+              title="Modifier la structure employeuse"
+              iconId="fr-icon-edit-line"
+              priority="tertiary"
+              size="small"
+              linkProps={{
+                href: `/administration/utilisateurs/${user.id}/structure-employeuse`,
+              }}
+            >
+              Modifier la structure employeuse
+            </Button>
+          }
+        >
           {emplois.map((emploi) => (
             <div key={emploi.id}>
               <p className="fr-text--lg fr-text--medium fr-mb-4v fr-mt-8v">
