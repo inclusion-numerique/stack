@@ -74,7 +74,10 @@ const include = {
 
 type Coordinateur = {
   id: string
-  mediateursCoordonnes: { mediateur: { id: string } }[]
+  mediateursCoordonnes: {
+    mediateur: { id: string }
+    suppression: Date | null
+  }[]
   invitations: { email: string; coordinateurId: string }[]
 }
 
@@ -82,8 +85,8 @@ type Mediateur = {
   id: string
   beneficiaires: { id: string }[]
   activites: { id: string }[]
-  coordinations: { coordinateur: { id: string } }[]
-  enActivite: { structure: { id: string } }[]
+  coordinations: { coordinateur: { id: string }; suppression: Date | null }[]
+  enActivite: { structure: { id: string }; suppression: Date | null }[]
   invitations: { coordinateurId: string }[]
 }
 
@@ -149,6 +152,7 @@ const mergeMediateurs =
           data: {
             mediateurId: targetMediateur.id,
             structureId: enActivite.structure.id,
+            suppression: enActivite.suppression?.toISOString() ?? null,
           },
         })
       }
@@ -170,6 +174,7 @@ const mergeMediateurs =
           data: {
             mediateurId: targetMediateur.id,
             coordinateurId: coordination.coordinateur.id,
+            suppression: coordination.suppression?.toISOString() ?? null,
           },
         })
       }
@@ -226,6 +231,7 @@ const mergeCoordinateurs =
           data: {
             mediateurId: mediateurCoordonne.mediateur.id,
             coordinateurId: targetCoordinateur.id,
+            suppression: mediateurCoordonne.suppression?.toISOString() ?? null,
           },
         })
       }
@@ -293,8 +299,14 @@ const getUsers =
 const mergeStructuresEmployeuses =
   (prisma: PrismaTransaction) =>
   async (
-    sourceUser: { id: string; emplois: { structure: { id: string } }[] },
-    targetUser: { id: string; emplois: { structure: { id: string } }[] },
+    sourceUser: {
+      id: string
+      emplois: { structure: { id: string }; suppression: Date | null }[]
+    },
+    targetUser: {
+      id: string
+      emplois: { structure: { id: string }; suppression: Date | null }[]
+    },
   ) => {
     const targetStructureIds = new Set(
       targetUser.emplois.map((e) => e.structure.id),
@@ -306,6 +318,7 @@ const mergeStructuresEmployeuses =
           data: {
             userId: targetUser.id,
             structureId: emploi.structure.id,
+            suppression: emploi.suppression?.toISOString() ?? null,
           },
         })
       }
