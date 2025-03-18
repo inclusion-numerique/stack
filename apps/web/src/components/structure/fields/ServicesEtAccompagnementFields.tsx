@@ -6,6 +6,7 @@ import {
   modalitesAccompagnementStructureOptions,
   servicesStructureOptions,
 } from '@app/web/app/structure/optionsStructure'
+import Notice from '@codegouvfr/react-dsfr/Notice'
 import React from 'react'
 import { UseFormReturn } from 'react-hook-form'
 
@@ -23,6 +24,15 @@ export const ServicesEtAccompagnementFields = <
 
   return (
     <>
+      <Notice
+        className="fr-notice--warning fr-notice--flex fr-align-items-center fr-mb-6v "
+        title={
+          <span className="fr-text-default--grey fr-text--regular fr-text--sm">
+            Il est obligatoire de renseigner les services d’inclusion numérique
+            proposés afin d’être visible sur la cartographie.
+          </span>
+        }
+      />
       <MultipleSelectFormField
         asterisk={isServicesRequired}
         path="services"
@@ -32,7 +42,6 @@ export const ServicesEtAccompagnementFields = <
         control={control}
         disabled={formState.isSubmitting}
       />
-
       <CheckboxGroupFormField
         path="modalitesAccompagnement"
         options={modalitesAccompagnementStructureOptions}
