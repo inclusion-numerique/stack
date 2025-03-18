@@ -359,7 +359,7 @@ export class ProjectStack extends TerraformStack {
     })
 
     // DKIM Email Régie
-    new DomainRecord(this, 'dkim', {
+    new DomainRecord(this, 'dkim_regie_numerique_gouv', {
       dnsZone: emailDomainZone.id,
       type: 'TXT',
       name: `dimail._domainkey`,
