@@ -53,16 +53,12 @@ const CollectionCard = ({
         {!collection.isFavorites && (
           <span className="fr-text--xs fr-mb-0">
             Par&nbsp;
-            {collection.isPublic ? (
-              <Link
-                href={`/profils/${collection.createdBy.slug}`}
-                className="fr-link fr-position-relative fr-link--xs"
-              >
-                {collection.createdBy.name}
-              </Link>
-            ) : (
-              collection.createdBy.name
-            )}
+            <Link
+              href={`/profils/${collection.createdBy.slug}`}
+              className="fr-link fr-position-relative fr-link--xs"
+            >
+              {collection.createdBy.name}
+            </Link>
           </span>
         )}
         {collection.slug && (
@@ -80,6 +76,7 @@ const CollectionCard = ({
               count={resourcesCount}
               context="card"
               hideRessourceLabelOnSmallDevices
+              withPrivacyTag={!collection.isPublic}
             />
             {!collection.isFavorites && (
               <CollectionActions
