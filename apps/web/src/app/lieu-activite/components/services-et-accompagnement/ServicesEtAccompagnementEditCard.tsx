@@ -11,8 +11,10 @@ import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { trpc } from '@app/web/trpc'
 import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
 import { isEmpty } from '@app/web/utils/isEmpty'
+import Notice from '@codegouvfr/react-dsfr/Notice'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
+import React from 'react'
 import { useForm } from 'react-hook-form'
 import { EmptyState } from '../EmptyState'
 import { ServicesEtAccompagnementView } from './ServicesEtAccompagnementView'
@@ -74,10 +76,21 @@ const ServicesEtAccompagnementEditCard = ({
       mutation={handleMutation}
       edition={<ServicesEtAccompagnementFields form={form} />}
       view={
-        <ServicesEtAccompagnementView
-          services={services}
-          modalitesAccompagnement={modalitesAccompagnement}
-        />
+        <>
+          <Notice
+            className="fr-notice--warning fr-notice--flex fr-align-items-center fr-mb-6v "
+            title={
+              <span className="fr-text-default--grey fr-text--regular fr-text--sm">
+                Il est obligatoire de renseigner les services d’inclusion
+                numérique proposés afin d’être visible sur la cartographie.
+              </span>
+            }
+          />
+          <ServicesEtAccompagnementView
+            services={services}
+            modalitesAccompagnement={modalitesAccompagnement}
+          />
+        </>
       }
       isEmpty={[services, modalitesAccompagnement].every(isEmpty)}
       emptyState={

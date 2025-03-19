@@ -8,10 +8,14 @@ import {
 import { enforceIsAdmin } from '@app/web/server/rpc/enforceIsAdmin'
 import { invalidError } from '@app/web/server/rpc/trpcErrors'
 import { ResetInscriptionUtilisateurValidation } from '@app/web/server/rpc/user/ResetInscriptionUtilisateur'
+import { UserMergeValidation } from '@app/web/server/rpc/user/userMerge'
 import { ServerUserSignupValidation } from '@app/web/server/rpc/user/userSignup.server'
+import { mergeUser } from '@app/web/user/mergeUser'
+import { searchUser } from '@app/web/user/searchUser'
 import { addMutationLog } from '@app/web/utils/addMutationLog'
 import { createStopwatch } from '@app/web/utils/stopwatch'
 import { v4 } from 'uuid'
+import { z } from 'zod'
 
 export const userRouter = router({
   signup: publicProcedure
@@ -103,4 +107,27 @@ export const userRouter = router({
 
       return updated
     }),
+  search: protectedProcedure
+    .input(z.object({ query: z.string() }))
+    .query(({ input: { query }, ctx: { user: sessionUser } }) => {
+      enforceIsAdmin(sessionUser)
+
+      return searchUser({
+        searchParams: {
+          recherche: query,
+        },
+      })
+    }),
+  merge: protectedProcedure
+    .input(UserMergeValidation)
+    .mutation(
+      async ({
+        input: { sourceUserId, targetUserId },
+        ctx: { user: sessionUser },
+      }) => {
+        enforceIsAdmin(sessionUser)
+
+        return mergeUser(sourceUserId, targetUserId)
+      },
+    ),
 })
