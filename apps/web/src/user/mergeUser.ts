@@ -76,7 +76,6 @@ type Coordinateur = {
   id: string
   mediateursCoordonnes: {
     mediateur: { id: string }
-    suppression: Date | null
   }[]
   invitations: { email: string; coordinateurId: string }[]
 }
@@ -85,17 +84,109 @@ type Mediateur = {
   id: string
   beneficiaires: { id: string }[]
   activites: { id: string }[]
-  coordinations: { coordinateur: { id: string }; suppression: Date | null }[]
-  enActivite: { structure: { id: string }; suppression: Date | null }[]
+  coordinations: { coordinateur: { id: string } }[]
+  enActivite: { structure: { id: string } }[]
   invitations: { coordinateurId: string }[]
 }
 
 const toId = ({ id }: { id: string }) => id
 
+const toStructureId = ({ structure: { id } }: { structure: { id: string } }) =>
+  id
+
+const toCoordinationId = ({
+  coordinateur: { id },
+}: {
+  coordinateur: { id: string }
+}) => id
+
+const toMediateurCoordooneId = ({
+  mediateur: { id },
+}: {
+  mediateur: { id: string }
+}) => id
+
 const toCoordinateurId = ({ coordinateurId }: { coordinateurId: string }) =>
   coordinateurId
 
 const toMediateurEmail = ({ email }: { email: string }) => email
+
+const notIn = (values: string[]) => (value: string) => !values.includes(value)
+
+const mergeInvitationsRecues =
+  (prisma: PrismaTransaction) =>
+  async (
+    sourceUser: { email: string; mediateur: Mediateur },
+    targetUser: { email: string; mediateur: Mediateur },
+  ) => {
+    const sourceMediateurInvitationIds =
+      sourceUser.mediateur.invitations.map(toCoordinateurId)
+
+    const targetMediateurInvitationIds =
+      targetUser.mediateur.invitations.map(toCoordinateurId)
+
+    await prisma.invitationEquipe.updateMany({
+      where: {
+        email: sourceUser.email,
+        coordinateurId: {
+          in: sourceMediateurInvitationIds.filter(
+            notIn(targetMediateurInvitationIds),
+          ),
+        },
+      },
+      data: { mediateurId: targetUser.mediateur.id, email: targetUser.email },
+    })
+
+    await prisma.invitationEquipe.deleteMany({
+      where: { email: sourceUser.email },
+    })
+  }
+
+const mergeLieuxActivite =
+  (prisma: PrismaTransaction) =>
+  async (
+    { mediateur: sourceMediateur }: { mediateur: Mediateur },
+    { mediateur: targetMediateur }: { mediateur: Mediateur },
+  ) => {
+    const sourceLieuActiviteIds = sourceMediateur.enActivite.map(toStructureId)
+    const targetLieuxActiviteIds = targetMediateur.enActivite.map(toStructureId)
+
+    await prisma.mediateurEnActivite.updateMany({
+      where: {
+        mediateurId: sourceMediateur.id,
+        structureId: {
+          in: sourceLieuActiviteIds.filter(notIn(targetLieuxActiviteIds)),
+        },
+      },
+      data: { mediateurId: targetMediateur.id },
+    })
+
+    await prisma.mediateurEnActivite.deleteMany({
+      where: { mediateurId: sourceMediateur.id },
+    })
+  }
+
+const mergeEquipes =
+  (prisma: PrismaTransaction) =>
+  async (
+    { mediateur: sourceMediateur }: { mediateur: Mediateur },
+    { mediateur: targetMediateur }: { mediateur: Mediateur },
+  ) => {
+    const sourceCoordIds = sourceMediateur.coordinations.map(toCoordinationId)
+    const targetCoordIds = targetMediateur.coordinations.map(toCoordinationId)
+
+    await prisma.mediateurCoordonne.updateMany({
+      where: {
+        mediateurId: sourceMediateur.id,
+        coordinateurId: { in: sourceCoordIds.filter(notIn(targetCoordIds)) },
+      },
+      data: { mediateurId: targetMediateur.id },
+    })
+
+    await prisma.mediateurCoordonne.deleteMany({
+      where: { mediateurId: sourceMediateur.id },
+    })
+  }
 
 const mergeMediateurs =
   (prisma: PrismaTransaction) =>
@@ -103,145 +194,144 @@ const mergeMediateurs =
     sourceUser: { email: string; mediateur: Mediateur | null },
     targetUser: { email: string; mediateur: Mediateur | null },
   ) => {
-    const sourceMediateur = sourceUser.mediateur
-    const targetMediateur = targetUser.mediateur
-
-    if (sourceMediateur == null || targetMediateur == null) return
+    if (sourceUser.mediateur == null || targetUser.mediateur == null) return
 
     await prisma.activite.updateMany({
-      where: { id: { in: sourceMediateur.activites.map(toId) } },
-      data: { mediateurId: targetMediateur.id },
+      where: { id: { in: sourceUser.mediateur.activites.map(toId) } },
+      data: { mediateurId: targetUser.mediateur.id },
     })
-
     await prisma.beneficiaire.updateMany({
-      where: { id: { in: sourceMediateur.beneficiaires.map(toId) } },
-      data: { mediateurId: targetMediateur.id },
+      where: { id: { in: sourceUser.mediateur.beneficiaires.map(toId) } },
+      data: { mediateurId: targetUser.mediateur.id },
     })
+    await mergeInvitationsRecues(prisma)(
+      { email: sourceUser.email, mediateur: sourceUser.mediateur },
+      { email: targetUser.email, mediateur: targetUser.mediateur },
+    )
+    await mergeLieuxActivite(prisma)(
+      { mediateur: sourceUser.mediateur },
+      { mediateur: targetUser.mediateur },
+    )
+    await mergeEquipes(prisma)(
+      { mediateur: sourceUser.mediateur },
+      { mediateur: targetUser.mediateur },
+    )
+  }
 
-    const sourceMediateurInvitationIds =
-      sourceMediateur.invitations.map(toCoordinateurId)
-
-    const targetMediateurInvitationIds =
-      targetMediateur.invitations.map(toCoordinateurId)
+const mergeInvitationEnvoyees =
+  (prisma: PrismaTransaction) =>
+  async (
+    sourceCoordinateur: Coordinateur,
+    targetCoordinateur: Coordinateur,
+  ) => {
+    const sourceEmails = sourceCoordinateur.invitations.map(toMediateurEmail)
+    const targetEmails = targetCoordinateur.invitations.map(toMediateurEmail)
 
     await prisma.invitationEquipe.updateMany({
-      where: {
-        email: sourceUser.email,
-        coordinateurId: {
-          in: sourceMediateurInvitationIds.filter(
-            (id) => !targetMediateurInvitationIds.includes(id),
-          ),
-        },
-      },
-      data: { mediateurId: targetMediateur.id, email: targetUser.email },
+      where: { email: { in: sourceEmails.filter(notIn(targetEmails)) } },
+      data: { coordinateurId: targetCoordinateur.id },
     })
 
     await prisma.invitationEquipe.deleteMany({
-      where: {
-        email: sourceUser.email,
-      },
+      where: { coordinateurId: sourceCoordinateur.id },
     })
+  }
 
-    const targetMediateurStructureIds = new Set(
-      targetMediateur.enActivite.map((e) => e.structure.id) || [],
-    )
+const mergeMediateursCoordonnes =
+  (prisma: PrismaTransaction) =>
+  async (
+    sourceCoordinateur: Coordinateur,
+    targetCoordinateur: Coordinateur,
+  ) => {
+    const sourceMedIds =
+      sourceCoordinateur?.mediateursCoordonnes.map(toMediateurCoordooneId) ?? []
+    const targetMedIds =
+      targetCoordinateur?.mediateursCoordonnes.map(toMediateurCoordooneId) ?? []
 
-    for (const enActivite of sourceMediateur.enActivite) {
-      if (!targetMediateurStructureIds.has(enActivite.structure.id)) {
-        await prisma.mediateurEnActivite.create({
-          data: {
-            mediateurId: targetMediateur.id,
-            structureId: enActivite.structure.id,
-            suppression: enActivite.suppression?.toISOString() ?? null,
-          },
-        })
-      }
-    }
-
-    await prisma.mediateurEnActivite.deleteMany({
-      where: {
-        mediateurId: sourceMediateur.id,
-      },
+    await prisma.invitationEquipe.updateMany({
+      where: { mediateurId: { in: sourceMedIds.filter(notIn(targetMedIds)) } },
+      data: { coordinateurId: targetCoordinateur.id },
     })
-
-    const targetMediateurCoordinateurIds = new Set(
-      targetMediateur?.coordinations.map((c) => c.coordinateur.id) ?? [],
-    )
-
-    for (const coordination of sourceMediateur.coordinations) {
-      if (!targetMediateurCoordinateurIds.has(coordination.coordinateur.id)) {
-        await prisma.mediateurCoordonne.create({
-          data: {
-            mediateurId: targetMediateur.id,
-            coordinateurId: coordination.coordinateur.id,
-            suppression: coordination.suppression?.toISOString() ?? null,
-          },
-        })
-      }
-    }
 
     await prisma.mediateurCoordonne.deleteMany({
-      where: {
-        mediateurId: sourceMediateur.id,
-      },
+      where: { coordinateurId: sourceCoordinateur.id },
     })
   }
 
 const mergeCoordinateurs =
   (prisma: PrismaTransaction) =>
   async (
-    sourceUser: { email: string; coordinateur: Coordinateur | null },
-    targetUser: { email: string; coordinateur: Coordinateur | null },
+    { coordinateur: sourceCoord }: { coordinateur: Coordinateur | null },
+    { coordinateur: targetCoord }: { coordinateur: Coordinateur | null },
   ) => {
-    const sourceCoordinateur = sourceUser.coordinateur
-    const targetCoordinateur = targetUser.coordinateur
+    if (sourceCoord == null || targetCoord == null) return
 
-    if (sourceCoordinateur == null || targetCoordinateur == null) return
+    await mergeInvitationEnvoyees(prisma)(sourceCoord, targetCoord)
+    await mergeMediateursCoordonnes(prisma)(sourceCoord, targetCoord)
+  }
 
-    const sourceCoordinateurInvitationEmails =
-      sourceCoordinateur.invitations.map(toMediateurEmail)
+const mergeStructuresEmployeuses =
+  (prisma: PrismaTransaction) =>
+  async (
+    sourceUser: {
+      id: string
+      emplois: { structure: { id: string } }[]
+    },
+    targetUser: {
+      id: string
+      emplois: { structure: { id: string } }[]
+    },
+  ) => {
+    const targetStructureIds = targetUser.emplois.map(toStructureId)
+    const sourceStructureIds = sourceUser.emplois.map(toStructureId)
 
-    const targetCoordinateurInvitationEmails =
-      targetCoordinateur.invitations.map(toMediateurEmail)
-
-    await prisma.invitationEquipe.updateMany({
+    await prisma.employeStructure.updateMany({
       where: {
-        email: {
-          in: sourceCoordinateurInvitationEmails.filter(
-            (email) => !targetCoordinateurInvitationEmails.includes(email),
-          ),
+        userId: sourceUser.id,
+        structureId: {
+          in: sourceStructureIds.filter(notIn(targetStructureIds)),
         },
       },
-      data: { coordinateurId: targetCoordinateur.id },
+      data: { userId: targetUser.id },
     })
 
-    await prisma.invitationEquipe.deleteMany({
-      where: {
-        coordinateurId: sourceCoordinateur.id,
-      },
+    await prisma.employeStructure.deleteMany({
+      where: { userId: sourceUser.id },
     })
+  }
 
-    const targetMediateurMediateursIds = new Set(
-      targetCoordinateur?.mediateursCoordonnes.map((c) => c.mediateur.id) ?? [],
-    )
+const mergeMutations =
+  (prisma: PrismaTransaction) =>
+  async (
+    sourceUser: { id: string; mutations: { id: string }[] },
+    targetUser: { id: string; mutations: { id: string }[] },
+  ) => {
+    await prisma.mutation.updateMany({
+      where: { userId: sourceUser.id },
+      data: { userId: targetUser.id },
+    })
+  }
 
-    for (const mediateurCoordonne of sourceCoordinateur.mediateursCoordonnes) {
-      if (!targetMediateurMediateursIds.has(mediateurCoordonne.mediateur.id)) {
-        await prisma.mediateurCoordonne.create({
-          data: {
-            mediateurId: mediateurCoordonne.mediateur.id,
-            coordinateurId: targetCoordinateur.id,
-            suppression: mediateurCoordonne.suppression?.toISOString() ?? null,
-          },
-        })
-      }
+const deleteUser =
+  (prisma: PrismaTransaction) =>
+  async ({
+    id: userId,
+    mediateur,
+  }: {
+    id: string
+    mediateur: { id: string } | null
+  }) => {
+    await prisma.rdvAccount.deleteMany({ where: { userId } })
+    await prisma.session.deleteMany({ where: { userId } })
+    await prisma.account.deleteMany({ where: { userId } })
+    if (mediateur?.id != null) {
+      await prisma.conseillerNumerique.deleteMany({
+        where: { mediateurId: mediateur.id },
+      })
     }
-
-    await prisma.mediateurCoordonne.deleteMany({
-      where: {
-        coordinateurId: sourceCoordinateur.id,
-      },
-    })
+    await prisma.coordinateur.deleteMany({ where: { userId } })
+    await prisma.mediateur.deleteMany({ where: { userId } })
+    await prisma.user.deleteMany({ where: { id: userId } })
   }
 
 const initMediateurs =
@@ -295,77 +385,6 @@ const getUsers =
       include,
     }),
   })
-
-const mergeStructuresEmployeuses =
-  (prisma: PrismaTransaction) =>
-  async (
-    sourceUser: {
-      id: string
-      emplois: { structure: { id: string }; suppression: Date | null }[]
-    },
-    targetUser: {
-      id: string
-      emplois: { structure: { id: string }; suppression: Date | null }[]
-    },
-  ) => {
-    const targetStructureIds = new Set(
-      targetUser.emplois.map((e) => e.structure.id),
-    )
-
-    for (const emploi of sourceUser.emplois) {
-      if (!targetStructureIds.has(emploi.structure.id)) {
-        await prisma.employeStructure.create({
-          data: {
-            userId: targetUser.id,
-            structureId: emploi.structure.id,
-            suppression: emploi.suppression?.toISOString() ?? null,
-          },
-        })
-      }
-    }
-
-    await prisma.employeStructure.deleteMany({
-      where: { userId: sourceUser.id },
-    })
-  }
-
-const mergeMutations =
-  (prisma: PrismaTransaction) =>
-  async (
-    sourceUser: { id: string; mutations: { id: string }[] },
-    targetUser: { id: string; mutations: { id: string }[] },
-  ) => {
-    await prisma.mutation.updateMany({
-      where: { id: { in: sourceUser.mutations.map(toId) } },
-      data: { userId: targetUser.id },
-    })
-
-    await prisma.mutation.deleteMany({
-      where: { userId: sourceUser.id },
-    })
-  }
-
-const deleteUser =
-  (prisma: PrismaTransaction) =>
-  async ({
-    id: userId,
-    mediateur,
-  }: {
-    id: string
-    mediateur: { id: string } | null
-  }) => {
-    await prisma.rdvAccount.deleteMany({ where: { userId } })
-    await prisma.session.deleteMany({ where: { userId } })
-    await prisma.account.deleteMany({ where: { userId } })
-    if (mediateur?.id != null) {
-      await prisma.conseillerNumerique.deleteMany({
-        where: { mediateurId: mediateur.id },
-      })
-    }
-    await prisma.coordinateur.deleteMany({ where: { userId } })
-    await prisma.mediateur.deleteMany({ where: { userId } })
-    await prisma.user.deleteMany({ where: { id: userId } })
-  }
 
 export const mergeUser = async (
   sourceUserId: string,
