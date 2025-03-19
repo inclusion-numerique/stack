@@ -62,7 +62,7 @@ const CollectionCard = ({
           </span>
         )}
         {collection.slug && (
-          <div className="fr-flex fr-justify-content-space-between fr-align-items-center fr-my-4v">
+          <div className="fr-flex fr-justify-content-space-between fr-align-items-center fr-mt-4v">
             <CollectionMetaData
               collection={{
                 title: collection.title,
