@@ -498,17 +498,21 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
         </AdministrationInfoCard>
       )}
       {emplois.length > 0 ? (
-        <AdministrationInfoCard title="Structures employeuses">
-          <Button
-            iconId="fr-icon-settings-5-line"
-            priority="tertiary"
-            size="small"
-            linkProps={{
-              href: `/administration/utilisateurs/${user.id}/emplois`,
-            }}
-          >
-            Paramétrer les structures employeuses
-          </Button>
+        <AdministrationInfoCard
+          title="Structures employeuses"
+          actions={
+            <Button
+              iconId="fr-icon-settings-5-line"
+              priority="tertiary"
+              size="small"
+              linkProps={{
+                href: `/administration/utilisateurs/${user.id}/emplois`,
+              }}
+            >
+              Paramétrer les structures employeuses
+            </Button>
+          }
+        >
           {emplois.map((emploi) => (
             <div key={emploi.id}>
               <p className="fr-text--lg fr-text--medium fr-mb-4v fr-mt-8v">
