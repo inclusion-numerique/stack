@@ -16,8 +16,6 @@ describe('ETQ Coordinateur conseiller numérique, je peux m’inscrire en suivan
         identificationResult: 'matching',
       })
 
-      cy.createCoordinateurFor(user)
-
       cy.findByText('Continuer').click()
 
       cy.findByText('Non').click()
