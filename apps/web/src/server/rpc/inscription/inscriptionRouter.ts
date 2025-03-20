@@ -91,8 +91,7 @@ export const inscriptionRouter = router({
             coordinateur:
               sessionUser.coordinateur ||
               profil === ProfilInscription.ConseillerNumerique ||
-              profil === ProfilInscription.Mediateur ||
-              profil === ProfilInscription.CoordinateurConseillerNumerique
+              profil === ProfilInscription.Mediateur
                 ? undefined
                 : { create: { id: v4() } },
           },
