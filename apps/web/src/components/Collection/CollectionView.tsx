@@ -66,8 +66,8 @@ const CollectionView = ({
                     collection={collection}
                     canWrite={isOwner || canWrite}
                     user={user}
-                    resourcesCount={collection.resources.length}
                     context="view"
+                    resourcesCount={collection.resources.length}
                   />
                 )}
               </div>
@@ -79,11 +79,11 @@ const CollectionView = ({
         <div className="fr-hidden-sm fr-border-bottom fr-border--grey">
           <div className="fr-container fr-container--medium fr-my-5v">
             <CollectionActions
+              resourcesCount={collection.resources.length}
               className="fr-justify-content-space-between"
               collection={collection}
               canWrite={isOwner || canWrite}
               user={user}
-              resourcesCount={collection.resources.length}
               context="view"
             />
           </div>

@@ -20,13 +20,13 @@ export const CollectionMoreActionsDropdown = ({
     slug: string
     title: string
   }
-  resourcesCount: number
   priority?: ButtonProps['priority']
   modalPriority?: ButtonProps['priority']
   modalControlClassName?: string
   dropdownControlClassName?: string
   buttonTitle?: string
   size?: ButtonProps['size']
+  resourcesCount: number
 }) => (
   <Dropdown
     id={`more_actions_for_${collection.slug}`}
