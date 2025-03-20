@@ -20,6 +20,7 @@ import {
   typeLieuLabels,
 } from '@app/web/cra/cra'
 import { ActivitesFiltersLabels } from '@app/web/cra/generateActivitesFiltersLabels'
+import { htmlToText } from '@app/web/utils/htmlToText'
 import { booleanToYesNoLabel } from '@app/web/utils/yesNoBooleanOptions'
 import {
   WorksheetUser,
@@ -190,7 +191,7 @@ export const buildActivitesWorksheet = ({
           ({ statutSocial }) =>
             statutSocialLabels[statutSocial ?? 'NonCommunique'],
         ),
-        notes || '',
+        notes ? htmlToText(notes) : '',
       ]
     }),
   })
