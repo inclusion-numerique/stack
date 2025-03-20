@@ -5,6 +5,11 @@ import Button from '@codegouvfr/react-dsfr/Button'
 import classNames from 'classnames'
 import type { ReactNode } from 'react'
 
+export type StructureCardStructure = Pick<
+  StructureData,
+  'nom' | 'typologies' | 'adresse' | 'commune' | 'codePostal' | 'siret' | 'rna'
+>
+
 const StructureCard = ({
   structure: { nom, adresse, rna, siret, codePostal, commune, typologies },
   topRight,
@@ -12,16 +17,7 @@ const StructureCard = ({
   className,
 }: {
   className?: string
-  structure: Pick<
-    StructureData,
-    | 'nom'
-    | 'typologies'
-    | 'adresse'
-    | 'commune'
-    | 'codePostal'
-    | 'siret'
-    | 'rna'
-  >
+  structure: StructureCardStructure
   topRight?: ReactNode
   infoLinkHref?: string
 }) => {

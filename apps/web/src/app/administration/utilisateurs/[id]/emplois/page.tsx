@@ -4,7 +4,7 @@ import AdministrationInlineLabelsValues, {
   type LabelAndValue,
 } from '@app/web/app/administration/AdministrationInlineLabelsValues'
 import AdministrationTitle from '@app/web/app/administration/AdministrationTitle'
-import AdministrationStructureEmployeuseFromContratActifForm from '@app/web/app/administration/utilisateurs/[id]/structure-employeuse/AdministrationStructureEmployeuseFromContratActifForm'
+import AdministrationStructureEmployeuseFromContratActifForm from '@app/web/app/administration/utilisateurs/[id]/emplois/AdministrationStructureEmployeuseFromContratActifForm'
 import { getUserLifecycleBadge } from '@app/web/app/administration/utilisateurs/getUserLifecycleBadge'
 import CoopPageContainer from '@app/web/app/coop/CoopPageContainer'
 import { metadataTitle } from '@app/web/app/metadataTitle'
@@ -12,6 +12,8 @@ import { findConseillerNumeriqueV1 } from '@app/web/external-apis/conseiller-num
 import { prismaClient } from '@app/web/prismaClient'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
 import { getUserDisplayName } from '@app/web/utils/user'
+import Badge from '@codegouvfr/react-dsfr/Badge'
+import Button from '@codegouvfr/react-dsfr/Button'
 import Notice from '@codegouvfr/react-dsfr/Notice'
 import type { Structure } from '@prisma/client'
 import Link from 'next/link'
@@ -200,31 +202,91 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
         ]}
       />
       <AdministrationTitle icon="fr-icon-user-line">
-        {name} - Structure employeuse <span className="fr-mx-1v" />{' '}
+        {name} - Structures employeuses <span className="fr-mx-1v" />{' '}
         {getUserLifecycleBadge(user, { small: false })}
       </AdministrationTitle>
 
       {emplois.length > 0 ? (
-        <AdministrationInfoCard title="Structures employeuses">
+        <AdministrationInfoCard
+          title=" "
+          actions={
+            conseillerNumeriqueInfo ? null : (
+              <Button
+                className="fr-mt-0 fr-mb-0"
+                size="small"
+                priority="primary"
+                linkProps={{
+                  href: `/administration/utilisateurs/${user.id}/emplois/creer`,
+                }}
+                iconId="fr-icon-add-line"
+              >
+                Ajouter une structure employeuse
+              </Button>
+            )
+          }
+        >
+          {emplois.length === 0 && (
+            <Notice
+              title={
+                <>Aucune structure employeuse trouvée pour cet utilisateur.</>
+              }
+              className="fr-notice--alert"
+            />
+          )}
+          {!conseillerNumeriqueInfo && <div className="fr-flex"></div>}
           {emplois.map((emploi) => (
             <div key={emploi.id}>
-              <p className="fr-text--lg fr-text--medium fr-mb-4v fr-mt-8v">
-                {emploi.structure.nom}
+              <hr className="fr-separator-1px fr-mt-4v" />
+              <p className="fr-text--bold fr-mb-0 fr-mt-6v">
+                <span className="fr-mr-2w">{emploi.structure.nom}</span>
+                {emploi.suppression ? (
+                  <Badge small severity="warning">
+                    Emploi terminé
+                  </Badge>
+                ) : (
+                  <Badge small severity="success">
+                    Emploi en cours
+                  </Badge>
+                )}
               </p>
+
               <AdministrationInlineLabelsValues
+                className="fr-mt-4v"
                 items={[
                   {
-                    label: 'Lien d’emploi créé le',
+                    label: 'Début de l’emploi',
                     value: dateAsDay(emploi.creation),
                   },
                   {
-                    label: 'Lien d’emploi supprimé le',
+                    label: 'Fin de l’emploi',
                     value: emploi.suppression
                       ? dateAsDay(emploi.suppression)
                       : '-',
                   },
-                  ...getStructuresInfos(emploi.structure),
                 ]}
+              />
+              {!conseillerNumeriqueInfo && (
+                <div className="fr-flex">
+                  <Button
+                    className="fr-mt-4v fr-mb-0"
+                    size="small"
+                    priority="tertiary"
+                    linkProps={{
+                      href: `/administration/utilisateurs/${user.id}/emplois/${emploi.id}/modifier`,
+                    }}
+                    iconId="fr-icon-edit-line"
+                  >
+                    Modifier
+                  </Button>
+                </div>
+              )}
+
+              <p className="fr-mb-0 fr-mt-6v">
+                Informations sur la structure&nbsp;:
+              </p>
+              <AdministrationInlineLabelsValues
+                className="fr-mt-4v"
+                items={[...getStructuresInfos(emploi.structure)]}
               />
             </div>
           ))}
@@ -238,7 +300,18 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
         )
       )}
 
-      <AdministrationInfoCard title="Contrat actif">
+      <AdministrationInfoCard title="Contrat actif dans la base de données conseillers numériques V1">
+        {!conseillerNumeriqueInfo && (
+          <Notice
+            title={
+              <>
+                Cet utilisateur n’est pas dans le dispositif Conseiller
+                Numérique.
+              </>
+            }
+            className="fr-notice--info"
+          />
+        )}
         {!!conseillerNumeriqueInfo &&
           !conseillerNumeriqueInfo.miseEnRelationActive && (
             <Notice
