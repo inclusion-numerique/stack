@@ -47,6 +47,22 @@ const authOptions: NextAuthOptions = {
       ],
   callbacks: {
     signIn(params) {
+      // For email signin verification request, we should do nothing
+      // and continue with the signin flow
+      if (params.email?.verificationRequest) {
+        return true
+      }
+
+      // For an email signin, we don't have a "profile" object
+      if (params.account?.provider === 'email') {
+        registerLastLogin({ userId: params.user.id }).catch((error) => {
+          Sentry.captureException(error)
+        })
+        return true
+      }
+
+      // The rest of this function will execute for ProConnect flow
+
       const { user, profile } = params as unknown as {
         user: SessionUser
         profile: {
