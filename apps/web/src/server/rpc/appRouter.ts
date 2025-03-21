@@ -4,6 +4,7 @@ import { beneficiairesRouter } from '@app/web/server/rpc/beneficiaires/beneficia
 import { conseillersNumeriqueRouter } from '@app/web/server/rpc/conseillers-numerique/conseillersNumeriqueRouter'
 import { craRouter } from '@app/web/server/rpc/cra/craRouter'
 import { router } from '@app/web/server/rpc/createRouter'
+import { employeStructureRouter } from '@app/web/server/rpc/employe-structure/employeStructureRouter'
 import { imageRouter } from '@app/web/server/rpc/image/imageRouter'
 import { inscriptionRouter } from '@app/web/server/rpc/inscription/inscriptionRouter'
 import { lieuActiviteRouter } from '@app/web/server/rpc/lieu-activite/lieuActiviteRouter'
@@ -31,6 +32,7 @@ export const appRouter = router({
   apiClient: apiClientRouter,
   assistant: assistantRouter,
   rdvServicePublic: rdvServicePublicRouter,
+  employeStructure: employeStructureRouter,
 })
 // export type definition of API
 export type AppRouter = typeof appRouter

@@ -629,9 +629,9 @@ model EmployeStructure {
   structureId String    @map("structure_id") @db.Uuid
   structure   Structure @relation(fields: [structureId], references: [id])
 
-  creation     DateTime  @default(now())
+  creation     DateTime  @default(now()) // Représente la date de début de l'emploi
   modification DateTime  @default(now())
-  suppression  DateTime?
+  suppression  DateTime? // Représente la date de fin de l'emploi
 
   @@index([userId])
   @@index([structureId])
@@ -971,6 +971,7 @@ enum MutationName {
   ModifierStructure                        @map("modifier_structure")
   MiseAJourStructuresCartographieNationale @map("mise_a_jour_structures_cartographie_nationale")
   CreerEmployeStructure                    @map("creer_employe_structure")
+  ModifierEmployeStructure                 @map("modifier_employe_structure")
   SupprimerEmployeStructure                @map("supprimer_employe_structure")
   CreerMediateurEnActivite                 @map("creer_mediateur_en_activite")
   SupprimerMediateurEnActivite             @map("supprimer_mediateur_en_activite")
