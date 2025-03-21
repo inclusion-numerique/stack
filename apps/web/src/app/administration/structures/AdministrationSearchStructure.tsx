@@ -97,9 +97,9 @@ const AdministrationSearchStructure = () => {
               href: `/administration/structures/${selectedStructureId}/modifier`,
             }}
             priority="tertiary"
-            iconId="fr-icon-edit-line"
+            iconId="fr-icon-eye-line"
           >
-            Modifier cette structure
+            Voir les infos de la structure
           </Button>
           <pre className="fr-background-alt--blue-france fr-p-4v fr-border-radius--16 fr-text--xs fr-mb-0">
             {JSON.stringify(selectedStructure, null, 2)}
