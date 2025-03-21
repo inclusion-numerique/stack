@@ -41,5 +41,5 @@ describe('openAiClient', () => {
       max_tokens: 1,
     })
     expect(completion.choices.at(0)?.text).toBeDefined()
-  })
+  }, 15_000)
 })
