@@ -33,6 +33,18 @@ export const searchUtilisateurSelect = {
       conseillerNumeriqueId: true,
     },
   },
+  emplois: {
+    orderBy: { creation: 'desc' },
+    take: 1,
+    select: {
+      structure: {
+        select: {
+          nom: true,
+          codeInsee: true,
+        },
+      },
+    },
+  },
 } satisfies Prisma.UserSelect
 
 export const queryUtilisateursForList = async ({

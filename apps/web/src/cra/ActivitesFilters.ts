@@ -3,6 +3,10 @@ import z from 'zod'
 
 const isoDayRegex = /^\d{4}-\d{2}-\d{2}$/
 
+const conseillerNumeriqueValues = ['0', '1'] as const
+
+type ConseillerNumeriqueValue = (typeof conseillerNumeriqueValues)[number]
+
 export const ActivitesFilterValidations = {
   du: z.string().regex(isoDayRegex).optional(),
   au: z.string().regex(isoDayRegex).optional(),
@@ -42,7 +46,7 @@ export const ActivitesFilterValidations = {
       z.array(z.string().uuid()),
     ])
     .optional(),
-  conseiller_numerique: z.enum(['0', '1']).optional(),
+  conseiller_numerique: z.enum(conseillerNumeriqueValues).optional(),
 }
 
 export type ActivitesFilters = {
@@ -54,7 +58,7 @@ export type ActivitesFilters = {
   communes?: string[] // Code INSEE des communes
   departements?: string[] // Code INSEE des départements
   lieux?: string[] // UUID des lieux d’activités
-  conseiller_numerique?: '0' | '1' // (0 = non, 1 = oui)
+  conseiller_numerique?: ConseillerNumeriqueValue // (0 = non, 1 = oui)
 }
 
 /**
@@ -80,9 +84,9 @@ export const validateActivitesFilters = <T extends ActivitesFilters>(
       validatedFilterValue.success &&
       validatedFilterValue.data !== undefined
     ) {
-      result[typedKey] = validatedFilterValue.data as
-        | (('0' | '1') & TypeActiviteSlug[] & string[])
-        | undefined
+      result[typedKey] = validatedFilterValue.data as ConseillerNumeriqueValue &
+        TypeActiviteSlug[] &
+        string[]
     } else {
       delete result[typedKey]
     }

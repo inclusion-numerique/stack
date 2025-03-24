@@ -2,28 +2,22 @@
 
 import type { SelectOption } from '@app/ui/components/Form/utils/options'
 import type { LieuActiviteOption } from '@app/web/app/lieu-activite/getMediateursLieuxActiviteOptions'
-import type { BeneficiaireOption } from '@app/web/beneficiaire/BeneficiaireOption'
-import type { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
-import {
-  generateActivitesFiltersLabels,
-  toLieuPrefix,
-} from '@app/web/cra/generateActivitesFiltersLabels'
-import { MediateurOption } from '@app/web/mediateurs/MediateurOption'
 import Button from '@codegouvfr/react-dsfr/Button'
 import Tag from '@codegouvfr/react-dsfr/Tag'
 import { useRouter, useSearchParams } from 'next/navigation'
+import {
+  generateUtilisateursFiltersLabels,
+  toLieuPrefix,
+} from './generateUtilisateursFiltersLabels'
+import { UtilisateursFilters } from './utilisateursFilters'
 
 export const FilterTags = ({
   filters,
   lieuxActiviteOptions,
-  mediateursOptions,
-  beneficiairesOptions,
   departementsOptions,
   communesOptions,
 }: {
-  filters: ActivitesFilters
-  mediateursOptions: MediateurOption[]
-  beneficiairesOptions: BeneficiaireOption[]
+  filters: UtilisateursFilters
   lieuxActiviteOptions: LieuActiviteOption[]
   departementsOptions: SelectOption[]
   communesOptions: SelectOption[]
@@ -32,12 +26,10 @@ export const FilterTags = ({
   const searchParams = useSearchParams()
   const params = new URLSearchParams(searchParams.toString())
 
-  const filterLabelsToDisplay = generateActivitesFiltersLabels(filters, {
+  const filterLabelsToDisplay = generateUtilisateursFiltersLabels(filters, {
     communesOptions,
     departementsOptions,
     lieuxActiviteOptions,
-    beneficiairesOptions,
-    mediateursOptions,
   }).map(toLieuPrefix)
 
   const handleRemoveFilter = (key: string, value: string | string[]) => {

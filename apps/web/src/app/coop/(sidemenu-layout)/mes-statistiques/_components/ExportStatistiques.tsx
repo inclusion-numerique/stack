@@ -2,7 +2,7 @@
 
 import type { SelectOption } from '@app/ui/components/Form/utils/options'
 import { createToast } from '@app/ui/toast/createToast'
-import type { LieuActiviteOption } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
+import type { LieuActiviteOption } from '@app/web/app/lieu-activite/getMediateursLieuxActiviteOptions'
 import type { BeneficiaireOption } from '@app/web/beneficiaire/BeneficiaireOption'
 import type { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
 import {

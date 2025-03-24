@@ -1,7 +1,7 @@
 import type { SelectOption } from '@app/ui/components/Form/utils/options'
 import ExportActivitesButton from '@app/web/app/coop/(sidemenu-layout)/mes-activites/(liste)/ExportActivitesButton'
 import ExportActivitesDisabledButton from '@app/web/app/coop/(sidemenu-layout)/mes-activites/(liste)/ExportActivitesDisabledButton'
-import type { LieuActiviteOption } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
+import type { LieuActiviteOption } from '@app/web/app/lieu-activite/getMediateursLieuxActiviteOptions'
 import type { BeneficiaireOption } from '@app/web/beneficiaire/BeneficiaireOption'
 import type { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
 import { generateActivitesFiltersLabels } from '@app/web/cra/generateActivitesFiltersLabels'
