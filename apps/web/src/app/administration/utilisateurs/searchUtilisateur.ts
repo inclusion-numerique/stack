@@ -11,6 +11,7 @@ import { prismaClient } from '@app/web/prismaClient'
 import type { Prisma } from '@prisma/client'
 import { z } from 'zod'
 import {
+  filterOnDispositif,
   filterOnLieux,
   filterOnRoles,
   filterOnStatut,
@@ -62,6 +63,7 @@ export const searchUtilisateur = async (options: SearchUtilisateurOptions) => {
         })),
       },
       filterOnRoles(parsedQueryParams.data),
+      filterOnDispositif(parsedQueryParams.data),
       filterOnStatut(parsedQueryParams.data),
       filterOnLieux(parsedQueryParams.data),
     ],

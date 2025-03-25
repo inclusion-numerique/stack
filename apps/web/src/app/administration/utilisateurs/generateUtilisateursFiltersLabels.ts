@@ -8,6 +8,7 @@ export type FilterType =
   | 'departements'
   | 'statut'
   | 'roles'
+  | 'conseiller_numerique'
 
 const generateLieuxLabels = (
   {
@@ -49,7 +50,14 @@ const generateLieuxLabels = (
 ]
 
 export const generateUtilisateursFiltersLabels = (
-  { statut, roles, departements, communes, lieux }: UtilisateursFilters,
+  {
+    statut,
+    conseiller_numerique,
+    roles,
+    departements,
+    communes,
+    lieux,
+  }: UtilisateursFilters,
   {
     communesOptions,
     departementsOptions,
@@ -68,6 +76,17 @@ export const generateUtilisateursFiltersLabels = (
       }))
     : []
 
+  const dispositifLabel = conseiller_numerique
+    ? {
+        label:
+          conseiller_numerique === '1'
+            ? 'Conseiller numérique'
+            : 'Hors dispositif',
+        key: conseiller_numerique,
+        type: 'conseiller_numerique' as const,
+      }
+    : null
+
   const statutLabel = statut
     ? {
         label: statutSlugLabels[statut],
@@ -83,6 +102,7 @@ export const generateUtilisateursFiltersLabels = (
 
   return [
     ...rolesLabel,
+    ...(dispositifLabel == null ? [] : [dispositifLabel]),
     ...(statutLabel == null ? [] : [statutLabel]),
     ...lieuxLabels,
   ]

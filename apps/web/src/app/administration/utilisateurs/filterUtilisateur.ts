@@ -19,41 +19,81 @@ export const filterOnStatut = (queryParams?: {
     ? {}
     : (statutFiltersMap.get(queryParams.statut) ?? {})
 
-const isUser = ({ roles }: { roles: RoleSlug[] }) =>
-  roles.includes('mediateur') ||
-  roles.includes('coordinateur') ||
-  roles.includes('conseiller-numerique')
-
-const isAdmin = ({ roles }: { roles: RoleSlug[] }) =>
-  roles.includes('administrateur')
-
-const isMediateur = ({ roles }: { roles: RoleSlug[] }) =>
-  roles.includes('mediateur')
-
-const isConum = ({ roles }: { roles: RoleSlug[] }) =>
-  roles.includes('conseiller-numerique')
-
-const isCoord = ({ roles }: { roles: RoleSlug[] }) =>
-  roles.includes('coordinateur')
+const roleFilter: Record<
+  RoleSlug,
+  {
+    role: 'User' | 'Admin'
+    coordinateur?: { isNot: null } | null
+    mediateur?: { isNot: null } | null
+  }
+> = {
+  mediateur: { role: 'User', coordinateur: null, mediateur: { isNot: null } },
+  coordinateur: { role: 'User', coordinateur: { isNot: null } },
+  administrateur: { role: 'Admin' },
+}
 
 export const filterOnRoles = (queryParams?: {
   roles: RoleSlug[]
-}): {} | { role: Prisma.UserWhereInput } =>
-  queryParams == null || queryParams.roles.length === 0
-    ? {}
-    : {
-        role: {
-          in: [
-            ...(isAdmin(queryParams) ? ['Admin'] : []),
-            ...(isUser(queryParams) ? ['User'] : []),
-          ],
-        },
-        ...(isMediateur(queryParams) ? { mediateur: { isNot: null } } : {}),
-        ...(isConum(queryParams)
-          ? { mediateur: { conseillerNumerique: { isNot: null } } }
-          : {}),
-        ...(isCoord(queryParams) ? { coordinateur: { isNot: null } } : {}),
-      }
+}): {} | { role: Prisma.UserWhereInput } => {
+  if (queryParams == null || queryParams.roles.length === 0) return {}
+
+  const roleFilters = queryParams.roles.map((role) => roleFilter[role])
+
+  if (roleFilters.length === 1) return roleFilters[0]
+
+  return {
+    OR: roleFilters,
+  }
+}
+
+const horsDispositifFilter: Record<
+  Exclude<RoleSlug, 'administrateur'>,
+  {
+    mediateur?: { conseillerNumerique: null }
+    coordinateur?: { conseillerNumeriqueId: null }
+  }
+> = {
+  mediateur: { mediateur: { conseillerNumerique: null } },
+  coordinateur: { coordinateur: { conseillerNumeriqueId: null } },
+}
+
+const conseillerNumeriqueFilter: Record<
+  Exclude<RoleSlug, 'administrateur'>,
+  {
+    mediateur?: { conseillerNumerique: { isNot: null } }
+    coordinateur?: { conseillerNumeriqueId: { not: null } }
+  }
+> = {
+  mediateur: { mediateur: { conseillerNumerique: { isNot: null } } },
+  coordinateur: { coordinateur: { conseillerNumeriqueId: { not: null } } },
+}
+
+const onlyUsers = (
+  role: RoleSlug,
+): role is Exclude<RoleSlug, 'administrateur'> => role !== 'administrateur'
+
+export const filterOnDispositif = (queryParams?: {
+  conseiller_numerique?: '0' | '1'
+  roles: RoleSlug[]
+}): {} | { dispositif: Prisma.UserWhereInput } => {
+  if (queryParams?.conseiller_numerique == null) return {}
+
+  if (queryParams.conseiller_numerique === '0') {
+    const filters = queryParams.roles
+      .filter(onlyUsers)
+      .map((role) => horsDispositifFilter[role])
+    return filters.length === 1
+      ? filters[0]
+      : { OR: Object.values(horsDispositifFilter) }
+  }
+
+  const filters = queryParams.roles
+    .filter(onlyUsers)
+    .map((role) => conseillerNumeriqueFilter[role])
+  return filters.length === 1
+    ? filters[0]
+    : { OR: Object.values(conseillerNumeriqueFilter) }
+}
 
 const canFilterOnLieux = ({
   lieux,

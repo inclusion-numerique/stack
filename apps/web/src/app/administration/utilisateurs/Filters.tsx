@@ -2,6 +2,7 @@
 
 import type { SelectOption } from '@app/ui/components/Form/utils/options'
 import type { LieuActiviteOption } from '@app/web/app/lieu-activite/getMediateursLieuxActiviteOptions'
+import { DispositifFilter } from '@app/web/components/filters/DispositifFilter'
 import { LieuFilter } from '@app/web/components/filters/LieuFilter'
 import { RoleFilter } from '@app/web/components/filters/RoleFilter'
 import { StatutFilter } from '@app/web/components/filters/StatutFilter'
@@ -28,6 +29,7 @@ const Filters = ({
     )}
   >
     <RoleFilter defaultValue={defaultFilters.roles} />
+    <DispositifFilter defaultValue={defaultFilters.conseiller_numerique} />
     <StatutFilter defaultValue={defaultFilters.statut} />
     <LieuFilter
       defaultValue={[

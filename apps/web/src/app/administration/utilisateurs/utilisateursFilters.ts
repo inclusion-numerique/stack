@@ -6,6 +6,10 @@ import {
 } from '@app/web/user/list'
 import z from 'zod'
 
+const conseillerNumeriqueValues = ['0', '1'] as const
+
+type ConseillerNumeriqueValue = (typeof conseillerNumeriqueValues)[number]
+
 export const UtiliateursFilterValidations = {
   communes: z
     .union([
@@ -32,10 +36,12 @@ export const UtiliateursFilterValidations = {
     .or(z.undefined())
     .transform((roles) => roles ?? []),
   statut: z.enum(statutSlugs).optional(),
+  conseiller_numerique: z.enum(conseillerNumeriqueValues).optional(),
 }
 
 export type UtilisateursFilters = {
   communes?: string[]
+  conseiller_numerique?: ConseillerNumeriqueValue
   departements?: string[]
   lieux?: string[]
   statut?: StatutSlug
@@ -61,7 +67,8 @@ export const utilisateursFilters = <T extends UtilisateursFilters>(
       validatedFilterValue.success &&
       validatedFilterValue.data !== undefined
     ) {
-      result[typedKey] = validatedFilterValue.data as StatutSlug &
+      result[typedKey] = validatedFilterValue.data as ConseillerNumeriqueValue &
+        StatutSlug &
         RoleSlug[] &
         string[]
     } else {

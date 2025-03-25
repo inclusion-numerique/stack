@@ -1,5 +1,6 @@
 import { RoleSlug, StatutSlug } from '@app/web/user/list'
 import {
+  filterOnDispositif,
   filterOnLieux,
   filterOnRoles,
   filterOnStatut,
@@ -61,19 +62,9 @@ describe('filter utilisateur', () => {
       const filters = filterOnRoles({ roles })
 
       expect(filters).toEqual({
-        role: { in: ['User'] },
+        role: 'User',
+        coordinateur: null,
         mediateur: { isNot: null },
-      })
-    })
-
-    it('should filter when roles filter is set to conseiller-numerique', () => {
-      const roles: RoleSlug[] | undefined = ['conseiller-numerique']
-
-      const filters = filterOnRoles({ roles })
-
-      expect(filters).toEqual({
-        role: { in: ['User'] },
-        mediateur: { conseillerNumerique: { isNot: null } },
       })
     })
 
@@ -83,7 +74,7 @@ describe('filter utilisateur', () => {
       const filters = filterOnRoles({ roles })
 
       expect(filters).toEqual({
-        role: { in: ['User'] },
+        role: 'User',
         coordinateur: { isNot: null },
       })
     })
@@ -94,7 +85,7 @@ describe('filter utilisateur', () => {
       const filters = filterOnRoles({ roles })
 
       expect(filters).toEqual({
-        role: { in: ['Admin'] },
+        role: 'Admin',
       })
     })
 
@@ -104,10 +95,123 @@ describe('filter utilisateur', () => {
       const filters = filterOnRoles({ roles })
 
       expect(filters).toEqual({
-        role: { in: ['Admin', 'User'] },
-        mediateur: {
-          isNot: null,
-        },
+        OR: [
+          { role: 'Admin' },
+          {
+            role: 'User',
+            coordinateur: null,
+            mediateur: { isNot: null },
+          },
+        ],
+      })
+    })
+  })
+
+  describe('on dispositif', () => {
+    it('should not filter when dispositif filter is empty', () => {
+      const conseiller_numerique = undefined
+      const roles: RoleSlug[] = []
+
+      const filters = filterOnDispositif({ conseiller_numerique, roles })
+
+      expect(filters).toEqual({})
+    })
+
+    it('should filter when dispositif filter is set to conseiller numerique', () => {
+      const conseiller_numerique = '1'
+      const roles: RoleSlug[] = []
+
+      const filters = filterOnDispositif({ conseiller_numerique, roles })
+
+      expect(filters).toEqual({
+        OR: [
+          { mediateur: { conseillerNumerique: { isNot: null } } },
+          { coordinateur: { conseillerNumeriqueId: { not: null } } },
+        ],
+      })
+    })
+
+    it('should filter when dispositif filter is set to conseiller numerique with role mediateur', () => {
+      const conseiller_numerique = '1'
+      const roles: RoleSlug[] = ['mediateur']
+
+      const filters = filterOnDispositif({ conseiller_numerique, roles })
+
+      expect(filters).toEqual({
+        mediateur: { conseillerNumerique: { isNot: null } },
+      })
+    })
+
+    it('should filter when dispositif filter is set to conseiller numerique with role coordinateur', () => {
+      const conseiller_numerique = '1'
+      const roles: RoleSlug[] = ['coordinateur']
+
+      const filters = filterOnDispositif({ conseiller_numerique, roles })
+
+      expect(filters).toEqual({
+        coordinateur: { conseillerNumeriqueId: { not: null } },
+      })
+    })
+
+    it('should filter when dispositif filter is set to conseiller numerique with role mediateur and coordinateur', () => {
+      const conseiller_numerique = '1'
+      const roles: RoleSlug[] = ['mediateur', 'coordinateur']
+
+      const filters = filterOnDispositif({ conseiller_numerique, roles })
+
+      expect(filters).toEqual({
+        OR: [
+          { mediateur: { conseillerNumerique: { isNot: null } } },
+          { coordinateur: { conseillerNumeriqueId: { not: null } } },
+        ],
+      })
+    })
+
+    it('should filter when dispositif filter is set to hors dispositif', () => {
+      const conseiller_numerique = '0'
+      const roles: RoleSlug[] = []
+
+      const filters = filterOnDispositif({ conseiller_numerique, roles })
+
+      expect(filters).toEqual({
+        OR: [
+          { mediateur: { conseillerNumerique: null } },
+          { coordinateur: { conseillerNumeriqueId: null } },
+        ],
+      })
+    })
+
+    it('should filter when dispositif filter is set to hors dispositif with role mediateur', () => {
+      const conseiller_numerique = '0'
+      const roles: RoleSlug[] = ['mediateur']
+
+      const filters = filterOnDispositif({ conseiller_numerique, roles })
+
+      expect(filters).toEqual({
+        mediateur: { conseillerNumerique: null },
+      })
+    })
+
+    it('should filter when dispositif filter is set to hors dispositif with role coordinateur', () => {
+      const conseiller_numerique = '0'
+      const roles: RoleSlug[] = ['coordinateur']
+
+      const filters = filterOnDispositif({ conseiller_numerique, roles })
+
+      expect(filters).toEqual({ coordinateur: { conseillerNumeriqueId: null } })
+    })
+
+    it('should filter when dispositif filter is set to hors dispositif with role mediateur and coordinateur', () => {
+      const conseiller_numerique = '0'
+      const roles: RoleSlug[] = ['mediateur', 'coordinateur']
+
+      const filters = filterOnDispositif({ conseiller_numerique, roles })
+
+      expect(filters).toEqual({
+        OR: [
+          { mediateur: { conseillerNumerique: null } },
+          { coordinateur: { conseillerNumeriqueId: null } },
+        ],
       })
     })
   })
