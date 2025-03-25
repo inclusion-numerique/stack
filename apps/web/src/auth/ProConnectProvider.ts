@@ -39,7 +39,7 @@ export const ProConnectProvider = () =>
       url: `${issuer}/api/v2/authorize`,
       params: {
         // https://github.com/numerique-gouv/agentconnect-documentation/blob/main/doc_fs/scope-claims.md#correspondance-entre-scope-et-claims-sur-agentconnect
-        scope: 'openid given_name usual_name email phone',
+        scope: 'openid given_name usual_name email',
         // 'openid given_name usual_name email uid siret siren organizational_unit belonging_population phone chorusdt',
 
         acr_values: 'eidas1',
