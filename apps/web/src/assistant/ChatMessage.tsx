@@ -60,9 +60,10 @@ const ChatMessage = ({
     if (!content) {
       return null
     }
+
     const parsedToolContent = parseYamlToolContent(content)
 
-    if (!parsedToolContent) {
+    if (!parsedToolContent || typeof parsedToolContent !== 'object') {
       return null
     }
 

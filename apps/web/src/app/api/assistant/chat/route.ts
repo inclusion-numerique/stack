@@ -16,6 +16,10 @@ import { prismaClient } from '@app/web/prismaClient'
 import { type NextRequest, NextResponse } from 'next/server'
 import { v4 } from 'uuid'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+export const maxDuration = 240
+
 const notFoundResponse = () =>
   new Response('', {
     status: 404,
@@ -112,6 +116,7 @@ export const POST = async (request: NextRequest) => {
     },
     messages,
     tools,
+    toolChoice: 'auto',
   })
 
   await prismaClient.assistantChatSession.update({

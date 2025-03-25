@@ -24,6 +24,8 @@ import { zodFunction } from 'openai/helpers/zod'
 import { stringify } from 'yaml'
 import { z } from 'zod'
 
+import { tool } from 'ai'
+
 const stringBooleanValidation = (description: string) =>
   z
     .enum(['true', 'false'])
@@ -103,7 +105,8 @@ const summarizeWebSearchResults = ({
 
 // Should the tool return json or markdown?
 export type AgenticReturnFormat = 'json' | 'yaml' | 'markdown'
-const returnFormat: AgenticReturnFormat = 'yaml' as AgenticReturnFormat
+// const returnFormat: AgenticReturnFormat = 'yaml' as AgenticReturnFormat
+const returnFormat: AgenticReturnFormat = 'json' as AgenticReturnFormat
 
 export type AgenticSearchToolYamlResult =
   | {
@@ -321,3 +324,9 @@ ${formatRagSearchResultToMarkdown(lesBasesRagChunkResults)}
 } satisfies ZodFunctionOptions<typeof agenticSearchToolParameters>
 
 export const agenticSearchTool = zodFunction(agenticSearchToolOptions)
+
+export const agenticSearchAiSdkTool = tool({
+  description: agenticSearchToolDescription,
+  parameters: agenticSearchToolParameters,
+  execute: agenticSearchToolOptions.function,
+})

@@ -82,6 +82,8 @@ export const useSendUserMessage = () => {
     }
   }
 
+  const isSendingUserMessageRef = useRef(false)
+
   const sendUserMessage = async ({
     prompt,
     onStreamStarted,
@@ -91,93 +93,100 @@ export const useSendUserMessage = () => {
     onStreamStarted?: () => void
     onChunk?: (chunk: AssistantChatStreamChunk) => void
   }) => {
-    const { context } = chatStore.getSnapshot()
-
-    if (context.isGenerating || context.isSendingUserMessage) return
-
-    const trimmedPrompt = prompt.trim()
-
-    if (!trimmedPrompt) return
-
-    let streamChatSessionId = context.chatSessionId
-
-    // Create a new chat session if none exists before sending the user message
-    if (!streamChatSessionId) {
-      const createdChatSession = await createChatSession()
-      streamChatSessionId = createdChatSession.chatSession.id
-    }
-
-    const controller = new AbortController() // To be able to cancel the fetch request
-    completionStreamControllerRef.current = controller
-
-    chatStore.send({ type: 'userMessageSubmitted' })
-
-    const promptData: AssistantChatRequestData = {
-      prompt,
-      chatSessionId: streamChatSessionId,
-    }
+    if (isSendingUserMessageRef.current) return
+    isSendingUserMessageRef.current = true
 
     try {
-      const response = await fetch(assistantEndpoints.chat, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'text/event-stream',
-        },
-        body: JSON.stringify(promptData),
-        signal: controller.signal,
-      })
+      const { context } = chatStore.getSnapshot()
 
-      // Start the completion stream
-      chatStore.send({ type: 'completionStreamStarted', prompt })
-      if (onStreamStarted) {
-        onStreamStarted()
+      if (context.isGenerating || context.isSendingUserMessage) return
+
+      const trimmedPrompt = prompt.trim()
+
+      if (!trimmedPrompt) return
+
+      let streamChatSessionId = context.chatSessionId
+
+      // Create a new chat session if none exists before sending the user message
+      if (!streamChatSessionId) {
+        const createdChatSession = await createChatSession()
+        streamChatSessionId = createdChatSession.chatSession.id
       }
 
-      // Read the response stream chunks
-      const reader = response.body?.getReader()
-      if (!reader) {
-        chatStore.send({
-          type: 'completionErrored',
-          error: 'No stream in response',
+      const controller = new AbortController() // To be able to cancel the fetch request
+      completionStreamControllerRef.current = controller
+
+      chatStore.send({ type: 'userMessageSubmitted' })
+
+      const promptData: AssistantChatRequestData = {
+        prompt,
+        chatSessionId: streamChatSessionId,
+      }
+
+      try {
+        const response = await fetch(assistantEndpoints.chat, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'text/event-stream',
+          },
+          body: JSON.stringify(promptData),
+          signal: controller.signal,
         })
-        return
-      }
 
-      while (true) {
-        const { done, value } = await reader.read()
-        if (done) break
+        // Start the completion stream
+        chatStore.send({ type: 'completionStreamStarted', prompt })
+        if (onStreamStarted) {
+          onStreamStarted()
+        }
 
-        const chunks = decodeStreamChunk(value)
+        // Read the response stream chunks
+        const reader = response.body?.getReader()
+        if (!reader) {
+          chatStore.send({
+            type: 'completionErrored',
+            error: 'No stream in response',
+          })
+          return
+        }
 
-        for (const chunk of chunks) {
-          chatStore.send({ type: 'completionStreamChunkReceived', chunk })
-          if (onChunk) {
-            onChunk(chunk)
+        while (true) {
+          const { done, value } = await reader.read()
+          if (done) break
+
+          const chunks = decodeStreamChunk(value)
+
+          for (const chunk of chunks) {
+            chatStore.send({ type: 'completionStreamChunkReceived', chunk })
+            if (onChunk) {
+              onChunk(chunk)
+            }
           }
         }
-      }
 
-      // Completion stream ended
-      chatStore.send({ type: 'completionStreamEnded' })
-    } catch (error) {
-      // biome-ignore lint/suspicious/noConsole: used until feature is in production
-      console.error('Response stream error:', error)
+        // Completion stream ended
+        chatStore.send({ type: 'completionStreamEnded' })
+      } catch (error) {
+        // biome-ignore lint/suspicious/noConsole: used until feature is in production
+        console.error('Response stream error:', error)
 
-      // This is an expected error, the user aborted the request
-      if (
-        !!error &&
-        typeof error === 'object' &&
-        'name' in error &&
-        error.name === 'AbortError'
-      ) {
-        // no op
-      } else {
-        chatStore.send({
-          type: 'completionErrored',
-          error: 'Une erreur est survenue 🙁, veuillez réessayer.',
-        })
+        // This is an expected error, the user aborted the request
+        if (
+          !!error &&
+          typeof error === 'object' &&
+          'name' in error &&
+          error.name === 'AbortError'
+        ) {
+          // no op
+        } else {
+          chatStore.send({
+            type: 'completionErrored',
+            error: 'Une erreur est survenue 🙁, veuillez réessayer.',
+          })
+        }
       }
+    } finally {
+      isSendingUserMessageRef.current = false
     }
   }
 
