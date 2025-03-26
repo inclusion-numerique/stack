@@ -1,4 +1,4 @@
-import { StatistiquesTerritoriales } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_components/StatistiquesTerritoriales'
+import { StatistiquesImpact } from '@app/web/app/administration/statistiques/StatistiquesImpact'
 import {
   getAccompagnementsCountByDay,
   getAccompagnementsCountByMonth,
@@ -11,6 +11,7 @@ import { StatistiquesBeneficiaires } from '@app/web/app/coop/(sidemenu-layout)/m
 import { StatistiquesGenerales } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_sections/StatistiquesGenerales'
 import { metadataTitle } from '@app/web/app/metadataTitle'
 import { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
+import { getImpactStats } from '@app/web/server/impact/getImpactStats'
 
 export const metadata = {
   title: metadataTitle('Usurpation'),
@@ -28,12 +29,14 @@ const Page = async () => {
     beneficiaires,
     activites,
     totalCounts,
+    impactStats,
   ] = await Promise.all([
     getAccompagnementsCountByDay({ activitesFilters }),
     getAccompagnementsCountByMonth({ activitesFilters }),
     getBeneficiaireStats({ activitesFilters }),
     getActivitesStats({ activitesFilters }),
     getTotalCountsStats({ activitesFilters }),
+    getImpactStats(),
   ])
 
   return (
@@ -60,14 +63,7 @@ const Page = async () => {
         />
       </section>
       <section>
-        <h2 className="fr-h5 fr-text-mention--grey fr-flex fr-align-items-center fr-flex-gap-2v">
-          <img
-            src="/images/services/conseillers-numerique-logo-small.svg"
-            alt=""
-          />
-          Statistiques départementales France Numérique Ensemble
-        </h2>
-        <StatistiquesTerritoriales />
+        <StatistiquesImpact stats={impactStats} />
       </section>
     </>
   )
