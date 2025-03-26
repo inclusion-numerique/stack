@@ -1,3 +1,4 @@
+import { getCurrentAssistantConfigurationForUser } from '@app/web/assistant/configuration/assistantConfiguration'
 import { prismaClient } from '@app/web/prismaClient'
 import { ChatCompletionMessageToolCall } from 'openai/src/resources/chat/completions'
 
@@ -15,6 +16,43 @@ export const getChatSession = async (chatSessionId: string) => {
   // TODO add logic stuff to have better representation ?
 
   return chatSession
+}
+
+export const getOrCreateChatSession = async ({
+  chatSessionId,
+  user,
+}: {
+  chatSessionId: string
+  user: { id: string }
+}) => {
+  const existing = await getChatSession(chatSessionId)
+  if (existing) {
+    return existing
+  }
+
+  const configuration = await getCurrentAssistantConfigurationForUser({
+    userId: user.id,
+  })
+
+  return await prismaClient.assistantChatSession.create({
+    data: {
+      id: chatSessionId,
+      createdBy: { connect: { id: user.id } },
+      context: '',
+      configuration: {
+        connectOrCreate: {
+          where: { id: configuration.id },
+          create: {
+            ...configuration,
+          },
+        },
+      },
+    },
+    include: {
+      messages: true,
+      configuration: true,
+    },
+  })
 }
 
 export type ChatSessionData = Exclude<

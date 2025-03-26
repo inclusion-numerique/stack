@@ -4,7 +4,7 @@ import { aiSdkAlbertProvider } from '@app/web/assistant/aiSdkAlbertProvider'
 import { aiSdkOpenaiProvider } from '@app/web/assistant/aiSdkOpenaiProvider'
 import { aiSdkScalewayProvider } from '@app/web/assistant/aiSdkScalewayProvider'
 import { assistantMessageToAiSdkMessage } from '@app/web/assistant/assistantMessageToAiSdkMessage'
-import { getChatSession } from '@app/web/assistant/getChatSession'
+import { getOrCreateChatSession } from '@app/web/assistant/getChatSession'
 import { mediationAssistantSystemMessage } from '@app/web/assistant/systemMessages'
 import { agenticSearchAiSdkTool } from '@app/web/assistant/tools/agenticSearchTool'
 import { getSessionTokenFromNextRequestCookies } from '@app/web/auth/getSessionTokenFromCookies'
@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
     return invalidResponse('Chat session id is required')
   }
 
-  const chatSession = await getChatSession(chatSessionId)
+  const chatSession = await getOrCreateChatSession({ chatSessionId, user })
 
   if (!chatSession) {
     return notFoundResponse()

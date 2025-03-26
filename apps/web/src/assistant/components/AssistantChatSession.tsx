@@ -7,7 +7,6 @@ import { v4 } from 'uuid'
 const AssistantChatSession = () => {
   const { messages, input, handleInputChange, handleSubmit, error, status } =
     useChat({
-      id: 'b6aa005d-3d3b-4e92-b1de-b7f1d692b060', // TODO FROM PARAMS
       api: '/api/assistant/ai-chat',
       initialMessages: [], // TODO FROM PARAMS
       maxSteps: 2,
