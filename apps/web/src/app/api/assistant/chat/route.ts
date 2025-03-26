@@ -1,31 +1,48 @@
-import { AssistantChatRequestDataValidation } from '@app/web/app/api/assistant/chat/AssistantChatRequestData'
+import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
+import { AssistantChatAiSdkRequestDataValidation } from '@app/web/app/api/assistant/chat/AssistantChatAiSdkRequestData'
+import { aiSdkAlbertProvider } from '@app/web/assistant/aiSdkAlbertProvider'
+import { aiSdkOpenaiProvider } from '@app/web/assistant/aiSdkOpenaiProvider'
+import { aiSdkScalewayProvider } from '@app/web/assistant/aiSdkScalewayProvider'
 import {
-  assistantMessageToOpenAiMessage,
-  openAiMessageToAssistantChatMessage,
-} from '@app/web/assistant/assistantMessageToOpenAiMessage'
-import { getChatSession } from '@app/web/assistant/getChatSession'
-import {
-  OpenAiChatMessage,
-  executeChatInteraction,
-} from '@app/web/assistant/openAiChat'
+  assistantMessageToAiSdkMessage,
+  assistantResponseMessageToPrismaModel,
+} from '@app/web/assistant/assistantMessageToAiSdkMessage'
+import { getOrCreateChatSession } from '@app/web/assistant/getChatSession'
 import { mediationAssistantSystemMessage } from '@app/web/assistant/systemMessages'
-import { tools } from '@app/web/assistant/tools/tools'
+import { agenticSearchAiSdkTool } from '@app/web/assistant/tools/agenticSearchTool'
 import { getSessionTokenFromNextRequestCookies } from '@app/web/auth/getSessionTokenFromCookies'
 import { getSessionUserFromSessionToken } from '@app/web/auth/getSessionUserFromSessionToken'
 import { prismaClient } from '@app/web/prismaClient'
+import {
+  type CoreToolMessage,
+  type CoreUserMessage,
+  streamText,
+  tool,
+} from 'ai'
 import { type NextRequest, NextResponse } from 'next/server'
 import { v4 } from 'uuid'
+import z from 'zod'
 
+export const maxDuration = 240
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
-export const maxDuration = 240
+
+const invalidResponse = (errorMessage: string) =>
+  NextResponse.json(
+    {
+      error: errorMessage,
+    },
+    {
+      status: 400,
+    },
+  )
 
 const notFoundResponse = () =>
   new Response('', {
     status: 404,
   })
 
-export const POST = async (request: NextRequest) => {
+export async function POST(request: NextRequest) {
   const sessionToken = getSessionTokenFromNextRequestCookies(request.cookies)
   const user = await getSessionUserFromSessionToken(sessionToken)
 
@@ -38,33 +55,28 @@ export const POST = async (request: NextRequest) => {
 
   // Get prompt from request json body
   const body = (await request.json()) as unknown
-  const requestData = AssistantChatRequestDataValidation.safeParse(body)
+
+  // biome-ignore lint/suspicious/noConsole: used until feature is in production
+  console.log('REQUEST BODY', body)
+
+  const requestData = AssistantChatAiSdkRequestDataValidation.safeParse(body)
 
   if (!requestData.success) {
-    return NextResponse.json(
-      {
-        error: requestData.error,
-      },
-      {
-        status: 400,
-      },
-    )
+    return invalidResponse(JSON.stringify(requestData.error, null, 2))
   }
 
-  const { chatSessionId, prompt } = requestData.data
+  const { id: chatSessionId, message: rawInputMessage } = requestData.data
+
+  const inputMessage = rawInputMessage as (
+    | CoreUserMessage
+    | CoreToolMessage
+  ) & { id: string }
 
   if (!chatSessionId) {
-    return NextResponse.json(
-      {
-        error: 'Chat session id is required',
-      },
-      {
-        status: 400,
-      },
-    )
+    return invalidResponse('Chat session id is required')
   }
 
-  const chatSession = await getChatSession(chatSessionId)
+  const chatSession = await getOrCreateChatSession({ chatSessionId, user })
 
   if (!chatSession) {
     return notFoundResponse()
@@ -72,66 +84,107 @@ export const POST = async (request: NextRequest) => {
 
   const { configuration } = chatSession
 
-  // Create the new user prompt message
-  await prismaClient.assistantChatMessage.create({
-    data: {
-      id: v4(),
-      sessionId: chatSession.id,
-      role: 'User',
-      content: prompt,
-      name: 'Médiateur numérique',
-    },
-  })
+  // biome-ignore lint/suspicious/noConsole: used until feature is in production
+  console.log('INPUT MESSAGE', inputMessage)
 
   // Create the full history of messages
   // with our system message and the session messages
   const messages = [
-    // Our system message is always up to date and the first message
-    // chatSystemMessageWithContext,
-    configuration.systemMessage
-      ? {
-          role: 'system' as const,
-          content: configuration.systemMessage,
-        }
-      : mediationAssistantSystemMessage,
     // Session history
-    ...chatSession.messages.map(assistantMessageToOpenAiMessage),
-    // User prompt message
-    {
-      role: 'user',
-      content: prompt,
-      name: 'Médiateur numérique',
-    },
-  ] satisfies OpenAiChatMessage[]
+    ...chatSession.messages.map(assistantMessageToAiSdkMessage),
+  ]
 
-  const { stream } = executeChatInteraction({
-    configuration,
-    onMessage: async (message) => {
-      // TODO do not block the stream for this, should be asynchronous
-      await prismaClient.assistantChatMessage.create({
-        data: openAiMessageToAssistantChatMessage(message, {
-          chatSessionId,
-        }),
-      })
-    },
+  // If the request message is not in the persisted messages list, we add it to the list
+
+  const inputMessageIsNew =
+    inputMessage && !messages.find((message) => message.id === inputMessage.id)
+
+  if (inputMessageIsNew) {
+    messages.push({
+      id: inputMessage.id,
+      role: inputMessage.role,
+      content: inputMessage.content,
+    } as (CoreUserMessage | CoreToolMessage) & { id: string })
+  }
+
+  // biome-ignore lint/suspicious/noConsole: used until feature is in production
+  console.log('MESSAGES', messages)
+
+  const result = streamText({
+    model:
+      ServerWebAppConfig.Assistant.service === 'albert'
+        ? aiSdkAlbertProvider(ServerWebAppConfig.Assistant.Albert.chatModel)
+        : ServerWebAppConfig.Assistant.service === 'openai'
+          ? aiSdkOpenaiProvider('gpt-4o')
+          : aiSdkScalewayProvider(
+              ServerWebAppConfig.Assistant.Scaleway.chatModel,
+            ),
+    system: configuration.systemMessage
+      ? configuration.systemMessage
+      : mediationAssistantSystemMessage.content,
     messages,
-    tools,
+    experimental_generateMessageId: () => v4(),
     toolChoice: 'auto',
-  })
+    tools: {
+      meteo: tool({
+        description: 'Obtenir la météo actuelle',
+        parameters: z.object({
+          location: z.string().describe('La ville ou le code postal'),
+        }),
+        execute: async ({ location }) =>
+          new Promise<string>((resolve) =>
+            setTimeout(() => resolve(`${location}: il fait beau`), 5000),
+          ),
+      }),
+      recherche_documentaire: agenticSearchAiSdkTool,
+    },
+    maxSteps: 3,
+    onError: (error) => {
+      // biome-ignore lint/suspicious/noConsole: used until feature is in production
+      console.error('STREAM ON ERROR', error)
+    },
+    // maxRetries: 3,
+    onStepFinish: (result) => {
+      //biome-ignore lint/suspicious/noConsole: used until feature is in production
+      console.log('STREAM ON STEP FINISH', JSON.stringify(result, null, 2))
+    },
+    onFinish: async (result) => {
+      // On finish argument only has the messages from the assistant
+      // biome-ignore lint/suspicious/noConsole: used until feature is in production
+      console.log(
+        'STREAM ON FINISH',
+        JSON.stringify(result.response.messages, null, 2),
+      )
+      const messagesToPersist = result.response.messages.map((message) =>
+        assistantResponseMessageToPrismaModel(message, {
+          chatSessionId: chatSession.id,
+        }),
+      )
 
-  await prismaClient.assistantChatSession.update({
-    where: { id: chatSessionId },
-    data: {
-      updated: new Date(),
+      if (inputMessageIsNew) {
+        // add input message to the beginning of the list to persist
+        messagesToPersist.unshift(
+          assistantResponseMessageToPrismaModel(inputMessage, {
+            chatSessionId: chatSession.id,
+          }),
+        )
+      }
+      // biome-ignore lint/suspicious/noConsole: used until feature is in production
+      console.log(`MESSAGES TO PERSIST : ${messagesToPersist.length}`)
+      for (const message of messagesToPersist) {
+        // biome-ignore lint/suspicious/noConsole: used until feature is in production
+        console.log(message)
+      }
+
+      const persistedMessages =
+        await prismaClient.assistantChatMessage.createMany({
+          data: messagesToPersist,
+        })
+
+      // biome-ignore lint/suspicious/noConsole: used until feature is in production
+      console.log('PERSISTED MESSAGES', persistedMessages)
     },
   })
 
-  return new Response(stream, {
-    headers: {
-      'Content-Type': 'text/event-stream', // Set the appropriate header for SSE
-      'Cache-Control': 'no-cache', // Prevent caching of this response
-      Connection: 'keep-alive', // Keep the connection open for streaming
-    },
-    status: 200,
-  })
+  return result.toDataStreamResponse()
 }

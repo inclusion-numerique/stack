@@ -1030,8 +1030,6 @@ enum AssistantChatRole {
   User      @map("user")
   Assistant @map("assistant")
   Tool      @map("tool")
-  Function  @map("function")
-  Developer @map("developer")
 
   @@map("assistant_chat_roles")
 }
@@ -1075,18 +1073,9 @@ model AssistantChatMessage {
   role      AssistantChatRole
   session   AssistantChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
   sessionId String               @map("session_id") @db.Uuid
-  content   String? // Can be null for a tool call message
   created   DateTime             @default(now())
-
-  name String? // also used for "function" message function name
-
-  // Additional fields for assistant chat messages
-  refusal      String?
-  toolCalls    Json[]  @default([]) @map("tool_calls")
-  finishReason String? @map("finish_reason")
-
-  // Additional fields for tool calls
-  toolCallId String? @map("tool_call_id")
+  parts     Json[] @default([]) // See CoreMessage.parts types (text, tool-result, etc...)
+  providerOptions Json? @map("provider_options") // Our own custom data if needed
 
   @@index([sessionId])
   @@index([created(sort: Asc)])

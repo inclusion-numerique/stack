@@ -108,7 +108,7 @@ const Page = async ({
           </div>
         </div>
       </Accordion>
-      {data.chatSession?.messages.map((message) => (
+      {data.uiMessages?.map((message) => (
         <Fragment key={message.id}>
           <div className="fr-grid-row fr-grid-row--gutters">
             <div className="fr-col-12 fr-col-lg-6">

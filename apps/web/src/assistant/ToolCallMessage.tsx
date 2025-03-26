@@ -1,7 +1,7 @@
 import styles from '@app/web/assistant/ChatSession.module.css'
+import type { ToolInvocation } from '@app/web/assistant/ToolInvocation'
 import { Spinner } from '@app/web/ui/Spinner'
 import classNames from 'classnames'
-import type { ChatCompletionMessageToolCall } from 'openai/src/resources/chat/completions'
 
 const defaultLoadingMessage = 'Je recherche plus d’informations'
 
@@ -16,23 +16,20 @@ const toolsLoadingMessages = {
 }
 
 const ToolCallMessage = ({
-  toolCall,
-  status,
+  toolInvocation,
 }: {
-  toolCall: ChatCompletionMessageToolCall
-  status: 'loading' | 'success' | 'error'
+  toolInvocation: ToolInvocation
 }) => {
   const loadingMessage =
-    toolCall.function.name in toolsLoadingMessages
+    toolInvocation.toolName in toolsLoadingMessages
       ? toolsLoadingMessages[
-          toolCall.function.name as keyof typeof toolsLoadingMessages // ts does not understand that the key is in the object after the check
+          toolInvocation.toolName as keyof typeof toolsLoadingMessages // ts does not understand that the key is in the object after the check
         ]
       : defaultLoadingMessage
 
   const objectif =
-    'parsed_arguments' in toolCall.function &&
-    'objectif' in (toolCall.function.parsed_arguments as Record<string, string>)
-      ? (toolCall.function.parsed_arguments as Record<string, string>).objectif
+    toolInvocation.args && 'objectif' in toolInvocation.args
+      ? (toolInvocation.args.objectif as string)
       : null
 
   const message = objectif
@@ -45,22 +42,16 @@ const ToolCallMessage = ({
         'fr-flex-shrink-1 fr-text--sm',
         styles.messageToolCall,
       )}
-      key={toolCall.id}
     >
-      {status === 'loading' && (
+      {(toolInvocation.state === 'partial-call' ||
+        toolInvocation.state === 'call') && (
         <>
           <Spinner size="small" /> <span>{message}</span>
         </>
       )}
-      {status === 'success' && (
+      {toolInvocation.state === 'result' && (
         <>
           <span className="fr-icon-check-line fr-icon--sm fr-text-default--success" />
-          <span>{message}</span>
-        </>
-      )}
-      {status === 'error' && (
-        <>
-          <span className="fr-icon-error-line fr-icon--sm fr-text-default--error" />
           <span>{message}</span>
         </>
       )}

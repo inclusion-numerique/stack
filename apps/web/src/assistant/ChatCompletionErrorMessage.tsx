@@ -1,31 +1,12 @@
-import ChatMessage from '@app/web/assistant/ChatMessage'
-import {
-  useCompletionError,
-  useLastMessageRole,
-} from '@app/web/assistant/hooks/useAssistantChatController'
+import Notice from '@codegouvfr/react-dsfr/Notice'
 import React from 'react'
 
-const ChatCompletionErrorMessage = () => {
-  const completionError = useCompletionError()
-  const previousMessageRole = useLastMessageRole()
-
-  if (!completionError) return null
+const ChatCompletionErrorMessage = ({ error }: { error?: string | null }) => {
+  if (!error) return null
   return (
-    <ChatMessage
-      key="error"
-      message={{
-        id: 'error',
-        role: 'Assistant',
-        content: completionError,
-        toolCalls: [],
-        finishReason: null,
-        created: new Date(),
-        sessionId: 'error-message',
-        name: null,
-        refusal: null,
-        toolCallId: null,
-      }}
-      previousMessageRole={previousMessageRole}
+    <Notice
+      title={`Une erreur est survenue : ${error}`}
+      className="fr-my-8v fr-notice--alert"
     />
   )
 }

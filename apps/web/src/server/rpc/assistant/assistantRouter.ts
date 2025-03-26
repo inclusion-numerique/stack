@@ -1,10 +1,5 @@
 import { AssistantConfigurationValidation } from '@app/web/assistant/configuration/AssistantConfigurationValidation'
-import {
-  getCurrentAssistantConfigurationForUser,
-  saveAssistantConfiguration,
-} from '@app/web/assistant/configuration/assistantConfiguration'
-import type { AssistantPageData } from '@app/web/assistant/getAssistantPageData'
-import { getUserChatSessions } from '@app/web/assistant/getChatSession'
+import { saveAssistantConfiguration } from '@app/web/assistant/configuration/assistantConfiguration'
 import { generateChatSessionTitle } from '@app/web/assistant/tasks/generateChatSessionTitle'
 import { prismaClient } from '@app/web/prismaClient'
 import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
@@ -12,39 +7,6 @@ import { forbiddenError, invalidError } from '@app/web/server/rpc/trpcErrors'
 import { z } from 'zod'
 
 export const assistantRouter = router({
-  createSession: protectedProcedure.mutation(async ({ ctx: { user } }) => {
-    if (user.role !== 'Admin') throw forbiddenError('User is not an admin')
-
-    const configuration = await getCurrentAssistantConfigurationForUser({
-      userId: user.id,
-    })
-
-    const chatSession = await prismaClient.assistantChatSession.create({
-      data: {
-        createdBy: { connect: { id: user.id } },
-        context: '',
-        configuration: {
-          connectOrCreate: {
-            where: { id: configuration.id },
-            create: {
-              ...configuration,
-            },
-          },
-        },
-      },
-      include: {
-        messages: true,
-        configuration: true,
-      },
-    })
-
-    const chatSessionHistory = await getUserChatSessions(user.id)
-
-    return {
-      chatSessionHistory,
-      chatSession,
-    } satisfies AssistantPageData
-  }),
   changeSessionTitle: protectedProcedure
     .input(
       z.object({

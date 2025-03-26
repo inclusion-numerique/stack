@@ -6,11 +6,21 @@ describe('generateChatSessionTitle', () => {
       messages: [
         {
           role: 'User',
-          content: 'Comment s’appellent les bébés des biches ?',
+          parts: [
+            {
+              type: 'text',
+              text: 'Comment s’appellent les bébés des biches ?',
+            },
+          ],
         },
         {
           role: 'Assistant',
-          content: 'Les bébés des biches sont des faons.',
+          parts: [
+            {
+              type: 'text',
+              text: 'Les bébés des biches sont des faons.',
+            },
+          ],
         },
       ],
     })

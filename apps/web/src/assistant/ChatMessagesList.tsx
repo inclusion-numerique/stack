@@ -1,18 +1,16 @@
 'use client'
 
 import ChatMessage from '@app/web/assistant/ChatMessage'
-import {
-  useChatInitialized,
-  useChatMessages,
-} from '@app/web/assistant/hooks/useAssistantChatController'
+import type { UIMessage } from 'ai'
 import React from 'react'
 
-const ChatMessagesList = () => {
-  const initialized = useChatInitialized()
-  const messages = useChatMessages()
-
-  if (!initialized) return null
-
+const ChatMessagesList = ({
+  messages,
+  isStreaming,
+}: {
+  messages: UIMessage[]
+  isStreaming?: boolean
+}) => {
   if (messages.length === 0)
     return (
       <div className="fr-flex fr-width-full fr-direction-column fr-align-items-center fr-justify-content-center fr-height-full fr-my-auto fr-mt-10v">
@@ -29,6 +27,7 @@ const ChatMessagesList = () => {
           previousMessageRole={
             messageIndex > 0 ? messages.at(messageIndex - 1)?.role : undefined
           }
+          isStreaming={isStreaming && messageIndex === messages.length - 1}
         />
       ))}
     </>

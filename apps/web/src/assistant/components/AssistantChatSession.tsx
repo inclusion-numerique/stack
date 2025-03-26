@@ -1,6 +1,7 @@
 'use client'
 
 import { useChat } from '@ai-sdk/react'
+import { createToast } from '@app/ui/toast/createToast'
 import type { FormEventHandler } from 'react'
 import { v4 } from 'uuid'
 
@@ -11,6 +12,14 @@ const AssistantChatSession = () => {
       initialMessages: [], // TODO FROM PARAMS
       maxSteps: 2,
       generateId: () => v4(),
+      onError: (error) => {
+        // biome-ignore lint/suspicious/noConsole: used until feature is in production
+        console.error('CHAT STREAM ON ERROR', error)
+        createToast({
+          message: 'Une erreur est survenue',
+          priority: 'error',
+        })
+      },
       experimental_prepareRequestBody: ({ messages, id }) => ({
         message: messages[messages.length - 1],
         id,
@@ -25,6 +34,8 @@ const AssistantChatSession = () => {
       },
     })
   }
+
+  const canInput = status === 'ready' || status === 'error'
 
   return (
     <div className="flex flex-col w-full max-w-md py-24 mx-auto stretch">
@@ -57,6 +68,7 @@ const AssistantChatSession = () => {
           className="fr-input"
           value={input}
           placeholder="Message"
+          disabled={!canInput}
           onChange={handleInputChange}
         />
       </form>

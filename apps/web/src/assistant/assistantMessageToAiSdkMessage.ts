@@ -1,85 +1,76 @@
-import { openAiRoleToAssistantChatRole } from '@app/web/assistant/assistantChatRole'
-import type { OpenAiChatMessage } from '@app/web/assistant/openAiChat'
+import type { ProviderOptions } from '@app/web/assistant/ProviderOptions'
+import {
+  aiSdkRoleToAssistantChatRole,
+  assistantChatRoleToAiSdkRole,
+} from '@app/web/assistant/assistantChatRole'
 import type { AssistantChatMessage, Prisma } from '@prisma/client'
-import type { InputJsonObject } from '@prisma/client/runtime/library'
-import { CoreAssistantMessage, CoreMessage, CoreToolMessage } from 'ai'
-import { ChatCompletionUserMessageParam } from 'openai/src/resources/chat/completions'
+import type { InputJsonValue } from '@prisma/client/runtime/library'
+import type {
+  CoreAssistantMessage,
+  CoreMessage,
+  CoreToolMessage,
+  CoreUserMessage,
+  FilePart,
+  ImagePart,
+  TextPart,
+  UIMessage,
+} from 'ai'
 import { v4 } from 'uuid'
 
 export const assistantMessageToAiSdkMessage = ({
+  id,
+  parts,
+  providerOptions,
   role,
-  content,
-  // name,
-  // refusal,
-  toolCallId,
-  toolCalls,
 }: Pick<
   AssistantChatMessage,
-  'content' | 'role' | 'refusal' | 'name' | 'toolCalls' | 'toolCallId'
->): CoreMessage => {
-  if (role === 'Tool') {
-    return {
-      role: 'tool',
-      content: [
-        {
-          toolName: 'todo',
-          result: content ?? '',
-          toolCallId: toolCallId ?? 'unknown',
-          type: 'tool-result',
-        },
-      ],
-    } satisfies CoreToolMessage
-  }
-
-  if (role === 'Assistant') {
-    const message: CoreAssistantMessage = {
-      content: content ?? '',
-      role: 'assistant',
-    }
-
-    if (toolCalls && toolCalls.length > 0) {
-      // biome-ignore lint/suspicious/noConsole: used until feature is in production
-      console.log('TOOL CALL MESSAGE', toolCalls)
-      message.content = [
-        {
-          type: 'tool-call',
-          toolName: 'todo',
-          toolCallId: toolCallId ?? 'unknown',
-          args: {},
-        },
-      ]
-    }
-
-    return message
-  }
-
-  if (role === 'User') {
-    return {
-      content: content ?? '',
-      role: 'user',
-    } satisfies ChatCompletionUserMessageParam
-  }
-
-  throw new Error(`Cannot convert message for unknown chat role ${role}`)
+  'id' | 'role' | 'parts' | 'providerOptions'
+>): CoreMessage & { id: string; providerOptions?: unknown } => {
+  return {
+    id,
+    content: parts as unknown[] as (TextPart | ImagePart | FilePart)[],
+    role: assistantChatRoleToAiSdkRole[role],
+    providerOptions: (providerOptions || undefined) as
+      | ProviderOptions
+      | undefined,
+  } as CoreMessage & { id: string; providerOptions?: unknown }
 }
 
-export const openAiMessageToAssistantChatMessage = (
-  message: OpenAiChatMessage,
+export const assistantMessageToAiSdkUiMessage = ({
+  id,
+  parts,
+  created,
+  role,
+}: Pick<
+  AssistantChatMessage,
+  'id' | 'created' | 'role' | 'parts' | 'providerOptions'
+>): UIMessage => {
+  return {
+    id,
+    createdAt: created,
+    content: '', // use parts instead
+    parts: parts as unknown[] as UIMessage['parts'],
+    role: assistantChatRoleToAiSdkRole[role] as UIMessage['role'], // TODO Why no tool role ?
+  }
+}
+
+export const assistantResponseMessageToPrismaModel = (
+  message: (CoreAssistantMessage | CoreToolMessage | CoreUserMessage) & {
+    id: string
+  },
   { chatSessionId }: { chatSessionId: string },
 ) =>
   ({
-    id: v4(),
-    session: { connect: { id: chatSessionId } },
-    role: openAiRoleToAssistantChatRole[message.role],
-    content: message.content as string,
-    name: 'name' in message ? message.name : undefined,
-    refusal: 'refusal' in message ? message.refusal : undefined,
-    finishReason:
-      'finish_reason' in message
-        ? (message.finish_reason as string)
-        : undefined,
-    toolCalls:
-      'tool_calls' in message
-        ? (message.tool_calls as unknown as InputJsonObject[])
-        : undefined,
-  }) satisfies Prisma.AssistantChatMessageCreateInput
+    id: 'id' in message ? (message.id ?? v4()) : v4(),
+    sessionId: chatSessionId,
+    role: aiSdkRoleToAssistantChatRole[message.role],
+    parts: (Array.isArray(message.content)
+      ? message.content
+      : [
+          {
+            type: 'text',
+            text: message.content,
+          },
+        ]) as InputJsonValue[],
+    providerOptions: message.providerOptions,
+  }) satisfies Prisma.AssistantChatMessageCreateManyInput

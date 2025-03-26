@@ -12,7 +12,7 @@ import { useEffect } from 'react'
 import styles from './ChatSession.module.css'
 
 const AssistantPageContent = ({
-  data: { chatSession, chatSessionHistory },
+  data: { chatSession, chatSessionHistory, uiMessages },
 }: {
   data: AssistantPageData
 }) => {
@@ -55,7 +55,7 @@ const AssistantPageContent = ({
       </div>
       <div className="fr-flex-grow-1">
         <div className={styles.chatSessionContainer}>
-          <ChatSession />
+          <ChatSession chatSession={chatSession} uiMessages={uiMessages} />
         </div>
       </div>
     </div>

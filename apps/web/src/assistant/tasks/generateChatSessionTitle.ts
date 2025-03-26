@@ -1,3 +1,4 @@
+import { MessageParts } from '@app/web/assistant/MessagePart'
 import { ChatSessionMessage } from '@app/web/assistant/getChatSession'
 import { OpenAiChatMessage } from '@app/web/assistant/openAiChat'
 import {
@@ -10,7 +11,7 @@ export const generateChatSessionTitle = async ({
   messages,
   model,
 }: {
-  messages: Pick<ChatSessionMessage, 'role' | 'content'>[]
+  messages: Pick<ChatSessionMessage, 'role' | 'parts'>[]
   model?: OpenAiClienChatModel
 }) => {
   const completionMessages: OpenAiChatMessage[] = [
@@ -29,7 +30,10 @@ ${messages
   .slice(0, 4)
   .map(
     (message) => `**${message.role} :**
-${message.content}`,
+${(message.parts as unknown[] as MessageParts)
+  .filter((part) => part.type === 'text')
+  .map((part) => part.text)
+  .join('\n\n')}`,
   )
   .join('\n===============\n')}
 `,

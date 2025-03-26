@@ -1,3 +1,4 @@
+import { assistantMessagesToUiMessages } from '@app/web/assistant/assistantMessagesToUiMessages'
 import {
   getChatSession,
   getUserChatSessions,
@@ -10,15 +11,16 @@ export const getAssistantPageData = async ({
   userId: string
   chatSessionId?: string
 }) => {
-  const chatSession = chatSessionId
-    ? await getChatSession(chatSessionId)
-    : undefined
+  const chatSession = chatSessionId ? await getChatSession(chatSessionId) : null
 
   const chatSessionHistory = await getUserChatSessions(userId)
 
   return {
     chatSessionHistory,
     chatSession, // null if not found, undefined if not required in params
+    uiMessages: chatSession
+      ? assistantMessagesToUiMessages(chatSession.messages)
+      : null,
   }
 }
 

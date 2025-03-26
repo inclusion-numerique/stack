@@ -7,11 +7,12 @@ export const AssistantChatAiSdkRequestDataValidation = z.object({
   message: z
     .object({
       id: z.string().uuid(),
-      role: z.string(),
+      role: z.enum(['user', 'tool', 'assistant']),
       content: z.string(),
       parts: z.array(z.object({}).passthrough()),
     })
-    .passthrough(),
+    .passthrough()
+    .optional(), // Optional because we can request to "trigger" the chat without prompting
 })
 
 export type AssistantChatAiSdkRequestData = z.infer<
