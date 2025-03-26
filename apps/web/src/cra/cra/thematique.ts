@@ -7,6 +7,7 @@ export const thematiqueLabels: {
   DiagnosticNumerique: 'Diagnostic numérique',
   PrendreEnMainDuMateriel: 'Prendre en main du matériel',
   MaintenanceDeMateriel: 'Maintenance de matériel',
+  GereSesContenusNumeriques: 'Gérer ses contenus numériques',
   NavigationSurInternet: 'Navigation sur internet',
   Email: 'E-mail',
   Bureautique: 'Bureautique',
@@ -46,6 +47,10 @@ export const thematiqueHints: {
     'Maintenance de niveau 1',
     'Installation et paramétrage de matériel informatique',
     'Mise à jour des systèmes, installer/désinstaller outils et applications...',
+  ],
+  GereSesContenusNumeriques: [
+    'Organiser, stocker et retrouver des données, des informations et des contenus dans des environnements numériques',
+    'ex. : base de données, espace de stockage en ligne, gestionnaire de fichiers...',
   ],
   NavigationSurInternet: [
     'Faire une recherche',
@@ -97,11 +102,11 @@ export const thematiqueHints: {
     'Dangers pour mon enfant & harcèlement',
   ],
   ScolariteEtNumerique: [
-    'Accompagner un groupe scolaire et/ou un enfant sur un outil',
+    'Accompagner un groupe scolaire et/ou un enfant sur un outil numérique',
     'Évaluer le niveau des jeunes avec un logiciel (maths, français, etc.)',
   ],
   CreerAvecLeNumerique: [
-    'Création/gestion de médias : photos, vidéos, illustrations',
+    'Création / gestion de médias : photos, vidéos, illustrations',
     'Fablabs : impression 3D, code',
   ],
   CultureNumerique: [
@@ -123,6 +128,7 @@ export const thematiqueIllustrations: {
   DiagnosticNumerique: '/images/iconographie/mednum-diagnostic.svg',
   PrendreEnMainDuMateriel: '/images/iconographie/mednum-materiel.svg',
   MaintenanceDeMateriel: '/images/iconographie/mednum-maintenance.svg',
+  GereSesContenusNumeriques: '/images/iconographie/mednum-contenus.svg',
   NavigationSurInternet: '/images/iconographie/mednum-internet.svg',
   Email: '/images/iconographie/mednum-email.svg',
   Bureautique: '/images/iconographie/mednum-bureautique.svg',
@@ -162,6 +168,7 @@ export const thematiqueApiValues = {
   DiagnosticNumerique: 'diagnostic_numerique',
   PrendreEnMainDuMateriel: 'prendre_en_main_du_materiel',
   MaintenanceDeMateriel: 'maintenance_de_materiel',
+  GereSesContenusNumeriques: 'gere_ses_contenus_numeriques',
   NavigationSurInternet: 'navigation_sur_internet',
   Email: 'email',
   Bureautique: 'bureautique',
