@@ -1,6 +1,6 @@
 import CraIndividuelPage from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/individuel/CraIndividuelPage'
 import { getCraIndividuelDataDefaultValuesFromExisting } from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/individuel/getCraIndividuelDataDefaultValuesFromExisting'
-import { getLieuxActiviteOptions } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
+import { getMediateursLieuxActiviteOptions } from '@app/web/app/lieu-activite/getMediateursLieuxActiviteOptions'
 import { authenticateMediateur } from '@app/web/auth/authenticateUser'
 import { getInitialBeneficiairesOptionsForSearch } from '@app/web/beneficiaire/getInitialBeneficiairesOptionsForSearch'
 import { getAdaptiveDureeOptions } from '@app/web/cra/getAdaptiveDureeOptions'
@@ -29,7 +29,7 @@ const UpdateCraIndividuelPage = async ({
     return null
   }
 
-  const lieuxActiviteOptions = await getLieuxActiviteOptions({
+  const lieuxActiviteOptions = await getMediateursLieuxActiviteOptions({
     mediateurIds: [user.mediateur.id],
   })
 

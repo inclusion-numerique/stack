@@ -1,14 +1,14 @@
 'use client'
 
 import type { SelectOption } from '@app/ui/components/Form/utils/options'
-import type { LieuActiviteOption } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
+import type { LieuActiviteOption } from '@app/web/app/lieu-activite/getMediateursLieuxActiviteOptions'
 import type { BeneficiaireOption } from '@app/web/beneficiaire/BeneficiaireOption'
 import { ActiviteTypeFilter } from '@app/web/components/filters/ActiviteTypeFilter'
 import { BeneficiaireFilter } from '@app/web/components/filters/BeneficiaireFilter'
+import { ConseillerNumeriqueFilter } from '@app/web/components/filters/ConseillerNumeriqueFilter'
 import { LieuFilter } from '@app/web/components/filters/LieuFilter'
 import { MediateurFilter } from '@app/web/components/filters/MediateurFilter'
 import { PeriodeFilter } from '@app/web/components/filters/PeriodeFilter'
-import { RoleFilter } from '@app/web/components/filters/RoleFilter'
 import type { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
 import { MediateurOption } from '@app/web/mediateurs/MediateurOption'
 import classNames from 'classnames'
@@ -84,7 +84,9 @@ const Filters = ({
     />
     <ActiviteTypeFilter defaultValue={defaultFilters.types ?? []} />
     {isCoordinateur && (
-      <RoleFilter defaultValue={defaultFilters.conseiller_numerique} />
+      <ConseillerNumeriqueFilter
+        defaultValue={defaultFilters.conseiller_numerique}
+      />
     )}
     {isMediateur && beneficiairesFilter && (
       <BeneficiaireFilter

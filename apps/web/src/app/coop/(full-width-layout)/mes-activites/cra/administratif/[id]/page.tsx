@@ -1,6 +1,6 @@
 import CraDemarcheAdministrativePage from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/administratif/CraDemarcheAdministrativePage'
 import { getCraDemarcheAdministrativeDataDefaultValuesFromExisting } from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/administratif/getCraDemarcheAdministrativeDataDefaultValuesFromExisting'
-import { getLieuxActiviteOptions } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
+import { getMediateursLieuxActiviteOptions } from '@app/web/app/lieu-activite/getMediateursLieuxActiviteOptions'
 import { authenticateMediateur } from '@app/web/auth/authenticateUser'
 import { getInitialBeneficiairesOptionsForSearch } from '@app/web/beneficiaire/getInitialBeneficiairesOptionsForSearch'
 import { getAdaptiveDureeOptions } from '@app/web/cra/getAdaptiveDureeOptions'
@@ -30,7 +30,7 @@ const UpdateCraDemarcheAdministrativePage = async ({
     return null
   }
 
-  const lieuxActiviteOptions = await getLieuxActiviteOptions({
+  const lieuxActiviteOptions = await getMediateursLieuxActiviteOptions({
     mediateurIds: [user.mediateur.id],
   })
 

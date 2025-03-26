@@ -1,5 +1,5 @@
 import CraDemarcheAdministrativePage from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/administratif/CraDemarcheAdministrativePage'
-import { getLieuxActiviteOptions } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
+import { getMediateursLieuxActiviteOptions } from '@app/web/app/lieu-activite/getMediateursLieuxActiviteOptions'
 import { authenticateMediateur } from '@app/web/auth/authenticateUser'
 import { getInitialBeneficiairesOptionsForSearch } from '@app/web/beneficiaire/getInitialBeneficiairesOptionsForSearch'
 import { CraDemarcheAdministrativeData } from '@app/web/cra/CraDemarcheAdministrativeValidation'
@@ -48,7 +48,7 @@ const CreateCraDemarcheAdministrativePage = async ({
         : null),
   }
 
-  const lieuxActiviteOptions = await getLieuxActiviteOptions({
+  const lieuxActiviteOptions = await getMediateursLieuxActiviteOptions({
     mediateurIds: [user.mediateur.id],
   })
 

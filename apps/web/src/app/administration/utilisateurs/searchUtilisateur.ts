@@ -9,6 +9,14 @@ import { DEFAULT_PAGE, toNumberOr } from '@app/web/data-table/toNumberOr'
 import { toQueryParts } from '@app/web/data-table/toQueryParts'
 import { prismaClient } from '@app/web/prismaClient'
 import type { Prisma } from '@prisma/client'
+import { z } from 'zod'
+import {
+  filterOnDispositif,
+  filterOnLieux,
+  filterOnRoles,
+  filterOnStatut,
+} from './filterUtilisateur'
+import { UtiliateursFilterValidations } from './utilisateursFilters'
 
 type SearchUtilisateurOptions = {
   mediateurId?: string
@@ -16,7 +24,7 @@ type SearchUtilisateurOptions = {
 }
 
 // List utilisateurs
-export const utilisateursListWhere = (
+const utilisateursListWhere = (
   // TODO Does this need to be implemented ?
   {
     mediateurId: _mediateurId,
@@ -31,6 +39,10 @@ export const searchUtilisateur = async (options: SearchUtilisateurOptions) => {
   const searchParams = options.searchParams ?? {}
   const { mediateurId } = options
 
+  const parsedQueryParams = z
+    .object(UtiliateursFilterValidations)
+    .safeParse(searchParams)
+
   const orderBy = getDataTableOrderBy(searchParams, UtilisateursDataTable)
 
   const { take, skip } = takeAndSkipFromPage({
@@ -39,16 +51,22 @@ export const searchUtilisateur = async (options: SearchUtilisateurOptions) => {
   })
 
   const matchesWhere = {
-    ...utilisateursListWhere({
-      mediateurId,
-    }),
-    AND: toQueryParts(searchParams).map((part) => ({
-      OR: [
-        { firstName: { contains: part, mode: 'insensitive' } },
-        { lastName: { contains: part, mode: 'insensitive' } },
-        { email: { contains: part, mode: 'insensitive' } },
-      ],
-    })),
+    AND: [
+      {
+        ...utilisateursListWhere({ mediateurId }),
+        AND: toQueryParts(searchParams).map((part) => ({
+          OR: [
+            { firstName: { contains: part, mode: 'insensitive' } },
+            { lastName: { contains: part, mode: 'insensitive' } },
+            { email: { contains: part, mode: 'insensitive' } },
+          ],
+        })),
+      },
+      filterOnRoles(parsedQueryParams.data),
+      filterOnDispositif(parsedQueryParams.data),
+      filterOnStatut(parsedQueryParams.data),
+      filterOnLieux(parsedQueryParams.data),
+    ],
   } satisfies Prisma.UserWhereInput
 
   const utilisateurs = await queryUtilisateursForList({

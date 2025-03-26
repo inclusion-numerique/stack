@@ -146,6 +146,22 @@ export const UtilisateursDataTable = {
         </div>
       ),
     },
+    {
+      name: 'departement',
+      header: 'Département',
+      csvHeaders: ['Département'],
+      csvValues: ({ emplois }) => [
+        emplois[0]?.structure?.codeInsee?.slice(0, 2),
+      ],
+      cell: ({ emplois }) => emplois[0]?.structure?.codeInsee?.slice(0, 2),
+    },
+    {
+      name: 'structure-employeuse',
+      header: 'Structure employeuse',
+      csvHeaders: ['Structure employeuse'],
+      csvValues: ({ emplois }) => [emplois?.[0]?.structure?.nom],
+      cell: ({ emplois }) => emplois?.[0]?.structure?.nom,
+    },
   ],
 } satisfies UtilisateursDataTableConfiguration
 

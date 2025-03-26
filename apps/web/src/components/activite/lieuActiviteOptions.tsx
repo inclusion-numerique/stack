@@ -1,4 +1,4 @@
-import { LieuActiviteOption } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
+import type { LieuActiviteOption } from '@app/web/app/lieu-activite/getMediateursLieuxActiviteOptions'
 
 export const toLieuActiviteRichOptions = (options: LieuActiviteOption[]) =>
   options.map(({ label, value, extra }) =>
