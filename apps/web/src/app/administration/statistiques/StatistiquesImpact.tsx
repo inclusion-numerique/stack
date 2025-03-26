@@ -28,6 +28,12 @@ export const StatistiquesImpact = ({ stats }: { stats: ImpactStats }) => {
               <div className="fr-text-title--blue-france fr-text--sm fr-mb-0">
                 dont {conum.actifs} sont actifs ({conum.ratio}%)
               </div>
+              <div className="fr-text-title--blue-france fr-text--sm fr-mb-0">
+                dont {conum.avecSuiviBeneficiaire} suivent au moins un
+                bénéficiaire (
+                {Math.round((conum.avecSuiviBeneficiaire * 100) / conum.total)}
+                %)
+              </div>
             </Card>
           </div>
           <div className="fr-col-12 fr-col-md-6 fr-col-lg-6">
@@ -42,6 +48,14 @@ export const StatistiquesImpact = ({ stats }: { stats: ImpactStats }) => {
               Médiateurs numérique
               <div className="fr-text-title--blue-france fr-text--sm fr-mb-0">
                 dont {mediateur.actifs} sont actifs ({mediateur.ratio}%)
+              </div>
+              <div className="fr-text-title--blue-france fr-text--sm fr-mb-0">
+                dont {mediateur.avecSuiviBeneficiaire} suivent au moins un
+                bénéficiaire (
+                {Math.round(
+                  (mediateur.avecSuiviBeneficiaire * 100) / mediateur.total,
+                )}
+                %)
               </div>
             </Card>
           </div>

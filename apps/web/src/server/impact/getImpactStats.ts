@@ -15,11 +15,13 @@ export type ImpactStats = {
     total: number
     actifs: number
     ratio: number
+    avecSuiviBeneficiaire: number
   }
   mediateur: {
     total: number
     actifs: number
     ratio: number
+    avecSuiviBeneficiaire: number
   }
   coordoConum: {
     total: number
@@ -99,12 +101,87 @@ const getActivitesParMois = async (): Promise<ActiviteParMois[]> => {
   return rawResult as any[]
 }
 
+const getMediateursAvecSuiviBeneficiaire = async (): Promise<number> => {
+  return prismaClient.mediateur.count({
+    where: {
+      AND: [
+        // Exclu les conseillers numériques
+        { conseillerNumerique: null },
+        // Uniquement les médiateurs avec inscription validée
+        {
+          user: {
+            inscriptionValidee: {
+              not: null,
+            },
+          },
+        },
+        // Au moins une activité avec un bénéficiaire non anonyme
+        {
+          activites: {
+            some: {
+              suppression: null,
+              accompagnements: {
+                some: {
+                  beneficiaire: {
+                    anonyme: false,
+                  },
+                },
+              },
+            },
+          },
+        },
+      ],
+    },
+  })
+}
+
+const getConseillersNumeriquesAvecSuiviBeneficiaire =
+  async (): Promise<number> => {
+    return prismaClient.mediateur.count({
+      where: {
+        AND: [
+          // Uniquement les conseillers numériques
+          {
+            conseillerNumerique: {
+              isNot: null,
+            },
+          },
+          // Uniquement les médiateurs avec inscription validée
+          {
+            user: {
+              inscriptionValidee: {
+                not: null,
+              },
+            },
+          },
+          // Au moins une activité avec un bénéficiaire non anonyme
+          {
+            activites: {
+              some: {
+                suppression: null,
+                accompagnements: {
+                  some: {
+                    beneficiaire: {
+                      anonyme: false,
+                    },
+                  },
+                },
+              },
+            },
+          },
+        ],
+      },
+    })
+  }
+
 export const getImpactStats = async (): Promise<ImpactStats> => {
   const [
     conum,
     conumActifs,
+    conumAvecSuiviBeneficiaire,
     mediateur,
     mediateurActifs,
+    mediateurAvecSuiviBeneficiaire,
     coordoConum,
     coordoConumActifs,
     coordoHD,
@@ -126,6 +203,7 @@ export const getImpactStats = async (): Promise<ImpactStats> => {
         },
       },
     }),
+    getConseillersNumeriquesAvecSuiviBeneficiaire(),
     prismaClient.mediateur.count({
       where: {
         AND: [
@@ -168,6 +246,7 @@ export const getImpactStats = async (): Promise<ImpactStats> => {
         ],
       },
     }),
+    getMediateursAvecSuiviBeneficiaire(),
     prismaClient.coordinateur.count({
       where: {
         conseillerNumeriqueId: {
@@ -211,11 +290,13 @@ export const getImpactStats = async (): Promise<ImpactStats> => {
       total: conum,
       actifs: conumActifs,
       ratio: Math.round((conumActifs * 100) / conum),
+      avecSuiviBeneficiaire: conumAvecSuiviBeneficiaire,
     },
     mediateur: {
       total: mediateur,
       actifs: mediateurActifs,
       ratio: Math.round((mediateurActifs * 100) / mediateur),
+      avecSuiviBeneficiaire: mediateurAvecSuiviBeneficiaire,
     },
     coordoConum: {
       total: coordoConum,
