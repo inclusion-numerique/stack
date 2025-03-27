@@ -1,5 +1,3 @@
-import { centreAideRagTool } from '@app/web/assistant/tools/centreAideRagTool'
-
 import { openAiClientConfiguration } from '@app/web/assistant/openAiClient'
 import { getRagChunksForQuery } from '@app/web/assistant/rag/getRagChunksForQuery'
 import { prismaClient } from '@app/web/prismaClient'
@@ -46,10 +44,6 @@ describe('getRagChunksForQuery', () => {
   })
 
   it('should return a list of results', async () => {
-    if (!centreAideRagTool.$callback) {
-      throw new Error('ragTool.$callback is not defined')
-    }
-
     const response = await getRagChunksForQuery('girafe', {
       sources: ['test'],
     })

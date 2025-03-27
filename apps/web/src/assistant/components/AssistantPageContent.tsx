@@ -1,8 +1,8 @@
 'use client'
 
-import ChatSession from '@app/web/assistant/ChatSession'
-import ChatSessionHistorySideMenu from '@app/web/assistant/ChatSessionHistorySideMenu'
 import NewChatButton from '@app/web/assistant/NewChatButton'
+import ChatSession from '@app/web/assistant/components/ChatSession'
+import ChatSessionHistorySideMenu from '@app/web/assistant/components/ChatSessionHistorySideMenu'
 import type { AssistantPageData } from '@app/web/assistant/getAssistantPageData'
 import { initialiseChatSession } from '@app/web/assistant/hooks/useAssistantChatController'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'

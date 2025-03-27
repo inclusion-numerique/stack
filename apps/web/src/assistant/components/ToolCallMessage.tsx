@@ -1,6 +1,6 @@
 import styles from '@app/web/assistant/ChatSession.module.css'
-import type { ToolInvocation } from '@app/web/assistant/ToolInvocation'
 import { Spinner } from '@app/web/ui/Spinner'
+import type { ToolInvocation } from 'ai'
 import classNames from 'classnames'
 
 const defaultLoadingMessage = 'Je recherche plus d’informations'

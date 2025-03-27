@@ -1,5 +1,5 @@
 import { metadataTitle } from '@app/web/app/metadataTitle'
-import AssistantPageContent from '@app/web/assistant/AssistantPageContent'
+import AssistantPageContent from '@app/web/assistant/components/AssistantPageContent'
 import { getAssistantPageData } from '@app/web/assistant/getAssistantPageData'
 import { authenticateUser } from '@app/web/auth/authenticateUser'
 import type { Metadata } from 'next'

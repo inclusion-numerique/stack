@@ -1,4 +1,4 @@
-import { ToolInvocation } from '@app/web/assistant/ToolInvocation'
+import type { ToolInvocation } from 'ai'
 
 const ChatMessageGenericToolResult = ({
   toolInvocation: { result },

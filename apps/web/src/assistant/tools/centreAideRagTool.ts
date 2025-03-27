@@ -1,8 +1,12 @@
 import { formatRagSearchResultToMarkdown } from '@app/web/assistant/rag/formatRagSearchResultToMarkdown'
 import { getRagChunksForQuery } from '@app/web/assistant/rag/getRagChunksForQuery'
 import { ragSources } from '@app/web/assistant/rag/sources'
+import {
+  centreAideRagToolDescription,
+  centreAideRagToolName,
+} from '@app/web/assistant/tools/centreAideRagToolConfig'
 import { ZodFunctionOptions } from '@app/web/assistant/tools/zodFunctionType'
-import { zodFunction } from 'openai/helpers/zod'
+import { tool } from 'ai'
 import { z } from 'zod'
 
 export const centreAideRagToolParameters = z.object({
@@ -23,10 +27,8 @@ export type CentreAideRagToolParameters = z.infer<
 >
 
 export const centreAideRagToolOptions = {
-  name: 'centre_aide_rag',
-  description:
-    'Recherche dans le centre d’aide de la coop ' +
-    'Utilise ce tool pour toutes les questions en rapport du support ou questions sur le site de la Coop de la médiation numérique. Fonctionnalités, précisions, etc...',
+  name: centreAideRagToolName,
+  description: centreAideRagToolDescription,
   parameters: centreAideRagToolParameters,
   function: async ({ query }) => {
     const ragResult = await getRagChunksForQuery(query, {
@@ -37,4 +39,8 @@ export const centreAideRagToolOptions = {
   },
 } satisfies ZodFunctionOptions<typeof centreAideRagToolParameters>
 
-export const centreAideRagTool = zodFunction(centreAideRagToolOptions)
+export const centreAideRagTool = tool({
+  parameters: centreAideRagToolParameters,
+  description: centreAideRagToolDescription,
+  execute: centreAideRagToolOptions.function,
+})

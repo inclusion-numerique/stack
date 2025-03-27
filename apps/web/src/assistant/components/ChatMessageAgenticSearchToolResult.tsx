@@ -1,5 +1,5 @@
-import { ToolInvocation } from '@app/web/assistant/ToolInvocation'
 import type { AgenticSearchToolYamlResult } from '@app/web/assistant/tools/agenticSearchTool'
+import type { ToolInvocation } from 'ai'
 import { parse } from 'yaml'
 
 const _parseYamlToolContent = (content: string) => {

@@ -1,7 +1,7 @@
-import { createStopwatch } from '@app/web/utils/stopwatch'
-import pThrottle from 'p-throttle'
 import { aiSdkAlbertEmbeddingModel } from '@app/web/assistant/aiSdkAlbertProvider'
+import { createStopwatch } from '@app/web/utils/stopwatch'
 import { embed } from 'ai'
+import pThrottle from 'p-throttle'
 
 const createEmbeddingThrottle = pThrottle({
   limit: 95,

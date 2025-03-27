@@ -9,19 +9,20 @@ import {
 } from '@app/web/assistant/assistantMessageToAiSdkMessage'
 import { getOrCreateChatSession } from '@app/web/assistant/getChatSession'
 import { mediationAssistantSystemMessage } from '@app/web/assistant/systemMessages'
-import { agenticSearchAiSdkTool } from '@app/web/assistant/tools/agenticSearchTool'
+import { agenticSearchTool } from '@app/web/assistant/tools/agenticSearchTool'
+import { agenticSearchToolName } from '@app/web/assistant/tools/agenticSearchToolConfig'
+import { centreAideRagTool } from '@app/web/assistant/tools/centreAideRagTool'
+import { centreAideRagToolName } from '@app/web/assistant/tools/centreAideRagToolConfig'
+import { meteoTool } from '@app/web/assistant/tools/meteoTool'
+import { meteoToolName } from '@app/web/assistant/tools/meteoToolConfig'
+import { repondreTool } from '@app/web/assistant/tools/repondreTool'
+import { repondreToolName } from '@app/web/assistant/tools/repondreToolConfig'
 import { getSessionTokenFromNextRequestCookies } from '@app/web/auth/getSessionTokenFromCookies'
 import { getSessionUserFromSessionToken } from '@app/web/auth/getSessionUserFromSessionToken'
 import { prismaClient } from '@app/web/prismaClient'
-import {
-  type CoreToolMessage,
-  type CoreUserMessage,
-  streamText,
-  tool,
-} from 'ai'
+import { type CoreToolMessage, type CoreUserMessage, streamText } from 'ai'
 import { type NextRequest, NextResponse } from 'next/server'
 import { v4 } from 'uuid'
-import z from 'zod'
 
 export const maxDuration = 240
 export const dynamic = 'force-dynamic'
@@ -126,19 +127,12 @@ export async function POST(request: NextRequest) {
     experimental_generateMessageId: () => v4(),
     toolChoice: 'auto',
     tools: {
-      meteo: tool({
-        description: 'Obtenir la météo actuelle',
-        parameters: z.object({
-          location: z.string().describe('La ville ou le code postal'),
-        }),
-        execute: async ({ location }) =>
-          new Promise<string>((resolve) =>
-            setTimeout(() => resolve(`${location}: il fait beau`), 5000),
-          ),
-      }),
-      recherche_documentaire: agenticSearchAiSdkTool,
+      [repondreToolName]: repondreTool,
+      [meteoToolName]: meteoTool,
+      [agenticSearchToolName]: agenticSearchTool,
+      [centreAideRagToolName]: centreAideRagTool,
     },
-    maxSteps: 3,
+    maxSteps: 1,
     onError: (error) => {
       // biome-ignore lint/suspicious/noConsole: used until feature is in production
       console.error('STREAM ON ERROR', error)

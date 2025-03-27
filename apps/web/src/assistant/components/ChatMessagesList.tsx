@@ -1,6 +1,6 @@
 'use client'
 
-import ChatMessage from '@app/web/assistant/ChatMessage'
+import ChatMessage from '@app/web/assistant/components/ChatMessage'
 import type { UIMessage } from 'ai'
 import React from 'react'
 

@@ -1,7 +1,8 @@
-import ChatMessageAgenticSearchToolResult from '@app/web/assistant/ChatMessageAgenticSearchToolResult'
-import ChatMessageGenericToolResult from '@app/web/assistant/ChatMessageGenericToolResult'
-import ToolCallMessage from '@app/web/assistant/ToolCallMessage'
+import ChatMessageAgenticSearchToolResult from '@app/web/assistant/components/ChatMessageAgenticSearchToolResult'
+import ChatMessageGenericToolResult from '@app/web/assistant/components/ChatMessageGenericToolResult'
+import ToolCallMessage from '@app/web/assistant/components/ToolCallMessage'
 import { agenticSearchToolName } from '@app/web/assistant/tools/agenticSearchToolConfig'
+import { repondreToolName } from '@app/web/assistant/tools/repondreToolConfig'
 import { UIMessage } from 'ai'
 
 const ChatMessageToolInvocationPart = ({
@@ -11,6 +12,10 @@ const ChatMessageToolInvocationPart = ({
 }) => {
   if (toolInvocation.state !== 'result') {
     return <ToolCallMessage toolInvocation={toolInvocation} />
+  }
+
+  if (toolInvocation.toolName === repondreToolName) {
+    return null
   }
 
   return (

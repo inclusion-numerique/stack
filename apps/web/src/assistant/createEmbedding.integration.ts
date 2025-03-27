@@ -1,5 +1,5 @@
-import { createEmbedding } from '@app/web/assistant/createEmbedding'
 import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
+import { createEmbedding } from '@app/web/assistant/createEmbedding'
 
 describe('createEmbedding', () => {
   it('should create an embedding', async () => {

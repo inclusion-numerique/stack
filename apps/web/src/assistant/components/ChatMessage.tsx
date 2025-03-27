@@ -1,5 +1,5 @@
-import ChatMessageTextPart from '@app/web/assistant/ChatMessageTextPart'
-import ChatMessageToolInvocationPart from '@app/web/assistant/ChatMessageToolInvocationPart'
+import ChatMessageTextPart from '@app/web/assistant/components/ChatMessageTextPart'
+import ChatMessageToolInvocationPart from '@app/web/assistant/components/ChatMessageToolInvocationPart'
 import LogoCoop from '@app/web/components/LogoCoop'
 import { toTitleCase } from '@app/web/utils/toTitleCase'
 import { UIMessage } from 'ai'

@@ -20,7 +20,6 @@ import {
   formatResultToMarkdownForAssistant,
 } from '@app/web/assistant/tools/brave/braveSearch'
 import type { ZodFunctionOptions } from '@app/web/assistant/tools/zodFunctionType'
-import { zodFunction } from 'openai/helpers/zod'
 import { stringify } from 'yaml'
 import { z } from 'zod'
 
@@ -44,9 +43,6 @@ export const agenticSearchToolParameters = z.object({
     ),
   lesBases: stringBooleanValidation(
     'Activer à "true" pour pour toutes les questions en rapport avec la médiation numérique ou le numérique d’intéret général pour trouver des ressources de médiation numérique et de numérique d’intéret général présent sur les site lesbases.anct.gouv.fr',
-  ),
-  centreAide: stringBooleanValidation(
-    'Activer à "true" pour toutes les questions en rapport du support ou questions sur le site de la Coop de la médiation numérique. Fonctionnalités, précisions, etc...',
   ),
   sitesOfficiels: stringBooleanValidation(
     'Activer à "true" pour toutes les questions liées à la médiation numérique, aux démarches administratives, ' +
@@ -119,7 +115,6 @@ export type AgenticSearchToolYamlResult =
       objectif: string
       sources_sites_web: BraveSearchResultForAssistant[] | undefined
       sources_sites_officiels: BraveSearchResultForAssistant[] | undefined
-      sources_centre_aide: RagChunkResultForAssistant[] | undefined
       sources_les_bases: RagChunkResultForAssistant[] | undefined
     }
 
@@ -142,17 +137,10 @@ export const agenticSearchToolOptions = {
   name: agenticSearchToolName,
   description: agenticSearchToolDescription,
   parameters: agenticSearchToolParameters,
-  function: async ({
-    query,
-    centreAide,
-    lesBases,
-    objectif,
-    internet,
-    sitesOfficiels,
-  }) => {
-    if (!internet && !sitesOfficiels && !centreAide && !lesBases) {
+  function: async ({ query, lesBases, objectif, internet, sitesOfficiels }) => {
+    if (!internet && !sitesOfficiels && !lesBases) {
       return errorResult(
-        `Au moins une source doit être activée pour utiliser ce tool (internet, sitesOfficiels, centreAide, lesBases)`,
+        `Au moins une source doit être activée pour utiliser ce tool (internet, sitesOfficiels, lesBases)`,
       )
     }
 
@@ -160,7 +148,6 @@ export const agenticSearchToolOptions = {
       const [
         genericWebSearchRawResults,
         administrationWebSearchRawResults,
-        centreAideRagRawResults,
         lesBasesRagRawResults,
       ] = await Promise.all([
         internet
@@ -181,11 +168,6 @@ export const agenticSearchToolOptions = {
               summarizeWebSearchResults({ objectif, results }),
             )
           : null,
-        centreAide
-          ? getRagChunksForQuery(query, {
-              sources: [ragSources.centreAideNotion],
-            })
-          : null,
         lesBases
           ? getRagChunksForQuery(query, {
               sources: [ragSources.lesBases],
@@ -204,12 +186,6 @@ export const agenticSearchToolOptions = {
           ? administrationWebSearchRawResults
           : false
 
-      const centreAideRagChunkResults =
-        !!centreAideRagRawResults &&
-        centreAideRagRawResults.chunkResults?.length > 0
-          ? centreAideRagRawResults.chunkResults
-          : false
-
       const lesBasesRagChunkResults =
         !!lesBasesRagRawResults &&
         lesBasesRagRawResults.chunkResults?.length > 0
@@ -219,7 +195,6 @@ export const agenticSearchToolOptions = {
       if (
         !genericWebSearchResults &&
         !oficialWebSearchResults &&
-        !centreAideRagChunkResults &&
         !lesBasesRagChunkResults
       ) {
         return errorResult(
@@ -237,11 +212,6 @@ export const agenticSearchToolOptions = {
               : undefined,
             sitesOfficielsSources: oficialWebSearchResults
               ? oficialWebSearchResults.map(formatResultToJsonForAssistant)
-              : undefined,
-            centreAideSources: centreAideRagChunkResults
-              ? formatRagSearchResultToJsonForAssistant(
-                  centreAideRagChunkResults,
-                )
               : undefined,
             lesBasesSources: lesBasesRagChunkResults
               ? formatRagSearchResultToJsonForAssistant(lesBasesRagChunkResults)
@@ -261,9 +231,6 @@ export const agenticSearchToolOptions = {
             : undefined,
           sources_sites_officiels: oficialWebSearchResults
             ? oficialWebSearchResults.map(formatResultToJsonForAssistant)
-            : undefined,
-          sources_centre_aide: centreAideRagChunkResults
-            ? formatRagSearchResultToJsonForAssistant(centreAideRagChunkResults)
             : undefined,
           sources_les_bases: lesBasesRagChunkResults
             ? formatRagSearchResultToJsonForAssistant(lesBasesRagChunkResults)
@@ -295,15 +262,6 @@ ${oficialWebSearchResults.map(formatResultToMarkdownForAssistant).join('\n\n')}
 `
       }
 
-      if (centreAideRagChunkResults) {
-        assistantResponse += `
-# Articles dans le centre d’aide de la coop
-
-${formatRagSearchResultToMarkdown(centreAideRagChunkResults)}
-
-`
-      }
-
       if (lesBasesRagChunkResults) {
         assistantResponse += `
         
@@ -323,9 +281,7 @@ ${formatRagSearchResultToMarkdown(lesBasesRagChunkResults)}
   },
 } satisfies ZodFunctionOptions<typeof agenticSearchToolParameters>
 
-export const agenticSearchTool = zodFunction(agenticSearchToolOptions)
-
-export const agenticSearchAiSdkTool = tool({
+export const agenticSearchTool = tool({
   description: agenticSearchToolDescription,
   parameters: agenticSearchToolParameters,
   execute: agenticSearchToolOptions.function,
