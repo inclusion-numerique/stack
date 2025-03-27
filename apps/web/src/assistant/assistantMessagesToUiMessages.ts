@@ -48,7 +48,7 @@ export const assistantMessagesToUiMessages = (
               state: 'call',
               toolCallId: part.toolCallId,
               toolName: part.toolName,
-              args: part.type === '',
+              args: part.args,
             },
           }
           // we store in map to update the call with later tool result parts

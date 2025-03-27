@@ -43,6 +43,9 @@ const notFoundResponse = () =>
     status: 404,
   })
 
+// TODO Enable this if needed ?
+const backendPersistence = false
+
 export async function POST(request: NextRequest) {
   const sessionToken = getSessionTokenFromNextRequestCookies(request.cookies)
   const user = await getSessionUserFromSessionToken(sessionToken)
@@ -67,6 +70,8 @@ export async function POST(request: NextRequest) {
   }
 
   const { id: chatSessionId, message: rawInputMessage } = requestData.data
+
+  const toolChoice = requestData.data?.data?.toolChoice ?? 'auto'
 
   const inputMessage = rawInputMessage as (
     | CoreUserMessage
@@ -125,7 +130,7 @@ export async function POST(request: NextRequest) {
       : mediationAssistantSystemMessage.content,
     messages,
     experimental_generateMessageId: () => v4(),
-    toolChoice: 'auto',
+    toolChoice,
     tools: {
       [repondreToolName]: repondreTool,
       [meteoToolName]: meteoTool,
@@ -170,13 +175,14 @@ export async function POST(request: NextRequest) {
         console.log(message)
       }
 
-      const persistedMessages =
-        await prismaClient.assistantChatMessage.createMany({
-          data: messagesToPersist,
-        })
-
       // biome-ignore lint/suspicious/noConsole: used until feature is in production
-      console.log('PERSISTED MESSAGES', persistedMessages)
+      console.log('BACKEND MESSAGES TO PERSIST', messagesToPersist)
+      if (backendPersistence) {
+        const persistedMessages =
+          await prismaClient.assistantChatMessage.createMany({
+            data: messagesToPersist,
+          })
+      }
     },
   })
 

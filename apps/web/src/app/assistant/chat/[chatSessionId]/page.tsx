@@ -3,7 +3,9 @@ import AssistantPageContent from '@app/web/assistant/components/AssistantPageCon
 import { getAssistantPageData } from '@app/web/assistant/getAssistantPageData'
 import { authenticateUser } from '@app/web/auth/authenticateUser'
 import type { Metadata } from 'next'
-import { notFound } from 'next/navigation'
+
+export const revalidate = 0
+export const dynamic = 'force-dynamic'
 
 export const generateMetadata = (): Metadata => ({
   title: metadataTitle('Assistant - Chat'),
@@ -18,11 +20,7 @@ const Page = async ({
 
   const data = await getAssistantPageData({ chatSessionId, userId: user.id })
 
-  if (data.chatSession === null) {
-    notFound()
-  }
-
-  return <AssistantPageContent data={data} />
+  return <AssistantPageContent data={data} chatSessionId={chatSessionId} />
 }
 
 export default Page

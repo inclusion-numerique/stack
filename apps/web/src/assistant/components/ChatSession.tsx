@@ -6,23 +6,31 @@ import { createToast } from '@app/ui/toast/createToast'
 import ChatCompletionErrorMessage from '@app/web/assistant/components/ChatCompletionErrorMessage'
 import ChatMessagesList from '@app/web/assistant/components/ChatMessagesList'
 import ChatUserInput from '@app/web/assistant/components/ChatUserInput'
-import type { ChatSessionData } from '@app/web/assistant/getChatSession'
+import { useAssistantChatPersistence } from '@app/web/assistant/hooks/useAssistantChatPersistence'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
-import { UIMessage } from 'ai'
+import { Message } from 'ai'
 import React, { useRef, type FormEventHandler, useEffect } from 'react'
 import { v4 } from 'uuid'
 import styles from './ChatSession.module.css'
 
 const ChatSession = ({
-  chatSession,
-  uiMessages,
+  initialMessages,
+  chatSessionId,
 }: {
-  chatSession: ChatSessionData | null
-  uiMessages: UIMessage[] | null
+  initialMessages: Message[]
+  chatSessionId: string
 }) => {
   const messagesContainerRef = useRef<HTMLDivElement>(null)
 
+  const { persistMessages } = useAssistantChatPersistence({
+    initialMessages,
+    chatSessionId,
+  })
+
+  const messagesRef = useRef(initialMessages ?? [])
+
   const {
+    append,
     messages,
     input,
     handleInputChange,
@@ -31,10 +39,10 @@ const ChatSession = ({
     status,
     stop,
   } = useChat({
-    id: chatSession?.id,
+    id: chatSessionId,
     api: '/api/assistant/chat',
-    initialMessages: uiMessages ?? undefined,
-    maxSteps: 3,
+    initialMessages: initialMessages ?? undefined,
+    maxSteps: 1,
     generateId: () => v4(),
     onError: (error) => {
       // biome-ignore lint/suspicious/noConsole: used until feature is in production
@@ -44,19 +52,50 @@ const ChatSession = ({
         priority: 'error',
       })
     },
-    experimental_prepareRequestBody: ({ messages, id }) => ({
+    experimental_prepareRequestBody: ({ messages, id, requestData }) => ({
       message: messages[messages.length - 1],
       id,
+      data: requestData,
     }),
+    onFinish: (message, { usage, finishReason }) => {
+      const allMessages = [...messagesRef.current, message]
+
+      persistMessages({ messages: allMessages })
+      console.log('FRONTEND FINISH', message)
+      console.log('FRONTEND FINISH MESSAGES', messages)
+      console.log('FINISH MESSAGES REF', messagesRef.current)
+      console.log('Finish details', { usage, finishReason })
+
+      // We want to retrigger the chat if the last message from the assistant is a tool result
+      const lastMessagePart = message.parts.at(-1)
+      const shouldRetriggerChat =
+        !!lastMessagePart &&
+        finishReason === 'tool-calls' &&
+        lastMessagePart.type === 'tool-invocation' &&
+        lastMessagePart.toolInvocation.state === 'result'
+
+      console.log('FINISH SHOULD RELAUNCH WITHOUT TOOLS ?', {
+        lastMessagePart,
+        shouldRetriggerChat,
+      })
+      if (shouldRetriggerChat) {
+        // if we rettrigger the chat, we should disable tool execution
+        append(message, {
+          data: {
+            toolChoice: 'none',
+          },
+        })
+      }
+    },
   })
+
+  if (messagesRef.current.length !== messages.length) {
+    messagesRef.current = messages
+  }
 
   const onSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault()
-    handleSubmit(event, {
-      data: {
-        chatSessionId: 'b6aa005d-3d3b-4e92-b1de-b7f1d692b060', // TODO FROM URL
-      },
-    })
+    handleSubmit(event)
   }
 
   const { scrollToBottom } = useScrollToBottom({

@@ -2,7 +2,7 @@
 
 import { UseChatHelpers } from '@ai-sdk/react'
 import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
-import styles from '@app/web/assistant/ChatSession.module.css'
+import styles from '@app/web/assistant/components/ChatSession.module.css'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import Button from '@codegouvfr/react-dsfr/Button'
 import classNames from 'classnames'

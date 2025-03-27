@@ -3,7 +3,11 @@ import z from 'zod'
 export const AssistantChatAiSdkRequestDataValidation = z.object({
   id: z.string().uuid(), // id of the chat session
   // custom data
-  data: z.object({}).optional(),
+  data: z
+    .object({
+      toolChoice: z.enum(['auto', 'none', 'required']).optional(),
+    })
+    .optional(),
   message: z
     .object({
       id: z.string().uuid(),

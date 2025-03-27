@@ -1,4 +1,4 @@
-import styles from '@app/web/assistant/ChatSession.module.css'
+import styles from '@app/web/assistant/components/ChatSession.module.css'
 import { Spinner } from '@app/web/ui/Spinner'
 import type { ToolInvocation } from 'ai'
 import classNames from 'classnames'

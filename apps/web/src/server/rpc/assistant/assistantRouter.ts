@@ -95,6 +95,54 @@ export const assistantRouter = router({
         },
       })
     }),
+  persistMessages: protectedProcedure
+    .input(
+      z.object({
+        chatSessionId: z.string().uuid(),
+        messages: z.array(z.any()),
+      }),
+    )
+    .mutation(async ({ input: { messages, chatSessionId }, ctx: { user } }) => {
+      if (user.role !== 'Admin') throw forbiddenError('User is not an admin')
+
+      const chatSession = await prismaClient.assistantChatSession.findUnique({
+        where: { id: chatSessionId, deleted: null },
+      })
+
+      if (!chatSession) throw invalidError('Chat session not found')
+
+      if (chatSession.createdById !== user.id)
+        throw forbiddenError('User is not the creator of this chat session')
+
+      const result = await prismaClient.$transaction(async (transaction) => {
+        const persistedMessages = await Promise.all(
+          messages.map(
+            async (message) =>
+              await transaction.assistantChatMessage.upsert({
+                where: { id: message.id },
+                create: {
+                  id: message.id,
+                  sessionId: chatSessionId,
+                  role: message.role,
+                  content: message.content,
+                },
+                update: {
+                  role: message.role,
+                  content: message.content,
+                },
+              }),
+          ),
+        )
+
+        const updatedSession = await transaction.assistantChatSession.update({
+          where: { id: chatSessionId },
+        })
+
+        return { updatedSession, persistedMessages }
+      })
+
+      return result
+    }),
   updateAssistantConfiguration: protectedProcedure
     .input(AssistantConfigurationValidation)
     .mutation(async ({ input, ctx: { user } }) => {

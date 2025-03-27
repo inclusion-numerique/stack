@@ -10,23 +10,15 @@ export const useScrollToBottom = ({
   const scrollToBottom = useCallback(() => {
     const containerElement = containerRef.current
 
-    console.log('CONTAINER ELEMENT', containerElement)
-
     if (!containerElement) {
       return
     }
 
     const { scrollTop, scrollHeight, clientHeight } = containerElement
 
-    console.log('SCROLL TOP', { scrollTop, scrollHeight, clientHeight })
-
     const lastElement = containerElement.lastElementChild ?? containerElement
 
-    console.log('LAST ELEMENT', lastElement)
-
     const isScrolledToBottom = scrollTop + clientHeight >= scrollHeight
-
-    console.log('IS SCROLLED TO BOTTOM', isScrolledToBottom)
 
     if (!isScrolledToBottom) {
       lastElement.scrollIntoView({

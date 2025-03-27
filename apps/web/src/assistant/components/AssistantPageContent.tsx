@@ -13,8 +13,10 @@ import styles from './ChatSession.module.css'
 
 const AssistantPageContent = ({
   data: { chatSession, chatSessionHistory, uiMessages },
+  chatSessionId,
 }: {
   data: AssistantPageData
+  chatSessionId: string
 }) => {
   // biome-ignore lint/correctness/useExhaustiveDependencies: we want to initialize when id changes
   useEffect(() => {
@@ -55,7 +57,10 @@ const AssistantPageContent = ({
       </div>
       <div className="fr-flex-grow-1">
         <div className={styles.chatSessionContainer}>
-          <ChatSession chatSession={chatSession} uiMessages={uiMessages} />
+          <ChatSession
+            chatSessionId={chatSessionId}
+            initialMessages={uiMessages ?? []}
+          />
         </div>
       </div>
     </div>

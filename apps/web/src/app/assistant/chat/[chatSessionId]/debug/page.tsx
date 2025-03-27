@@ -1,6 +1,5 @@
 import AdministrationTitle from '@app/web/app/administration/AdministrationTitle'
 import { metadataTitle } from '@app/web/app/metadataTitle'
-import { assistantChatRoleLabels } from '@app/web/assistant/assistantChatRole'
 import { mergeWithDefaultAssistantConfiguration } from '@app/web/assistant/configuration/defaultAssistantConfiguration'
 import { getAssistantPageData } from '@app/web/assistant/getAssistantPageData'
 import { authenticateUser } from '@app/web/auth/authenticateUser'
@@ -10,7 +9,6 @@ import classNames from 'classnames'
 import { marked } from 'marked'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import type { ChatCompletionMessageToolCall } from 'openai/src/resources/chat/completions'
 import { Fragment } from 'react'
 
 export const generateMetadata = (): Metadata => ({
@@ -112,16 +110,14 @@ const Page = async ({
         <Fragment key={message.id}>
           <div className="fr-grid-row fr-grid-row--gutters">
             <div className="fr-col-12 fr-col-lg-6">
-              <h3 className="fr-text--lg fr-text--bold">
-                {assistantChatRoleLabels[message.role]}
-              </h3>
+              <h3 className="fr-text--lg fr-text--bold">{message.role}</h3>
               {message.content ? (
                 <div
                   className={classNames(
                     'fr-p-4v fr-pb-0 fr-border-radius--8',
-                    message.role === 'User'
+                    message.role === 'user'
                       ? 'fr-background-alt--blue-france'
-                      : message.role === 'Assistant'
+                      : message.role === 'assistant'
                         ? 'fr-background-alt--green-archipel'
                         : 'fr-background-alt--grey',
                   )}
@@ -135,39 +131,30 @@ const Page = async ({
                   />
                 </div>
               ) : null}
-              {message.toolCalls.length > 0 &&
-                message.toolCalls
+              {message.parts.length > 0 &&
+                message.parts
+                  .map((part) =>
+                    part.type === 'tool-invocation' ? part : null,
+                  )
                   .filter(onlyDefinedAndNotNull)
-                  .map((toolCall) => {
-                    const typedToolCall =
-                      toolCall as unknown as ChatCompletionMessageToolCall & {
-                        function: {
-                          name: string
-                          parsed_arguments: Record<
-                            string,
-                            string | boolean | null | number
-                          >
-                        }
-                      }
-
+                  .map((toolInvocation) => {
                     return (
                       <div
                         className="fr-p-4v fr-pb-0 fr-background-alt--brown-caramel fr-border-radius--8"
-                        key={typedToolCall.id}
+                        key={toolInvocation.toolCallId}
                       >
                         <p>
-                          Tool call{' '}
-                          <strong>{typedToolCall.function.name}</strong>
+                          Tool call <strong>{toolInvocation.toolName}</strong>
                           <br />
                         </p>
                         <ul>
-                          {Object.entries(
-                            typedToolCall.function.parsed_arguments,
-                          ).map(([key, value]) => (
-                            <li key={key}>
-                              {key}: {formatParsedArgumentValue(value)}
-                            </li>
-                          ))}
+                          {Object.entries(toolInvocation.args).map(
+                            ([key, value]) => (
+                              <li key={key}>
+                                {key}: {formatParsedArgumentValue(value)}
+                              </li>
+                            ),
+                          )}
                         </ul>
                       </div>
                     )
