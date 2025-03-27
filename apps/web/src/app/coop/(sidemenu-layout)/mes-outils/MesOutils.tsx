@@ -112,17 +112,7 @@ export const MesOutils = () => (
           Des données utiles sur les lieux et dispositifs d’inclusion numérique
         </h2>
         <div className="fr-grid-row fr-grid-row--gutters">
-          <div className="fr-col-xl-6 fr-col-12">
-            <CardOutil
-              logo="/images/services/conseillers-numerique-logo-small.svg"
-              title="Espace France Numérique Ensemble"
-              inforef="espace-france-numerique-ensemble"
-            >
-              Les données utiles pour comprendre l’inclusion numérique sur votre
-              territoire.
-            </CardOutil>
-          </div>
-          <div className="fr-col-xl-6 fr-col-12">
+          <div className="fr-col-xl-12 fr-col-12">
             <CardOutil
               logo="/images/services/cartographie-icon.svg"
               title="La Cartographie Nationale des lieux d’inclusion numérique"
