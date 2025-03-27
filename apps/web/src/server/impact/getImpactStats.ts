@@ -188,7 +188,17 @@ export const getImpactStats = async (): Promise<ImpactStats> => {
     coordoHDActifs,
     activitesParMois,
   ] = await Promise.all([
-    prismaClient.conseillerNumerique.count(),
+    prismaClient.conseillerNumerique.count({
+      where: {
+        mediateur: {
+          user: {
+            inscriptionValidee: {
+              not: null,
+            },
+          },
+        },
+      },
+    }),
     prismaClient.conseillerNumerique.count({
       where: {
         mediateur: {
@@ -198,6 +208,11 @@ export const getImpactStats = async (): Promise<ImpactStats> => {
                 gte: new Date(new Date().setDate(new Date().getDate() - 30)),
               },
               suppression: null,
+            },
+          },
+          user: {
+            inscriptionValidee: {
+              not: null,
             },
           },
         },
@@ -252,6 +267,11 @@ export const getImpactStats = async (): Promise<ImpactStats> => {
         conseillerNumeriqueId: {
           not: null,
         },
+        user: {
+          inscriptionValidee: {
+            not: null,
+          },
+        },
       },
     }),
     prismaClient.coordinateur.count({
@@ -260,6 +280,9 @@ export const getImpactStats = async (): Promise<ImpactStats> => {
           not: null,
         },
         user: {
+          inscriptionValidee: {
+            not: null,
+          },
           lastLogin: {
             gte: new Date(new Date().setDate(new Date().getDate() - 31)),
           },
@@ -269,12 +292,20 @@ export const getImpactStats = async (): Promise<ImpactStats> => {
     prismaClient.coordinateur.count({
       where: {
         conseillerNumeriqueId: null,
+        user: {
+          inscriptionValidee: {
+            not: null,
+          },
+        },
       },
     }),
     prismaClient.coordinateur.count({
       where: {
         conseillerNumeriqueId: null,
         user: {
+          inscriptionValidee: {
+            not: null,
+          },
           lastLogin: {
             gte: new Date(new Date().setDate(new Date().getDate() - 31)),
           },
