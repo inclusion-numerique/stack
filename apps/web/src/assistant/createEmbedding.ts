@@ -1,35 +1,26 @@
-import {
-  openAiClient,
-  openAiClientConfiguration,
-} from '@app/web/assistant/openAiClient'
 import { createStopwatch } from '@app/web/utils/stopwatch'
 import pThrottle from 'p-throttle'
+import { aiSdkAlbertEmbeddingModel } from '@app/web/assistant/aiSdkAlbertProvider'
+import { embed } from 'ai'
 
 const createEmbeddingThrottle = pThrottle({
   limit: 95,
   interval: 60_000,
 })
 
+const model = aiSdkAlbertEmbeddingModel
+
 const createEmbeddingImmediate = async (text: string) => {
   const stopwatch = createStopwatch()
-  const response = await openAiClient.embeddings.create({
-    model: openAiClientConfiguration.embeddingsModel,
-    input: text,
+
+  const result = await embed({
+    model,
+    value: text,
   })
 
-  if (!response.data.at(0)?.embedding) {
-    throw new Error('Embedding not found in createEmbedding() response')
-  }
-
-  if (response.data.length > 1) {
-    throw new Error(
-      'More than one embedding found in createEmbedding() response',
-    )
-  }
-
   return {
-    model: response.model,
-    embedding: response.data[0].embedding,
+    model: model.modelId,
+    embedding: result.embedding,
     duration: stopwatch.stop().duration,
   }
 }

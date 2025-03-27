@@ -102,7 +102,7 @@ export const ServerWebAppConfig = {
       serviceUrl: process.env.ALBERT_SERVICE_URL ?? '',
       apiKey: process.env.ALBERT_API_KEY ?? '',
       chatModel: 'meta-llama/Meta-Llama-3.1-70B-Instruct',
-      embeddingsModel: 'todo',
+      embeddingsModel: 'BAAI/bge-m3',
     },
     Brave: {
       apiKey: process.env.BRAVE_API_KEY ?? '',

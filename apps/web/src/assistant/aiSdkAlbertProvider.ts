@@ -7,3 +7,7 @@ export const aiSdkAlbertProvider = createOpenAI({
   compatibility: 'compatible',
   name: 'albert',
 })
+
+export const aiSdkAlbertEmbeddingModel = aiSdkAlbertProvider.embedding(
+  ServerWebAppConfig.Assistant.Albert.embeddingsModel,
+)
