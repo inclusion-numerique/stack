@@ -20,7 +20,12 @@ import { repondreToolName } from '@app/web/assistant/tools/repondreToolConfig'
 import { getSessionTokenFromNextRequestCookies } from '@app/web/auth/getSessionTokenFromCookies'
 import { getSessionUserFromSessionToken } from '@app/web/auth/getSessionUserFromSessionToken'
 import { prismaClient } from '@app/web/prismaClient'
-import { type CoreToolMessage, type CoreUserMessage, streamText } from 'ai'
+import {
+  appendResponseMessages,
+  type CoreToolMessage,
+  type CoreUserMessage,
+  streamText,
+} from 'ai'
 import { type NextRequest, NextResponse } from 'next/server'
 import { v4 } from 'uuid'
 
@@ -116,7 +121,7 @@ export async function POST(request: NextRequest) {
   // biome-ignore lint/suspicious/noConsole: used until feature is in production
   console.log('MESSAGES', messages)
 
-  const result = streamText({
+  const stream = streamText({
     model:
       ServerWebAppConfig.Assistant.service === 'albert'
         ? aiSdkAlbertProvider(ServerWebAppConfig.Assistant.Albert.chatModel)
@@ -148,6 +153,17 @@ export async function POST(request: NextRequest) {
       console.log('STREAM ON STEP FINISH', JSON.stringify(result, null, 2))
     },
     onFinish: async (result) => {
+      console.log('ON FINISH RESPONSE', result.response.messages)
+
+      console.log(
+        'APPENDED MESSAGES',
+        appendResponseMessages({
+          messages: [],
+          responseMessages: result.response.messages,
+        }),
+      )
+      console.log('ON FINISH MODEL', result.response.modelId)
+
       // On finish argument only has the messages from the assistant
       // biome-ignore lint/suspicious/noConsole: used until feature is in production
       console.log(
@@ -186,5 +202,8 @@ export async function POST(request: NextRequest) {
     },
   })
 
-  return result.toDataStreamResponse()
+  // Disable backpressure and consume the stream even if client disconnects so onFinished is called
+  stream.consumeStream()
+
+  return stream.toDataStreamResponse()
 }

@@ -1021,17 +1021,7 @@ model AssistantChatSession {
   assistantConfigurationId String                 @map("assistant_configuration_id") @db.Uuid
 
   @@index([createdById])
-  @@map("assistant_chat_sessions")
-}
-
-// Based on the OpenAI API standard
-enum AssistantChatRole {
-  System    @map("system")
-  User      @map("user")
-  Assistant @map("assistant")
-  Tool      @map("tool")
-
-  @@map("assistant_chat_roles")
+  @@map("assistant_chat_threads")
 }
 
 model AssistantConfiguration {
@@ -1067,15 +1057,16 @@ model AssistantConfiguration {
   @@map("assistant_configurations")
 }
 
-// Based on the OpenAI API standard
+// Based on the ai sdk model
 model AssistantChatMessage {
-  id        String               @id @default(uuid()) @db.Uuid
-  role      AssistantChatRole
-  session   AssistantChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-  sessionId String               @map("session_id") @db.Uuid
-  created   DateTime             @default(now())
-  parts     Json[] @default([]) // See CoreMessage.parts types (text, tool-result, etc...)
-  providerOptions Json? @map("provider_options") // Our own custom data if needed
+  id          String               @id @default(uuid()) @db.Uuid
+  role        String // 'system' | 'user' | 'assistant'
+  session     AssistantChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  sessionId   String               @map("session_id") @db.Uuid
+  created     DateTime             @default(now())
+  parts       Json[]               @default([]) // See CoreMessage.parts types (text, tool-result, etc...)
+  annotations Json[]               @default([]) // Custom data
+  attachments Json[]               @default([]) // List of attachments (name?: string, contentType?: string, url: string)
 
   @@index([sessionId])
   @@index([created(sort: Asc)])

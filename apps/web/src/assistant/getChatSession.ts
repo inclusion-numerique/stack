@@ -49,7 +49,9 @@ export const getOrCreateChatSession = async ({
       },
     },
     include: {
-      messages: true,
+      messages: {
+        orderBy: { created: 'asc' },
+      },
       configuration: true,
     },
   })

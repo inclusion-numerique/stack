@@ -43,6 +43,7 @@ const ChatSession = ({
     api: '/api/assistant/chat',
     initialMessages: initialMessages ?? undefined,
     maxSteps: 1,
+    sendExtraMessageFields: true,
     generateId: () => v4(),
     onError: (error) => {
       // biome-ignore lint/suspicious/noConsole: used until feature is in production
