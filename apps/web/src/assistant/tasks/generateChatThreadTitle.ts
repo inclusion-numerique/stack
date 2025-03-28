@@ -1,17 +1,21 @@
 import { MessageParts } from '@app/web/assistant/MessagePart'
-import { ChatSessionMessage } from '@app/web/assistant/getChatSession'
 import { OpenAiChatMessage } from '@app/web/assistant/openAiChat'
 import {
   OpenAiClienChatModel,
   openAiClient,
   openAiClientConfiguration,
 } from '@app/web/assistant/openAiClient'
+import type { AssistantChatMessage } from '@prisma/client'
+import type { Message } from 'ai'
 
-export const generateChatSessionTitle = async ({
+export const generateChatThreadTitle = async ({
   messages,
   model,
 }: {
-  messages: Pick<ChatSessionMessage, 'role' | 'parts'>[]
+  messages: (
+    | Pick<Message, 'role' | 'parts'>
+    | Pick<AssistantChatMessage, 'role' | 'parts'>
+  )[]
   model?: OpenAiClienChatModel
 }) => {
   const completionMessages: OpenAiChatMessage[] = [
@@ -26,7 +30,7 @@ Répond uniquement avec quelques mots, **sans mots de décoration** ("Question :
       content: `Voici les messages à résumer : 
 ===============
 ${messages
-  .filter((message) => message.role === 'User')
+  .filter((message) => message.role === 'user')
   .slice(0, 4)
   .map(
     (message) => `**${message.role} :**

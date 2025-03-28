@@ -1,4 +1,3 @@
-import { AiSdkChatRole } from '@app/web/assistant/assistantChatRole'
 import { type Tokens, marked } from 'marked'
 import type { CSSProperties } from 'react'
 
@@ -24,7 +23,7 @@ const ChatMessageTextPart = ({
   }
   markdown: boolean
   cursor?: boolean
-  previousMessageRole?: AiSdkChatRole
+  previousMessageRole?: string
   previousMessageIsSameRole: boolean
   style?: CSSProperties
 }) => {
@@ -36,11 +35,10 @@ const ChatMessageTextPart = ({
   const parsedContent = text
     ? markdown
       ? marked.parse(text, { renderer, async: false })
-      : text
+      : text.replaceAll('\n', '<br />')
     : ''
 
   const cleanedContent = parsedContent
-    .replaceAll('\n', '<br />')
     // Replace all composed characters with non breakable spaces
     .replaceAll(/ ([!%:;?»])/g, '&nbsp;$1')
 

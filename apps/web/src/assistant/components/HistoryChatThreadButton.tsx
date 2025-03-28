@@ -1,7 +1,7 @@
 'use client'
 
 import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
-import type { AssistantPageDataChatSessionHistoryItem } from '@app/web/assistant/getAssistantPageData'
+import type { AssistantPageDataChatThreadHistoryItem } from '@app/web/assistant/getAssistantPageData'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { trpc } from '@app/web/trpc'
 import { dateAsDayAndTimeInTimeZone } from '@app/web/utils/dateAsDayAndTime'
@@ -15,7 +15,7 @@ const defaultTitle = ({ created }: { created: Date }) =>
  * Displays the button for the history chat session.
  * Will generate a title for the chat session if the title is not set
  */
-const HistoryChatSessionButton = ({
+const HistoryChatThreadButton = ({
   sessionHistoryItem: {
     id,
     created,
@@ -23,7 +23,7 @@ const HistoryChatSessionButton = ({
     _count: { messages },
   },
 }: {
-  sessionHistoryItem: AssistantPageDataChatSessionHistoryItem
+  sessionHistoryItem: AssistantPageDataChatThreadHistoryItem
 }) => {
   const [title, setTitle] = useState(initialTitle ?? defaultTitle({ created }))
 
@@ -43,7 +43,7 @@ const HistoryChatSessionButton = ({
       return
     }
     isGeneratingTitle.current = true
-    const updated = await mutation.mutateAsync({ chatSessionId: id })
+    const updated = await mutation.mutateAsync({ threadId: id })
     setTitle(updated.title ?? defaultTitle({ created }))
   }, [initialTitle, created, id, mutation, messages])
 
@@ -70,4 +70,4 @@ const HistoryChatSessionButton = ({
   )
 }
 
-export default withTrpc(HistoryChatSessionButton)
+export default withTrpc(HistoryChatThreadButton)

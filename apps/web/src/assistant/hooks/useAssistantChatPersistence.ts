@@ -1,4 +1,3 @@
-import { trpc } from '@app/web/trpc'
 import type { Message } from 'ai'
 import { useCallback, useRef } from 'react'
 
@@ -7,16 +6,12 @@ const uniqueMessageId = (message: Message) =>
 
 export const useAssistantChatPersistence = ({
   initialMessages,
-  chatSessionId,
 }: {
   initialMessages: Message[]
-  chatSessionId: string
 }) => {
   const persistedMessageIds = useRef(
     new Set<string>(initialMessages.map(uniqueMessageId)),
   )
-
-  const mutation = trpc.assistant.persistMessages.useMutation()
 
   const persistMessages = useCallback(
     async ({
@@ -44,19 +39,9 @@ export const useAssistantChatPersistence = ({
         return
       }
 
-      const result = await mutation.mutateAsync({
-        chatSessionId,
-        messages: notPersistedMessages,
-      })
-
-      console.log('PERSISTENCE RESULT', result)
-
-      persistedMessageIds.current = new Set([
-        ...persistedMessageIds.current,
-        ...result.persistedMessages.map(uniqueMessageId),
-      ])
+      persistedMessageIds.current = new Set([...persistedMessageIds.current])
     },
-    [mutation, chatSessionId],
+    [],
   )
 
   return {

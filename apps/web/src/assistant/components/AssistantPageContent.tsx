@@ -1,30 +1,30 @@
 'use client'
 
-import NewChatButton from '@app/web/assistant/NewChatButton'
-import ChatSession from '@app/web/assistant/components/ChatSession'
-import ChatSessionHistorySideMenu from '@app/web/assistant/components/ChatSessionHistorySideMenu'
+import ChatThread from '@app/web/assistant/components/ChatThread'
+import ChatThreadHistorySideMenu from '@app/web/assistant/components/ChatThreadHistorySideMenu'
+import NewChatButton from '@app/web/assistant/components/NewChatButton'
 import type { AssistantPageData } from '@app/web/assistant/getAssistantPageData'
-import { initialiseChatSession } from '@app/web/assistant/hooks/useAssistantChatController'
+import { initialiseChatThread } from '@app/web/assistant/hooks/useAssistantChatController'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import Button from '@codegouvfr/react-dsfr/Button'
 import classNames from 'classnames'
 import { useEffect } from 'react'
-import styles from './ChatSession.module.css'
+import styles from './ChatThread.module.css'
 
 const AssistantPageContent = ({
-  data: { chatSession, chatSessionHistory, uiMessages },
-  chatSessionId,
+  data: { chatThread, chatThreadHistory, messages },
+  threadId,
 }: {
   data: AssistantPageData
-  chatSessionId: string
+  threadId: string
 }) => {
   // biome-ignore lint/correctness/useExhaustiveDependencies: we want to initialize when id changes
   useEffect(() => {
-    initialiseChatSession({
-      chatSessionHistory: chatSessionHistory ?? [],
-      chatSession: chatSession ?? null,
+    initialiseChatThread({
+      chatThreadHistory: chatThreadHistory ?? [],
+      chatThread: chatThread ?? null,
     })
-  }, [chatSession?.id])
+  }, [chatThread?.id])
 
   return (
     <div
@@ -53,14 +53,11 @@ const AssistantPageContent = ({
           </Button>
           <NewChatButton />
         </div>
-        <ChatSessionHistorySideMenu />
+        <ChatThreadHistorySideMenu />
       </div>
       <div className="fr-flex-grow-1">
-        <div className={styles.chatSessionContainer}>
-          <ChatSession
-            chatSessionId={chatSessionId}
-            initialMessages={uiMessages ?? []}
-          />
+        <div className={styles.chatThreadContainer}>
+          <ChatThread threadId={threadId} initialMessages={messages} />
         </div>
       </div>
     </div>

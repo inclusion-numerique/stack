@@ -15,7 +15,7 @@ export const generateMetadata = (): Metadata => ({
   title: metadataTitle('Assistant - Chat'),
 })
 
-const formatParsedArgumentValue = (value: string | boolean | null | number) => {
+const formatParsedArgumentValue = (value: unknown) => {
   if (typeof value === 'string') {
     return value
   }
@@ -28,31 +28,35 @@ const formatParsedArgumentValue = (value: string | boolean | null | number) => {
     return value.toString()
   }
 
-  return 'null'
+  if (value === null) {
+    return 'null'
+  }
+
+  return '_unknown_'
 }
 
 const Page = async ({
-  params: { chatSessionId },
+  params: { threadId },
 }: {
-  params: { chatSessionId: string }
+  params: { threadId: string }
 }) => {
   const user = await authenticateUser()
 
-  const data = await getAssistantPageData({ chatSessionId, userId: user.id })
+  const data = await getAssistantPageData({ threadId, userId: user.id })
 
-  if (!data.chatSession) {
+  if (!data.chatThread) {
     notFound()
     return
   }
 
   const configuration = mergeWithDefaultAssistantConfiguration(
-    data.chatSession.configuration,
+    data.chatThread.configuration,
   )
 
   return (
     <div className="fr-px-6v">
       <AdministrationTitle icon="fr-icon-chat-2-line">
-        Chat session {chatSessionId} - Debug
+        Chat session {threadId} - Debug
       </AdministrationTitle>
       <Accordion
         label={`Paramètres utilisés : ${configuration.title}`}
@@ -106,7 +110,7 @@ const Page = async ({
           </div>
         </div>
       </Accordion>
-      {data.uiMessages?.map((message) => (
+      {data.messages?.map((message) => (
         <Fragment key={message.id}>
           <div className="fr-grid-row fr-grid-row--gutters">
             <div className="fr-col-12 fr-col-lg-6">
@@ -137,7 +141,7 @@ const Page = async ({
                     part.type === 'tool-invocation' ? part : null,
                   )
                   .filter(onlyDefinedAndNotNull)
-                  .map((toolInvocation) => {
+                  .map(({ toolInvocation }) => {
                     return (
                       <div
                         className="fr-p-4v fr-pb-0 fr-background-alt--brown-caramel fr-border-radius--8"

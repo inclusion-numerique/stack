@@ -1,6 +1,6 @@
 import { chatStore } from '@app/web/assistant/chatStore'
-import type { AssistantPageDataChatSessionHistoryItem } from '@app/web/assistant/getAssistantPageData'
-import type { ChatSessionData } from '@app/web/assistant/getChatSession'
+import type { AssistantPageDataChatThreadHistoryItem } from '@app/web/assistant/getAssistantPageData'
+import type { ChatThreadData } from '@app/web/assistant/getChatThread'
 import { replaceRouteWithoutRerender } from '@app/web/utils/replaceRouteWithoutRerender'
 import type { SnapshotFromStore } from '@xstate/store/dist/declarations/src/types'
 import { useSelector } from '@xstate/store/react'
@@ -20,26 +20,23 @@ chatStore.subscribe((snapshot) => {
 /**
  * ACTIONS
  */
-export const initialiseChatSession = ({
-  chatSession,
-  chatSessionHistory,
+export const initialiseChatThread = ({
+  chatThread,
+  chatThreadHistory,
 }: {
-  chatSession: ChatSessionData | null
+  chatThread: ChatThreadData | null
   // For history, null means empty, undefined means "do not reset"
-  chatSessionHistory:
-    | AssistantPageDataChatSessionHistoryItem[]
-    | null
-    | undefined
+  chatThreadHistory: AssistantPageDataChatThreadHistoryItem[] | null | undefined
 }) => {
-  if (chatSession?.id) {
-    replaceRouteWithoutRerender(`/assistant/chat/${chatSession.id}`)
+  if (chatThread?.id) {
+    replaceRouteWithoutRerender(`/assistant/chat/${chatThread.id}`)
   } else {
     replaceRouteWithoutRerender(`/assistant/chat`)
   }
   chatStore.send({
-    type: 'initializeChatSession',
-    chatSession,
-    chatSessionHistory,
+    type: 'initializeChatThread',
+    chatThread,
+    chatThreadHistory,
   })
 }
 
@@ -52,8 +49,8 @@ export const useChatContext = <T>(
   compare?: (a: T | undefined, b: T) => boolean,
 ) => useSelector(chatStore, ({ context }) => selector(context), compare)
 
-export const useChatSessionHistory = () =>
-  useChatContext(({ chatSessionHistory }) => chatSessionHistory)
+export const useChatThreadHistory = () =>
+  useChatContext(({ chatThreadHistory }) => chatThreadHistory)
 
-export const useIsChatSessionEmpty = () =>
-  useChatContext((context) => !context.chatSession)
+export const useIsChatThreadEmpty = () =>
+  useChatContext((context) => !context.chatThread)

@@ -2,9 +2,9 @@ import { getCurrentAssistantConfigurationForUser } from '@app/web/assistant/conf
 import { prismaClient } from '@app/web/prismaClient'
 import { ChatCompletionMessageToolCall } from 'openai/src/resources/chat/completions'
 
-export const getChatSession = async (chatSessionId: string) => {
-  const chatSession = await prismaClient.assistantChatSession.findUnique({
-    where: { id: chatSessionId, deleted: null },
+export const getChatThread = async (threadId: string) => {
+  const chatThread = await prismaClient.assistantChatThread.findUnique({
+    where: { id: threadId, deleted: null },
     include: {
       messages: {
         orderBy: { created: 'asc' },
@@ -15,17 +15,17 @@ export const getChatSession = async (chatSessionId: string) => {
 
   // TODO add logic stuff to have better representation ?
 
-  return chatSession
+  return chatThread
 }
 
-export const getOrCreateChatSession = async ({
-  chatSessionId,
+export const getOrCreateChatThread = async ({
+  threadId,
   user,
 }: {
-  chatSessionId: string
+  threadId: string
   user: { id: string }
 }) => {
-  const existing = await getChatSession(chatSessionId)
+  const existing = await getChatThread(threadId)
   if (existing) {
     return existing
   }
@@ -34,9 +34,9 @@ export const getOrCreateChatSession = async ({
     userId: user.id,
   })
 
-  return await prismaClient.assistantChatSession.create({
+  return await prismaClient.assistantChatThread.create({
     data: {
-      id: chatSessionId,
+      id: threadId,
       createdBy: { connect: { id: user.id } },
       context: '',
       configuration: {
@@ -57,22 +57,22 @@ export const getOrCreateChatSession = async ({
   })
 }
 
-export type ChatSessionData = Exclude<
-  Awaited<ReturnType<typeof getChatSession>>,
+export type ChatThreadData = Exclude<
+  Awaited<ReturnType<typeof getChatThread>>,
   null
 >
 
-export type ChatSessionMessage = ChatSessionData['messages'][number]
+export type ChatThreadMessage = ChatThreadData['messages'][number]
 
 export type ChatCompletionMessageWithToolCalls = Omit<
-  ChatSessionMessage,
+  ChatThreadMessage,
   'toolCalls'
 > & {
   toolCalls: ChatCompletionMessageToolCall[]
 }
 
-export const getUserChatSessions = async (userId: string) => {
-  const chatSessions = await prismaClient.assistantChatSession.findMany({
+export const getUserChatThreads = async (userId: string) => {
+  const chatThreads = await prismaClient.assistantChatThread.findMany({
     where: {
       createdById: userId,
       deleted: null,
@@ -93,9 +93,7 @@ export const getUserChatSessions = async (userId: string) => {
     },
   })
 
-  return chatSessions
+  return chatThreads
 }
 
-export type UserChatSessionsList = Awaited<
-  ReturnType<typeof getUserChatSessions>
->
+export type UserChatThreadsList = Awaited<ReturnType<typeof getUserChatThreads>>

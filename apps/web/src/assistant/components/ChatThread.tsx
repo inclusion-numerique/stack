@@ -6,28 +6,20 @@ import { createToast } from '@app/ui/toast/createToast'
 import ChatCompletionErrorMessage from '@app/web/assistant/components/ChatCompletionErrorMessage'
 import ChatMessagesList from '@app/web/assistant/components/ChatMessagesList'
 import ChatUserInput from '@app/web/assistant/components/ChatUserInput'
-import { useAssistantChatPersistence } from '@app/web/assistant/hooks/useAssistantChatPersistence'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { Message } from 'ai'
 import React, { useRef, type FormEventHandler, useEffect } from 'react'
 import { v4 } from 'uuid'
-import styles from './ChatSession.module.css'
+import styles from './ChatThread.module.css'
 
-const ChatSession = ({
+const ChatThread = ({
   initialMessages,
-  chatSessionId,
+  threadId,
 }: {
   initialMessages: Message[]
-  chatSessionId: string
+  threadId: string
 }) => {
   const messagesContainerRef = useRef<HTMLDivElement>(null)
-
-  const { persistMessages } = useAssistantChatPersistence({
-    initialMessages,
-    chatSessionId,
-  })
-
-  const messagesRef = useRef(initialMessages ?? [])
 
   const {
     append,
@@ -39,7 +31,7 @@ const ChatSession = ({
     status,
     stop,
   } = useChat({
-    id: chatSessionId,
+    id: threadId,
     api: '/api/assistant/chat',
     initialMessages: initialMessages ?? undefined,
     maxSteps: 1,
@@ -58,17 +50,9 @@ const ChatSession = ({
       id,
       data: requestData,
     }),
-    onFinish: (message, { usage, finishReason }) => {
-      const allMessages = [...messagesRef.current, message]
-
-      persistMessages({ messages: allMessages })
-      console.log('FRONTEND FINISH', message)
-      console.log('FRONTEND FINISH MESSAGES', messages)
-      console.log('FINISH MESSAGES REF', messagesRef.current)
-      console.log('Finish details', { usage, finishReason })
-
+    onFinish: (message, { finishReason }) => {
       // We want to retrigger the chat if the last message from the assistant is a tool result
-      const lastMessagePart = message.parts.at(-1)
+      const lastMessagePart = message.parts?.at(-1)
       const shouldRetriggerChat =
         !!lastMessagePart &&
         finishReason === 'tool-calls' &&
@@ -89,10 +73,6 @@ const ChatSession = ({
       }
     },
   })
-
-  if (messagesRef.current.length !== messages.length) {
-    messagesRef.current = messages
-  }
 
   const onSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault()
@@ -131,4 +111,4 @@ const ChatSession = ({
   )
 }
 
-export default withTrpc(ChatSession)
+export default withTrpc(ChatThread)

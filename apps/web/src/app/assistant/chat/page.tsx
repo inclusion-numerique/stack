@@ -12,7 +12,7 @@ export const generateMetadata = (): Metadata => ({
 
 /**
  * Displays the chat page without an existing chat session, it will be created on the first user message
- * and the user will be redirected to the chat session page with the chatSessionId
+ * and the user will be redirected to the chat session page with the threadId
  */
 const Page = async () => {
   redirect(`/assistant/chat/${v4()}`)

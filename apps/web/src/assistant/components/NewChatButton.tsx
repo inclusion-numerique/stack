@@ -1,22 +1,22 @@
 'use client'
 
 import {
-  initialiseChatSession,
-  useIsChatSessionEmpty,
+  initialiseChatThread,
+  useIsChatThreadEmpty,
 } from '@app/web/assistant/hooks/useAssistantChatController'
 import Button from '@codegouvfr/react-dsfr/Button'
 
 const NewChatButton = () => {
-  const isChatSessionEmpty = useIsChatSessionEmpty()
+  const isChatThreadEmpty = useIsChatThreadEmpty()
 
   const onNewChat = () => {
     // Do not create a new chat if current one is new/empty
-    if (isChatSessionEmpty) {
+    if (isChatThreadEmpty) {
       return
     }
-    initialiseChatSession({
-      chatSession: null,
-      chatSessionHistory: undefined,
+    initialiseChatThread({
+      chatThread: null,
+      chatThreadHistory: undefined,
     })
   }
 

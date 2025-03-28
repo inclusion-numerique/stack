@@ -1,5 +1,7 @@
-import type { Message, UIMessage } from 'ai'
-import type { Prisma, AssistantChatMessage } from '@prisma/client'
+import type { JSONValue } from '@ai-sdk/provider'
+import type { AssistantChatMessage, Prisma } from '@prisma/client'
+import type { InputJsonValue } from '@prisma/client/runtime/library'
+import type { Attachment, Message, UIMessage } from 'ai'
 
 export const chatMessageToAiSdkMessage = ({
   id,
@@ -7,17 +9,20 @@ export const chatMessageToAiSdkMessage = ({
   created,
   annotations,
   attachments,
-  content,
   parts,
 }: AssistantChatMessage): UIMessage => {
   return {
     id,
     createdAt: created,
     parts: (parts ?? []) as unknown[] as UIMessage['parts'],
-    role,
-    annotations: annotations.length > 0 ? annotations : undefined,
-    content: content || undefined,
-    experimental_attachments: attachments.length > 0 ? attachments : undefined,
+    role: role as UIMessage['role'],
+    content: '', // TODO is it still needed ?
+    annotations:
+      annotations.length > 0 ? (annotations as JSONValue[]) : undefined,
+    experimental_attachments:
+      attachments.length > 0
+        ? (attachments as unknown[] as Attachment[])
+        : undefined,
   }
 }
 
@@ -29,7 +34,9 @@ export const aiSdkMessageToChatMessage = ({
   content,
   id,
   experimental_attachments,
-}: Message): Prisma.AssistantChatMessageCreateManyInput & { id: string } => {
+}: Message): Omit<Prisma.AssistantChatMessageCreateManyInput, 'threadId'> & {
+  id: string
+} => {
   // We don't want to use the content field, but only parts
   const processedParts =
     !parts && content
@@ -46,8 +53,7 @@ export const aiSdkMessageToChatMessage = ({
     created: createdAt,
     parts: processedParts,
     role,
-    annotations,
-    content,
-    attachments: experimental_attachments,
+    annotations: annotations as InputJsonValue[],
+    attachments: experimental_attachments as unknown[] as InputJsonValue[],
   }
 }

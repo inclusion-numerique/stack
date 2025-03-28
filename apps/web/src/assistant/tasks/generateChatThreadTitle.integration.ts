@@ -1,11 +1,11 @@
-import { generateChatSessionTitle } from '@app/web/assistant/tasks/generateChatSessionTitle'
+import { generateChatThreadTitle } from '@app/web/assistant/tasks/generateChatThreadTitle'
 
-describe('generateChatSessionTitle', () => {
+describe('generateChatThreadTitle', () => {
   it('should generate a title', async () => {
-    const title = await generateChatSessionTitle({
+    const title = await generateChatThreadTitle({
       messages: [
         {
-          role: 'User',
+          role: 'user',
           parts: [
             {
               type: 'text',
@@ -14,7 +14,7 @@ describe('generateChatSessionTitle', () => {
           ],
         },
         {
-          role: 'Assistant',
+          role: 'assistant',
           parts: [
             {
               type: 'text',

@@ -5,7 +5,7 @@ import { toTitleCase } from '@app/web/utils/toTitleCase'
 import { UIMessage } from 'ai'
 import classNames from 'classnames'
 import type { CSSProperties } from 'react'
-import styles from './ChatSession.module.css'
+import styles from './ChatThread.module.css'
 
 const ChatMessage = ({
   message: { id, parts, role },

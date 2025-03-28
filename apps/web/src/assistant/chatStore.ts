@@ -1,40 +1,40 @@
-import { AssistantPageDataChatSessionHistoryItem } from '@app/web/assistant/getAssistantPageData'
+import { AssistantPageDataChatThreadHistoryItem } from '@app/web/assistant/getAssistantPageData'
 import {
   ChatCompletionMessageWithToolCalls,
-  ChatSessionData,
-} from '@app/web/assistant/getChatSession'
+  ChatThreadData,
+} from '@app/web/assistant/getChatThread'
 import { createStore } from '@xstate/store'
 
 // Create a store
 export const chatStore = createStore({
   context: {
     initialized: false,
-    chatSessionHistory: [] as AssistantPageDataChatSessionHistoryItem[],
-    chatSession: null as ChatSessionData | null,
-    chatSessionId: null as string | null,
+    chatThreadHistory: [] as AssistantPageDataChatThreadHistoryItem[],
+    chatThread: null as ChatThreadData | null,
+    threadId: null as string | null,
     messages: [] as ChatCompletionMessageWithToolCalls[],
   },
   on: {
-    initializeChatSession: (
+    initializeChatThread: (
       context,
       event: {
-        chatSession: ChatSessionData | null
+        chatThread: ChatThreadData | null
         // null means empty, undefined means "do not change"
-        chatSessionHistory:
-          | AssistantPageDataChatSessionHistoryItem[]
+        chatThreadHistory:
+          | AssistantPageDataChatThreadHistoryItem[]
           | null
           | undefined
       },
     ) => ({
       initialized: true,
-      chatSessionHistory:
-        event.chatSessionHistory === undefined
-          ? context.chatSessionHistory
-          : (event.chatSessionHistory ?? []),
-      chatSession: event.chatSession,
-      chatSessionId: event.chatSession?.id,
+      chatThreadHistory:
+        event.chatThreadHistory === undefined
+          ? context.chatThreadHistory
+          : (event.chatThreadHistory ?? []),
+      chatThread: event.chatThread,
+      threadId: event.chatThread?.id,
       messages:
-        (event.chatSession?.messages as
+        (event.chatThread?.messages as
           | ChatCompletionMessageWithToolCalls[]
           | undefined) ?? [],
       currentToolCalls: [],

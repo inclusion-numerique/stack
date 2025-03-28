@@ -3,11 +3,10 @@ import { AssistantChatAiSdkRequestDataValidation } from '@app/web/app/api/assist
 import { aiSdkAlbertProvider } from '@app/web/assistant/aiSdkAlbertProvider'
 import { aiSdkOpenaiProvider } from '@app/web/assistant/aiSdkOpenaiProvider'
 import { aiSdkScalewayProvider } from '@app/web/assistant/aiSdkScalewayProvider'
-import {
-  assistantMessageToAiSdkMessage,
-  assistantResponseMessageToPrismaModel,
-} from '@app/web/assistant/assistantMessageToAiSdkMessage'
-import { getOrCreateChatSession } from '@app/web/assistant/getChatSession'
+
+import { chatMessageToAiSdkMessage } from '@app/web/assistant/chatMessageToAiSdkMessage'
+import { getOrCreateChatThread } from '@app/web/assistant/getChatThread'
+import { persistMessages } from '@app/web/assistant/persistMessages'
 import { mediationAssistantSystemMessage } from '@app/web/assistant/systemMessages'
 import { agenticSearchTool } from '@app/web/assistant/tools/agenticSearchTool'
 import { agenticSearchToolName } from '@app/web/assistant/tools/agenticSearchToolConfig'
@@ -19,11 +18,11 @@ import { repondreTool } from '@app/web/assistant/tools/repondreTool'
 import { repondreToolName } from '@app/web/assistant/tools/repondreToolConfig'
 import { getSessionTokenFromNextRequestCookies } from '@app/web/auth/getSessionTokenFromCookies'
 import { getSessionUserFromSessionToken } from '@app/web/auth/getSessionUserFromSessionToken'
-import { prismaClient } from '@app/web/prismaClient'
 import {
-  appendResponseMessages,
   type CoreToolMessage,
   type CoreUserMessage,
+  type UIMessage,
+  appendResponseMessages,
   streamText,
 } from 'ai'
 import { type NextRequest, NextResponse } from 'next/server'
@@ -48,9 +47,6 @@ const notFoundResponse = () =>
     status: 404,
   })
 
-// TODO Enable this if needed ?
-const backendPersistence = false
-
 export async function POST(request: NextRequest) {
   const sessionToken = getSessionTokenFromNextRequestCookies(request.cookies)
   const user = await getSessionUserFromSessionToken(sessionToken)
@@ -74,7 +70,7 @@ export async function POST(request: NextRequest) {
     return invalidResponse(JSON.stringify(requestData.error, null, 2))
   }
 
-  const { id: chatSessionId, message: rawInputMessage } = requestData.data
+  const { id: threadId, message: rawInputMessage } = requestData.data
 
   const toolChoice = requestData.data?.data?.toolChoice ?? 'auto'
 
@@ -83,27 +79,24 @@ export async function POST(request: NextRequest) {
     | CoreToolMessage
   ) & { id: string }
 
-  if (!chatSessionId) {
+  if (!threadId) {
     return invalidResponse('Chat session id is required')
   }
 
-  const chatSession = await getOrCreateChatSession({ chatSessionId, user })
+  const chatThread = await getOrCreateChatThread({ threadId, user })
 
-  if (!chatSession) {
+  if (!chatThread) {
     return notFoundResponse()
   }
 
-  const { configuration } = chatSession
+  const { configuration } = chatThread
 
   // biome-ignore lint/suspicious/noConsole: used until feature is in production
   console.log('INPUT MESSAGE', inputMessage)
 
-  // Create the full history of messages
+  // Full history of messages
   // with our system message and the session messages
-  const messages = [
-    // Session history
-    ...chatSession.messages.map(assistantMessageToAiSdkMessage),
-  ]
+  const messages = chatThread.messages.map(chatMessageToAiSdkMessage)
 
   // If the request message is not in the persisted messages list, we add it to the list
 
@@ -115,7 +108,14 @@ export async function POST(request: NextRequest) {
       id: inputMessage.id,
       role: inputMessage.role,
       content: inputMessage.content,
-    } as (CoreUserMessage | CoreToolMessage) & { id: string })
+      createdAt: new Date(),
+      parts: [
+        {
+          type: 'text',
+          text: inputMessage.content,
+        },
+      ],
+    } as UIMessage)
   }
 
   // biome-ignore lint/suspicious/noConsole: used until feature is in production
@@ -153,52 +153,19 @@ export async function POST(request: NextRequest) {
       console.log('STREAM ON STEP FINISH', JSON.stringify(result, null, 2))
     },
     onFinish: async (result) => {
-      console.log('ON FINISH RESPONSE', result.response.messages)
+      console.log('ON FINISH RESPONSE MESSAGES', result.response.messages)
 
-      console.log(
-        'APPENDED MESSAGES',
-        appendResponseMessages({
-          messages: [],
-          responseMessages: result.response.messages,
-        }),
-      )
-      console.log('ON FINISH MODEL', result.response.modelId)
+      const appendedMessages = appendResponseMessages({
+        messages,
+        responseMessages: result.response.messages,
+      })
 
-      // On finish argument only has the messages from the assistant
-      // biome-ignore lint/suspicious/noConsole: used until feature is in production
-      console.log(
-        'STREAM ON FINISH',
-        JSON.stringify(result.response.messages, null, 2),
-      )
-      const messagesToPersist = result.response.messages.map((message) =>
-        assistantResponseMessageToPrismaModel(message, {
-          chatSessionId: chatSession.id,
-        }),
-      )
+      console.log('APPENDED MESSAGES TO PERSIST', appendedMessages)
 
-      if (inputMessageIsNew) {
-        // add input message to the beginning of the list to persist
-        messagesToPersist.unshift(
-          assistantResponseMessageToPrismaModel(inputMessage, {
-            chatSessionId: chatSession.id,
-          }),
-        )
-      }
-      // biome-ignore lint/suspicious/noConsole: used until feature is in production
-      console.log(`MESSAGES TO PERSIST : ${messagesToPersist.length}`)
-      for (const message of messagesToPersist) {
-        // biome-ignore lint/suspicious/noConsole: used until feature is in production
-        console.log(message)
-      }
-
-      // biome-ignore lint/suspicious/noConsole: used until feature is in production
-      console.log('BACKEND MESSAGES TO PERSIST', messagesToPersist)
-      if (backendPersistence) {
-        const persistedMessages =
-          await prismaClient.assistantChatMessage.createMany({
-            data: messagesToPersist,
-          })
-      }
+      await persistMessages({
+        messages: appendedMessages,
+        threadId,
+      })
     },
   })
 

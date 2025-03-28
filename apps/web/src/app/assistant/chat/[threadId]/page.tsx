@@ -12,15 +12,15 @@ export const generateMetadata = (): Metadata => ({
 })
 
 const Page = async ({
-  params: { chatSessionId },
+  params: { threadId },
 }: {
-  params: { chatSessionId: string }
+  params: { threadId: string }
 }) => {
   const user = await authenticateUser()
 
-  const data = await getAssistantPageData({ chatSessionId, userId: user.id })
+  const data = await getAssistantPageData({ threadId, userId: user.id })
 
-  return <AssistantPageContent data={data} chatSessionId={chatSessionId} />
+  return <AssistantPageContent data={data} threadId={threadId} />
 }
 
 export default Page
