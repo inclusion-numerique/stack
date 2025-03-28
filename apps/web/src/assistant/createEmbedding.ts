@@ -4,8 +4,9 @@ import { embed } from 'ai'
 import pThrottle from 'p-throttle'
 
 const createEmbeddingThrottle = pThrottle({
-  limit: 95,
-  interval: 60_000,
+  // 1000 per minute for albert
+  limit: 15,
+  interval: 1000,
 })
 
 const model = aiSdkAlbertEmbeddingModel

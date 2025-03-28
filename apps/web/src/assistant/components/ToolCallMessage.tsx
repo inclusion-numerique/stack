@@ -1,4 +1,7 @@
 import styles from '@app/web/assistant/components/ChatThread.module.css'
+import { agenticSearchToolName } from '@app/web/assistant/tools/agenticSearchToolConfig'
+import { centreAideRagToolName } from '@app/web/assistant/tools/centreAideRagToolConfig'
+import { meteoToolName } from '@app/web/assistant/tools/meteoToolConfig'
 import { Spinner } from '@app/web/ui/Spinner'
 import type { ToolInvocation } from 'ai'
 import classNames from 'classnames'
@@ -6,13 +9,9 @@ import classNames from 'classnames'
 const defaultLoadingMessage = 'Je recherche plus d’informations'
 
 const toolsLoadingMessages = {
-  general_web_search:
-    'Je recherche sur internet pour avoir plus d’informations',
-  administration_web_search:
-    'Je recherche sur les sites officiels pour avoir plus d’informations',
-  centre_aide_rag:
-    'Je recherche dans le centre d’aide pour répondre à votre question',
-  les_bases_rag: 'Je recherche sur les bases du numérique d’intérêt général',
+  [meteoToolName]: 'Je consulte les données météorologiques',
+  [agenticSearchToolName]: 'Je recherche sur internet',
+  [centreAideRagToolName]: 'Je recherche dans le centre d’aide',
 }
 
 const ToolCallMessage = ({

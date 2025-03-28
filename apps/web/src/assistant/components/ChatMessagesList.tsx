@@ -18,9 +18,15 @@ const ChatMessagesList = ({
       </div>
     )
 
+  // There is some duplicated messages sometimes, we remove them
+  // TODO find out why ? Bug from ai-sdk-react ?
+  const messagesWithoutDuplicates = [
+    ...new Map(messages.map((message) => [message.id, message])).values(),
+  ]
+
   return (
     <>
-      {messages.map((message, messageIndex) => (
+      {messagesWithoutDuplicates.map((message, messageIndex) => (
         <ChatMessage
           key={message.id}
           message={message}

@@ -1,7 +1,7 @@
-import { AssistantPageDataChatThreadHistoryItem } from '@app/web/assistant/getAssistantPageData'
-import {
+import type {
   ChatCompletionMessageWithToolCalls,
   ChatThreadData,
+  UserChatThreadsList,
 } from '@app/web/assistant/getChatThread'
 import { createStore } from '@xstate/store'
 
@@ -9,21 +9,18 @@ import { createStore } from '@xstate/store'
 export const chatStore = createStore({
   context: {
     initialized: false,
-    chatThreadHistory: [] as AssistantPageDataChatThreadHistoryItem[],
+    chatThreadHistory: [] as UserChatThreadsList,
     chatThread: null as ChatThreadData | null,
     threadId: null as string | null,
     messages: [] as ChatCompletionMessageWithToolCalls[],
   },
   on: {
-    initializeChatThread: (
+    initializeChatUi: (
       context,
       event: {
         chatThread: ChatThreadData | null
         // null means empty, undefined means "do not change"
-        chatThreadHistory:
-          | AssistantPageDataChatThreadHistoryItem[]
-          | null
-          | undefined
+        chatThreadHistory: UserChatThreadsList | null | undefined
       },
     ) => ({
       initialized: true,

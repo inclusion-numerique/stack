@@ -1,7 +1,9 @@
 import { chatStore } from '@app/web/assistant/chatStore'
 import type { AssistantPageDataChatThreadHistoryItem } from '@app/web/assistant/getAssistantPageData'
-import type { ChatThreadData } from '@app/web/assistant/getChatThread'
-import { replaceRouteWithoutRerender } from '@app/web/utils/replaceRouteWithoutRerender'
+import {
+  ChatThreadData,
+  UserChatThreadsList,
+} from '@app/web/assistant/getChatThread'
 import type { SnapshotFromStore } from '@xstate/store/dist/declarations/src/types'
 import { useSelector } from '@xstate/store/react'
 
@@ -20,7 +22,7 @@ chatStore.subscribe((snapshot) => {
 /**
  * ACTIONS
  */
-export const initialiseChatThread = ({
+export const initialiseChatUi = ({
   chatThread,
   chatThreadHistory,
 }: {
@@ -28,13 +30,8 @@ export const initialiseChatThread = ({
   // For history, null means empty, undefined means "do not reset"
   chatThreadHistory: AssistantPageDataChatThreadHistoryItem[] | null | undefined
 }) => {
-  if (chatThread?.id) {
-    replaceRouteWithoutRerender(`/assistant/chat/${chatThread.id}`)
-  } else {
-    replaceRouteWithoutRerender(`/assistant/chat`)
-  }
   chatStore.send({
-    type: 'initializeChatThread',
+    type: 'initializeChatUi',
     chatThread,
     chatThreadHistory,
   })
@@ -49,8 +46,12 @@ export const useChatContext = <T>(
   compare?: (a: T | undefined, b: T) => boolean,
 ) => useSelector(chatStore, ({ context }) => selector(context), compare)
 
-export const useChatThreadHistory = () =>
-  useChatContext(({ chatThreadHistory }) => chatThreadHistory)
+export const useChatThreadHistory = (
+  initialChatThreadHistory?: UserChatThreadsList,
+) =>
+  useChatContext(({ chatThreadHistory, initialized }) =>
+    initialized ? chatThreadHistory : (initialChatThreadHistory ?? []),
+  )
 
 export const useIsChatThreadEmpty = () =>
   useChatContext((context) => !context.chatThread)

@@ -101,8 +101,8 @@ const summarizeWebSearchResults = ({
 
 // Should the tool return json or markdown?
 export type AgenticReturnFormat = 'json' | 'yaml' | 'markdown'
-// const returnFormat: AgenticReturnFormat = 'yaml' as AgenticReturnFormat
-const returnFormat: AgenticReturnFormat = 'json' as AgenticReturnFormat
+const returnFormat: AgenticReturnFormat = 'yaml' as AgenticReturnFormat
+// const returnFormat: AgenticReturnFormat = 'json' as AgenticReturnFormat
 
 export type AgenticSearchToolYamlResult =
   | {

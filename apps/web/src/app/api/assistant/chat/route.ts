@@ -153,14 +153,10 @@ export async function POST(request: NextRequest) {
       console.log('STREAM ON STEP FINISH', JSON.stringify(result, null, 2))
     },
     onFinish: async (result) => {
-      console.log('ON FINISH RESPONSE MESSAGES', result.response.messages)
-
       const appendedMessages = appendResponseMessages({
         messages,
         responseMessages: result.response.messages,
       })
-
-      console.log('APPENDED MESSAGES TO PERSIST', appendedMessages)
 
       await persistMessages({
         messages: appendedMessages,

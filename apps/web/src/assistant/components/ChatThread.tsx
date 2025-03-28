@@ -59,10 +59,6 @@ const ChatThread = ({
         lastMessagePart.type === 'tool-invocation' &&
         lastMessagePart.toolInvocation.state === 'result'
 
-      console.log('FINISH SHOULD RELAUNCH WITHOUT TOOLS ?', {
-        lastMessagePart,
-        shouldRetriggerChat,
-      })
       if (shouldRetriggerChat) {
         // if we rettrigger the chat, we should disable tool execution
         append(message, {

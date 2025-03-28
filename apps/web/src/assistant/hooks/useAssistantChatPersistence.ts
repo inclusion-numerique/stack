@@ -19,8 +19,6 @@ export const useAssistantChatPersistence = ({
     }: {
       messages: Message[]
     }) => {
-      console.log('PERSIST MESSAGES CALLED', messageWithPossibleDuplicates)
-
       const messages = [
         ...new Map(
           // We only keep the latest message for each id
@@ -28,12 +26,9 @@ export const useAssistantChatPersistence = ({
         ).values(),
       ]
 
-      console.log('PERSIST DEDUPLICATED', messages)
-
       const notPersistedMessages = messages.filter(
         (message) => !persistedMessageIds.current.has(uniqueMessageId(message)),
       )
-      console.log('NOT PERSISTED', notPersistedMessages)
 
       if (notPersistedMessages.length === 0) {
         return
