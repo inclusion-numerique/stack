@@ -4,7 +4,7 @@ import LogoCoop from '@app/web/components/LogoCoop'
 import { toTitleCase } from '@app/web/utils/toTitleCase'
 import { UIMessage } from 'ai'
 import classNames from 'classnames'
-import type { CSSProperties } from 'react'
+import { CSSProperties, memo } from 'react'
 import styles from './ChatThread.module.css'
 
 const ChatMessage = ({
@@ -14,18 +14,17 @@ const ChatMessage = ({
   isStreaming,
   debug,
 }: {
-  message: UIMessage
+  message: UIMessage & { revisionId?: string }
   style?: CSSProperties
   previousMessageRole?: UIMessage['role']
   isStreaming?: boolean
   debug?: boolean
 }) => {
-  // Do not render non "interactive" messages
-  if (role !== 'assistant' && role !== 'data' && role !== 'user') {
+  // Do not render non "interactive" messages (should never happen are system messages are not rendered)
+  if (role !== 'assistant' && role !== 'user') {
     return null
   }
 
-  // TODO what with the roles for tool ??
   const previousMessageIsSameRole = previousMessageRole === role
 
   const marginTop = previousMessageIsSameRole ? 'fr-mt-0' : 'fr-mt-10v'
@@ -70,4 +69,21 @@ const ChatMessage = ({
   )
 }
 
-export default ChatMessage
+export type ChatMessageProps = Parameters<typeof ChatMessage>[0]
+
+const areEqual = (prevProps: ChatMessageProps, nextProps: ChatMessageProps) => {
+  // Revision is added to UIMessage for streaming response
+  if (prevProps.message.id === nextProps.message.id) {
+    return prevProps.message.revisionId === nextProps.message.revisionId
+  }
+
+  // Basic identity comparison
+  return (
+    prevProps.previousMessageRole === nextProps.previousMessageRole &&
+    prevProps.isStreaming === nextProps.isStreaming &&
+    prevProps.debug === nextProps.debug &&
+    prevProps.style === nextProps.style
+  )
+}
+
+export default memo(ChatMessage, areEqual)

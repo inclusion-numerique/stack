@@ -3,7 +3,7 @@ import { AssistantChatAiSdkRequestDataValidation } from '@app/web/app/api/assist
 import { aiSdkAlbertProvider } from '@app/web/assistant/aiSdkAlbertProvider'
 import { aiSdkOpenaiProvider } from '@app/web/assistant/aiSdkOpenaiProvider'
 import { aiSdkScalewayProvider } from '@app/web/assistant/aiSdkScalewayProvider'
-
+import { canUseAssistant } from '@app/web/assistant/canUseAssistant'
 import { chatMessageToAiSdkMessage } from '@app/web/assistant/chatMessageToAiSdkMessage'
 import { getOrCreateChatThread } from '@app/web/assistant/getChatThread'
 import { persistMessages } from '@app/web/assistant/persistMessages'
@@ -18,6 +18,7 @@ import { repondreTool } from '@app/web/assistant/tools/repondreTool'
 import { repondreToolName } from '@app/web/assistant/tools/repondreToolConfig'
 import { getSessionTokenFromNextRequestCookies } from '@app/web/auth/getSessionTokenFromCookies'
 import { getSessionUserFromSessionToken } from '@app/web/auth/getSessionUserFromSessionToken'
+import * as Sentry from '@sentry/nextjs'
 import {
   type CoreToolMessage,
   type CoreUserMessage,
@@ -51,8 +52,7 @@ export async function POST(request: NextRequest) {
   const sessionToken = getSessionTokenFromNextRequestCookies(request.cookies)
   const user = await getSessionUserFromSessionToken(sessionToken)
 
-  // For now, only allow admin to access the assistant
-  if (user?.role !== 'Admin') {
+  if (!user || !canUseAssistant(user)) {
     return new Response('Unauthorized', {
       status: 401,
     })
@@ -96,10 +96,11 @@ export async function POST(request: NextRequest) {
 
   // Full history of messages
   // with our system message and the session messages
-  const messages = chatThread.messages.map(chatMessageToAiSdkMessage)
+  const initialMessages = chatThread.messages.map(chatMessageToAiSdkMessage)
+  // Messages used to be sent to the chat stream
+  const messages = [...initialMessages]
 
   // If the request message is not in the persisted messages list, we add it to the list
-
   const inputMessageIsNew =
     inputMessage && !messages.find((message) => message.id === inputMessage.id)
 
@@ -145,12 +146,8 @@ export async function POST(request: NextRequest) {
     maxSteps: 1,
     onError: (error) => {
       // biome-ignore lint/suspicious/noConsole: used until feature is in production
-      console.error('STREAM ON ERROR', error)
-    },
-    // maxRetries: 3,
-    onStepFinish: (result) => {
-      //biome-ignore lint/suspicious/noConsole: used until feature is in production
-      console.log('STREAM ON STEP FINISH', JSON.stringify(result, null, 2))
+      console.error('CHAT STREAM ERROR', error)
+      Sentry.captureException(error)
     },
     onFinish: async (result) => {
       const appendedMessages = appendResponseMessages({
@@ -159,6 +156,7 @@ export async function POST(request: NextRequest) {
       })
 
       await persistMessages({
+        initialMessages,
         messages: appendedMessages,
         threadId,
       })

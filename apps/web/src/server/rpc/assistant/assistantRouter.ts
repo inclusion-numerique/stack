@@ -1,3 +1,4 @@
+import { canUseAssistant } from '@app/web/assistant/canUseAssistant'
 import { AssistantConfigurationValidation } from '@app/web/assistant/configuration/AssistantConfigurationValidation'
 import { saveAssistantConfiguration } from '@app/web/assistant/configuration/assistantConfiguration'
 import { generateChatThreadTitle } from '@app/web/assistant/tasks/generateChatThreadTitle'
@@ -98,7 +99,9 @@ export const assistantRouter = router({
   updateAssistantConfiguration: protectedProcedure
     .input(AssistantConfigurationValidation)
     .mutation(async ({ input, ctx: { user } }) => {
-      if (user.role !== 'Admin') throw forbiddenError('User is not an admin')
+      if (!canUseAssistant(user)) {
+        throw forbiddenError('User is not an admin')
+      }
 
       await saveAssistantConfiguration({
         userId: user.id,

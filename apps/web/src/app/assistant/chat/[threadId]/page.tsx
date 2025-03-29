@@ -20,7 +20,7 @@ const Page = async ({
 
   const data = await getAssistantPageData({ threadId, userId: user.id })
 
-  return <AssistantPageContent data={data} threadId={threadId} />
+  return <AssistantPageContent data={data} threadId={threadId} user={user} />
 }
 
 export default Page

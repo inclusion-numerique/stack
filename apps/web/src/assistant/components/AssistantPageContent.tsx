@@ -1,8 +1,10 @@
 'use client'
 
+import { canEditAssistantConfiguration } from '@app/web/assistant/canUseAssistant'
 import ChatThread from '@app/web/assistant/components/ChatThread'
 import ChatThreadHistorySideMenu from '@app/web/assistant/components/ChatThreadHistorySideMenu'
 import type { AssistantPageData } from '@app/web/assistant/getAssistantPageData'
+import { SessionUser } from '@app/web/auth/sessionUser'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import Button from '@codegouvfr/react-dsfr/Button'
 import classNames from 'classnames'
@@ -11,9 +13,11 @@ import styles from './ChatThread.module.css'
 const AssistantPageContent = ({
   data: { chatThread, chatThreadHistory, messages },
   threadId,
+  user,
 }: {
   data: AssistantPageData
   threadId: string
+  user: SessionUser
 }) => (
   <div
     className={classNames(
@@ -32,13 +36,15 @@ const AssistantPageContent = ({
         Assistant
       </h1>
       <div className="fr-btns-group fr-btns-group--sm fr-btns-group--icon-left">
-        <Button
-          linkProps={{ href: '/assistant/parametres' }}
-          iconId="fr-icon-settings-5-line"
-          priority="tertiary"
-        >
-          Paramètres
-        </Button>
+        {canEditAssistantConfiguration(user) ? (
+          <Button
+            linkProps={{ href: '/assistant/parametres' }}
+            iconId="fr-icon-settings-5-line"
+            priority="tertiary"
+          >
+            Paramètres
+          </Button>
+        ) : null}
         <Button
           iconId="fr-icon-add-line"
           className="fr-mb-2v"

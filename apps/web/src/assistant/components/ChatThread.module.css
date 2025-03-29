@@ -139,6 +139,26 @@
     animation: blinking-cursor 1s infinite !important;
   }
 
+  h1 {
+    font-size: 1.5rem !important;
+    line-height: 1.75rem;
+  }
+
+  h2 {
+    font-size: 1.375rem !important;
+    line-height: 1.75rem;
+  }
+
+  h3 {
+    font-size: 1.25rem !important;
+    line-height: 1.5rem;
+  }
+
+  h4 {
+    font-size: 1.125rem !important;
+    line-height: 1.5rem;
+  }
+
   p:not(:last-child) {
     margin-bottom: 12px !important;
   }

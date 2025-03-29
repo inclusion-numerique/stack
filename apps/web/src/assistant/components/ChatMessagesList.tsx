@@ -23,6 +23,22 @@ const ChatMessagesList = ({
   const messagesWithoutDuplicates = [
     ...new Map(messages.map((message) => [message.id, message])).values(),
   ]
+    .map((message) => {
+      // we remove the "repondre" tool invocations from message parts
+      if (message.role === 'assistant') {
+        return {
+          ...message,
+          parts: message.parts.filter(
+            (part) =>
+              part.type !== 'tool-invocation' ||
+              part.toolInvocation.toolName !== 'repondre',
+          ),
+        }
+      }
+
+      return message
+    })
+    .filter((message) => !!message.content || message.parts.length > 0)
 
   return (
     <>
