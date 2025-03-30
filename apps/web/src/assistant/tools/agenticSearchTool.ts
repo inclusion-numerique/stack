@@ -22,6 +22,8 @@ import type { ZodFunctionOptions } from '@app/web/assistant/tools/zodFunctionTyp
 import { stringify } from 'yaml'
 import { z } from 'zod'
 
+import { evaluateSource } from '@app/web/assistant/tasks/evaluateSource'
+import { preProcessHtmlForSummary } from '@app/web/assistant/tasks/preProcessHtmlForSummary'
 import { tool } from 'ai'
 
 const stringBooleanValidation = (description: string) =>
@@ -54,19 +56,24 @@ export const agenticSearchToolParameters = z.object({
   ),
 })
 
-const summarizeWebSearchResult = async ({
+const summarizeAndEvaluateWebSearchResult = async ({
   result,
   objectif,
 }: {
   result: BraveSearchResult
   objectif: string
-}) => {
+}): Promise<
+  BraveSearchResult & {
+    summary?: string | null
+    evaluation?: boolean | null
+  }
+> => {
   // Fetch HTML content from URL
   const response = await fetch(result.url)
   if (!response.ok) {
     // biome-ignore lint/suspicious/noConsole: used until feature is in production
     console.warn(`Failed to fetch ${result.url}: ${response.statusText}`)
-    return result
+    return { ...result, evaluation: null }
   }
 
   const html = await response.text().catch(() => null)
@@ -75,19 +82,27 @@ const summarizeWebSearchResult = async ({
     return result
   }
 
+  const preprocessedHtml = preProcessHtmlForSummary({ html })
+
   const { summary } = await summarizeWebPage({
     objectif,
-    url: result.url,
     html,
+    preprocessedHtml,
+  })
+
+  const { evaluation } = await evaluateSource({
+    objectif,
+    content: summary || preprocessedHtml,
   })
 
   return {
     ...result,
     summary,
+    evaluation,
   }
 }
 
-const summarizeWebSearchResults = ({
+const summarizeAndEvaluateWebSearchResults = ({
   objectif,
   results,
 }: {
@@ -95,8 +110,10 @@ const summarizeWebSearchResults = ({
   objectif: string
 }) =>
   Promise.all(
-    results.map((result) => summarizeWebSearchResult({ objectif, result })),
-  )
+    results.map((result) =>
+      summarizeAndEvaluateWebSearchResult({ objectif, result }),
+    ),
+  ).then((results) => results.filter((result) => result.evaluation !== false))
 
 // Should the tool return json or markdown?
 export type AgenticReturnFormat = 'json' | 'yaml' | 'markdown'
@@ -151,7 +168,7 @@ export const agenticSearchToolOptions = {
               q: query,
               count: 3,
             }).then((results) =>
-              summarizeWebSearchResults({ objectif, results }),
+              summarizeAndEvaluateWebSearchResults({ objectif, results }),
             )
           : null,
         sitesOfficiels
@@ -161,7 +178,7 @@ export const agenticSearchToolOptions = {
               goggles_id:
                 'https://gist.githubusercontent.com/Clrk/800bf69ac450d9fd07846c1dcb012d1f',
             }).then((results) =>
-              summarizeWebSearchResults({ objectif, results }),
+              summarizeAndEvaluateWebSearchResults({ objectif, results }),
             )
           : null,
         lesBases

@@ -8,19 +8,24 @@ import { preProcessHtmlForSummary } from '@app/web/assistant/tasks/preProcessHtm
 const defaultModel = OpenAiClienChatModel.Llama3_1_8bInstruct
 
 export const summarizeWebPage = async ({
-  url,
   objectif,
   html,
   model,
+  preprocessedHtml,
 }: {
-  url: string
   html: string
   objectif: string
   model?: OpenAiClienChatModel
+  preprocessedHtml?: string
 }) => {
-  const preparedContent = preProcessHtmlForSummary({
-    html,
-  })
+  const preparedContent =
+    preprocessedHtml ??
+    preProcessHtmlForSummary({
+      html,
+    })
+
+  // Need to avoid too long input
+  const inputContent = preparedContent.slice(0, 15000)
 
   const completionMessages: OpenAiChatMessage[] = [
     {
@@ -29,10 +34,7 @@ export const summarizeWebPage = async ({
     },
     {
       role: 'user',
-      content: `Voici la page web à résumer :
-      ${url}
-      ===============
-      ${preparedContent}`,
+      content: inputContent,
     },
   ]
 
