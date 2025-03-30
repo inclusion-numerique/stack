@@ -1,5 +1,6 @@
 import ChatMessageTextPart from '@app/web/assistant/components/ChatMessageTextPart'
-import ChatMessageToolInvocationPart from '@app/web/assistant/components/ChatMessageToolInvocationPart'
+import ChatMessageToolInvocationPart from '@app/web/assistant/components/tools/ChatMessageToolInvocationPart'
+import { uiMessagesAreEqual } from '@app/web/assistant/uiMessagesAreEqual'
 import LogoCoop from '@app/web/components/LogoCoop'
 import { toTitleCase } from '@app/web/utils/toTitleCase'
 import { UIMessage } from 'ai'
@@ -73,8 +74,8 @@ export type ChatMessageProps = Parameters<typeof ChatMessage>[0]
 
 const areEqual = (prevProps: ChatMessageProps, nextProps: ChatMessageProps) => {
   // Revision is added to UIMessage for streaming response
-  if (prevProps.message.id === nextProps.message.id) {
-    return prevProps.message.revisionId === nextProps.message.revisionId
+  if (!uiMessagesAreEqual(prevProps.message, nextProps.message)) {
+    return false
   }
 
   // Basic identity comparison

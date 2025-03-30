@@ -1,9 +1,6 @@
 import fs from 'node:fs'
 import path from 'node:path'
-import {
-  DeploymentTargetOption,
-  configureDeploymentTarget,
-} from '@app/cli/deploymentTarget'
+import { DeploymentTargetOption, configureDeploymentTarget } from '@app/cli/deploymentTarget'
 import { output } from '@app/cli/output'
 import { varFile } from '@app/config/varDirectory'
 import { insertMarkdownRagChunks } from '@app/web/assistant/rag/insertMarkdownRagChunks'
@@ -69,6 +66,20 @@ const absoluteNotionUrlFromFilename = (filename: string): string => {
   return `${baseUrl}${slugForUrl}`
 }
 
+const getTitleFromMarkdown = (markdown: string) => {
+  // on recherche la première ligne qui commence par un ou plusieurs '#' suivi d'un espace
+  const match = markdown.match(/^#+\s+(.*)$/m)
+  const titleLine = match ? match[1] : null
+  if (!titleLine) {
+    return null
+  }
+
+  const trimmed = titleLine.trim()
+  
+  // First char should be uppercase
+  return trimmed.charAt(0).toUpperCase() + trimmed.slice(1)
+}
+
 export const ingestNotionHelpCenterExportedMarkdown = new Command()
   .command('rag:ingest-notion-help-center-exported-markdown')
   .addOption(DeploymentTargetOption)
@@ -119,6 +130,7 @@ export const ingestNotionHelpCenterExportedMarkdown = new Command()
           source: ragSources.centreAideNotion,
           sourceId: file.filename,
           url: file.url,
+          title: getTitleFromMarkdown(file.content),
         }).then(({ deletedOutdatedChunks, insertedChunks, unchanged }) => {
           if (unchanged) {
             output(`Document ${file.filename} is unchanged`)

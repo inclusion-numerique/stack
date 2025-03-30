@@ -1,12 +1,17 @@
-import { formatRagSearchResultToMarkdown } from '@app/web/assistant/rag/formatRagSearchResultToMarkdown'
+import {
+  type RagChunkResultForAssistant,
+  formatRagSearchResultToJsonForAssistant,
+} from '@app/web/assistant/rag/formatRagSearchResultToMarkdown'
 import { getRagChunksForQuery } from '@app/web/assistant/rag/getRagChunksForQuery'
 import { ragSources } from '@app/web/assistant/rag/sources'
+import type { AgenticSearchToolYamlResult } from '@app/web/assistant/tools/agenticSearchTool'
 import {
   centreAideRagToolDescription,
   centreAideRagToolName,
 } from '@app/web/assistant/tools/centreAideRagToolConfig'
-import { ZodFunctionOptions } from '@app/web/assistant/tools/zodFunctionType'
+import type { ZodFunctionOptions } from '@app/web/assistant/tools/zodFunctionType'
 import { tool } from 'ai'
+import { stringify } from 'yaml'
 import { z } from 'zod'
 
 export const centreAideRagToolParameters = z.object({
@@ -22,20 +27,53 @@ export const centreAideRagToolParameters = z.object({
     ),
 })
 
+export type CentreAideToolResult =
+  | {
+      error: string
+    }
+  | {
+      error?: undefined
+      objectif: string
+      sources: RagChunkResultForAssistant[] | undefined
+    }
+
 export type CentreAideRagToolParameters = z.infer<
   typeof centreAideRagToolParameters
 >
+
+const errorResult = (errorMessage: string) => {
+  const yamlErrorResult = {
+    error: errorMessage,
+  } satisfies AgenticSearchToolYamlResult
+  return stringify(yamlErrorResult)
+}
 
 export const centreAideRagToolOptions = {
   name: centreAideRagToolName,
   description: centreAideRagToolDescription,
   parameters: centreAideRagToolParameters,
   function: async ({ query }) => {
-    const ragResult = await getRagChunksForQuery(query, {
+    const ragRawResults = await getRagChunksForQuery(query, {
       sources: [ragSources.centreAideNotion],
     })
 
-    return formatRagSearchResultToMarkdown(ragResult.chunkResults)
+    const chunks =
+      ragRawResults?.chunkResults.length > 0
+        ? ragRawResults.chunkResults
+        : false
+
+    if (!chunks) {
+      return errorResult(
+        `Aucun résultat pertinent ne correspond à la recherche.`,
+      )
+    }
+
+    const yamlResultObject = {
+      objectif: `L’assistant doit utiliser ces informations pour répondre de manière complète et pertinente et générer les liens vers les sources pour l’utilisateur dans l’objectif de : ${query}`,
+      sources: formatRagSearchResultToJsonForAssistant(chunks),
+    }
+
+    return stringify(yamlResultObject)
   },
 } satisfies ZodFunctionOptions<typeof centreAideRagToolParameters>
 

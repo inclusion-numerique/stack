@@ -31,6 +31,8 @@ const ChatUserInput = ({
   const isGenerating = status === 'streaming'
 
   const onSubmit: FormEventHandler<HTMLFormElement> = (event) => {
+    event.preventDefault()
+    event.stopPropagation()
     if (!canSubmit) return
     onSubmitProp(event)
   }

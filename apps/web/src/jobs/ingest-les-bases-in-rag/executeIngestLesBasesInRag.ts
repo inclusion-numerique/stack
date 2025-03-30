@@ -138,6 +138,7 @@ export const executeIngestLesBasesInRag = async (
           sourceId: resource.id,
           content: markdownResponse,
           url: resource.url ?? undefined,
+          title: resource.title ?? undefined,
         })
 
       output.log(

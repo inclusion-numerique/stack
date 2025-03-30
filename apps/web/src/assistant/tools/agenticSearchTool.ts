@@ -7,7 +7,6 @@ import { getRagChunksForQuery } from '@app/web/assistant/rag/getRagChunksForQuer
 import { ragSources } from '@app/web/assistant/rag/sources'
 import { summarizeWebPage } from '@app/web/assistant/tasks/summarizeWebPage'
 import {
-  type AgenticSearchToolName,
   agenticSearchToolDescription,
   agenticSearchToolName,
 } from '@app/web/assistant/tools/agenticSearchToolConfig'
@@ -106,11 +105,9 @@ const returnFormat: AgenticReturnFormat = 'yaml' as AgenticReturnFormat
 
 export type AgenticSearchToolYamlResult =
   | {
-      tool: AgenticSearchToolName
       error: string
     }
   | {
-      tool: AgenticSearchToolName
       error?: undefined
       objectif: string
       sources_sites_web: BraveSearchResultForAssistant[] | undefined
@@ -120,12 +117,11 @@ export type AgenticSearchToolYamlResult =
 
 const errorResult = (errorMessage: string) => {
   if (returnFormat === 'json') {
-    return { tool: agenticSearchToolName, error: errorMessage }
+    return { error: errorMessage }
   }
 
   if (returnFormat === 'yaml') {
     const yamlErrorResult = {
-      tool: agenticSearchToolName,
       error: errorMessage,
     } satisfies AgenticSearchToolYamlResult
     return stringify(yamlErrorResult)
@@ -171,6 +167,7 @@ export const agenticSearchToolOptions = {
         lesBases
           ? getRagChunksForQuery(query, {
               sources: [ragSources.lesBases],
+              limit: 3,
             })
           : null,
       ])
@@ -224,7 +221,6 @@ export const agenticSearchToolOptions = {
 
       if (returnFormat === 'yaml') {
         const yamlResultObject = {
-          tool: agenticSearchToolName,
           objectif: `L’assistant doit utiliser ces informations pour répondre de manière complète et pertinente et générer les liens vers les sources pour l’utilisateur dans l’objectif de : ${objectif}`,
           sources_sites_web: genericWebSearchResults
             ? genericWebSearchResults.map(formatResultToJsonForAssistant)

@@ -10,6 +10,7 @@ export type InsertMarkdownRagChunksOptions = {
   source: string
   sourceId: string
   url?: string
+  title?: string
 }
 
 export type InsertMarkdownRagChunksResult = {
@@ -37,6 +38,7 @@ export const insertMarkdownRagChunks = async ({
   source,
   sourceId,
   url,
+  title,
 }: InsertMarkdownRagChunksOptions): Promise<InsertMarkdownRagChunksResult> => {
   const documentMd5 = createMd5Hash(content)
 
@@ -84,6 +86,7 @@ export const insertMarkdownRagChunks = async ({
           chunk: chunkIndex,
           content: chunkContent,
           url,
+          title,
           embeddingModel: model,
         },
         select: {

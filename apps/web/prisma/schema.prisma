@@ -1083,6 +1083,7 @@ model RagDocumentChunk {
 
   sourceId String  @map("source_id") // unique id of the source document within the source, can have multiple chunks for the same source
   chunk    Int // chunk number for the same source id
+  title    String? // title of the source document if available
   url      String? // url of the source document if available
 
   created DateTime @default(now())

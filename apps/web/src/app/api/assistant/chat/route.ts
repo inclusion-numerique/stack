@@ -61,9 +61,6 @@ export async function POST(request: NextRequest) {
   // Get prompt from request json body
   const body = (await request.json()) as unknown
 
-  // biome-ignore lint/suspicious/noConsole: used until feature is in production
-  console.log('REQUEST BODY', body)
-
   const requestData = AssistantChatAiSdkRequestDataValidation.safeParse(body)
 
   if (!requestData.success) {
@@ -91,9 +88,6 @@ export async function POST(request: NextRequest) {
 
   const { configuration } = chatThread
 
-  // biome-ignore lint/suspicious/noConsole: used until feature is in production
-  console.log('INPUT MESSAGE', inputMessage)
-
   // Full history of messages
   // with our system message and the session messages
   const initialMessages = chatThread.messages.map(chatMessageToAiSdkMessage)
@@ -118,9 +112,6 @@ export async function POST(request: NextRequest) {
       ],
     } as UIMessage)
   }
-
-  // biome-ignore lint/suspicious/noConsole: used until feature is in production
-  console.log('MESSAGES', messages)
 
   const stream = streamText({
     model:
