@@ -7,7 +7,9 @@ import ChatCompletionErrorMessage from '@app/web/assistant/components/ChatComple
 import ChatMessagesList from '@app/web/assistant/components/ChatMessagesList'
 import ChatUserInput from '@app/web/assistant/components/ChatUserInput'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
+import Button from '@codegouvfr/react-dsfr/Button'
 import { Message } from 'ai'
+import classNames from 'classnames'
 import React, { useRef, type FormEventHandler, useEffect } from 'react'
 import { v4 } from 'uuid'
 import styles from './ChatThread.module.css'
@@ -70,14 +72,15 @@ const ChatThread = ({
     },
   })
 
+  const { scrollToBottom, isScrolledToBottom } = useScrollToBottom({
+    containerRef: messagesContainerRef,
+  })
+
   const onSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault()
     handleSubmit(event)
+    scrollToBottom()
   }
-
-  const { scrollToBottom } = useScrollToBottom({
-    containerRef: messagesContainerRef,
-  })
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: we want to scroll to bottom when status changes
   useEffect(() => {
@@ -95,6 +98,19 @@ const ChatThread = ({
           <div />
         </div>
       </div>
+      {!isScrolledToBottom && (
+        <Button
+          priority="tertiary"
+          iconId="ri-arrow-down-line"
+          type="button"
+          className={classNames(
+            'fr-border-radius--32 fr-px-3v',
+            styles.scrollToBottomButton,
+          )}
+          onClick={scrollToBottom}
+          title="Défiler jusqu'à la fin de la conversation"
+        />
+      )}
       <ChatUserInput
         onSubmit={onSubmit}
         status={status}
