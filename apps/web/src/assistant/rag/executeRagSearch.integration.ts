@@ -87,6 +87,7 @@ describe('executeRagSearch', () => {
         sourceId: 'A',
         type: 'test',
         url: null,
+        title: null,
       },
       {
         id: secondMostSimilarChunk.id,
@@ -101,6 +102,7 @@ describe('executeRagSearch', () => {
         sourceId: 'B',
         type: 'test',
         url: null,
+        title: null,
       },
     ])
   })

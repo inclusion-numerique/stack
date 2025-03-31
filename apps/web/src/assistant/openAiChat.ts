@@ -232,8 +232,6 @@ export const executeChatInteraction = ({
                 onToolResult(message)
               }
             }
-            // biome-ignore lint/suspicious/noConsole: used until feature is in production
-            console.log('onMessage', message)
             onMessage(message)
           })
           .on('content', (content) => {

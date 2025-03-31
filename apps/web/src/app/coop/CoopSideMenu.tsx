@@ -2,6 +2,7 @@
 
 import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 import { CreateCraModalDefinition } from '@app/web/app/coop/(full-width-layout)/mes-activites/CreateCraModalDefinition'
+import { canUseAssistant } from '@app/web/assistant/canUseAssistant'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import Button from '@codegouvfr/react-dsfr/Button'
 import type { SideMenuProps } from '@codegouvfr/react-dsfr/SideMenu'
@@ -71,6 +72,22 @@ const CoopSideMenu = ({ user }: { user: SessionUser }) => {
       linkProps: { href: '/coop/mes-outils' },
       isActive: pathname?.startsWith('/coop/mes-outils'),
     },
+  ]
+
+  if (canUseAssistant(user)) {
+    items.push({
+      text: (
+        <>
+          <span className="fr-icon-chat-check-line ri-xl fr-mr-1w fr-text--regular" />
+          Assistant
+        </>
+      ),
+      linkProps: { href: '/assistant/chat' },
+      isActive: pathname?.startsWith('/assistant'),
+    })
+  }
+
+  items.push(
     {
       text: (
         <Button
@@ -102,7 +119,7 @@ const CoopSideMenu = ({ user }: { user: SessionUser }) => {
         href: `mailto:${PublicWebAppConfig.contactEmail}`,
       },
     },
-  ]
+  )
 
   return (
     <SideMenu

@@ -1,0 +1,255 @@
+@keyframes blinking-cursor {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.assistantPageContent {
+  --header-height: 72px;
+  --content-height: calc(100vh - var(--header-height));
+
+  min-height: var(--content-height);
+  height: var(--content-height);
+  max-height: var(--content-height);
+}
+
+.assistantSidemenu {
+  width: 280px;
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+.sessionContainer {
+  --header-height: 72px;
+  --content-height: calc(100vh - var(--header-height));
+
+  position: relative;
+  min-height: var(--content-height);
+  height: var(--content-height);
+  max-height: var(--content-height);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.messagesContainer {
+  overflow-y: scroll;
+  flex: 1;
+  width: 100%;
+}
+
+.messages {
+  padding: 0 64px 40px;
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.cta {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.inputContainer {
+  padding: 0 64px 48px;
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.message {
+  width: 100%;
+  position: relative;
+  padding: 8px 16px;
+  border-radius: 24px;
+
+  code {
+    display: inline-block;
+    font-size: .875rem !important;
+    background-color: var(--background-alt-grey);
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+
+  :global .chat-message__blinking-cursor {
+    display: none;
+    margin-left: 4px;
+    padding: 0 8px;
+    background-color: var(--grey-425-625);
+    border-radius: 4px;
+    animation: blinking-cursor 1s infinite !important;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    &:not(:first-child) {
+      margin-top: 24px;
+    }
+    margin-bottom: 24px;
+  }
+
+  h1 {
+    font-size: 1.5rem !important;
+    line-height: 1.75rem;
+  }
+
+  h2 {
+    font-size: 1.375rem !important;
+    line-height: 1.75rem;
+  }
+
+  h3 {
+    font-size: 1.25rem !important;
+    line-height: 1.5rem;
+  }
+
+  h4 {
+    font-size: 1.125rem !important;
+    line-height: 1.5rem;
+  }
+
+  p:not(:last-child) {
+    margin-bottom: 12px !important;
+  }
+
+  p:last-child {
+    margin-bottom: 0 !important;
+  }
+}
+
+.messageToolCalls {
+  margin-top: -4px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  color: var(--text-active-grey);
+}
+
+.messageToolCall {
+  margin-bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+
+  &:not(:last-child) {
+    margin-bottom: 8px;
+  }
+
+  background-color: var(--background-alt-grey);
+  padding: 4px 8px;
+  border-radius: 8px;
+}
+
+.toolResultCard {
+  margin-bottom: 0;
+  border: var(--slim-grey-border);
+  padding: 16px 16px;
+  border-radius: 8px;
+
+  &:first-of-type {
+    margin-top: 16px;
+  }
+
+  &:not(:last-of-type) {
+    margin-bottom: 16px;
+  }
+
+  .toolResultHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .toolResultSourceTitle {
+    margin: 0 !important;
+    font-size: 1.125rem !important;
+    line-height: 1.75rem;
+  }
+
+  .toolResultContent {
+    max-height: 240px;
+    overflow-y: auto;
+
+    div > :first-child {
+      margin-top: 0 !important;
+    }
+
+    hr:first-of-type {
+      display: none;
+    }
+  }
+
+  a,
+  p,
+  ul,
+  li,
+  ol,
+  blockquote,
+  pre,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-size: 14px !important;
+    line-height: 20px !important;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: bold;
+  }
+
+  p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin-bottom: 8px !important;
+  }
+}
+
+.scrollToBottomButton {
+  background-color: var(--background-default-grey);
+  color: var(--text-default-grey) !important;
+  position: absolute;
+  bottom: 132px;
+}
+.messageUser {
+  background-color: var(--blue-france-975-75);
+  width: auto;
+  max-width: 75%;
+  align-self: flex-end;
+}
+
+.messageLogoCoop {
+  position: absolute;
+  top: 8px;
+  left: -32px;
+}

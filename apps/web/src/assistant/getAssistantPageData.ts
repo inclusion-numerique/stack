@@ -1,28 +1,28 @@
+import { chatMessageToAiSdkMessage } from '@app/web/assistant/chatMessageToAiSdkMessage'
 import {
-  getChatSession,
-  getUserChatSessions,
-} from '@app/web/assistant/getChatSession'
+  getChatThread,
+  getUserChatThreads,
+} from '@app/web/assistant/getChatThread'
 
 export const getAssistantPageData = async ({
   userId,
-  chatSessionId,
+  threadId,
 }: {
   userId: string
-  chatSessionId?: string
+  threadId?: string
 }) => {
-  const chatSession = chatSessionId
-    ? await getChatSession(chatSessionId)
-    : undefined
+  const chatThread = threadId ? await getChatThread(threadId) : null
 
-  const chatSessionHistory = await getUserChatSessions(userId)
+  const chatThreadHistory = await getUserChatThreads(userId)
 
   return {
-    chatSessionHistory,
-    chatSession, // null if not found, undefined if not required in params
+    chatThreadHistory,
+    chatThread, // null if not found, undefined if not required in params
+    messages: chatThread?.messages.map(chatMessageToAiSdkMessage) ?? [],
   }
 }
 
 export type AssistantPageData = Awaited<ReturnType<typeof getAssistantPageData>>
 
-export type AssistantPageDataChatSessionHistoryItem =
-  AssistantPageData['chatSessionHistory'][number]
+export type AssistantPageDataChatThreadHistoryItem =
+  AssistantPageData['chatThreadHistory'][number]

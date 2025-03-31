@@ -28,6 +28,7 @@ export const formatRagChunkToJsonForAssistant = ({
   content,
   url,
   id,
+  title,
   similarity,
   type,
 }: RagSearchChunkResult) => ({
@@ -35,6 +36,7 @@ export const formatRagChunkToJsonForAssistant = ({
   content,
   url,
   id,
+  title,
   similarity,
   type,
 })
@@ -46,34 +48,3 @@ export type RagChunkResultForAssistant = ReturnType<
 export const formatRagSearchResultToJsonForAssistant = (
   ragResult: RagSearchResult,
 ) => ragResult.map(formatRagChunkToJsonForAssistant)
-
-export const formatRagChunkToYamlForAssistant = ({
-  source,
-  content,
-  url,
-  id,
-  similarity,
-  type,
-}: RagSearchChunkResult) => {
-  let yamlResult = `  - url: ${url}\n`
-
-  yamlResult += `    source: ${source}\n`
-  yamlResult += `    type: ${type}\n`
-  yamlResult += `    id: ${id}\n`
-  yamlResult += `    similarity: ${similarity}\n`
-
-  if (content.includes('\n')) {
-    yamlResult += `    content: |\n`
-    for (const line of content.split('\n')) {
-      yamlResult += `      ${line}\n`
-    }
-  } else {
-    yamlResult += `    content: ${content}\n`
-  }
-
-  return yamlResult
-}
-
-export const formatRagSearchResultToYamlForAssistant = (
-  ragResult: RagSearchResult,
-) => ragResult.map(formatRagChunkToYamlForAssistant)

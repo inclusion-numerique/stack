@@ -11,6 +11,9 @@ const isE2e = !!process.env.IS_E2E
 const isPreview = !isMain && !isDev && !isSante && !isLocal && !isE2e
 
 export const PublicWebAppConfig = {
+  centreAideDomaine: 'https://incubateurdesterritoires.notion.site',
+  centreAideUrl:
+    'https://incubateurdesterritoires.notion.site/Centre-d-aide-de-La-Coop-de-la-m-diation-num-rique-e2db421ac63249769c1a9aa155af5f2f',
   Branch: process.env.BRANCH ?? '',
   isMain,
   isDev,

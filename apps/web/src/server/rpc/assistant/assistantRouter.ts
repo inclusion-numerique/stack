@@ -1,60 +1,23 @@
+import { canUseAssistant } from '@app/web/assistant/canUseAssistant'
 import { AssistantConfigurationValidation } from '@app/web/assistant/configuration/AssistantConfigurationValidation'
-import {
-  getCurrentAssistantConfigurationForUser,
-  saveAssistantConfiguration,
-} from '@app/web/assistant/configuration/assistantConfiguration'
-import type { AssistantPageData } from '@app/web/assistant/getAssistantPageData'
-import { getUserChatSessions } from '@app/web/assistant/getChatSession'
-import { generateChatSessionTitle } from '@app/web/assistant/tasks/generateChatSessionTitle'
+import { saveAssistantConfiguration } from '@app/web/assistant/configuration/assistantConfiguration'
+import { generateChatThreadTitle } from '@app/web/assistant/tasks/generateChatThreadTitle'
 import { prismaClient } from '@app/web/prismaClient'
 import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
 import { forbiddenError, invalidError } from '@app/web/server/rpc/trpcErrors'
 import { z } from 'zod'
 
 export const assistantRouter = router({
-  createSession: protectedProcedure.mutation(async ({ ctx: { user } }) => {
-    if (user.role !== 'Admin') throw forbiddenError('User is not an admin')
-
-    const configuration = await getCurrentAssistantConfigurationForUser({
-      userId: user.id,
-    })
-
-    const chatSession = await prismaClient.assistantChatSession.create({
-      data: {
-        createdBy: { connect: { id: user.id } },
-        context: '',
-        configuration: {
-          connectOrCreate: {
-            where: { id: configuration.id },
-            create: {
-              ...configuration,
-            },
-          },
-        },
-      },
-      include: {
-        messages: true,
-        configuration: true,
-      },
-    })
-
-    const chatSessionHistory = await getUserChatSessions(user.id)
-
-    return {
-      chatSessionHistory,
-      chatSession,
-    } satisfies AssistantPageData
-  }),
   changeSessionTitle: protectedProcedure
     .input(
       z.object({
-        chatSessionId: z.string().uuid(),
+        threadId: z.string().uuid(),
         title: z.string().min(1).max(80),
       }),
     )
-    .mutation(async ({ input: { chatSessionId, title }, ctx: { user } }) => {
-      const chatSession = await prismaClient.assistantChatSession.findUnique({
-        where: { id: chatSessionId, deleted: null },
+    .mutation(async ({ input: { threadId, title }, ctx: { user } }) => {
+      const chatThread = await prismaClient.assistantChatThread.findUnique({
+        where: { id: threadId, deleted: null },
         include: {
           messages: {
             orderBy: { created: 'asc' },
@@ -62,25 +25,25 @@ export const assistantRouter = router({
         },
       })
 
-      if (!chatSession) throw invalidError('Chat session not found')
+      if (!chatThread) throw invalidError('Chat session not found')
 
-      if (chatSession.createdById !== user.id)
+      if (chatThread.createdById !== user.id)
         throw forbiddenError('User is not the creator of this chat session')
 
-      await prismaClient.assistantChatSession.update({
-        where: { id: chatSessionId },
+      await prismaClient.assistantChatThread.update({
+        where: { id: threadId },
         data: {
           title,
         },
       })
 
-      return chatSession
+      return chatThread
     }),
   deleteSession: protectedProcedure
-    .input(z.object({ chatSessionId: z.string().uuid() }))
-    .mutation(async ({ input: { chatSessionId }, ctx: { user } }) => {
-      const chatSession = await prismaClient.assistantChatSession.findUnique({
-        where: { id: chatSessionId, deleted: null },
+    .input(z.object({ threadId: z.string().uuid() }))
+    .mutation(async ({ input: { threadId }, ctx: { user } }) => {
+      const chatThread = await prismaClient.assistantChatThread.findUnique({
+        where: { id: threadId, deleted: null },
         include: {
           messages: {
             orderBy: { created: 'asc' },
@@ -88,25 +51,25 @@ export const assistantRouter = router({
         },
       })
 
-      if (!chatSession) throw invalidError('Chat session not found')
+      if (!chatThread) throw invalidError('Chat session not found')
 
-      if (chatSession.createdById !== user.id)
+      if (chatThread.createdById !== user.id)
         throw forbiddenError('User is not the creator of this chat session')
 
-      await prismaClient.assistantChatSession.update({
-        where: { id: chatSessionId },
+      await prismaClient.assistantChatThread.update({
+        where: { id: threadId },
         data: {
           deleted: new Date(),
         },
       })
 
-      return chatSession
+      return chatThread
     }),
   generateSessionTitle: protectedProcedure
-    .input(z.object({ chatSessionId: z.string().uuid() }))
-    .mutation(async ({ input: { chatSessionId }, ctx: { user } }) => {
-      const chatSession = await prismaClient.assistantChatSession.findUnique({
-        where: { id: chatSessionId, deleted: null },
+    .input(z.object({ threadId: z.string().uuid() }))
+    .mutation(async ({ input: { threadId }, ctx: { user } }) => {
+      const chatThread = await prismaClient.assistantChatThread.findUnique({
+        where: { id: threadId, deleted: null },
         include: {
           messages: {
             orderBy: { created: 'asc' },
@@ -114,15 +77,15 @@ export const assistantRouter = router({
         },
       })
 
-      if (!chatSession) throw invalidError('Chat session not found')
+      if (!chatThread) throw invalidError('Chat session not found')
 
-      if (chatSession.createdById !== user.id)
+      if (chatThread.createdById !== user.id)
         throw forbiddenError('User is not the creator of this chat session')
 
-      const newTitle = await generateChatSessionTitle(chatSession)
+      const newTitle = await generateChatThreadTitle(chatThread)
 
-      return prismaClient.assistantChatSession.update({
-        where: { id: chatSessionId },
+      return prismaClient.assistantChatThread.update({
+        where: { id: threadId },
         data: {
           title: newTitle,
         },
@@ -136,7 +99,9 @@ export const assistantRouter = router({
   updateAssistantConfiguration: protectedProcedure
     .input(AssistantConfigurationValidation)
     .mutation(async ({ input, ctx: { user } }) => {
-      if (user.role !== 'Admin') throw forbiddenError('User is not an admin')
+      if (!canUseAssistant(user)) {
+        throw forbiddenError('User is not an admin')
+      }
 
       await saveAssistantConfiguration({
         userId: user.id,

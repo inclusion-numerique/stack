@@ -9,6 +9,7 @@ export type RagSearchChunkResult = {
   sourceId: string
   chunk: number
   url: string | null
+  title: string | null
   created: string
   updated: string
   embeddingModel: string
@@ -44,6 +45,7 @@ export const executeRagSearch = async ({
                                           source_id                                             as "sourceId",
                                           chunk,
                                           url,
+                                          title,
                                           created,
                                           updated,
                                           embedding_model                                       as "embeddingModel",

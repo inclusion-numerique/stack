@@ -17,6 +17,7 @@ export const ServerWebAppConfig = {
   NodeEnv: NodeEnvironment,
   Namespace: process.env.NAMESPACE ?? '',
   internalApiPrivateKey: process.env.INTERNAL_API_PRIVATE_KEY ?? '',
+  debug: process.env.DEBUG === 'true' || process.env.DEBUG === '1',
   Email: {
     server: emailServer,
     from: `${process.env.EMAIL_FROM_NAME ?? ''} <${
@@ -82,9 +83,12 @@ export const ServerWebAppConfig = {
   },
   Assistant: {
     // Which service to use for the assistant LLM
-    service: 'scaleway' satisfies 'scaleway' | 'albert',
+    service: 'scaleway' satisfies 'scaleway' | 'albert' | 'openai',
     Mistral: {
       apiKey: process.env.MISTRAL_API_KEY ?? '',
+    },
+    OpenAi: {
+      apiKey: process.env.OPENAI_API_KEY ?? '',
     },
     Scaleway: {
       serviceUrl: process.env.SCALEWAY_GENERATIVE_API_SERVICE_URL ?? '',
@@ -97,8 +101,9 @@ export const ServerWebAppConfig = {
     Albert: {
       serviceUrl: process.env.ALBERT_SERVICE_URL ?? '',
       apiKey: process.env.ALBERT_API_KEY ?? '',
-      chatModel: 'meta-llama/Meta-Llama-3.1-70B-Instruct',
-      embeddingsModel: 'todo',
+      chatModel: 'mistralai/Mistral-Small-3.1-24B-Instruct-2503',
+      // chatModel: 'meta-llama/Meta-Llama-3.1-70B-Instruct',
+      embeddingsModel: 'BAAI/bge-m3',
     },
     Brave: {
       apiKey: process.env.BRAVE_API_KEY ?? '',

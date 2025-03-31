@@ -125,11 +125,11 @@ model User {
   coordinateur Coordinateur?
   mutations    Mutation[]
   emplois      EmployeStructure[]
-  usurpateur   Session?               @relation(name: "usurper")
+  usurpateur   Session?              @relation(name: "usurper")
   rdvAccount   RdvAccount?
-  chatSessions AssistantChatSession[]
+  chatThreads  AssistantChatThread[]
 
-  currentAssistantConfiguration   AssistantConfiguration? @relation(name: "user_current_configuration", fields: [currentAssistantConfigurationId], references: [id]) // The configuration used by default for a new chat session
+  currentAssistantConfiguration   AssistantConfiguration? @relation(name: "user_current_configuration", fields: [currentAssistantConfigurationId], references: [id]) // The configuration used by default for a new chat thread
   currentAssistantConfigurationId String?                 @unique @map("current_assistant_configuration_id") @db.Uuid
 
   assistantConfigurations AssistantConfiguration[]
@@ -1003,7 +1003,7 @@ model Mutation {
   @@map("mutations")
 }
 
-model AssistantChatSession {
+model AssistantChatThread {
   id          String  @id @default(uuid()) @db.Uuid
   createdBy   User?   @relation(fields: [createdById], references: [id])
   createdById String? @map("created_by_id") @db.Uuid
@@ -1021,19 +1021,7 @@ model AssistantChatSession {
   assistantConfigurationId String                 @map("assistant_configuration_id") @db.Uuid
 
   @@index([createdById])
-  @@map("assistant_chat_sessions")
-}
-
-// Based on the OpenAI API standard
-enum AssistantChatRole {
-  System    @map("system")
-  User      @map("user")
-  Assistant @map("assistant")
-  Tool      @map("tool")
-  Function  @map("function")
-  Developer @map("developer")
-
-  @@map("assistant_chat_roles")
+  @@map("assistant_chat_threads")
 }
 
 model AssistantConfiguration {
@@ -1061,34 +1049,26 @@ model AssistantConfiguration {
 
   systemMessage String? @map("system_message")
 
-  searchToolDescription String?                @map("search_tool_description")
-  chatSessions          AssistantChatSession[]
+  searchToolDescription String?               @map("search_tool_description")
+  chatThreads           AssistantChatThread[]
 
   currentConfigurationFor User? @relation(name: "user_current_configuration")
 
   @@map("assistant_configurations")
 }
 
-// Based on the OpenAI API standard
+// Based on the ai sdk model
 model AssistantChatMessage {
-  id        String               @id @default(uuid()) @db.Uuid
-  role      AssistantChatRole
-  session   AssistantChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-  sessionId String               @map("session_id") @db.Uuid
-  content   String? // Can be null for a tool call message
-  created   DateTime             @default(now())
+  id          String              @id @default(uuid()) @db.Uuid
+  role        String // 'system' | 'user' | 'assistant'
+  thread     AssistantChatThread @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  threadId   String              @map("thread_id") @db.Uuid
+  created     DateTime            @default(now())
+  parts       Json[]              @default([]) // See CoreMessage.parts types (text, tool-result, etc...)
+  annotations Json[]              @default([]) // Custom data
+  attachments Json[]              @default([]) // List of attachments (name?: string, contentType?: string, url: string)
 
-  name String? // also used for "function" message function name
-
-  // Additional fields for assistant chat messages
-  refusal      String?
-  toolCalls    Json[]  @default([]) @map("tool_calls")
-  finishReason String? @map("finish_reason")
-
-  // Additional fields for tool calls
-  toolCallId String? @map("tool_call_id")
-
-  @@index([sessionId])
+  @@index([threadId])
   @@index([created(sort: Asc)])
   @@map("assistant_chat_messages")
 }
@@ -1103,6 +1083,7 @@ model RagDocumentChunk {
 
   sourceId String  @map("source_id") // unique id of the source document within the source, can have multiple chunks for the same source
   chunk    Int // chunk number for the same source id
+  title    String? // title of the source document if available
   url      String? // url of the source document if available
 
   created DateTime @default(now())

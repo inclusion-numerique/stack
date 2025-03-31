@@ -8,31 +8,33 @@ import { preProcessHtmlForSummary } from '@app/web/assistant/tasks/preProcessHtm
 const defaultModel = OpenAiClienChatModel.Llama3_1_8bInstruct
 
 export const summarizeWebPage = async ({
-  url,
   objectif,
   html,
   model,
+  preprocessedHtml,
 }: {
-  url: string
   html: string
   objectif: string
   model?: OpenAiClienChatModel
+  preprocessedHtml?: string
 }) => {
-  const preparedContent = preProcessHtmlForSummary({
-    html,
-  })
+  const preparedContent =
+    preprocessedHtml ??
+    preProcessHtmlForSummary({
+      html,
+    })
+
+  // Need to avoid too long input
+  const inputContent = preparedContent.slice(0, 15000)
 
   const completionMessages: OpenAiChatMessage[] = [
     {
       role: 'system',
-      content: `Tu dois résumer le contenu de la page web que l’utilisateur va te donner. Le résultat sera directement donné à un LLM, répond uniquement avec ton résumé, sans autres préambules. Extrait un maximum d’informations utiles en quelques paragraphes, dans l’objectif étant: ${objectif}`,
+      content: `Tu dois résumer EN MARKDOWN le contenu de la page web que l’utilisateur va te donner. Le résultat sera directement donné à un LLM, répond uniquement avec ton résumé au format markdown, sans autres préambules. Extrait un maximum d’informations utiles en quelques paragraphes, dans l’objectif étant: ${objectif}`,
     },
     {
       role: 'user',
-      content: `Voici la page web à résumer :
-      ${url}
-      ===============
-      ${preparedContent}`,
+      content: inputContent,
     },
   ]
 
