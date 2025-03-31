@@ -1,6 +1,5 @@
 import fs from 'node:fs'
 import path from 'node:path'
-import { DeploymentTargetOption, configureDeploymentTarget } from '@app/cli/deploymentTarget'
 import { output } from '@app/cli/output'
 import { varFile } from '@app/config/varDirectory'
 import { insertMarkdownRagChunks } from '@app/web/assistant/rag/insertMarkdownRagChunks'
@@ -75,17 +74,14 @@ const getTitleFromMarkdown = (markdown: string) => {
   }
 
   const trimmed = titleLine.trim()
-  
+
   // First char should be uppercase
   return trimmed.charAt(0).toUpperCase() + trimmed.slice(1)
 }
 
 export const ingestNotionHelpCenterExportedMarkdown = new Command()
   .command('rag:ingest-notion-help-center-exported-markdown')
-  .addOption(DeploymentTargetOption)
-  .action(async (options) => {
-    await configureDeploymentTarget(options)
-
+  .action(async () => {
     const markdownFiles = getMarkdownFiles(markdownExportDirectory).map(
       ({ filename, absolutePath }) => ({
         filename,

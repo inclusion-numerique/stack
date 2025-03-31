@@ -24,6 +24,7 @@ describe('getRagChunksForQuery', () => {
           content: 'test',
           chunk: 0,
           sourceId: testEmbedding.name,
+          title: testEmbedding.name,
         },
       })
 
@@ -62,6 +63,7 @@ describe('getRagChunksForQuery', () => {
         similarity: expect.toBeNumber() as number,
         source: 'test',
         type: 'test',
+        title: 'zebre',
       },
       {
         id: huitreEmbedding.id,
@@ -76,6 +78,7 @@ describe('getRagChunksForQuery', () => {
         similarity: expect.toBeNumber() as number,
         source: 'test',
         type: 'test',
+        title: 'huitre',
       },
     ])
   })

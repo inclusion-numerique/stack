@@ -10,7 +10,7 @@ export type InsertMarkdownRagChunksOptions = {
   source: string
   sourceId: string
   url?: string
-  title?: string
+  title?: string | null
 }
 
 export type InsertMarkdownRagChunksResult = {
