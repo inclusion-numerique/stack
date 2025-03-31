@@ -63,7 +63,7 @@ export const Statistiques = ({
         iconId="fr-icon-arrow-right-line"
         iconPosition="right"
         title="Ouvre la page des statisiques"
-        linkProps={{ href: `/coop/mes-statistiques?mediateur=${mediateurId}` }}
+        linkProps={{ href: `/coop/mes-statistiques?mediateurs=${mediateurId}` }}
       >
         Voir ses statistiques
       </Button>
