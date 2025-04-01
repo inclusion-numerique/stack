@@ -503,6 +503,9 @@ export const GET = createApiV1Route
               },
             },
             coordinations: {
+              include: {
+                mediateur: true,
+              },
               where: {
                 ...supressionFilter,
               },
@@ -512,6 +515,9 @@ export const GET = createApiV1Route
         coordinateur: {
           include: {
             mediateursCoordonnes: {
+              include: {
+                mediateur: true,
+              },
               where: {
                 ...supressionFilter,
               },
@@ -568,6 +574,7 @@ export const GET = createApiV1Route
           mediateur: u.mediateur
             ? {
                 id: u.mediateur.id,
+                user_id: u.id,
                 creation: u.mediateur.creation.toISOString(),
                 modification: u.mediateur.modification.toISOString(),
                 en_activite: u.mediateur.enActivite.map((ma) => ({
@@ -581,6 +588,7 @@ export const GET = createApiV1Route
                 })),
                 coordinations: u.mediateur.coordinations.map((mc) => ({
                   id: mc.id,
+                  user_id: mc.mediateur.userId,
                   creation: mc.creation.toISOString(),
                   modification: mc.modification.toISOString(),
                   suppression: mc.suppression
@@ -593,11 +601,13 @@ export const GET = createApiV1Route
           coordinateur: u.coordinateur
             ? {
                 id: u.coordinateur.id,
+                user_id: u.id,
                 creation: u.coordinateur.creation.toISOString(),
                 modification: u.coordinateur.modification.toISOString(),
                 mediateurs_coordonnes: u.coordinateur.mediateursCoordonnes.map(
                   (mc) => ({
                     id: mc.id,
+                    user_id: mc.mediateur.userId,
                     creation: mc.creation.toISOString(),
                     modification: mc.modification.toISOString(),
                     suppression: mc.suppression?.toISOString() ?? null,
