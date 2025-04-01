@@ -31,5 +31,5 @@ describe('generateChatThreadTitle', () => {
       'Bébés de biches',
       'Nom des bébés biches',
     ])
-  })
+  }, 15_000)
 })
