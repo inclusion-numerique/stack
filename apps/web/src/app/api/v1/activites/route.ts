@@ -68,6 +68,7 @@ type ActiviteAttributes = {
     | 'diagnostic_numerique'
     | 'prendre_en_main_du_materiel'
     | 'maintenance_de_materiel'
+    | 'gere_ses_contenus_numeriques'
     | 'navigation_sur_internet'
     | 'email'
     | 'bureautique'
