@@ -30,8 +30,8 @@ export const seed = async (transaction: Prisma.TransactionClient) => {
     fixtureUsers.map((user) =>
       transaction.user.upsert({
         where: { id: user.id },
-        create: user,
-        update: user,
+        create: { ...user, isFixture: true },
+        update: { ...user, isFixture: true },
       }),
     ),
   )
