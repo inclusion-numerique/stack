@@ -1,5 +1,6 @@
 import Tag from '@codegouvfr/react-dsfr/Tag'
 import { notFound } from 'next/navigation'
+import Link from 'next/link'
 import AdministrationBreadcrumbs from '@app/web/app/administration/AdministrationBreadcrumbs'
 import AdministrationInfoCard from '@app/web/app/administration/AdministrationInfoCard'
 import AdministrationInlineLabelsValues from '@app/web/app/administration/AdministrationInlineLabelsValues'
@@ -11,6 +12,9 @@ import { dateAsDay } from '@app/web/utils/dateAsDay'
 import { dateAsDayAndTime } from '@app/web/utils/dateAsDayAndTime'
 import { getUserDisplayName } from '@app/web/utils/user'
 import AdministrationPageContainer from '@app/web/app/administration/AdministrationPageContainer'
+import { getServerUrl } from '@app/web/utils/baseUrl'
+import { ProfilePrivacyTag } from '@app/web/components/PrivacyTags'
+import DeleteUserButton from '@app/web/app/administration/utilisateurs/[id]/DeleteUserButton'
 
 export const metadata = {
   title: metadataTitle('Utilisateurs - Détails'),
@@ -37,11 +41,23 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
 
   const name = getUserDisplayName(user)
 
-  const { role, firstName, lastName, email, created, uploads, lastLogin } = user
+  const {
+    role,
+    firstName,
+    lastName,
+    email,
+    created,
+    uploads,
+    lastLogin,
+    slug,
+    isPublic,
+  } = user
 
   const sortedUploads = uploads.sort(
     (a, b) => b.created.getTime() - a.created.getTime(),
   )
+
+  const profileUrl = getServerUrl(`/profils/${slug}`)
 
   return (
     <AdministrationPageContainer>
@@ -54,15 +70,22 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
           },
         ]}
       />
-      <AdministrationTitle icon="fr-icon-user-line">{name}</AdministrationTitle>
+      <AdministrationTitle
+        icon="fr-icon-user-line"
+        actions={<DeleteUserButton userId={id} />}
+      >
+        {name}
+      </AdministrationTitle>
 
       <div className="fr-flex fr-flex-gap-2v fr-mb-6v">
         {role === 'Admin' && <Tag small>Administrateur</Tag>}
         {role === 'Support' && <Tag small>Support</Tag>}
       </div>
 
-      <AdministrationInfoCard title="Détails de l'utilisateur">
+      <AdministrationInfoCard title="Détails de l’utilisateur">
+        <ProfilePrivacyTag isPublic={isPublic} />
         <AdministrationInlineLabelsValues
+          className="fr-mt-4v"
           items={[
             {
               label: 'Id',
@@ -84,6 +107,19 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
                 'Non renseigné'
               ),
             },
+            {
+              label: 'Lien vers le profil',
+              value: (
+                <Link
+                  href={`/profils/${slug}`}
+                  className="fr-link"
+                  target="_blank"
+                >
+                  {profileUrl}
+                </Link>
+              ),
+            },
+
             {
               label: 'Rôle',
               value: role,

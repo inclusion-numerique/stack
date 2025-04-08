@@ -21,42 +21,45 @@ const AdministrationSideMenu = () => {
       },
       isActive: pathname?.startsWith('/administration/utilisateurs'),
     },
-    {
-      text: (
-        <>
-          <span className="ri-spy-line ri-xl fr-mr-1w fr-text--regular" />
-          Usurpation
-        </>
-      ),
-      linkProps: {
-        href: '/administration/usurpation',
-      },
-      isActive: pathname?.startsWith('/administration/usurpation'),
-    },
-    {
-      text: (
-        <>
-          <span className="ri-key-2-line ri-xl fr-mr-1w fr-text--regular" />
-          Clients API
-        </>
-      ),
-      linkProps: {
-        href: '/administration/clients-api',
-      },
-      isActive: pathname?.startsWith('/administration/clients-api'),
-    },
-    {
-      text: (
-        <>
-          <span className="fr-icon-line-chart-line ri-xl fr-mr-1w fr-text--regular" />
-          Statistiques
-        </>
-      ),
-      linkProps: {
-        href: '/administration/statistiques',
-      },
-      isActive: pathname?.startsWith('/administration/statistiques'),
-    },
+    // Todo : it will be helpful to implement this feature based on Coop impersonation
+    // {
+    //   text: (
+    //     <>
+    //       <span className="ri-spy-line ri-xl fr-mr-1w fr-text--regular" />
+    //       Usurpation
+    //     </>
+    //   ),
+    //   linkProps: {
+    //     href: '/administration/usurpation',
+    //   },
+    //   isActive: pathname?.startsWith('/administration/usurpation'),
+    // },
+    // Todo: we will implement API clients when we handle resources embedding in the app
+    // {
+    //   text: (
+    //     <>
+    //       <span className="ri-key-2-line ri-xl fr-mr-1w fr-text--regular" />
+    //       Clients API
+    //     </>
+    //   ),
+    //   linkProps: {
+    //     href: '/administration/clients-api',
+    //   },
+    //   isActive: pathname?.startsWith('/administration/clients-api'),
+    // },
+    // TODO: internal stats for support and administrators
+    // {
+    //   text: (
+    //     <>
+    //       <span className="fr-icon-line-chart-line ri-xl fr-mr-1w fr-text--regular" />
+    //       Statistiques
+    //     </>
+    //   ),
+    //   linkProps: {
+    //     href: '/administration/stats',
+    //   },
+    //   isActive: pathname?.startsWith('/administration/stats'),
+    // },
   ] satisfies SideMenuProps.Item[]
 
   return (
