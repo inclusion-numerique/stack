@@ -58,7 +58,7 @@ export const cleanUpAndCreateTestPublishedResource = ({
   }) => void
   feedbacks?: {
     comment?: string
-    rate: 1 | 2 | 3 | 4
+    rate: number
     user: Partial<CreateUserInput>
   }[]
 }) => {
