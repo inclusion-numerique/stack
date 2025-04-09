@@ -777,7 +777,7 @@ model JobExecution {
 }
 
 model ResourceFeedback {
-  rating  Int
+  rating  Int // [1, 2, 3, 4]
   comment String?
 
   created DateTime  @default(now())
