@@ -1,8 +1,8 @@
 import { feedbackBadgeStatus } from './resourceFeedbackBadge.Status'
 
 describe('feedback badge status', () => {
-  it('should be "Non recommandée" when value is less than 1', () => {
-    const value = 0.9
+  it('should be "Non recommandée" when value is less than 1.5', () => {
+    const value = 1.2
 
     const badgeStatus = feedbackBadgeStatus(value)
 
@@ -37,8 +37,8 @@ describe('feedback badge status', () => {
     })
   })
 
-  it('should be "Très recommandée" when value is more than 3.25', () => {
-    const value = 3.25
+  it('should be "Très recommandée" when value is more than 3.5', () => {
+    const value = 3.5
 
     const badgeStatus = feedbackBadgeStatus(value)
 
