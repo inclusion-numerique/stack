@@ -199,7 +199,7 @@ describe("Utilisateur sans droit, je peux consulter les avis d'une ressource", (
     cy.testId('resources-feedbacks').contains('Très recommandée')
   })
 
-  it("Acceptation 9 - Visiteur sur une ressource publique, je peux constater qu'une ressource est peu recommandée pour trois non", () => {
+  it("Acceptation 9 - Visiteur sur une ressource publique, je peux constater qu'une ressource est non recommandée pour trois non", () => {
     cleanUpAndCreateTestPublishedResource({
       publicBase: true,
       publicResource: true,
@@ -219,7 +219,7 @@ describe("Utilisateur sans droit, je peux consulter les avis d'une ressource", (
       '/ressources/titre-d-une-ressource-sur-deux-ligne-tres-longues-comme-comme-sur-deux-lignes/',
     )
 
-    cy.testId('resources-feedbacks').contains('Peu recommandée')
+    cy.testId('resources-feedbacks').contains('Non recommandée')
   })
 
   it("Acceptation 10 - Visiteur sur une ressource publique, je peux constater qu'une ressource est peu recommandée pour deux non et deux moyen", () => {
@@ -269,7 +269,7 @@ describe("Utilisateur sans droit, je peux consulter les avis d'une ressource", (
     cy.testId('resources-feedbacks').contains('Recommandée')
   })
 
-  it("Acceptation 12 - Visiteur sur une ressource publique, je peux constater qu'une ressource est très recommandée pour deux oui et un beaucoup", () => {
+  it("Acceptation 12 - Visiteur sur une ressource publique, je peux constater qu'une ressource est très recommandée pour deux beaucoup et un oui", () => {
     cleanUpAndCreateTestPublishedResource({
       publicBase: true,
       publicResource: true,
@@ -282,7 +282,7 @@ describe("Utilisateur sans droit, je peux consulter les avis d'une ressource", (
         },
         { rate: 'beaucoup', user: { firstName: 'Michel', lastName: 'Dupond' } },
         {
-          rate: 'oui',
+          rate: 'beaucoup',
           user: { firstName: 'Charles', lastName: 'Orilla' },
         },
       ],
