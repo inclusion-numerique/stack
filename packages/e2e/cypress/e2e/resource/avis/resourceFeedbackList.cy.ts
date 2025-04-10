@@ -13,10 +13,19 @@ describe('Lorsque je consulte une ressource, je peux voir la page des avis de la
       signinAsResourceCreator: false,
       visitResourcePage: true,
       feedbacks: [
-        { rate: 0, user: { firstName: 'Henri', lastName: 'Dubois' } },
-        { rate: 1, user: { firstName: 'Michel', lastName: 'Dupond' } },
-        { rate: 2, user: { firstName: 'Charles', lastName: 'Orilla' } },
-        { rate: 4, user: { firstName: 'Thierry', lastName: 'Febvrel' } },
+        {
+          rate: 'non',
+          user: { firstName: 'Henri', lastName: 'Dubois' },
+        },
+        { rate: 'moyen', user: { firstName: 'Michel', lastName: 'Dupond' } },
+        {
+          rate: 'oui',
+          user: { firstName: 'Charles', lastName: 'Orilla' },
+        },
+        {
+          rate: 'beaucoup',
+          user: { firstName: 'Thierry', lastName: 'Febvrel' },
+        },
       ],
     })
 
@@ -37,10 +46,13 @@ describe('Lorsque je consulte une ressource, je peux voir la page des avis de la
       signinAsResourceCreator: true,
       visitResourcePage: true,
       feedbacks: [
-        { rate: 0, user: { firstName: 'Henri', lastName: 'Dubois' } },
-        { rate: 1, user: { firstName: 'Michel', lastName: 'Dupond' } },
-        { rate: 2, user: { firstName: 'Charles', lastName: 'Orilla' } },
-        { rate: 4, user: { firstName: 'Thierry', lastName: 'Febvrel' } },
+        { rate: 'non', user: { firstName: 'Henri', lastName: 'Dubois' } },
+        { rate: 'moyen', user: { firstName: 'Michel', lastName: 'Dupond' } },
+        { rate: 'oui', user: { firstName: 'Charles', lastName: 'Orilla' } },
+        {
+          rate: 'beaucoup',
+          user: { firstName: 'Thierry', lastName: 'Febvrel' },
+        },
       ],
     })
 
@@ -72,7 +84,7 @@ describe('Lorsque je consulte une ressource, je peux voir la page des avis de la
     cy.testId('feedback-count').eq(2).contains('1 Avis')
   })
 
-  it("Acceptation 3 - Créateur d'une une ressource qui n'autorise pas les avis publics, je vois la liste des avis qui ont été postés", () => {
+  it.only("Acceptation 3 - Créateur d'une une ressource qui n'autorise pas les avis publics, je vois la liste des avis qui ont été postés", () => {
     cleanUpAndCreateTestPublishedResource({
       publicBase: true,
       publicResource: true,
@@ -80,12 +92,15 @@ describe('Lorsque je consulte une ressource, je peux voir la page des avis de la
       visitResourcePage: true,
       feedbacks: [
         {
-          rate: 0,
+          rate: 'non',
           user: { firstName: 'Henri', lastName: 'Dubois', isPublic: true },
         },
-        { rate: 1, user: { firstName: 'Michel', lastName: 'Dupond' } },
-        { rate: 2, user: { firstName: 'Charles', lastName: 'Orilla' } },
-        { rate: 4, user: { firstName: 'Thierry', lastName: 'Febvrel' } },
+        { rate: 'moyen', user: { firstName: 'Michel', lastName: 'Dupond' } },
+        { rate: 'oui', user: { firstName: 'Charles', lastName: 'Orilla' } },
+        {
+          rate: 'beaucoup',
+          user: { firstName: 'Thierry', lastName: 'Febvrel' },
+        },
       ],
     })
 

@@ -119,11 +119,11 @@ export const countResources = async (
                                           )   as score,
                                       CASE
                                           WHEN filtered_resources.feedbacks_rating IS NULL THEN 3
-                                          WHEN filtered_resources.feedbacks_rating >= ${resourceFeedbackThresholds.tres}
+                                          WHEN filtered_resources.feedbacks_rating >= ${resourceFeedbackThresholds.beaucoup}
                                               THEN 5
-                                          WHEN filtered_resources.feedbacks_rating >= ${resourceFeedbackThresholds.recommande}
+                                          WHEN filtered_resources.feedbacks_rating >= ${resourceFeedbackThresholds.oui}
                                               THEN 4
-                                          WHEN filtered_resources.feedbacks_rating >= ${resourceFeedbackThresholds.peu}
+                                          WHEN filtered_resources.feedbacks_rating >= ${resourceFeedbackThresholds.moyen}
                                               THEN 2
                                           ELSE 1
                                           END AS recommendation_score
@@ -135,8 +135,6 @@ export const countResources = async (
       SELECT COUNT(*)::integer as count
       FROM matching_resources
   `
-
-  console.log('RESULT FROM COUNT', result)
 
   return result[0]?.count ?? 0
 }
@@ -150,8 +148,6 @@ export const rankResources = async (
   // Then we fetch the full resources with all the data from prisma to have a strongly typed results
 
   const searchTerm = cleanSearchTerm(searchParams.query) ?? ''
-
-  console.log('SEARCH', searchParams.query, searchTerm)
 
   const userId = user?.id ?? null
   const searchResults = await prismaClient.$queryRaw<
@@ -244,11 +240,11 @@ export const rankResources = async (
                                           )   as score,
                                       CASE
                                           WHEN filtered_resources.feedbacks_rating IS NULL THEN 3
-                                          WHEN filtered_resources.feedbacks_rating >= ${resourceFeedbackThresholds.tres}
+                                          WHEN filtered_resources.feedbacks_rating >= ${resourceFeedbackThresholds.beaucoup}
                                               THEN 5
-                                          WHEN filtered_resources.feedbacks_rating >= ${resourceFeedbackThresholds.recommande}
+                                          WHEN filtered_resources.feedbacks_rating >= ${resourceFeedbackThresholds.oui}
                                               THEN 4
-                                          WHEN filtered_resources.feedbacks_rating >= ${resourceFeedbackThresholds.peu}
+                                          WHEN filtered_resources.feedbacks_rating >= ${resourceFeedbackThresholds.moyen}
                                               THEN 2
                                           ELSE 1
                                           END AS recommendation_score
@@ -311,10 +307,11 @@ export const searchResources = async (
   paginationParams: PaginationParams,
   user: Pick<SessionUser, 'id'> | null,
 ) => {
-  console.log('PAGINATION PARAMS', paginationParams.sort)
-
-  const { searchResults, resultIndexById, debugIndexById } =
-    await rankResources(searchParams, paginationParams, user)
+  const { searchResults, resultIndexById } = await rankResources(
+    searchParams,
+    paginationParams,
+    user,
+  )
 
   const resources = await prismaClient.resource.findMany({
     where: {
@@ -325,17 +322,10 @@ export const searchResources = async (
     select: resourceListSelect(user),
   })
 
-  const orderedResults = orderItemsByIndexMap(
+  return orderItemsByIndexMap(
     resources.map(toResourceWithFeedbackAverage),
     resultIndexById,
   )
-
-  console.log('RESULTS :', orderedResults.length)
-  for (const resource of orderedResults) {
-    console.log(resource.title, debugIndexById.get(resource.id))
-  }
-
-  return orderedResults
 }
 
 export type SearchResourcesResult = Awaited<ReturnType<typeof searchResources>>

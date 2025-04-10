@@ -1,6 +1,6 @@
 import { resourceFeedbackThresholds } from '@app/web/server/resources/resourceFeedbackThresholds'
 
-export type ResourceFeedbackStatus = 'tres' | 'recommande' | 'peu' | 'non'
+export type ResourceFeedbackStatus = 'beaucoup' | 'oui' | 'moyen' | 'non'
 
 type ResourceFeedbackBadgeStatus = {
   status: ResourceFeedbackStatus
@@ -22,8 +22,8 @@ type ResourceFeedbackBadgeStatus = {
 
 const BADGE_STATUS: ResourceFeedbackBadgeStatus[] = [
   {
-    status: 'tres',
-    threshold: resourceFeedbackThresholds.tres,
+    status: 'beaucoup',
+    threshold: resourceFeedbackThresholds.beaucoup,
     content: {
       severity: 'triumph',
       label: 'Très recommandée',
@@ -31,8 +31,8 @@ const BADGE_STATUS: ResourceFeedbackBadgeStatus[] = [
     },
   },
   {
-    status: 'recommande',
-    threshold: resourceFeedbackThresholds.recommande,
+    status: 'oui',
+    threshold: resourceFeedbackThresholds.oui,
     content: {
       severity: 'success',
       label: 'Recommandée',
@@ -40,8 +40,8 @@ const BADGE_STATUS: ResourceFeedbackBadgeStatus[] = [
     },
   },
   {
-    status: 'peu',
-    threshold: resourceFeedbackThresholds.peu,
+    status: 'moyen',
+    threshold: resourceFeedbackThresholds.moyen,
     content: {
       severity: 'warning',
       label: 'Peu recommandée',
