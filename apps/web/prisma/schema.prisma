@@ -330,6 +330,7 @@ model Resource {
 
   published     DateTime? // The first publication date
   lastPublished DateTime? @map("last_published") // The most recent re-publication date
+  lastView      DateTime? @map("last_view") // The most recent view date to avoid joining the view table
   deleted       DateTime?
 
   base   Base?   @relation(fields: [baseId], references: [id])
@@ -342,6 +343,7 @@ model Resource {
   contributors     ResourceContributors[]
   collections      CollectionResource[]
   views            ResourceView[]
+  viewsCount       Int                    @default(0) @map("views_count") // Computed field to avoid joining the view table
   reports          ResourceReport[]
   resourceFeedback ResourceFeedback[]
 

@@ -44,10 +44,6 @@ export const countResources = async (
                                          resources.updated                                                  AS updated,
                                          resources.published                                                AS published,
                                          resources.last_published                                           AS last_published,
-                                         COUNT(DISTINCT resource_views.id)                                  AS views_count,
-                                         COUNT(DISTINCT resource_feedback.sent_by_id)                       AS feedbacks_count,
-                                         AVG(resource_feedback.rating)                                      AS feedbacks_rating,
-                                         COUNT(DISTINCT collection_resources.id)                            AS collections_count,
                                          COALESCE(resources.published, resources.created)                   AS date
                                   FROM resources
                                            /* Join user contributor only to have only one row per resource */
@@ -63,9 +59,6 @@ export const countResources = async (
                                                      ON bases.id = base_members.base_id AND
                                                         base_members.member_id = ${userId}::uuid AND
                                                         base_members.accepted IS NOT NULL
-                                           LEFT JOIN resource_views ON resource_views.resource_id = resources.id
-                                           LEFT JOIN resource_feedback ON resource_feedback.resource_id = resources.id
-                                           LEFT JOIN collection_resources ON collection_resources.resource_id = resources.id
                                   WHERE
                                       /* Resource status check */
                                       resources.deleted IS NULL
@@ -116,17 +109,7 @@ export const countResources = async (
                                                           filtered_resources.search_description) * 1 +
                                           word_similarity((SELECT term FROM search),
                                                           filtered_resources.search_published_by) * 3
-                                          )   as score,
-                                      CASE
-                                          WHEN filtered_resources.feedbacks_rating IS NULL THEN 3
-                                          WHEN filtered_resources.feedbacks_rating >= ${resourceFeedbackThresholds.beaucoup}
-                                              THEN 5
-                                          WHEN filtered_resources.feedbacks_rating >= ${resourceFeedbackThresholds.oui}
-                                              THEN 4
-                                          WHEN filtered_resources.feedbacks_rating >= ${resourceFeedbackThresholds.moyen}
-                                              THEN 2
-                                          ELSE 1
-                                          END AS recommendation_score
+                                          ) as score
                                FROM filtered_resources),
            matching_resources AS (SELECT *
                                   FROM scored_resource
@@ -165,7 +148,7 @@ export const rankResources = async (
                                          resources.updated                                                  AS updated,
                                          resources.published                                                AS published,
                                          resources.last_published                                           AS last_published,
-                                         COUNT(DISTINCT resource_views.id)                                  AS views_count,
+                                         resources.views_count                                              AS views_count,
                                          COUNT(DISTINCT resource_feedback.sent_by_id)                       AS feedbacks_count,
                                          AVG(resource_feedback.rating)                                      AS feedbacks_rating,
                                          COUNT(DISTINCT collection_resources.id)                            AS collections_count,
@@ -184,7 +167,6 @@ export const rankResources = async (
                                                      ON bases.id = base_members.base_id AND
                                                         base_members.member_id = ${userId}::uuid AND
                                                         base_members.accepted IS NOT NULL
-                                           LEFT JOIN resource_views ON resource_views.resource_id = resources.id
                                            LEFT JOIN resource_feedback ON resource_feedback.resource_id = resources.id
                                            LEFT JOIN collection_resources ON collection_resources.resource_id = resources.id
                                   WHERE

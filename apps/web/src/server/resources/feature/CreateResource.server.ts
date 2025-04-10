@@ -57,9 +57,9 @@ export const applyResourceCreated: ResourceCreationEventApplier<
   targetAudiences: [],
   contributors: [],
   collections: [],
+  viewsCount: 0,
   _count: {
     collections: 0,
-    views: 0,
     resourceFeedback: 0,
   },
   resourceFeedback: [],
