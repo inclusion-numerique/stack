@@ -167,7 +167,9 @@ export const rankResources = async (
                                                      ON bases.id = base_members.base_id AND
                                                         base_members.member_id = ${userId}::uuid AND
                                                         base_members.accepted IS NOT NULL
-                                           LEFT JOIN resource_feedback ON resource_feedback.resource_id = resources.id
+                                           LEFT JOIN resource_feedback
+                                                     ON resource_feedback.resource_id = resources.id AND
+                                                        resource_feedback.deleted IS NULL
                                            LEFT JOIN collection_resources ON collection_resources.resource_id = resources.id
                                   WHERE
                                       /* Resource status check */
