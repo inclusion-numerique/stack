@@ -3,8 +3,7 @@
 > Ce dossier a pour but de présenter l’architecture technique du SI. Il n’est par conséquent ni un dossier
 > d’installation, ni un dossier d’exploitation ou un dossier de spécifications fonctionnelles.
 > Il est réalisé à partir du patron de
->
-document [Dossier d'architecture technique](https://gitlab.com/groups/incubateur-territoires/startups/infrastructures-numeriques/-/wikis/Dossier-d'architecture-technique).
+> [Dossier d'architecture technique](https://gitlab.com/groups/incubateur-territoires/startups/infrastructures-numeriques/-/wikis/Dossier-d'architecture-technique).
 
 **Nom du projet :** Les bases du numérique d’intérêt général
 
@@ -16,7 +15,7 @@ document [Dossier d'architecture technique](https://gitlab.com/groups/incubateur
 
 **Décision d’homologation :** Non décisionnée
 
-** Inclusion numérique :** ✅
+**Inclusion numérique :** ✅
 
 ## Suivi du document
 
@@ -203,350 +202,350 @@ A la date du 2025-04-17, voici le schéma des données :
 
 ```mermaid
 classDiagram
-    direction BT
-    class _prisma_migrations {
-        varchar(64) checksum
-        timestamp with time zone finished_at
-        varchar(255) migration_name
-        text logs
-        timestamp with time zone rolled_back_at
-        timestamp with time zone started_at
-        integer applied_steps_count
-        varchar(36) id
-    }
-    class accounts {
-        uuid user_id
-        text type
-        text provider
-        text provider_account_id
-        text refresh_token
-        text access_token
-        integer expires_at
-        text token_type
-        text scope
-        text id_token
-        text session_state
-        text id
-    }
-    class base_follows {
-        integer legacy_id
-        uuid base_id
-        uuid follower_id
-        timestamp(3) followed
-        uuid id
-    }
-    class base_members {
-        uuid member_id
-        uuid base_id
-        boolean is_admin
-        timestamp(3) accepted
-        text acceptation_token
-        integer legacy_id
-        timestamp(3) added
-        uuid id
-    }
-    class bases {
-        integer legacy_id
-        text title
-        uuid image_id
-        text slug
-        text title_duplication_check_slug
-        text description
-        uuid created_by_id
-        boolean is_public
-        timestamp(3) created
-        timestamp(3) updated
-        text base
-        text department
-        text email
-        boolean email_is_public
-        text facebook
-        text linkedin
-        text twitter
-        text website
-        timestamp(3) deleted
-        uuid cover_image_id
-        text excerpt
-        uuid id
-    }
-    class collection_resources {
-        integer legacy_id
-        uuid resource_id
-        uuid collection_id
-        timestamp(3) added
-        integer legacy_pinned_resources_id
-        integer order
-        uuid id
-    }
-    class collections {
-        text title
-        text description
-        boolean is_public
-        timestamp(3) created
-        timestamp(3) deleted
-        uuid created_by_id
-        uuid base_id
-        uuid image_id
-        boolean is_favorites
-        integer legacy_id
-        timestamp(3) updated
-        integer legacy_pinned_resources_base_id
-        text slug
-        integer order
-        uuid id
-    }
-    class contents {
-        integer legacy_content_id
-        integer legacy_section_id
-        integer legacy_linked_resource_id
-        integer order
-        uuid resource_id
-        content_type type
-        text title
-        text caption
-        uuid image_id
-        text file_key
-        boolean show_preview
-        text url
-        text linkDescription
-        text linkTitle
-        text linkImageUrl
-        text linkFaviconUrl
-        text text
-        timestamp(3) created
-        timestamp(3) updated
-        text image_alt_text
-        uuid id
-    }
-    class feedback {
-        uuid sent_by_id
-        integer rating
-        boolean had_difficulty
-        difficulty_area difficulty_area
-        text difficulty_comment
-        text comment
-        text wants_to_be_contacted
-        timestamp(3) created
-        uuid id
-    }
-    class images {
-        integer legacy_id
-        text alt_text
-        text blur_url
-        integer original_height
-        integer original_width
-        double precision crop_height
-        double precision crop_width
-        double precision crop_top
-        double precision crop_left
-        integer height
-        integer width
-        text upload_key
-        uuid id
-    }
-    class job_executions {
-        text name
-        timestamp(3) started
-        timestamp(3) completed
-        timestamp(3) errored
-        integer duration
-        jsonb data
-        jsonb result
-        text error
-        uuid id
-    }
-    class profile_follows {
-        integer legacy_id
-        uuid profile_id
-        uuid follower_id
-        timestamp(3) followed
-        uuid id
-    }
-    class resource_contributors {
-        uuid contributor_id
-        uuid resource_id
-        timestamp(3) added
-        integer legacy_id
-        uuid id
-    }
-    class resource_events {
-        resource_event_type type
-        jsonb data
-        timestamp(3) timestamp
-        integer sequence
-        uuid resource_id
-        uuid by_id
-        uuid id
-    }
-    class resource_feedback {
-        integer rating
-        text comment
-        timestamp(3) created
-        timestamp(3) updated
-        timestamp(3) deleted
-        uuid sent_by_id
-        uuid resource_id
-    }
-    class resource_reports {
-        uuid resource_id
-        uuid sent_by_id
-        resource_report_reason reason
-        timestamp(3) created
-        text comment
-        uuid id
-    }
-    class resource_views {
-        text hash
-        integer legacy_id
-        uuid resource_id
-        uuid user_id
-        timestamp(3) timestamp
-        uuid id
-    }
-    class resources {
-        integer legacy_id
-        text title
-        text slug
-        text title_duplication_check_slug
-        boolean is_public
-        uuid image_id
-        text description
-        uuid created_by_id
-        timestamp(3) published
-        uuid base_id
-        timestamp(3) created
-        timestamp(3) updated
-        timestamp(3) deleted
-        theme[] themes
-        support_type[] support_types
-        target_audience[] target_audiences
-        text excerpt
-        timestamp(3) last_published
-        boolean publicFeedback
-        timestamp(3) last_view
-        integer views_count
-        uuid id
-    }
-    class saved_collection {
-        integer legacy_id
-        uuid saved_by_id
-        uuid collection_id
-        uuid base_id
-        timestamp(3) saved
-        uuid id
-    }
-    class search_executions {
-        uuid user_id
-        text query
-        timestamp(3) timestamp
-        integer duration
-        integer results
-        theme[] themes
-        support_type[] support_types
-        target_audience[] target_audiences
-        text[] departments
-        integer page
-        integer per_page
-        text sorting
-        search_type type
-        uuid id
-    }
-    class sessions {
-        text session_token
-        uuid user_id
-        timestamp(3) expires
-        uuid usurper_id
-        uuid id
-    }
-    class uploads {
-        text legacy_key
-        text mime_type
-        text name
-        integer size
-        uuid uploaded_by_id
-        timestamp(3) created
-        text key
-    }
-    class user_email_reconciliation {
-        text old_email
-        text expected_new_email
-    }
-    class users {
-        integer legacy_id
-        text first_name
-        text last_name
-        text name
-        text email
-        timestamp(3) email_verified
-        uuid image_id
-        text location
-        text title
-        text description
-        boolean is_public
-        timestamp(3) created
-        timestamp(3) updated
-        timestamp(3) deleted
-        text department
-        text slug
-        boolean email_is_public
-        text facebook
-        text linkedin
-        text twitter
-        text website
-        timestamp(3) has_seen_v2_onboarding
-        user_role role
-        timestamp(3) last_login
-        boolean is_fixture
-        text timezone
-        uuid id
-    }
-    class verification_tokens {
-        text identifier
-        timestamp(3) expires
-        text token
-    }
+  direction BT
+  class _prisma_migrations {
+    varchar(64) checksum
+    timestamp with time zone finished_at
+    varchar(255) migration_name
+    text logs
+    timestamp with time zone rolled_back_at
+    timestamp with time zone started_at
+    integer applied_steps_count
+    varchar(36) id
+  }
+  class accounts {
+    uuid user_id
+    text type
+    text provider
+    text provider_account_id
+    text refresh_token
+    text access_token
+    integer expires_at
+    text token_type
+    text scope
+    text id_token
+    text session_state
+    text id
+  }
+  class base_follows {
+    integer legacy_id
+    uuid base_id
+    uuid follower_id
+    timestamp(3) followed
+    uuid id
+  }
+  class base_members {
+    uuid member_id
+    uuid base_id
+    boolean is_admin
+    timestamp(3) accepted
+    text acceptation_token
+    integer legacy_id
+    timestamp(3) added
+    uuid id
+  }
+  class bases {
+    integer legacy_id
+    text title
+    uuid image_id
+    text slug
+    text title_duplication_check_slug
+    text description
+    uuid created_by_id
+    boolean is_public
+    timestamp(3) created
+    timestamp(3) updated
+    text base
+    text department
+    text email
+    boolean email_is_public
+    text facebook
+    text linkedin
+    text twitter
+    text website
+    timestamp(3) deleted
+    uuid cover_image_id
+    text excerpt
+    uuid id
+  }
+  class collection_resources {
+    integer legacy_id
+    uuid resource_id
+    uuid collection_id
+    timestamp(3) added
+    integer legacy_pinned_resources_id
+    integer order
+    uuid id
+  }
+  class collections {
+    text title
+    text description
+    boolean is_public
+    timestamp(3) created
+    timestamp(3) deleted
+    uuid created_by_id
+    uuid base_id
+    uuid image_id
+    boolean is_favorites
+    integer legacy_id
+    timestamp(3) updated
+    integer legacy_pinned_resources_base_id
+    text slug
+    integer order
+    uuid id
+  }
+  class contents {
+    integer legacy_content_id
+    integer legacy_section_id
+    integer legacy_linked_resource_id
+    integer order
+    uuid resource_id
+    content_type type
+    text title
+    text caption
+    uuid image_id
+    text file_key
+    boolean show_preview
+    text url
+    text linkDescription
+    text linkTitle
+    text linkImageUrl
+    text linkFaviconUrl
+    text text
+    timestamp(3) created
+    timestamp(3) updated
+    text image_alt_text
+    uuid id
+  }
+  class feedback {
+    uuid sent_by_id
+    integer rating
+    boolean had_difficulty
+    difficulty_area difficulty_area
+    text difficulty_comment
+    text comment
+    text wants_to_be_contacted
+    timestamp(3) created
+    uuid id
+  }
+  class images {
+    integer legacy_id
+    text alt_text
+    text blur_url
+    integer original_height
+    integer original_width
+    double precision crop_height
+    double precision crop_width
+    double precision crop_top
+    double precision crop_left
+    integer height
+    integer width
+    text upload_key
+    uuid id
+  }
+  class job_executions {
+    text name
+    timestamp(3) started
+    timestamp(3) completed
+    timestamp(3) errored
+    integer duration
+    jsonb data
+    jsonb result
+    text error
+    uuid id
+  }
+  class profile_follows {
+    integer legacy_id
+    uuid profile_id
+    uuid follower_id
+    timestamp(3) followed
+    uuid id
+  }
+  class resource_contributors {
+    uuid contributor_id
+    uuid resource_id
+    timestamp(3) added
+    integer legacy_id
+    uuid id
+  }
+  class resource_events {
+    resource_event_type type
+    jsonb data
+    timestamp(3) timestamp
+    integer sequence
+    uuid resource_id
+    uuid by_id
+    uuid id
+  }
+  class resource_feedback {
+    integer rating
+    text comment
+    timestamp(3) created
+    timestamp(3) updated
+    timestamp(3) deleted
+    uuid sent_by_id
+    uuid resource_id
+  }
+  class resource_reports {
+    uuid resource_id
+    uuid sent_by_id
+    resource_report_reason reason
+    timestamp(3) created
+    text comment
+    uuid id
+  }
+  class resource_views {
+    text hash
+    integer legacy_id
+    uuid resource_id
+    uuid user_id
+    timestamp(3) timestamp
+    uuid id
+  }
+  class resources {
+    integer legacy_id
+    text title
+    text slug
+    text title_duplication_check_slug
+    boolean is_public
+    uuid image_id
+    text description
+    uuid created_by_id
+    timestamp(3) published
+    uuid base_id
+    timestamp(3) created
+    timestamp(3) updated
+    timestamp(3) deleted
+    theme[] themes
+    support_type[] support_types
+    target_audience[] target_audiences
+    text excerpt
+    timestamp(3) last_published
+    boolean publicFeedback
+    timestamp(3) last_view
+    integer views_count
+    uuid id
+  }
+  class saved_collection {
+    integer legacy_id
+    uuid saved_by_id
+    uuid collection_id
+    uuid base_id
+    timestamp(3) saved
+    uuid id
+  }
+  class search_executions {
+    uuid user_id
+    text query
+    timestamp(3) timestamp
+    integer duration
+    integer results
+    theme[] themes
+    support_type[] support_types
+    target_audience[] target_audiences
+    text[] departments
+    integer page
+    integer per_page
+    text sorting
+    search_type type
+    uuid id
+  }
+  class sessions {
+    text session_token
+    uuid user_id
+    timestamp(3) expires
+    uuid usurper_id
+    uuid id
+  }
+  class uploads {
+    text legacy_key
+    text mime_type
+    text name
+    integer size
+    uuid uploaded_by_id
+    timestamp(3) created
+    text key
+  }
+  class user_email_reconciliation {
+    text old_email
+    text expected_new_email
+  }
+  class users {
+    integer legacy_id
+    text first_name
+    text last_name
+    text name
+    text email
+    timestamp(3) email_verified
+    uuid image_id
+    text location
+    text title
+    text description
+    boolean is_public
+    timestamp(3) created
+    timestamp(3) updated
+    timestamp(3) deleted
+    text department
+    text slug
+    boolean email_is_public
+    text facebook
+    text linkedin
+    text twitter
+    text website
+    timestamp(3) has_seen_v2_onboarding
+    user_role role
+    timestamp(3) last_login
+    boolean is_fixture
+    text timezone
+    uuid id
+  }
+  class verification_tokens {
+    text identifier
+    timestamp(3) expires
+    text token
+  }
 
-    accounts --> users: user_id to id
-    base_follows --> bases: base_id to id
-    base_follows --> users: follower_id to id
-    base_members --> bases: base_id to id
-    base_members --> users: member_id to id
-    bases --> images: cover_image_id to id
-    bases --> images: image_id to id
-    bases --> users: created_by_id to id
-    collection_resources --> collections: collection_id to id
-    collection_resources --> resources: resource_id to id
-    collections --> bases: base_id to id
-    collections --> images: image_id to id
-    collections --> users: created_by_id to id
-    contents --> images: image_id to id
-    contents --> resources: resource_id to id
-    contents --> uploads: file_key to key
-    feedback --> users: sent_by_id to id
-    images --> uploads: upload_key to key
-    profile_follows --> users: profile_id to id
-    profile_follows --> users: follower_id to id
-    resource_contributors --> resources: resource_id to id
-    resource_contributors --> users: contributor_id to id
-    resource_events --> resources: resource_id to id
-    resource_events --> users: by_id to id
-    resource_feedback --> resources: resource_id to id
-    resource_feedback --> users: sent_by_id to id
-    resource_reports --> resources: resource_id to id
-    resource_reports --> users: sent_by_id to id
-    resource_views --> resources: resource_id to id
-    resource_views --> users: user_id to id
-    resources --> bases: base_id to id
-    resources --> images: image_id to id
-    resources --> users: created_by_id to id
-    saved_collection --> bases: base_id to id
-    saved_collection --> collections: collection_id to id
-    saved_collection --> users: saved_by_id to id
-    search_executions --> users: user_id to id
-    sessions --> users: user_id to id
-    sessions --> users: usurper_id to id
-    uploads --> users: uploaded_by_id to id
-    users --> images: image_id to id
+  accounts --> users: user_id to id
+  base_follows --> bases: base_id to id
+  base_follows --> users: follower_id to id
+  base_members --> bases: base_id to id
+  base_members --> users: member_id to id
+  bases --> images: cover_image_id to id
+  bases --> images: image_id to id
+  bases --> users: created_by_id to id
+  collection_resources --> collections: collection_id to id
+  collection_resources --> resources: resource_id to id
+  collections --> bases: base_id to id
+  collections --> images: image_id to id
+  collections --> users: created_by_id to id
+  contents --> images: image_id to id
+  contents --> resources: resource_id to id
+  contents --> uploads: file_key to key
+  feedback --> users: sent_by_id to id
+  images --> uploads: upload_key to key
+  profile_follows --> users: profile_id to id
+  profile_follows --> users: follower_id to id
+  resource_contributors --> resources: resource_id to id
+  resource_contributors --> users: contributor_id to id
+  resource_events --> resources: resource_id to id
+  resource_events --> users: by_id to id
+  resource_feedback --> resources: resource_id to id
+  resource_feedback --> users: sent_by_id to id
+  resource_reports --> resources: resource_id to id
+  resource_reports --> users: sent_by_id to id
+  resource_views --> resources: resource_id to id
+  resource_views --> users: user_id to id
+  resources --> bases: base_id to id
+  resources --> images: image_id to id
+  resources --> users: created_by_id to id
+  saved_collection --> bases: base_id to id
+  saved_collection --> collections: collection_id to id
+  saved_collection --> users: saved_by_id to id
+  search_executions --> users: user_id to id
+  sessions --> users: user_id to id
+  sessions --> users: usurper_id to id
+  uploads --> users: uploaded_by_id to id
+  users --> images: image_id to id
 
 
 ```
