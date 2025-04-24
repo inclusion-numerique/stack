@@ -41,7 +41,7 @@ const BudgetPage = () => (
         Développement et Déploiement.
       </p>
       <p>
-        Membres de l’équipe : 
+        Membres de l’équipe&nbsp;:
         <ul>
           <li>Manon Galle, Intrapreneuse</li>
           <li>Thibault Rouveyrol, Responsable de produit</li>
