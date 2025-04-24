@@ -49,7 +49,7 @@ export const countProfiles = async (
                                     word_similarity((SELECT term FROM search), unaccent(coalesce(profiles.name, ''))) * 10 +
                                     word_similarity((SELECT term FROM search), unaccent(coalesce(profiles.location, ''))) * 3 +
                                     word_similarity((SELECT term FROM search), unaccent(coalesce(profiles.title, ''))) * 5 +
-                                    word_similarity((SELECT term FROM search), unaccent(coalesce(profiles.description, ''))) * 1
+                                    word_similarity((SELECT term FROM search), unaccent(coalesce(profiles.description, ''))) * 2
                                 ) AS score
                            FROM profiles),
          matching_profiles AS (SELECT *
@@ -79,57 +79,78 @@ export const rankProfiles = async (
       resources_count: number
     }[]
   >`
-          WITH search AS (SELECT unaccent(${searchTerm}) AS term),
-          profiles AS (SELECT users.id                                                 AS id,
-                                  users.slug                                                AS slug,
-                                  users.created                                             AS created,
-                                  users.last_name                                           AS last_name,
-                                  users.name                                                AS name,
-                                  users.location                                            AS location,
-                                  users.title                                               AS title,
-                                  users.description                                         AS description,
-                                  COUNT(DISTINCT profile_follows.id)                        AS follows_count,
-                                  COUNT(DISTINCT resources.id)                              AS resources_count
+      WITH search AS (SELECT unaccent(${searchTerm}) AS term),
+           private_resources AS (SELECT resources.id            as id,
+                                        resources.created_by_id as created_by_id
+                                 FROM resources
+                                          /* We join with the base member correspondig to the user id */
+                                     LEFT JOIN bases ON (resources.base_id = bases.id AND bases.deleted IS NULL)
+                                     LEFT JOIN base_members
+                                     ON bases.id = base_members.base_id AND
+                                     base_members.member_id = ${userId}::uuid AND
+                                     base_members.accepted IS NOT NULL
+                                 WHERE
+                                     /* Private resources may not be published */
+                                     (resources.is_public = false OR resources.published IS NULL)
+                                   AND resources.deleted IS NULL
+                                   AND (
+                                     /* User is member of the non-deleted base owning the private resource */
+                                     (base_members.id IS NOT NULL)
+                                         /* OR User is the creator of the private resource */
+                                         OR resources.created_by_id = ${userId}::uuid)),
+           profiles AS (SELECT users.id                                            AS id,
+                               users.slug                                          AS slug,
+                               users.created                                       AS created,
+                               users.last_name                                     AS last_name,
+                               users.name                                          AS name,
+                               users.location                                      AS location,
+                               users.title                                         AS title,
+                               users.description                                   AS description,
+                               COUNT(DISTINCT profile_follows.id)                  AS follows_count,
+                               (COALESCE(COUNT(DISTINCT public_resources.id), 0) +
+                                COALESCE(COUNT(DISTINCT private_resources.id), 0)) AS resources_count,
+                               COUNT(DISTINCT private_resources.id)                AS debug_private_resources_count
                         FROM users
-                        LEFT JOIN profile_follows ON users.id = profile_follows.profile_id
-                        LEFT JOIN resources ON users.id = resources.created_by_id
-                                AND resources.deleted IS NULL
-                                AND resources.is_public = true
-                                AND resources.published IS NOT NULL
-                        LEFT JOIN resource_contributors
-                                  ON resources.id = resource_contributors.resource_id AND
-                                                    resource_contributors.contributor_id = ${userId}::uuid
-                                           LEFT JOIN bases ON resources.base_id = bases.id
-                                           LEFT JOIN users as creator ON resources.created_by_id = creator.id
-                                      /* Join base member only to have only one row per resource */
-                                      /* Null will never match as member_id is not nullable */
-                                           LEFT JOIN base_members
-                                                     ON bases.id = base_members.base_id AND
-                                                        base_members.member_id = ${userId}::uuid AND
-                                                        base_members.accepted IS NOT NULL
-                    WHERE (
-                        /* Authorization*/
-                        /* User is public  */
-                        users.is_public = true
-                            /* User is private and user is self */
-                            OR users.id = ${userId}::uuid
-                        )
-                      AND (
-                        users.deleted IS NULL
-                        )
-                    GROUP BY users.id),
-        scored_profiles AS (SELECT profiles.*,
-                                (
-                                    word_similarity((SELECT term FROM search), unaccent(coalesce(profiles.name, ''))) * 10 +
-                                    word_similarity((SELECT term FROM search), unaccent(coalesce(profiles.location, ''))) * 3 +
-                                    word_similarity((SELECT term FROM search), unaccent(coalesce(profiles.title, ''))) * 5 +
-                                    word_similarity((SELECT term FROM search), unaccent(coalesce(profiles.description, ''))) * 1
-                                ) AS score
-                           FROM profiles),
-         matching_profiles AS (SELECT *
-                              FROM scored_profiles
-                              WHERE (SELECT term FROM search) = ''
-                                 OR score > 4)
+                                 LEFT JOIN profile_follows ON users.id = profile_follows.profile_id
+                            /* Join with public published resources */
+                                 LEFT JOIN resources as public_resources ON (
+                            users.id = public_resources.created_by_id
+                                AND public_resources.deleted IS NULL
+                                AND public_resources.is_public = true
+                                AND public_resources.published IS NOT NULL
+                            )
+                            /* Join with private resources */
+                                 LEFT JOIN private_resources ON users.id = private_resources.created_by_id
+                        WHERE (
+                            /* Authorization*/
+                            /* User is public  */
+                            users.is_public = true
+                                /* User is private and user is self */
+                                OR users.id = ${userId}::uuid
+                            )
+                          AND (
+                            users.deleted IS NULL
+                            )
+                        GROUP BY users.id),
+           scored_profiles AS (SELECT profiles.*,
+                                      (
+                                          word_similarity((SELECT term FROM search),
+                                                          unaccent(coalesce(profiles.name, ''))) * 10 +
+                                          word_similarity((SELECT term FROM search),
+                                                          unaccent(coalesce(profiles.location, ''))) * 3 +
+                                          word_similarity((SELECT term FROM search),
+                                                          unaccent(coalesce(profiles.title, ''))) * 5 +
+                                          word_similarity((SELECT term FROM search),
+                                                          unaccent(coalesce(profiles.description, ''))) * 2
+                                          ) AS score
+                               FROM profiles),
+           matching_profiles AS (SELECT *
+                                 FROM scored_profiles
+                                 WHERE (SELECT term FROM search) = ''
+                                    OR score > 4)
+      SELECT *
+      FROM private_resources
+      /*
       SELECT id, score, resources_count
       FROM matching_profiles
       ORDER BY CASE
@@ -156,7 +177,10 @@ export const rankProfiles = async (
       LIMIT ${paginationParams.perPage} OFFSET ${
         (paginationParams.page - 1) * paginationParams.perPage
       };
+       */
   `
+
+  console.log(searchResults)
 
   // Where IN does not garantee same order as the ids array so we have to sort the results in memory
   const resultIndexById = new Map(
