@@ -148,10 +148,7 @@ export const rankProfiles = async (
                                  FROM scored_profiles
                                  WHERE (SELECT term FROM search) = ''
                                     OR score > 4)
-      SELECT *
-      FROM private_resources
-      /*
-      SELECT id, score, resources_count
+      SELECT matching_profiles.id as id, score, resources_count
       FROM matching_profiles
       ORDER BY CASE
                    /* This is the only ASC order */
@@ -177,10 +174,7 @@ export const rankProfiles = async (
       LIMIT ${paginationParams.perPage} OFFSET ${
         (paginationParams.page - 1) * paginationParams.perPage
       };
-       */
   `
-
-  console.log(searchResults)
 
   // Where IN does not garantee same order as the ids array so we have to sort the results in memory
   const resultIndexById = new Map(

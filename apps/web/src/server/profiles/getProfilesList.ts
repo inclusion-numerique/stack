@@ -1,6 +1,7 @@
 import { Prisma } from '@prisma/client'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import { prismaClient } from '@app/web/prismaClient'
+import { isDefinedAndNotNull } from '@app/web/utils/isDefinedAndNotNull'
 
 export const profileListSelect = (user: { id: string } | null) =>
   ({
@@ -43,11 +44,40 @@ export const profileListSelect = (user: { id: string } | null) =>
         id: true,
       },
       where: {
-        deleted: null,
-        isPublic: true,
-        published: {
-          not: null,
-        },
+        OR: [
+          // Public resources
+          {
+            deleted: null,
+            isPublic: true,
+            published: {
+              not: null,
+            },
+          },
+          // Private resource created by the user
+          user.id
+            ? {
+                deleted: null,
+                isPublic: false,
+                createdById: user.id,
+              }
+            : null,
+          // Private resource in a base for which the user is a member
+          user.id
+            ? {
+                deleted: null,
+                isPublic: false,
+                base: {
+                  deleted: null,
+                  members: {
+                    some: {
+                      accepted: { not: null },
+                      memberId: user.id,
+                    },
+                  },
+                },
+              }
+            : null,
+        ].filter(isDefinedAndNotNull),
       },
     },
     resources: {
