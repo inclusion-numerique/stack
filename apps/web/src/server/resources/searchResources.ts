@@ -26,11 +26,11 @@ import { cleanSearchTerm } from '@app/web/server/search/searchToTsQueryInput'
 
 const ranking = {
   weights: {
-    title: 5,
-    publishedBy: 3,
-    description: 2,
+    title: 6,
+    publishedBy: 5,
+    description: 3,
   },
-  threshold: 4,
+  threshold: 3,
 }
 
 export const countResources = async (

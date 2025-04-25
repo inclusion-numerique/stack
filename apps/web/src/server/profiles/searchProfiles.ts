@@ -24,9 +24,9 @@ const ranking = {
     name: 5,
     location: 3,
     title: 3,
-    description: 2,
+    description: 3,
   },
-  threshold: 4,
+  threshold: 3,
 }
 
 export const countProfiles = async (
@@ -126,8 +126,7 @@ export const rankProfiles = async (
                                users.description                                   AS description,
                                COUNT(DISTINCT profile_follows.id)                  AS follows_count,
                                (COALESCE(COUNT(DISTINCT public_resources.id), 0) +
-                                COALESCE(COUNT(DISTINCT private_resources.id), 0)) AS resources_count,
-                               COUNT(DISTINCT private_resources.id)                AS debug_private_resources_count
+                                COALESCE(COUNT(DISTINCT private_resources.id), 0)) AS resources_count
                         FROM users
                                  LEFT JOIN profile_follows ON users.id = profile_follows.profile_id
                             /* Join with public published resources */
@@ -146,9 +145,8 @@ export const rankProfiles = async (
                                 /* User is private and user is self */
                                 OR users.id = ${userId}::uuid
                             )
-                          AND (
-                            users.deleted IS NULL
-                            )
+                          AND users.deleted IS NULL
+
                         GROUP BY users.id),
            scored_profiles AS (SELECT profiles.*,
                                       (
@@ -170,7 +168,7 @@ export const rankProfiles = async (
                                  FROM scored_profiles
                                  WHERE (SELECT term FROM search) = ''
                                     OR score > ${ranking.threshold})
-      SELECT matching_profiles.id as id, score, resources_count
+      SELECT id, score, resources_count
       FROM matching_profiles
       ORDER BY CASE
                    /* This is the only ASC order */
@@ -203,21 +201,9 @@ export const rankProfiles = async (
     searchResults.map(({ id }, index) => [id, index]),
   )
 
-  const debugIndexById = new Map(
-    searchResults.map(({ id, score, resources_count }, index) => [
-      id,
-      {
-        score,
-        index,
-        resources_count,
-      },
-    ]),
-  )
-
   return {
     searchResults,
     resultIndexById,
-    debugIndexById,
   }
 }
 

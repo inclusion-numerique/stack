@@ -61,21 +61,21 @@ export const profileListSelect = (user: { id: string } | null) =>
                 createdById: user.id,
               }
             : null,
-          // TODO Resources created by profile (any status) in a base for which the querying user is a member ?
-          // user?.id
-          //   ? {
-          //       deleted: null,
-          //       base: {
-          //         deleted: null,
-          //         members: {
-          //           some: {
-          //             accepted: { not: null },
-          //             memberId: user.id,
-          //           },
-          //         },
-          //       },
-          //     }
-          //   : null,
+          // Resources created by profile (any status) in a base for which the querying user is a member ?
+          user?.id
+            ? {
+                deleted: null,
+                base: {
+                  deleted: null,
+                  members: {
+                    some: {
+                      accepted: { not: null },
+                      memberId: user.id,
+                    },
+                  },
+                },
+              }
+            : null,
         ].filter(isDefinedAndNotNull),
       },
     },
