@@ -34,8 +34,6 @@ const ProfilesSearchResultPage = async ({
     countSearchResults(searchParams, user),
   ])
 
-  console.log('PROFILES', profiles)
-
   return (
     <>
       <SynchronizeTabCounts tabCounts={tabCounts} />
