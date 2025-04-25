@@ -39,13 +39,14 @@ export const profileListSelect = (user: { id: string } | null) =>
         },
       },
     },
+    // We query created resources ids to later count them
     createdResources: {
       select: {
         id: true,
       },
       where: {
         OR: [
-          // Public resources
+          // Public published resources (visible to all users)
           {
             deleted: null,
             isPublic: true,
@@ -53,30 +54,28 @@ export const profileListSelect = (user: { id: string } | null) =>
               not: null,
             },
           },
-          // Private resource created by the user
-          user.id
+          // All resources created by the querying user (any status)
+          user?.id
             ? {
                 deleted: null,
-                isPublic: false,
                 createdById: user.id,
               }
             : null,
-          // Private resource in a base for which the user is a member
-          user.id
-            ? {
-                deleted: null,
-                isPublic: false,
-                base: {
-                  deleted: null,
-                  members: {
-                    some: {
-                      accepted: { not: null },
-                      memberId: user.id,
-                    },
-                  },
-                },
-              }
-            : null,
+          // TODO Resources created by profile (any status) in a base for which the querying user is a member ?
+          // user?.id
+          //   ? {
+          //       deleted: null,
+          //       base: {
+          //         deleted: null,
+          //         members: {
+          //           some: {
+          //             accepted: { not: null },
+          //             memberId: user.id,
+          //           },
+          //         },
+          //       },
+          //     }
+          //   : null,
         ].filter(isDefinedAndNotNull),
       },
     },

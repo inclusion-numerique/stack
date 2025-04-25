@@ -28,34 +28,38 @@ export const countProfiles = async (
 
   const result = await prismaClient.$queryRaw<{ count: number }[]>`
       WITH search AS (SELECT unaccent(${searchTerm}) AS term),
-         profiles AS (SELECT      users.name                                                AS name,
-                                  users.location                                            AS location,
-                                  users.title                                               AS title,
-                                  users.description                                         AS description
+           profiles AS (SELECT users.name        AS name,
+                               users.location    AS location,
+                               users.title       AS title,
+                               users.description AS description
                         FROM users
-                    WHERE (
-                        /* Authorization*/
-                        /* User is public  */
-                        users.is_public = true
-                            /* User is private and user is self */
-                            OR users.id = ${userId}::uuid
-                        )
-                      AND (
-                        users.deleted IS NULL
-                        )
-                    GROUP BY users.id),
-        scored_profiles AS (SELECT profiles.*,
-                                (
-                                    word_similarity((SELECT term FROM search), unaccent(coalesce(profiles.name, ''))) * 10 +
-                                    word_similarity((SELECT term FROM search), unaccent(coalesce(profiles.location, ''))) * 3 +
-                                    word_similarity((SELECT term FROM search), unaccent(coalesce(profiles.title, ''))) * 5 +
-                                    word_similarity((SELECT term FROM search), unaccent(coalesce(profiles.description, ''))) * 2
-                                ) AS score
-                           FROM profiles),
-         matching_profiles AS (SELECT *
-                              FROM scored_profiles
-                              WHERE (SELECT term FROM search) = ''
-                                 OR score > 4)
+                        WHERE (
+                            /* Authorization*/
+                            /* User is public  */
+                            users.is_public = true
+                                /* User is private and user is self */
+                                OR users.id = ${userId}::uuid
+                            )
+                          AND (
+                            users.deleted IS NULL
+                            )
+                        GROUP BY users.id),
+           scored_profiles AS (SELECT profiles.*,
+                                      (
+                                          word_similarity((SELECT term FROM search),
+                                                          unaccent(coalesce(profiles.name, ''))) * 10 +
+                                          word_similarity((SELECT term FROM search),
+                                                          unaccent(coalesce(profiles.location, ''))) * 3 +
+                                          word_similarity((SELECT term FROM search),
+                                                          unaccent(coalesce(profiles.title, ''))) * 5 +
+                                          word_similarity((SELECT term FROM search),
+                                                          unaccent(coalesce(profiles.description, ''))) * 2
+                                          ) AS score
+                               FROM profiles),
+           matching_profiles AS (SELECT *
+                                 FROM scored_profiles
+                                 WHERE (SELECT term FROM search) = ''
+                                    OR score > 4)
       SELECT COUNT(*)::integer as count
       FROM matching_profiles
   `
@@ -84,17 +88,17 @@ export const rankProfiles = async (
                                         resources.created_by_id as created_by_id
                                  FROM resources
                                           /* We join with the base member correspondig to the user id */
-                                     LEFT JOIN bases ON (resources.base_id = bases.id AND bases.deleted IS NULL)
-                                     LEFT JOIN base_members
-                                     ON bases.id = base_members.base_id AND
-                                     base_members.member_id = ${userId}::uuid AND
-                                     base_members.accepted IS NOT NULL
+                                          LEFT JOIN bases ON (resources.base_id = bases.id AND bases.deleted IS NULL)
+                                          LEFT JOIN base_members
+                                                    ON bases.id = base_members.base_id AND
+                                                       base_members.member_id = ${userId}::uuid AND
+                                                       base_members.accepted IS NOT NULL
                                  WHERE
-                                     /* Private resources may not be published */
-                                     (resources.is_public = false OR resources.published IS NULL)
+                                     /* Private resources (is_public false or null) with any status */
+                                     (resources.is_public != true OR resources.published IS NULL)
                                    AND resources.deleted IS NULL
                                    AND (
-                                     /* User is member of the non-deleted base owning the private resource */
+                                     /* User is member of the non-deleted base owning the resource */
                                      (base_members.id IS NOT NULL)
                                          /* OR User is the creator of the private resource */
                                          OR resources.created_by_id = ${userId}::uuid)),
