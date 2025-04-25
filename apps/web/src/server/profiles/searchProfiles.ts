@@ -19,6 +19,16 @@ import { cleanSearchTerm } from '@app/web/server/search/searchToTsQueryInput'
  * ⚠️ We cannot reuse query fragments from prismaClient with raw sql without opting out of security features. Keep conditions in sync in the 2 functions.
  */
 
+const ranking = {
+  weights: {
+    name: 5,
+    location: 3,
+    title: 3,
+    description: 2,
+  },
+  threshold: 4,
+}
+
 export const countProfiles = async (
   searchParams: Pick<SearchParams, 'query'>,
   user: Pick<SessionUser, 'id'> | null,
@@ -47,19 +57,23 @@ export const countProfiles = async (
            scored_profiles AS (SELECT profiles.*,
                                       (
                                           word_similarity((SELECT term FROM search),
-                                                          unaccent(coalesce(profiles.name, ''))) * 10 +
+                                                          unaccent(coalesce(profiles.name, ''))) *
+                                          ${ranking.weights.name} +
                                           word_similarity((SELECT term FROM search),
-                                                          unaccent(coalesce(profiles.location, ''))) * 3 +
+                                                          unaccent(coalesce(profiles.location, ''))) *
+                                          ${ranking.weights.location} +
                                           word_similarity((SELECT term FROM search),
-                                                          unaccent(coalesce(profiles.title, ''))) * 5 +
+                                                          unaccent(coalesce(profiles.title, ''))) *
+                                          ${ranking.weights.title} +
                                           word_similarity((SELECT term FROM search),
-                                                          unaccent(coalesce(profiles.description, ''))) * 2
+                                                          unaccent(coalesce(profiles.description, ''))) *
+                                          ${ranking.weights.description}
                                           ) AS score
                                FROM profiles),
            matching_profiles AS (SELECT *
                                  FROM scored_profiles
                                  WHERE (SELECT term FROM search) = ''
-                                    OR score > 4)
+                                    OR score > ${ranking.threshold})
       SELECT COUNT(*)::integer as count
       FROM matching_profiles
   `
@@ -139,19 +153,23 @@ export const rankProfiles = async (
            scored_profiles AS (SELECT profiles.*,
                                       (
                                           word_similarity((SELECT term FROM search),
-                                                          unaccent(coalesce(profiles.name, ''))) * 10 +
+                                                          unaccent(coalesce(profiles.name, ''))) *
+                                          ${ranking.weights.name} +
                                           word_similarity((SELECT term FROM search),
-                                                          unaccent(coalesce(profiles.location, ''))) * 3 +
+                                                          unaccent(coalesce(profiles.location, ''))) *
+                                          ${ranking.weights.location} +
                                           word_similarity((SELECT term FROM search),
-                                                          unaccent(coalesce(profiles.title, ''))) * 5 +
+                                                          unaccent(coalesce(profiles.title, ''))) *
+                                          ${ranking.weights.title} +
                                           word_similarity((SELECT term FROM search),
-                                                          unaccent(coalesce(profiles.description, ''))) * 2
+                                                          unaccent(coalesce(profiles.description, ''))) *
+                                          ${ranking.weights.description}
                                           ) AS score
                                FROM profiles),
            matching_profiles AS (SELECT *
                                  FROM scored_profiles
                                  WHERE (SELECT term FROM search) = ''
-                                    OR score > 4)
+                                    OR score > ${ranking.threshold})
       SELECT matching_profiles.id as id, score, resources_count
       FROM matching_profiles
       ORDER BY CASE
