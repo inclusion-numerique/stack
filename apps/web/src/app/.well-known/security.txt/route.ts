@@ -1,3 +1,6 @@
+
+export const dynamic = 'force-static'
+
 export const GET = () =>
   new Response(`Contact: mailto:support-incubateur@anct.gouv.fr
 Policy: https://incubateur.anct.gouv.fr/security-policy
