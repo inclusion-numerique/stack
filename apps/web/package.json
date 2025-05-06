@@ -26,7 +26,7 @@
     "standalone:start": "HOSTNAME=\"0.0.0.0\" ../../node_modules/.bin/dotenv -e ../../.env -- node ./.next/standalone/apps/web/server.js"
   },
   "engines": {
-    "node": "^22.9"
+    "node": "^22.15"
   },
   "dependencies": {
     "@app/emails": "workspace:^",
