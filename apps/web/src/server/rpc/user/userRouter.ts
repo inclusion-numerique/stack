@@ -1,7 +1,7 @@
-import { v4 } from 'uuid'
 import { prismaClient } from '@app/web/prismaClient'
 import { publicProcedure, router } from '@app/web/server/rpc/createRouter'
 import { ServerUserSignupValidation } from '@app/web/server/rpc/user/userSignup.server'
+import { v4 } from 'uuid'
 
 export const userRouter = router({
   signup: publicProcedure

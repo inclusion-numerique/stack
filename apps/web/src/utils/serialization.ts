@@ -17,7 +17,7 @@ superjson.registerCustom<Decimal, string>(
 
 // Helper type to obfuscate serialized data
 // We need the unused <T> to carry the type on deserialization.
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// biome-ignore lint/correctness/noUnusedVariables: we need the type to be carried on deserialization
 export type Serialized<T> = { __serialized: symbol }
 
 export const serialize = <T>(data: T): Serialized<T> =>

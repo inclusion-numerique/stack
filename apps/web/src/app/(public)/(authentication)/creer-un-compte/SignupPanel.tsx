@@ -1,9 +1,9 @@
 import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
-import ButtonsGroup from '@codegouvfr/react-dsfr/ButtonsGroup'
 import { AuthCard } from '@app/web/app/(public)/(authentication)/AuthCard'
 import { signinErrorMessage } from '@app/web/app/(public)/(authentication)/authenticationErrorMessage'
 import ProConnectSigninButton from '@app/web/app/(public)/(authentication)/connexion/ProConnectSigninButton'
 import EmailSignupForm from '@app/web/app/(public)/(authentication)/creer-un-compte/EmailSignupForm'
+import ButtonsGroup from '@codegouvfr/react-dsfr/ButtonsGroup'
 import { Route } from 'next'
 
 const SignupPanel = ({

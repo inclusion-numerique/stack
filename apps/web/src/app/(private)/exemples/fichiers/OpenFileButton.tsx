@@ -1,9 +1,9 @@
 'use client'
 
-import { PropsWithChildren } from 'react'
-import Button from '@codegouvfr/react-dsfr/Button'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { useFileOpen } from '@app/web/hooks/useFileOpen'
+import Button from '@codegouvfr/react-dsfr/Button'
+import { PropsWithChildren } from 'react'
 
 const OpenFileButton = ({
   children,
@@ -17,6 +17,7 @@ const OpenFileButton = ({
 
   const onClick = () => {
     fileOpen.open(fileKey).catch((error) => {
+      // biome-ignore lint/suspicious/noConsole: used for troubleshooting
       console.error('Error opening file', error)
     })
   }

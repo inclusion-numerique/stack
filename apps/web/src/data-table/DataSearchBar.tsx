@@ -1,14 +1,14 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-import { useEffect, useRef } from 'react'
-import { SearchBar } from '@codegouvfr/react-dsfr/SearchBar'
-import { createSearchCallback } from '@app/web/data-table/createSearchCallback'
 import type {
   DataTableConfiguration,
   DataTableRow,
   DataTableSearchParams,
 } from '@app/web/data-table/DataTableConfiguration'
+import { createSearchCallback } from '@app/web/data-table/createSearchCallback'
+import { SearchBar } from '@codegouvfr/react-dsfr/SearchBar'
+import { useRouter } from 'next/navigation'
+import { useEffect, useRef } from 'react'
 
 const DataSearchBar = <
   Data extends DataTableRow,
@@ -33,6 +33,7 @@ const DataSearchBar = <
   const searchBarRef = useRef<HTMLDivElement>(null)
 
   // Initialise input value
+  // biome-ignore lint/correctness/useExhaustiveDependencies: this is only used to initialize the input value
   useEffect(
     () => {
       if (!searchParams.recherche) {

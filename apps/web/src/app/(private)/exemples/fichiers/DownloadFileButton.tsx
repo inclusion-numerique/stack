@@ -1,9 +1,9 @@
 'use client'
 
-import { PropsWithChildren } from 'react'
-import Button from '@codegouvfr/react-dsfr/Button'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { useFileDownload } from '@app/web/hooks/useFileDownload'
+import Button from '@codegouvfr/react-dsfr/Button'
+import { PropsWithChildren } from 'react'
 
 const DownloadFileButton = ({
   children,
@@ -19,6 +19,7 @@ const DownloadFileButton = ({
 
   const onClick = () => {
     fileDownload.download(fileKey, filename).catch((error) => {
+      // biome-ignore lint/suspicious/noConsole: used for troubleshooting
       console.error('Error downloading file', error)
     })
   }

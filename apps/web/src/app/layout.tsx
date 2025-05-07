@@ -1,19 +1,16 @@
-// app.css must be the first import for webpack css chunks to work properly
-// eslint-disable-next-line import/order
-// setup.ts must be the first import for webpack css chunks to work properly
-// eslint-disable-next-line import/order
-import '@app/web/app/setup'
-import { Metadata, Viewport } from 'next'
-import Link from 'next/link'
-import { PropsWithChildren } from 'react'
-import { setLink } from '@codegouvfr/react-dsfr/link'
+// biome-ignore organizeImports: app/setup must be the first import for webpack css chunks to work properly
 import Toaster from '@app/ui/toast/Toaster'
+import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 import { Dsfr } from '@app/web/app/Dsfr'
 import { EnvInformation } from '@app/web/app/EnvInformation'
 import { Matomo } from '@app/web/app/Matomo'
 import { PreloadResources } from '@app/web/app/PreloadResources'
-import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 import { getServerDsfrTheme } from '@app/web/app/getServerDsfrTheme'
+import '@app/web/app/setup'
+import { setLink } from '@codegouvfr/react-dsfr/link'
+import { Metadata, Viewport } from 'next'
+import Link from 'next/link'
+import { PropsWithChildren } from 'react'
 
 declare module '@codegouvfr/react-dsfr/link' {
   interface RegisterLink {

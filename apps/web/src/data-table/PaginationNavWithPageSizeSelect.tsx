@@ -1,9 +1,9 @@
 import { SelectOption } from '@app/ui/components/Form/utils/options'
-import classNames from 'classnames'
+import PageSizeSelect from '@app/web/data-table/PageSizeSelect'
 import PaginationNav, {
   PaginationNavProps,
 } from '@app/web/data-table/PaginationNav'
-import PageSizeSelect from '@app/web/data-table/PageSizeSelect'
+import classNames from 'classnames'
 
 export type PaginationNavWithPageSizeProps = PaginationNavProps & {
   pageSizeOptions: SelectOption[]

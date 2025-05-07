@@ -1,10 +1,10 @@
-import Link from 'next/link'
 import { formatByteSize } from '@app/ui/utils/formatByteSize'
 import DownloadFileButton from '@app/web/app/(private)/exemples/fichiers/DownloadFileButton'
 import OpenFileButton from '@app/web/app/(private)/exemples/fichiers/OpenFileButton'
 import UploadFileForm from '@app/web/app/(private)/exemples/fichiers/UploadFileForm'
 import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
 import { prismaClient } from '@app/web/prismaClient'
+import Link from 'next/link'
 
 const UploadsPage = async () => {
   const user = await getAuthenticatedSessionUser()

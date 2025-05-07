@@ -1,6 +1,6 @@
+import { trpc } from '@app/web/trpc'
 import axios from 'axios'
 import { useState } from 'react'
-import { trpc } from '@app/web/trpc'
 
 export const useFileUpload = ({
   onProgress,
@@ -27,6 +27,7 @@ export const useFileUpload = ({
       })
       .catch((error) => {
         // TODO Sentry capture exception
+        // biome-ignore lint/suspicious/noConsole: used for troubleshooting
         console.error(error)
         setUploadError(
           "Une erreur est survenue lors de l'envoi du fichier. Veuillez réessayer.",
@@ -64,6 +65,7 @@ export const useFileUpload = ({
       })
       .catch((error) => {
         // TODO Sentry capture exception
+        // biome-ignore lint/suspicious/noConsole: used for troubleshooting
         console.error(error)
         setUploadError(
           "Une erreur est survenue lors de l'envoi du fichier. Veuillez réessayer.",

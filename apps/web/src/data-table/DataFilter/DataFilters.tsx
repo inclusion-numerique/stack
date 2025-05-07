@@ -1,14 +1,14 @@
 'use client'
 
-import Button from '@codegouvfr/react-dsfr/Button'
-import { ReactNode, useEffect, useRef, useState } from 'react'
 import OptionBadge from '@app/ui/components/Form/OptionBadge'
-import { useRouter } from 'next/navigation'
 import {
   DataTableConfiguration,
   DataTableFilterValues,
   DataTableSearchParams,
 } from '@app/web/data-table/DataTableConfiguration'
+import Button from '@codegouvfr/react-dsfr/Button'
+import { useRouter } from 'next/navigation'
+import { ReactNode, useEffect, useRef, useState } from 'react'
 
 /**
  * TODO This is not yet implemented
@@ -30,7 +30,7 @@ const DataFilters = <Configuration extends DataTableConfiguration>({
 }) => {
   const router = useRouter()
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // biome-ignore lint/correctness/noUnusedVariables: not yet implemented
   const onFilter = () => {
     // TODO MERGE QUERY PARAAMS
     router.push(`${baseHref}?filter=todo`)
@@ -41,25 +41,22 @@ const DataFilters = <Configuration extends DataTableConfiguration>({
   const searchBarRef = useRef<HTMLDivElement>(null)
 
   // Initialise input value
-  useEffect(
-    () => {
-      if (!searchParams.recherche) {
-        return
-      }
-      const searchBarElement = searchBarRef.current
-      if (!searchBarElement) return
+  // biome-ignore lint/correctness/useExhaustiveDependencies: this is only used to initialize the input value
+  useEffect(() => {
+    if (!searchParams.recherche) {
+      return
+    }
+    const searchBarElement = searchBarRef.current
+    if (!searchBarElement) return
 
-      // Find the input element inside searchbar element , and set value to searchQuery
+    // Find the input element inside searchbar element , and set value to searchQuery
 
-      const input = searchBarElement.querySelector('input')
+    const input = searchBarElement.querySelector('input')
 
-      if (input) {
-        input.value = searchParams.recherche
-      }
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
-  )
+    if (input) {
+      input.value = searchParams.recherche
+    }
+  }, [])
 
   const filterValueEntries = Object.entries(filterValues)
 
@@ -71,6 +68,7 @@ const DataFilters = <Configuration extends DataTableConfiguration>({
 
   // eslint-disable-next-line unicorn/consistent-function-scoping
   const onRemoveFilter = (name: string, value: string) => {
+    // biome-ignore lint/suspicious/noConsole: used while not fully implemented
     console.log('REMOVE FILTER', { name, value })
   }
 

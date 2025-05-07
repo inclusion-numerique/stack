@@ -1,13 +1,13 @@
-import React, { ComponentType } from 'react'
-import classNames from 'classnames'
-import Link from 'next/link'
 import {
   DataTableConfiguration,
   DataTableRow,
   DataTableSearchParams,
 } from '@app/web/data-table/DataTableConfiguration'
-import { createSortLinkProps } from '@app/web/data-table/createSortLinkProps'
 import SortLink from '@app/web/data-table/SortLink'
+import { createSortLinkProps } from '@app/web/data-table/createSortLinkProps'
+import classNames from 'classnames'
+import Link from 'next/link'
+import { ComponentType } from 'react'
 import styles from './DataTable.module.css'
 
 export type DataTableClasses = {

@@ -1,9 +1,9 @@
+import { executeBackupDatabaseJob } from '@app/web/jobs/backup-database/executeBackupDatabaseJob'
+import type { Job, JobName, JobPayload } from '@app/web/jobs/jobs'
+import { prismaClient } from '@app/web/prismaClient'
+import { createStopwatch } from '@app/web/utils/stopwatch'
 import * as Sentry from '@sentry/nextjs'
 import { v4 } from 'uuid'
-import type { Job, JobName, JobPayload } from '@app/web/jobs/jobs'
-import { executeBackupDatabaseJob } from '@app/web/jobs/backup-database/executeBackupDatabaseJob'
-import { createStopwatch } from '@app/web/utils/stopwatch'
-import { prismaClient } from '@app/web/prismaClient'
 
 export type JobExecutor<Name extends JobName, Result = unknown> = (
   job: Job & { name: Name; payload: JobPayload<Name> },
@@ -48,6 +48,7 @@ export const executeJob = async (job: Job) => {
         if (Sentry?.captureException) {
           Sentry.captureException(error)
         }
+        // biome-ignore lint/suspicious/noConsole: used for troubleshooting
         console.error(error)
       })
 
@@ -61,6 +62,7 @@ export const executeJob = async (job: Job) => {
     if (Sentry?.captureException) {
       Sentry.captureException(error)
     }
+    // biome-ignore lint/suspicious/noConsole: used for troubleshooting
     console.error(error)
     const { ended, duration } = stopWatch.stop()
 

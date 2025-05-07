@@ -1,6 +1,6 @@
 import Button from '@codegouvfr/react-dsfr/Button'
-import React, { ReactNode } from 'react'
 import classNames from 'classnames'
+import React, { ReactNode } from 'react'
 
 const BackButton = ({
   href,

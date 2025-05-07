@@ -1,12 +1,5 @@
 'use client'
 
-import classNames from 'classnames'
-import { useRouter } from 'next/navigation'
-import React, { useMemo, useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
-import Button from '@codegouvfr/react-dsfr/Button'
-import { zodResolver } from '@hookform/resolvers/zod'
 import FileFormField from '@app/ui/components/Form/FileFormField'
 import {
   FileValidationOptions,
@@ -15,6 +8,13 @@ import {
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { useFileUpload } from '@app/web/hooks/useFileUpload'
 import { trpc } from '@app/web/trpc'
+import Button from '@codegouvfr/react-dsfr/Button'
+import { zodResolver } from '@hookform/resolvers/zod'
+import classNames from 'classnames'
+import { useRouter } from 'next/navigation'
+import { useMemo, useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
 
 const createUploadFileFormValidation = (options: FileValidationOptions) =>
   z.object({
@@ -32,6 +32,7 @@ const UploadFileForm = ({
 }: FileValidationOptions) => {
   const validation = useMemo(
     () => createUploadFileFormValidation(fileValidationOptions),
+    // biome-ignore lint/correctness/useExhaustiveDependencies: this is only used to initialize the validation
     [fileValidationOptions],
   )
 

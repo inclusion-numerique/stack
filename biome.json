@@ -254,6 +254,9 @@
   "css": {
     "parser": {
       "cssModules": true
+    },
+    "formatter": {
+      "quoteStyle": "single"
     }
   },
   "overrides": [

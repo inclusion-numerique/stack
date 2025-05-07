@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
 import {
   jobTriggerInfoFromRequest,
   rewriteTriggerToJobEndpoint,
 } from '@app/web/jobs/jobTriggerMiddleware'
-import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
+import { NextRequest, NextResponse } from 'next/server'
 
 const nodeEnvironment = process.env.NODE_ENV
 const isCI = !!process.env.CI
@@ -51,10 +51,6 @@ const redirectToHttps = ({
   const path = `${requestUrl.pathname}${requestUrl.search}`
   const redirectTo = `${httpsBase}${path}`
 
-  console.info(
-    `HTTP protocol - redirecting to ${httpsBase}${requestUrl.pathname}${requestUrl.search}`,
-  )
-
   return NextResponse.redirect(redirectTo, { status: 308 })
 }
 
@@ -69,7 +65,6 @@ const shouldRedirectToBaseDomain = ({
 const redirectToBaseDomain = ({
   httpsBase,
   requestUrl,
-  requestHost,
 }: {
   httpsBase: string
   requestUrl: URL
@@ -77,10 +72,6 @@ const redirectToBaseDomain = ({
 }) => {
   const path = `${requestUrl.pathname}${requestUrl.search}`
   const redirectTo = `${httpsBase}${path}`
-
-  console.info(
-    `Secondary domain request ${requestHost} - Redirecting to base domain ${redirectTo}`,
-  )
 
   return NextResponse.redirect(redirectTo, { status: 308 })
 }

@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import { formatByteSize } from '@app/ui/utils/formatByteSize'
 import DownloadFileButton from '@app/web/app/(private)/exemples/fichiers/DownloadFileButton'
 import OpenFileButton from '@app/web/app/(private)/exemples/fichiers/OpenFileButton'
@@ -6,6 +5,7 @@ import UploadImageForm from '@app/web/app/(private)/exemples/images/UploadImageF
 import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
 import ResponsiveUploadedImage from '@app/web/components/ResponsiveUploadedImage'
 import { prismaClient } from '@app/web/prismaClient'
+import Link from 'next/link'
 
 const ImagesPage = async () => {
   const user = await getAuthenticatedSessionUser()
