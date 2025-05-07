@@ -22,7 +22,3 @@ export const getDatabasePasswordSecret = new Command()
 
     output(value)
   })
-
-export const getDatabasePasswordSecret = async (): Promise<string> => {
-  // Implementation of the async function
-}
