@@ -4,8 +4,7 @@
   "license": "AGPL-3.0-or-later",
   "type": "module",
   "scripts": {
-    "lint": "eslint cypress",
-    "lint:debug": "eslint --debug cypress/e2e/authentication/userCanCreateAnAccountWithEmail.cy.ts",
+    "lint": "biome check cypress",
     "tsc": "tsc --noEmit",
     "cy": "dotenv -e ../../.env -e ./cypress.env -- cypress"
   },
@@ -30,7 +29,6 @@
     "@types/react-dom": "^18.3.0",
     "@types/uuid": "^10.0.0",
     "cypress-file-upload": "^5.0.8",
-    "eslint": "^8.57.0",
     "tsconfig-paths": "^4.2.0",
     "tsx": "^4.19.0",
     "typescript": "^5.5.4"
