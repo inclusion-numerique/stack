@@ -1,7 +1,7 @@
-// eslint-disable-next-line unicorn/prevent-abbreviations
-import { Argument, Command } from '@commander-js/extra-typings'
 import { appendEnvVariablesToDotEnvFile } from '@app/cli/dotEnvFile'
 import { output } from '@app/cli/output'
+// eslint-disable-next-line unicorn/prevent-abbreviations
+import { Argument, Command } from '@commander-js/extra-typings'
 
 const { getCdkOutput } = await import('@app/cdk/getCdkOutput')
 

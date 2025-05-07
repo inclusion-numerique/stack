@@ -5,12 +5,12 @@ import {
   MjmlSpacer,
   MjmlText,
 } from '@faire/mjml-react'
-import React from 'react'
 import { renderToMjml } from '@faire/mjml-react/utils/renderToMjml'
+import React from 'react'
 
-import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
-import { brandColor } from '@app/emails/styles'
 import LayoutWithFooter from '@app/emails/components/LayoutWithFooter'
+import { brandColor } from '@app/emails/styles'
+import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 
 export const emailSignin = {
   text: ({ url }: { url: string }): string =>

@@ -1,27 +1,27 @@
-'use client'
+"use client";
 
-import classNames from 'classnames'
-import { useRouter } from 'next/navigation'
-import React, { useMemo, useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
-import Button from '@codegouvfr/react-dsfr/Button'
-import { zodResolver } from '@hookform/resolvers/zod'
-import FileFormField from '@app/ui/components/Form/FileFormField'
+import classNames from "classnames";
+import { useRouter } from "next/navigation";
+import React, { useMemo, useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import Button from "@codegouvfr/react-dsfr/Button";
+import { zodResolver } from "@hookform/resolvers/zod";
+import FileFormField from "@app/ui/components/Form/FileFormField";
 import {
   FileValidationOptions,
   fileValidation,
-} from '@app/ui/components/Form/utils/fileValidation.client'
-import { withTrpc } from '@app/web/components/trpc/withTrpc'
-import { useFileUpload } from '@app/web/hooks/useFileUpload'
-import { trpc } from '@app/web/trpc'
+} from "@app/ui/components/Form/utils/fileValidation.client";
+import { withTrpc } from "@app/web/components/trpc/withTrpc";
+import { useFileUpload } from "@app/web/hooks/useFileUpload";
+import { trpc } from "@app/web/trpc";
 
 const createUploadFileFormValidation = (options: FileValidationOptions) =>
   z.object({
     file: fileValidation(options),
     // Used for error setting
     fileUploadError: z.any().optional(),
-  })
+  });
 
 type UploadFileFormData = z.infer<
   ReturnType<typeof createUploadFileFormValidation>

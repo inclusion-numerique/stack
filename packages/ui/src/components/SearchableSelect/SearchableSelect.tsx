@@ -1,3 +1,5 @@
+import Input from '@codegouvfr/react-dsfr/Input'
+import classNames from 'classnames'
 import React, {
   Dispatch,
   SetStateAction,
@@ -6,8 +8,6 @@ import React, {
   useRef,
   useState,
 } from 'react'
-import classNames from 'classnames'
-import Input from '@codegouvfr/react-dsfr/Input'
 import Options, { Option } from './Options'
 import styles from './SearchableSelect.module.css'
 

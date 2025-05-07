@@ -1,13 +1,13 @@
-import React, { ReactNode, useCallback } from 'react'
-import { Control, Controller, FieldValues, PathValue } from 'react-hook-form'
-import { FieldPath } from 'react-hook-form/dist/types/path'
-import classNames from 'classnames'
-import type { GroupBase, Options, OptionsOrGroups } from 'react-select'
-import { UiComponentProps } from '@app/ui/utils/uiComponentProps'
-import RedAsterisk from '@app/ui/components/Form/RedAsterisk'
 import CustomSelect, {
   CustomSelectProps,
 } from '@app/ui/components/CustomSelect/CustomSelect'
+import RedAsterisk from '@app/ui/components/Form/RedAsterisk'
+import { UiComponentProps } from '@app/ui/utils/uiComponentProps'
+import classNames from 'classnames'
+import React, { ReactNode, useCallback } from 'react'
+import { Control, Controller, FieldValues, PathValue } from 'react-hook-form'
+import { FieldPath } from 'react-hook-form/dist/types/path'
+import type { GroupBase, Options, OptionsOrGroups } from 'react-select'
 
 export type CustomSelectFormFieldProps<
   FormData extends FieldValues,

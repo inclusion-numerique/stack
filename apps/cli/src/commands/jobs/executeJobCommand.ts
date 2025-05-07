@@ -1,12 +1,12 @@
+import {
+  DeploymentTargetOption,
+  configureDeploymentTarget,
+} from '@app/cli/deploymentTarget'
+import { output } from '@app/cli/output'
+import { executeJob, jobExecutors } from '@app/web/jobs/jobExecutors'
+import { JobValidation } from '@app/web/jobs/jobs'
 // eslint-disable-next-line unicorn/prevent-abbreviations
 import { Argument, Command } from '@commander-js/extra-typings'
-import { JobValidation } from '@app/web/jobs/jobs'
-import { executeJob, jobExecutors } from '@app/web/jobs/jobExecutors'
-import { output } from '@app/cli/output'
-import {
-  configureDeploymentTarget,
-  DeploymentTargetOption,
-} from '@app/cli/deploymentTarget'
 
 // eslint-disable-next-line unicorn/prevent-abbreviations
 export const executeJobCommand = new Command()

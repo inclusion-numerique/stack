@@ -1,13 +1,13 @@
+import SigninPanel from '@app/web/app/(public)/(authentication)/connexion/SigninPanel'
+import { metadataTitle } from '@app/web/app/metadataTitle'
+import { getSessionUser } from '@app/web/auth/getSessionUser'
+import Breadcrumbs from '@app/web/components/Breadcrumbs'
+import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
+import { getServerUrl } from '@app/web/utils/baseUrl'
+import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
 import type { Metadata } from 'next'
 import { Route } from 'next'
 import { redirect } from 'next/navigation'
-import SigninPanel from '@app/web/app/(public)/(authentication)/connexion/SigninPanel'
-import { getSessionUser } from '@app/web/auth/getSessionUser'
-import Breadcrumbs from '@app/web/components/Breadcrumbs'
-import { getServerUrl } from '@app/web/utils/baseUrl'
-import { metadataTitle } from '@app/web/app/metadataTitle'
-import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
-import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
 
 export const revalidate = 0
 
