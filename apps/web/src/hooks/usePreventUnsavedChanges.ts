@@ -13,17 +13,16 @@ export const usePreventUnsavedChanges = <T extends FieldValues>({
     if (isBrowser) {
       return
     }
-    const confirmLeave = (event: BeforeUnloadEvent) => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       if (isDirty) {
-        // eslint-disable-next-line no-param-reassign
-        event.returnValue = 'Your unsaved changes will be lost'
+        e.preventDefault()
+        e.returnValue = 'Your unsaved changes will be lost'
       }
     }
-    window.addEventListener('beforeunload', confirmLeave)
+    window.addEventListener('beforeunload', handleBeforeUnload)
 
-    // eslint-disable-next-line consistent-return
     return () => {
-      window.removeEventListener('beforeunload', confirmLeave)
+      window.removeEventListener('beforeunload', handleBeforeUnload)
     }
   }, [isDirty])
 }

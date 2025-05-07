@@ -50,7 +50,6 @@ const authOptions: NextAuthOptions = {
     },
     session: ({ session, user }) => {
       if (session.user) {
-        // eslint-disable-next-line no-param-reassign
         session.user.id = user.id
       }
       return session
@@ -69,7 +68,6 @@ const handler = (
     return new Response('Bad Request', { status: 400 })
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return NextAuth(request, res, authOptions)
 }
 

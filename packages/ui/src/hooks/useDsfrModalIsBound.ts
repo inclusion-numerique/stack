@@ -10,7 +10,6 @@ export const useDsfrModalIsBound = (
   onBound?: (element: HTMLElement) => void,
 ) => {
   const [bound, setBound] = useState(
-    // eslint-disable-next-line unicorn/prefer-query-selector
     isBrowser ? !!document.getElementById(dialogId)?.dataset.frJsModal : false,
   )
 
@@ -20,7 +19,6 @@ export const useDsfrModalIsBound = (
     if (isBrowser && !observerRef.current && !bound) {
       // Do nothing if already bound
 
-      // eslint-disable-next-line unicorn/prefer-query-selector
       const element = document.getElementById(dialogId)
 
       // No-op if element is not in the dom

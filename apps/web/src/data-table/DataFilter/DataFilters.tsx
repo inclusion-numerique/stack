@@ -66,7 +66,6 @@ const DataFilters = <Configuration extends DataTableConfiguration>({
   ).flatMap((entry) => entry[1].map((value) => [entry[0], value]))
   // TODO Have the title of the filter instead of the "name"
 
-  // eslint-disable-next-line unicorn/consistent-function-scoping
   const onRemoveFilter = (name: string, value: string) => {
     // biome-ignore lint/suspicious/noConsole: used while not fully implemented
     console.log('REMOVE FILTER', { name, value })

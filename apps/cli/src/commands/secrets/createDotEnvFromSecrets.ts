@@ -2,13 +2,11 @@ import { appendEnvVariablesToDotEnvFile } from '@app/cli/dotEnvFile'
 import { output } from '@app/cli/output'
 import { getSecretValue } from '@app/config/secrets/getSecretValue'
 import { listSecrets } from '@app/config/secrets/listSecrets'
-// eslint-disable-next-line unicorn/prevent-abbreviations
 import { Command } from '@commander-js/extra-typings'
 
 /**
  * This command fetches secrets from Secret Vault using scaleway keys and put them into .env
  */
-// eslint-disable-next-line unicorn/prevent-abbreviations
 export const createDotEnvFromSecrets = new Command()
   .command('dotenv:from-secrets')
   .action(async () => {

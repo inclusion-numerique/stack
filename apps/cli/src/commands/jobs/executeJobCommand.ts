@@ -5,10 +5,8 @@ import {
 import { output } from '@app/cli/output'
 import { executeJob, jobExecutors } from '@app/web/jobs/jobExecutors'
 import { JobValidation } from '@app/web/jobs/jobs'
-// eslint-disable-next-line unicorn/prevent-abbreviations
 import { Argument, Command } from '@commander-js/extra-typings'
 
-// eslint-disable-next-line unicorn/prevent-abbreviations
 export const executeJobCommand = new Command()
   .command('job:execute')
   .addArgument(

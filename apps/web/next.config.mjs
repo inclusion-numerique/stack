@@ -2,6 +2,7 @@ import { withSentryConfig } from '@sentry/nextjs'
 import withBundleAnalyzer from '@next/bundle-analyzer'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import webpack from 'webpack'
 
 const withBundleAnalyzerConfig = withBundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
@@ -52,7 +53,6 @@ const nextConfig = {
       use: [], // An empty set of loaders, effectively bypassing these files
     })
     // (this is not an array, this is a rule object)
-    // eslint-disable-next-line unicorn/no-array-push-push
     config.module.rules.push({
       test: /\.remixicon.css$/,
       use: [], // An empty set of loaders, effectively bypassing these files
@@ -66,6 +66,14 @@ const nextConfig = {
     // Server bundling
 
     config.externals.push(...externals)
+
+    if (process.env.NODE_ENV === 'development') {
+      config.plugins.push(
+        new webpack.SourceMapDevToolPlugin({
+          filename: '[file].map',
+        }),
+      )
+    }
 
     return config
   },

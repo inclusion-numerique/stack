@@ -53,7 +53,6 @@ const PlusMinusNumberFormField = <T extends FieldValues = FieldValues>({
           input: classNames(styles.input, classes?.input),
         }}
       />
-      {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
       <button
         className={classNames(
           'fr-icon-add-line fr-text-title--blue-france',
@@ -65,7 +64,6 @@ const PlusMinusNumberFormField = <T extends FieldValues = FieldValues>({
         disabled={props.disabled}
         tabIndex={-1}
       />
-      {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
       <button
         className={classNames(
           'fr-icon-subtract-line  fr-text-title--blue-france',

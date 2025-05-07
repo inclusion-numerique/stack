@@ -34,25 +34,21 @@ const DataSearchBar = <
 
   // Initialise input value
   // biome-ignore lint/correctness/useExhaustiveDependencies: this is only used to initialize the input value
-  useEffect(
-    () => {
-      if (!searchParams.recherche) {
-        return
-      }
-      const searchBarElement = searchBarRef.current
-      if (!searchBarElement) return
+  useEffect(() => {
+    if (!searchParams.recherche) {
+      return
+    }
+    const searchBarElement = searchBarRef.current
+    if (!searchBarElement) return
 
-      // Find the input element inside searchbar element , and set value to searchQuery
+    // Find the input element inside searchbar element , and set value to searchQuery
 
-      const input = searchBarElement.querySelector('input')
+    const input = searchBarElement.querySelector('input')
 
-      if (input) {
-        input.value = searchParams.recherche
-      }
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
-  )
+    if (input) {
+      input.value = searchParams.recherche
+    }
+  }, [])
 
   return (
     <SearchBar

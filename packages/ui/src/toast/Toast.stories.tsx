@@ -38,7 +38,6 @@ const Template = ({ action }: { action?: boolean }) => {
         action: actionParams,
       })
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   )
 

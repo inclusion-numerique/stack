@@ -66,7 +66,6 @@ export const useNavigationSideMenu = ({
 
       const elements = navigableItemIds
         // No id means the empty '#' anchor, which is the top of the page, so we use the body
-        // eslint-disable-next-line unicorn/prefer-query-selector
         .map((id) => (id === '' ? document.body : document.getElementById(id)))
         .filter(isDefinedAndNotNull)
 
@@ -102,7 +101,6 @@ export const useNavigationSideMenu = ({
       }
       return () => observer.disconnect()
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [contentElement, navigableItemsMemoKey, intersectionThreshold],
   )
 

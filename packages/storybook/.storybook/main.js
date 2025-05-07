@@ -43,7 +43,6 @@ export default {
     docsPage: true,
     autodocs: true,
   },
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   env: (config) => ({
     ...config,
     ...dotenvVariables(),

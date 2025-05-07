@@ -85,17 +85,13 @@ Cypress.Commands.add('dsfrShouldBeStarted', () => {
 
 Cypress.Commands.add('dsfrModalsShouldBeBound', () => {
   cy.get('dialog.fr-modal').each((modal) => {
-    // TODO There is a regression in the current version of dsfr where this is not sufficient and needs a timeout
     cy.wrap(modal).should('have.attr', 'data-fr-js-modal', 'true')
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(120)
   })
 })
 Cypress.Commands.add('dsfrCollapsesShouldBeBound', () => {
   cy.get('.fr-collapse').each((modal) => {
-    // TODO There is a regression in the current version of dsfr where this is not sufficient and needs a timeout
     cy.wrap(modal).should('have.attr', 'data-fr-js-collapse', 'true')
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(120)
   })
 })
@@ -130,7 +126,7 @@ Cypress.Commands.add(
           expect(rect.top + rect.height / 2).to.be.greaterThan(0)
           expect(rect.top + rect.height / 2).to.be.lessThan(height)
           expect(rect.left + rect.width / 2).to.be.greaterThan(0)
-          expect((rect.left, +(rect.width / 2))).to.be.lessThan(width)
+          expect(rect.left + rect.width / 2).to.be.lessThan(width)
 
           break
         }
@@ -173,7 +169,6 @@ Cypress.Commands.add('allowNextRedirectException', () => {
 })
 
 declare global {
-  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
     interface Chainable {
       execute<T extends keyof CustomTasks>(

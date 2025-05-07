@@ -14,14 +14,13 @@ import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 
 export const emailSignin = {
   text: ({ url }: { url: string }): string =>
-    // eslint-disable-next-line no-irregular-whitespace
-    `Pour vous connecter à ${PublicWebAppConfig.projectTitle}, merci d'utiliser le lien suivant :\n${url}\n\n`,
+    `Pour vous connecter à ${PublicWebAppConfig.projectTitle}, merci d'utiliser le lien suivant :\n${url}\n\n`,
   mjml: ({ url }: { url: string }): string =>
     renderToMjml(
       <LayoutWithFooter
         headerLogoOnly
         title={`Connexion à ${PublicWebAppConfig.projectTitle}`}
-        preview="Voici votre lien de connexion sécurisé à usage unique :"
+        preview="Voici votre lien de connexion sécurisé à usage unique :"
       >
         <MjmlSection paddingTop={0}>
           <MjmlColumn>

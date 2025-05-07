@@ -24,8 +24,6 @@ const DataSearchAndFilters = async <
   configuration: Configuration
   searchParams: DataTableSearchParams<Configuration>
   baseHref: string
-  // TODO used ?
-  // eslint-disable-next-line react/no-unused-prop-types
   data: Data[]
   filterValues: DataTableFilterValues<Configuration>
 }) => {

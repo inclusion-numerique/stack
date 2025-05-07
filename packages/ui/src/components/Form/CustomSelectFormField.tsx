@@ -4,7 +4,7 @@ import CustomSelect, {
 import RedAsterisk from '@app/ui/components/Form/RedAsterisk'
 import { UiComponentProps } from '@app/ui/utils/uiComponentProps'
 import classNames from 'classnames'
-import React, { ReactNode, useCallback } from 'react'
+import React, { ReactNode, useCallback, useEffect } from 'react'
 import { Control, Controller, FieldValues, PathValue } from 'react-hook-form'
 import { FieldPath } from 'react-hook-form/dist/types/path'
 import type { GroupBase, Options, OptionsOrGroups } from 'react-select'
@@ -124,23 +124,19 @@ const CustomSelectFormField = <
   >) => {
   const id = `custom-select-form-field__${path}`
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const getOptionLabel = useCallback(
     getOptionLabelProperty ?? defaultGetOptionLabel,
     [],
   )
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const optionToFormValue = useCallback(
     optionToFormValueProperty ?? defaultOptionToFormValue,
     [],
   )
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const getOptionKey = useCallback(
     getOptionKeyProperty ?? defaultGetOptionKey,
     [],
   )
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const getValueKey = useCallback(getValueKeyProperty ?? defaultGetValueKey, [])
 
   const isOptionSelected: (
@@ -165,7 +161,6 @@ const CustomSelectFormField = <
 
         const result: Option[] = []
 
-        // eslint-disable-next-line no-unreachable-loop
         for (const oneOfMultiValue of multiValues) {
           const oneOfMultiValueKey = getValueKey(oneOfMultiValue)
           for (const optionOrGroup of optionsToMatch) {
@@ -221,6 +216,36 @@ const CustomSelectFormField = <
     },
     [isMulti, getValueKey, getOptionKey],
   )
+
+  useEffect(() => {
+    if (isAsync) {
+      loadOptions('')
+    }
+  }, [isAsync])
+
+  useEffect(() => {
+    if (isAsync) {
+      loadOptions('')
+    }
+  }, [isAsync])
+
+  useEffect(() => {
+    if (isAsync) {
+      loadOptions('')
+    }
+  }, [isAsync])
+
+  useEffect(() => {
+    if (isAsync) {
+      loadOptions('')
+    }
+  }, [isAsync])
+
+  const handleInputChange = (inputValue: string) => {
+    if (isAsync) {
+      loadOptions(inputValue)
+    }
+  }
 
   return (
     <Controller
