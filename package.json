@@ -39,6 +39,7 @@
     "turbo-linux-arm64": "^2.1.3"
   },
   "dependencies": {
+    "@biomejs/biome": "^1.9.4",
     "@manypkg/cli": "^0.21.3",
     "dotenv": "^16.4.5",
     "dotenv-cli": "^7.4.2",
@@ -47,8 +48,5 @@
   },
   "volta": {
     "node": "22.15.0"
-  },
-  "devDependencies": {
-    "@biomejs/biome": "^1.9.4"
   }
 }
