@@ -21,7 +21,7 @@ export const publicFooterProps = {
     {
       text: 'Code source',
       linkProps: {
-        href: 'https://github.com/inclusion-numerique/coop-mediation-numerique',
+        href: 'https://github.com/inclusion-numerique/stack',
         target: '_blank',
         rel: 'noreferrer',
       },
