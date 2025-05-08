@@ -24,7 +24,7 @@ export const useModalVisibility = (
 ) => {
   const modalIsBound = useDsfrModalIsBound(modalId)
 
-  const modalRef = useRef<HTMLDialogElement>()
+  const modalRef = useRef<HTMLDialogElement>(undefined)
   if (modalIsBound && !modalRef.current) {
     modalRef.current =
       document.body.querySelector<HTMLDialogElement>(
@@ -33,7 +33,7 @@ export const useModalVisibility = (
   }
 
   const listenedModal = useRef<HTMLDialogElement | undefined>(modalRef.current)
-  const listener = useRef<() => void>()
+  const listener = useRef<() => void>(undefined)
 
   useEffect(() => {
     if (modalIsBound) {

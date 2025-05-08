@@ -8,7 +8,7 @@ import type { FieldValues } from 'react-hook-form'
 import styles from './PlusMinusNumberFormField.module.css'
 
 const getInputFromRef = (
-  ref: RefObject<HTMLDivElement>,
+  ref: RefObject<HTMLDivElement | null>,
 ): HTMLInputElement | undefined =>
   ref.current?.querySelector('input') ?? undefined
 
@@ -16,8 +16,13 @@ const PlusMinusNumberFormField = <T extends FieldValues = FieldValues>({
   classes,
   className,
   step,
+  disabledAdd,
+  disabledSubtract,
   ...props
-}: Omit<UiComponentProps & InputFormFieldProps<T>, 'type'>) => {
+}: Omit<UiComponentProps & InputFormFieldProps<T>, 'type'> & {
+  disabledAdd?: boolean
+  disabledSubtract?: boolean
+}) => {
   const ref = useRef<HTMLDivElement>(null)
 
   const onPlus = () => {
@@ -61,7 +66,7 @@ const PlusMinusNumberFormField = <T extends FieldValues = FieldValues>({
         )}
         onClick={onPlus}
         type="button"
-        disabled={props.disabled}
+        disabled={props.disabled || disabledAdd}
         tabIndex={-1}
       />
       <button
@@ -72,7 +77,7 @@ const PlusMinusNumberFormField = <T extends FieldValues = FieldValues>({
         )}
         onClick={onMinus}
         type="button"
-        disabled={props.disabled}
+        disabled={props.disabled || disabledSubtract}
         tabIndex={-1}
       />
     </div>

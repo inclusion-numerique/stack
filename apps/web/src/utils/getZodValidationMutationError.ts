@@ -7,6 +7,7 @@ export const getZodValidationMutationError = (error: unknown) => {
 
   if (
     !('data' in error) ||
+    // If key is defined but value is undefined
     !error.data ||
     error.data.code !== 'BAD_REQUEST' ||
     error.data.httpStatus !== 400

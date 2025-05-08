@@ -1,7 +1,7 @@
-import { prismaClient } from '@app/web/prismaClient'
-import { Command } from '@commander-js/extra-typings'
 import { output } from '@app/fixtures/output'
 import { deleteAll, seed } from '@app/fixtures/seeds'
+import { prismaClient } from '@app/web/prismaClient'
+import { Command } from '@commander-js/extra-typings'
 
 const main = async (eraseAllData: boolean) => {
   if (eraseAllData) {

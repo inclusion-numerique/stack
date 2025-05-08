@@ -32,6 +32,7 @@ export type CheckboxGroupFormFieldProps<
   small?: boolean
   asterisk?: boolean
   style?: CSSProperties
+  offset?: number
   components?: {
     label?: ComponentType<LabelComponentProps>
     labelProps?: Omit<LabelComponentProps, 'option' | 'htmlFor'>
@@ -64,6 +65,7 @@ const CheckboxGroupFormField = <
   style,
   classes,
   components,
+  offset = 0,
   'data-testid': dataTestId,
 }: UiComponentProps &
   CheckboxGroupFormFieldProps<T, O, LabelComponentProps>) => {
@@ -124,7 +126,7 @@ const CheckboxGroupFormField = <
                     ? undefined
                     : ({
                         option,
-                        htmlFor: `${id}__${index}`,
+                        htmlFor: `${id}__${index + offset}`,
                         className: classes?.label,
                         ...components?.labelProps,
                       } as LabelComponentProps)
@@ -157,7 +159,7 @@ const CheckboxGroupFormField = <
                             : 'unchecked'
                         }`}
                         type="checkbox"
-                        id={`${id}__${index}`}
+                        id={`${id}__${index + offset}`}
                         disabled={disabled}
                         onBlur={onBlur}
                         onChange={(event) => {
@@ -178,7 +180,10 @@ const CheckboxGroupFormField = <
                         ref={ref}
                       />
                       {LabelComponent === 'label' ? (
-                        <label className="fr-label" htmlFor={`${id}__${index}`}>
+                        <label
+                          className="fr-label"
+                          htmlFor={`${id}__${index + offset}`}
+                        >
                           {option.label}
                           {option.hint && (
                             <span className="fr-hint-text">{option.hint}</span>
@@ -193,24 +198,24 @@ const CheckboxGroupFormField = <
                 )
               })}
               {error && (
-                <div
-                  className="fr-messages-group fr-grid-row--full"
+                <p
+                  className="fr-messages-group fr-grid-row--full fr-mb-0"
                   id={`${id}__error`}
                   aria-live="assertive"
                 >
-                  <p className="fr-message fr-message--error">
+                  <span className="fr-message fr-message--error">
                     {error.message}
-                  </p>
-                </div>
+                  </span>
+                </p>
               )}
               {valid && isDirty && !invalid && (
-                <div
-                  className="fr-messages-group fr-grid-row--full"
+                <p
+                  className="fr-messages-group fr-grid-row--full fr-mb-0"
                   id={`${id}__valid`}
                   aria-live="assertive"
                 >
-                  <p className="fr-message fr-message--valid">{valid}</p>
-                </div>
+                  <span className="fr-message fr-message--valid">{valid}</span>
+                </p>
               )}
             </fieldset>
           </div>

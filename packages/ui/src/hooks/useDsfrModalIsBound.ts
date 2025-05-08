@@ -13,7 +13,7 @@ export const useDsfrModalIsBound = (
     isBrowser ? !!document.getElementById(dialogId)?.dataset.frJsModal : false,
   )
 
-  const observerRef = useRef<MutationObserver>()
+  const observerRef = useRef<MutationObserver>(null)
 
   useEffect(() => {
     if (isBrowser && !observerRef.current && !bound) {
@@ -56,9 +56,9 @@ export const useDsfrModalIsBound = (
 
     return () => {
       observerRef.current?.disconnect()
-      observerRef.current = undefined
+      observerRef.current = null
     }
-  }, [bound, dialogId, onBound, setBound])
+  }, [bound, dialogId, onBound])
 
   return bound
 }

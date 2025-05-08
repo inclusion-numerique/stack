@@ -39,6 +39,7 @@ export type RadioFormFieldProps<
     fieldsetElement?: string
     radioGroup?: string
   }
+  startIndex?: number
 }
 
 const RadioFormField = <
@@ -57,6 +58,7 @@ const RadioFormField = <
   small,
   className,
   asterisk,
+  startIndex = 0,
   style,
   classes,
   components,
@@ -114,7 +116,7 @@ const RadioFormField = <
                     ? undefined
                     : ({
                         option,
-                        htmlFor: `${id}__${index}`,
+                        htmlFor: `${id}__${index + startIndex}`,
                         className: classes?.label,
                         ...components?.labelProps,
                       } as LabelComponentProps)
@@ -146,7 +148,7 @@ const RadioFormField = <
                         }`}
                         defaultChecked={value === option.value}
                         type="radio"
-                        id={`${id}__${index}`}
+                        id={`${id}__${index + startIndex}`}
                         disabled={disabled}
                         onBlur={onBlur}
                         onChange={(event) => {
@@ -160,7 +162,10 @@ const RadioFormField = <
                         ref={ref}
                       />
                       {LabelComponent === 'label' ? (
-                        <label className="fr-label" htmlFor={`${id}__${index}`}>
+                        <label
+                          className="fr-label"
+                          htmlFor={`${id}__${index + startIndex}`}
+                        >
                           {option.label}
                           {option.hint && (
                             <span className="fr-hint-text">{option.hint}</span>

@@ -113,6 +113,7 @@ const Template = ({
   return (
     <form
       onSubmit={form.handleSubmit((data) => {
+        // biome-ignore lint/suspicious/noConsole: we log this to debug in storybook console
         console.info('Form submited', data)
       })}
     >
@@ -121,9 +122,7 @@ const Template = ({
         control={form.control}
         path={path}
         label={label}
-        options={
-          optionsProperty as any
-        }
+        options={optionsProperty as any}
         {...args}
       />
     </form>

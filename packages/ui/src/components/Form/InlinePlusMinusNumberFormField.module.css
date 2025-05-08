@@ -13,6 +13,7 @@
   width: 100%;
   display: flex;
   justify-content: flex-end;
+  flex-wrap: wrap;
 }
 
 input.input {

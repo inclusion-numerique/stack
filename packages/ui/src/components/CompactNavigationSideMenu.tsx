@@ -112,9 +112,7 @@ const CompactNavigationSideMenu = memo(
                       >
                         <Link
                           target="_self"
-                          {
-                            ...(item.linkProps as unknown as any)
-                          }
+                          {...(item.linkProps as unknown as any)}
                           {...(item.isActive && {
                             'aria-current': 'page',
                           })}

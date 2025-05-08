@@ -84,6 +84,7 @@ export const Success: Story = {
   },
 }
 
+// biome-ignore lint/suspicious/noShadowRestrictedNames: this is the story name
 export const Error: Story = {
   name: 'Etat erreur',
   render: (args) => <Template {...args} path="email2" />,

@@ -8,7 +8,7 @@ import type { FieldValues } from 'react-hook-form'
 import styles from './InlinePlusMinusNumberFormField.module.css'
 
 const getInputFromRef = (
-  ref: RefObject<HTMLDivElement>,
+  ref: RefObject<HTMLDivElement | null>,
 ): HTMLInputElement | undefined =>
   ref.current?.querySelector('input') ?? undefined
 
@@ -41,7 +41,7 @@ const InlinePlusMinusNumberFormField = <T extends FieldValues = FieldValues>({
   }
 
   return (
-    <div className={styles.container} ref={ref}>
+    <div className={classNames(styles.container, classes?.container)} ref={ref}>
       <InputFormField
         {...props}
         type="number"

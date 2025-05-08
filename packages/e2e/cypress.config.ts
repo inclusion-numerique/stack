@@ -25,6 +25,7 @@ export default defineConfig({
         if (browser.family === 'chromium') {
           launchOptions.args.push('--force-prefers-reduced-motion')
         }
+        // Electron does not supports that kind of options.
         launchOptions.env.ELECTRON_EXTRA_LAUNCH_ARGS =
           '--force-prefers-reduced-motion'
 
