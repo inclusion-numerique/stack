@@ -1,4 +1,4 @@
-import { mount } from 'cypress/react18'
+import { mount } from 'cypress/react'
 import '../../../../apps/web/public/dsfr/dsfr.module.min'
 import '../../../../apps/web/src/app/app.css'
 import './commands'

@@ -53,7 +53,7 @@ Cypress.Commands.add('signin', ({ email }: { email: string }) =>
 )
 
 Cypress.Commands.add('deleteAllData', () => {
-  cy.execute('deleteAllData', {})
+  cy.execute('deleteAllData', undefined)
 })
 
 Cypress.Commands.add('resetFixtures', () => {

@@ -4,7 +4,12 @@ import { SessionUser } from '@app/web/auth/sessionUser'
 import { getUserDisplayName } from '@app/web/utils/user'
 import classNames from 'classnames'
 import Link from 'next/link'
-import { KeyboardEvent, MouseEvent as ReactMouseEvent, useRef } from 'react'
+import {
+  KeyboardEvent,
+  MouseEvent as ReactMouseEvent,
+  RefObject,
+  useRef,
+} from 'react'
 import { useOnClickOutside } from 'usehooks-ts'
 import styles from './HeaderUserMenu.module.css'
 
@@ -22,7 +27,7 @@ export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
       buttonRef.current?.click()
     }
   }
-  useOnClickOutside(collapseRef, (event) => {
+  useOnClickOutside(collapseRef as RefObject<HTMLElement>, (event) => {
     // Let the event propagate if clicked on the control button
     if (event.target === buttonRef?.current) {
       return
