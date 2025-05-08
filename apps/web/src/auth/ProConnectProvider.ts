@@ -2,9 +2,10 @@ import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
 import { proConnectProviderId } from '@app/web/auth/proConnect'
 import { getServerUrl } from '@app/web/utils/baseUrl'
+import { OAuth2Config } from '@auth/core/providers'
 import axios from 'axios'
 import jwt from 'jsonwebtoken'
-import { OAuthConfig } from 'next-auth/providers'
+import type { TokenEndpointHandler } from 'next-auth/providers'
 
 const issuer = `https://${PublicWebAppConfig.ProConnect.hostname}`
 
@@ -28,7 +29,6 @@ export const ProConnectProvider = () =>
     id: proConnectProviderId,
     name: 'ProConnect',
     type: 'oauth',
-    version: '2.0',
     // Allow an email user to login with Inclusion Connect
     allowDangerousEmailAccountLinking: true,
     clientId: PublicWebAppConfig.ProConnect.clientId,
@@ -45,7 +45,11 @@ export const ProConnectProvider = () =>
       },
     },
     token: {
-      request: async (context) => {
+      request: async (context: {
+        params: {
+          code?: string
+        }
+      }) => {
         const body = {
           grant_type: 'authorization_code',
           client_id: PublicWebAppConfig.ProConnect.clientId,
@@ -72,9 +76,15 @@ export const ProConnectProvider = () =>
 
         return { tokens: r.data }
       },
-    },
+    } satisfies TokenEndpointHandler,
     userinfo: {
-      request: async ({ tokens }) => {
+      request: async ({
+        tokens,
+      }: {
+        tokens: {
+          access_token?: string
+        }
+      }) => {
         const r = await axios<string>({
           method: 'POST',
           url: `${issuer}/api/v2/userinfo`,
@@ -96,4 +106,4 @@ export const ProConnectProvider = () =>
       email: email.toLowerCase(),
       provider: proConnectProviderId,
     }),
-  }) satisfies OAuthConfig<ProConnectProfile>
+  }) satisfies OAuth2Config<ProConnectProfile>
