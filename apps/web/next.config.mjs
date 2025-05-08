@@ -2,7 +2,6 @@ import { withSentryConfig } from '@sentry/nextjs'
 import withBundleAnalyzer from '@next/bundle-analyzer'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import webpack from 'webpack'
 
 const withBundleAnalyzerConfig = withBundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
@@ -19,8 +18,6 @@ const modularizeImports = {
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
-const serverComponentsExternalPackages = ['html-minifier']
-
 // Mjml cannot be bundled as it uses dynamic requires
 // Only put library required on the server in externals as they would not be available in client
 const externals = ['mjml', 'mjml-core']
@@ -29,13 +26,9 @@ const nextConfig = {
   output: 'standalone',
   reactStrictMode: true,
   transpilePackages: ['@app/emails'],
-  experimental: {
-    // See https://nextjs.org/docs/app/api-reference/next-config-js/serverComponentsExternalPackages
-    serverComponentsExternalPackages,
-    // This includes files from the monorepo base two directories up
-    outputFileTracingRoot: path.join(dirname, '../../'),
-    instrumentationHook: true,
-  },
+  serverExternalPackages: ['html-minifier'],
+  // This includes files from the monorepo base two directories up
+  outputFileTracingRoot: path.join(dirname, '../../'),
   modularizeImports,
   eslint: {
     // Lints are checked in other parts of the build process
@@ -64,16 +57,7 @@ const nextConfig = {
     }
 
     // Server bundling
-
     config.externals.push(...externals)
-
-    if (process.env.NODE_ENV === 'development') {
-      config.plugins.push(
-        new webpack.SourceMapDevToolPlugin({
-          filename: '[file].map',
-        }),
-      )
-    }
 
     return config
   },
