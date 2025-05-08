@@ -7,7 +7,7 @@ settings:
 importers:
 
   .:
-    dependencies:
+    devDependencies:
       '@biomejs/biome':
         specifier: ^1.9.4
         version: 1.9.4
@@ -22,7 +22,7 @@ importers:
         version: 8.0.0
       ts-node:
         specifier: ^10.9.2
-        version: 10.9.2(@swc/core@1.11.24)(@types/node@22.15.14)(typescript@5.9.0-dev.20250507)
+        version: 10.9.2(@swc/core@1.11.24)(@types/node@22.15.14)(typescript@5.9.0-dev.20250508)
       turbo:
         specifier: ^2.5.3
         version: 2.5.3
@@ -10834,8 +10834,8 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
-  typescript@5.9.0-dev.20250507:
-    resolution: {integrity: sha512-jm5F4zg922R/YMvNrINE6aoLdYdqiVtEuN/yyHf+6CZ2eDG28UpONN2tBnfPfSJr6flibtyd4RID8X3CEdBNqA==}
+  typescript@5.9.0-dev.20250508:
+    resolution: {integrity: sha512-vTtyza+uNzjJO/NgvQxsZkopsalnGdtipQo/lz2rdJ4i+wOdWQuOZxGgaUa2Fi8vj/4Xp6chlfpisgOI3mxvOQ==}
     engines: {node: '>=14.17'}
     hasBin: true
 
@@ -18103,7 +18103,7 @@ snapshots:
     dependencies:
       semver: 7.6.3
       shelljs: 0.8.5
-      typescript: 5.9.0-dev.20250507
+      typescript: 5.9.0-dev.20250508
 
   dunder-proto@1.0.1:
     dependencies:
@@ -23986,7 +23986,7 @@ snapshots:
       '@swc/core': 1.11.24
     optional: true
 
-  ts-node@10.9.2(@swc/core@1.11.24)(@types/node@22.15.14)(typescript@5.9.0-dev.20250507):
+  ts-node@10.9.2(@swc/core@1.11.24)(@types/node@22.15.14)(typescript@5.9.0-dev.20250508):
     dependencies:
       '@cspotcode/source-map-support': 0.8.1
       '@tsconfig/node10': 1.0.11
@@ -24000,7 +24000,7 @@ snapshots:
       create-require: 1.1.1
       diff: 4.0.2
       make-error: 1.3.6
-      typescript: 5.9.0-dev.20250507
+      typescript: 5.9.0-dev.20250508
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
     optionalDependencies:
@@ -24131,7 +24131,7 @@ snapshots:
 
   typescript@5.8.3: {}
 
-  typescript@5.9.0-dev.20250507: {}
+  typescript@5.9.0-dev.20250508: {}
 
   uc.micro@2.1.0: {}
 
