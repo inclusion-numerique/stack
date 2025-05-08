@@ -2,7 +2,7 @@ version: 2.1
 
 orbs:
   skip: theodo/skip@0.1.2
-  queue: eddiewebb/queue@3.2.1
+  queue: eddiewebb/queue@3.3.3
 executors:
   node:
     docker:
@@ -42,7 +42,7 @@ executors:
 parameters:
   cache_version:
     type: string
-    default: '2025-05-08-01'
+    default: '2025-05-08-02'
   virtual_store_dir:
     type: string
     default: './.pnpm'
