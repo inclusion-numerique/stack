@@ -9,6 +9,7 @@ import type { Metadata } from 'next'
 import { Route } from 'next'
 import { redirect } from 'next/navigation'
 
+export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 export const metadata: Metadata = {
@@ -16,10 +17,11 @@ export const metadata: Metadata = {
 }
 
 const SigninPage = async ({
-  searchParams: { error, suivant } = {},
+  searchParams,
 }: {
-  searchParams?: { error?: string; suivant?: Route }
+  searchParams: Promise<{ error?: string; suivant?: Route }>
 }) => {
+  const { error, suivant } = await searchParams
   const user = await getSessionUser()
 
   const callbackUrl = suivant ?? '/connexion/suivant'
