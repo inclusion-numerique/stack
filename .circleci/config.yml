@@ -180,6 +180,9 @@ jobs:
       - run:
           name: 'Monorepo manypkg check'
           command: pnpm manypkg check
+      - run:
+          name: 'Install cypress binary'
+          command: ./packages/e2e/node_modules/.bin/cypress install
       - save_cache:
           key: << pipeline.parameters.cache_version >>-pnpm-{{ checksum "<< pipeline.parameters.lockfile >>" }}
           paths:
