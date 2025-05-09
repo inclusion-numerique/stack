@@ -23,7 +23,7 @@ const errorMessage = (error?: string): string | undefined => {
 const ErrorPage = ({
   searchParams: { error } = {},
 }: {
-  searchParams?: { error?: string }
+  searchParams: { error?: string }
 }) => (
   <>
     <SkipLinksPortal />

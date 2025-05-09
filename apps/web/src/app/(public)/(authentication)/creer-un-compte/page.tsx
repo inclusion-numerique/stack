@@ -18,7 +18,7 @@ export const revalidate = 0
 const SigninPage = async ({
   searchParams: { error, email, raison, suivant } = {},
 }: {
-  searchParams?: {
+  searchParams: {
     error?: string
     raison?: 'connexion-sans-compte'
     email?: string

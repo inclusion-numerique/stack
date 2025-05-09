@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 const SigninPage = async ({
   searchParams: { error, suivant, intention } = {},
 }: {
-  searchParams?: { error?: string } & LoginSearchParams
+  searchParams: { error?: string } & LoginSearchParams
 }) => {
   const user = await getSessionUser()
 

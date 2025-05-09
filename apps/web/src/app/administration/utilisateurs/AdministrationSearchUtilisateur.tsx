@@ -11,7 +11,7 @@ import type { UtilisateursDataTableSearchParams } from '@app/web/app/administrat
 const AdministrationSearchUtilisateur = ({
   searchParams = {},
 }: {
-  searchParams?: UtilisateursDataTableSearchParams
+  searchParams: UtilisateursDataTableSearchParams
 }) => {
   const pathname = usePathname()
   const router = useRouter()

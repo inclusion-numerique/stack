@@ -16,7 +16,7 @@ import {
 const CollectionCreationPage = async ({
   searchParams = {},
 }: {
-  searchParams?: { base?: string }
+  searchParams: { base?: string }
 }) => {
   const user = await getSessionUser()
   if (!user) {

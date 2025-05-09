@@ -11,7 +11,7 @@ import { ResourcesDataTableSearchParams } from '@app/web/app/administration/ress
 const AdministrationSearchResource = ({
   searchParams = {},
 }: {
-  searchParams?: ResourcesDataTableSearchParams
+  searchParams: ResourcesDataTableSearchParams
 }) => {
   const pathname = usePathname()
   const router = useRouter()

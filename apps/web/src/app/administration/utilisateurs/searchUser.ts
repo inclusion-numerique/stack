@@ -11,7 +11,7 @@ import { takeAndSkipFromPage } from '@app/web/data-table/takeAndSkipFromPage'
 import { prismaClient } from '@app/web/prismaClient'
 
 type SearchUtilisateurOptions = {
-  searchParams?: UtilisateursDataTableSearchParams
+  searchParams: UtilisateursDataTableSearchParams
 }
 
 const DEFAULT_PAGE_SIZE = 100

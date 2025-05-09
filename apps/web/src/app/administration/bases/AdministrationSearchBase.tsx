@@ -11,7 +11,7 @@ import { BasesDataTableSearchParams } from '@app/web/app/administration/bases/Ba
 const AdministrationSearchBase = ({
   searchParams = {},
 }: {
-  searchParams?: BasesDataTableSearchParams
+  searchParams: BasesDataTableSearchParams
 }) => {
   const pathname = usePathname()
   const router = useRouter()

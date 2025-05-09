@@ -10,7 +10,7 @@ import { numberToString } from '@app/web/utils/formatNumber'
 const AdministrationBasesPage = async ({
   searchParams = {},
 }: {
-  searchParams?: BasesDataTableSearchParams
+  searchParams: BasesDataTableSearchParams
 }) => {
   const data = await getBasesListPageData({
     searchParams,

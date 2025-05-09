@@ -11,7 +11,7 @@ import { toQueryParts } from '@app/web/data-table/toQueryParts'
 import { prismaClient } from '@app/web/prismaClient'
 
 type SearchBaseOptions = {
-  searchParams?: BasesDataTableSearchParams
+  searchParams: BasesDataTableSearchParams
 }
 
 const DEFAULT_PAGE_SIZE = 100

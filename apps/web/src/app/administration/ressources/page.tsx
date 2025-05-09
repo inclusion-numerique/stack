@@ -10,7 +10,7 @@ import AdministrationSearchResource from '@app/web/app/administration/ressources
 const AdministrationRessourcesPage = async ({
   searchParams = {},
 }: {
-  searchParams?: ResourcesDataTableSearchParams
+  searchParams: ResourcesDataTableSearchParams
 }) => {
   const data = await getResourcesListPageData({
     searchParams,

@@ -17,7 +17,7 @@ export const revalidate = 0
 const Page = async ({
   searchParams = {},
 }: {
-  searchParams?: UtilisateursDataTableSearchParams
+  searchParams: UtilisateursDataTableSearchParams
 }) => {
   const data = await getUsersListPageData({
     searchParams,
