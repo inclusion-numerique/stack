@@ -34,7 +34,7 @@ const ImageContentDetails = ({
   const imageRatio = width && height ? width / height : undefined
 
   return (
-    <div className={(styles.container, className)}>
+    <div className={classNames(styles.container, className)}>
       <div
         className={classNames(styles.imageContainer, imageContainerClassName)}
         style={{ aspectRatio: imageRatio }}
