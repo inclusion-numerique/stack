@@ -1,4 +1,4 @@
-// eslint-disable-next-line unicorn/prevent-abbreviations
+
 import { promisify } from 'node:util'
 import { exec as callbackExec } from 'node:child_process'
 import path from 'node:path'
@@ -134,11 +134,9 @@ export const locallyRestoreLatestMainBackup = new Command(
       if (waitCount > 10) {
         throw new Error('Timeout waiting for backup export')
       }
-      // eslint-disable-next-line no-await-in-loop
       await new Promise((resolve) => {
         setTimeout(resolve, 3000)
       })
-      // eslint-disable-next-line no-await-in-loop
       const statusResponse = await client.get<ScalewayDatabaseBackup>(
         `/backups/${latestBackup.id}`,
       )
@@ -207,7 +205,6 @@ export const locallyRestoreLatestMainBackup = new Command(
     // Delete all enum types
     if (enums.length > 0) {
       for (const { name } of enums) {
-        // eslint-disable-next-line no-await-in-loop
         await prismaClient.$queryRawUnsafe(
           `DROP TYPE IF EXISTS "${name}" CASCADE`,
         )

@@ -1,7 +1,6 @@
-import type { Prisma } from '@prisma/client'
 import {
   ResourcesDataTable,
-  ResourcesDataTableSearchParams,
+  type ResourcesDataTableSearchParams,
 } from '@app/web/app/administration/ressources/ResourcesDataTable'
 import { queryResourcesForList } from '@app/web/app/administration/ressources/queryResourcesForList'
 import { getDataTableOrderBy } from '@app/web/data-table/getDataTableOrderBy'
@@ -9,6 +8,7 @@ import { takeAndSkipFromPage } from '@app/web/data-table/takeAndSkipFromPage'
 import { DEFAULT_PAGE, toNumberOr } from '@app/web/data-table/toNumberOr'
 import { toQueryParts } from '@app/web/data-table/toQueryParts'
 import { prismaClient } from '@app/web/prismaClient'
+import type { Prisma } from '@prisma/client'
 
 type SearchResourceOptions = {
   searchParams: ResourcesDataTableSearchParams

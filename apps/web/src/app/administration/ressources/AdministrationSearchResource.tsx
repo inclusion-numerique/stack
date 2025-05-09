@@ -2,11 +2,11 @@
 
 'use client'
 
+import type { ResourcesDataTableSearchParams } from '@app/web/app/administration/ressources/ResourcesDataTable'
 import Button from '@codegouvfr/react-dsfr/Button'
 import classNames from 'classnames'
 import { usePathname, useRouter } from 'next/navigation'
-import { FormEventHandler, useRef } from 'react'
-import { ResourcesDataTableSearchParams } from '@app/web/app/administration/ressources/ResourcesDataTable'
+import { type FormEventHandler, useRef } from 'react'
 
 const AdministrationSearchResource = ({
   searchParams = {},
