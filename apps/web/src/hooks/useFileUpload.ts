@@ -20,7 +20,7 @@ export const useFileUpload = () => {
 
   const [filename, setFilename] = useState<string | null>(null)
 
-  const abortControllerRef = useRef<AbortController>()
+  const abortControllerRef = useRef<AbortController>(null)
 
   const generateUploadUrl = trpc.upload.generateUploadUrl.useMutation()
 
@@ -29,14 +29,14 @@ export const useFileUpload = () => {
       // This will throw an error in the axios request in the upload() method
       abortControllerRef.current.abort()
     }
-  }, [abortControllerRef])
+  }, [])
 
   const reset = useCallback(() => {
     abort()
     setUploading(false)
     progressEmitterRef.current.emit('progress', null)
     setFilename(null)
-  }, [setUploading, progressEmitterRef, abort])
+  }, [abort])
 
   const upload = useCallback(
     async (
@@ -121,7 +121,7 @@ export const useFileUpload = () => {
         progressEmitterRef.current.emit('progress', null)
       }
     },
-    [abort, generateUploadUrl, progressEmitterRef, setUploading],
+    [abort, generateUploadUrl],
   )
 
   return {

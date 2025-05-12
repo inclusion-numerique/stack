@@ -22,6 +22,7 @@ export type FileFormFieldProps<T extends FieldValues> = {
   accept?: string
   className?: string
   valid?: string
+  error?: string
   info?: string | ((value: PathValue<T, Path<T>>) => string)
   'data-testid'?: string
   asterisk?: boolean
@@ -42,6 +43,7 @@ const FileFormField = <T extends FieldValues>({
   valid,
   info,
   asterisk,
+  error: errorProperty,
   'data-testid': dataTestId,
 }: FileFormFieldProps<T>) => {
   const id = `file-form-field__${path}`
@@ -56,6 +58,7 @@ const FileFormField = <T extends FieldValues>({
       }) => {
         const inputValue =
           (value as { filename: string } | undefined)?.filename ?? ''
+
         return (
           <div
             className={classNames(
@@ -63,7 +66,7 @@ const FileFormField = <T extends FieldValues>({
               {
                 'fr-input-group--error': error,
                 'fr-input-group--disabled': disabled,
-                'fr-input-group--valid': isTouched && !invalid,
+                'fr-input-group--valid': !!valid && isTouched && !invalid,
               },
               className,
             )}

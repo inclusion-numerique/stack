@@ -12,7 +12,7 @@ export const useOnDiff = <T>(
     equalityFunction?: (newValue: T, oldValue: T | undefined) => boolean
   },
 ) => {
-  const previousValue = useRef<T>()
+  const previousValue = useRef<T>(undefined)
 
   const hasDiff = options?.equalityFunction
     ? !options.equalityFunction(value, previousValue.current)

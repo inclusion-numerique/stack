@@ -1,7 +1,7 @@
-import React, { ReactNode } from 'react'
-import classNames from 'classnames'
-import type { ModalProps } from '@codegouvfr/react-dsfr/Modal'
 import Button from '@codegouvfr/react-dsfr/Button'
+import type { ModalProps } from '@codegouvfr/react-dsfr/Modal'
+import classNames from 'classnames'
+import React, { ReactNode } from 'react'
 
 /**
  * This component is used for handling a Modal out of react-dsfr
@@ -43,7 +43,6 @@ const RawModal = ({
         tabIndex={-1}
         aria-hidden
       />
-      {/* eslint-disable-next-line jsx-a11y/no-redundant-roles */}
       <dialog
         role="dialog"
         aria-labelledby={titleId}

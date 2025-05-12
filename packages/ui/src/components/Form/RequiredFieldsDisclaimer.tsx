@@ -1,4 +1,3 @@
-import classNames from 'classnames'
 import RedAsterisk from '@app/ui/components/Form/RedAsterisk'
 import classNames from 'classnames'
 
