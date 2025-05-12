@@ -50,6 +50,7 @@ export const executeJob = async (job: Job) => {
         if (Sentry?.captureException) {
           Sentry.captureException(error)
         }
+        // biome-ignore lint/suspicious/noConsole: need this for troubleshooting
         console.error(error)
       })
 
@@ -63,6 +64,7 @@ export const executeJob = async (job: Job) => {
     if (Sentry?.captureException) {
       Sentry.captureException(error)
     }
+    // biome-ignore lint/suspicious/noConsole: need this for troubleshooting
     console.error(error)
     const { ended, duration } = stopWatch.stop()
 

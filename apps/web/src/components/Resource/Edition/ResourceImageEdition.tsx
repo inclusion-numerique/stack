@@ -14,7 +14,12 @@ import { trpc } from '@app/web/trpc'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as Sentry from '@sentry/nextjs'
 import Image from 'next/image'
-import React, { type Dispatch, type SetStateAction, useEffect } from 'react'
+import React, {
+  type Dispatch,
+  type SetStateAction,
+  useCallback,
+  useEffect,
+} from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import styles from './ResourceImageEdition.module.css'
@@ -64,47 +69,59 @@ const ResourceImageEdition = ({
     resolver: zodResolver(ImageEditionFormValidation),
   })
 
-  const onSubmit = async (data: ImageEditionFormData) => {
-    // When the user submits a file, it has been validated client side by fileValidation()
+  const onSubmit = useCallback(
+    async (data: ImageEditionFormData) => {
+      // When the user submits a file, it has been validated client side by fileValidation()
 
-    // 1. We set edition state to avoid other operations while uploading
-    setEditing('image')
+      // 1. We set edition state to avoid other operations while uploading
+      setEditing('image')
 
-    // 2. We create a signed url and upload the file to the storage
-    const uploaded = await fileUpload.upload(data.file)
-    if ('error' in uploaded) {
-      setEditing(null)
+      // 2. We create a signed url and upload the file to the storage
+      const uploaded = await fileUpload.upload(data.file)
+      if ('error' in uploaded) {
+        setEditing(null)
 
-      // eslint-disable-next-line unicorn/no-useless-undefined
-      setValue('file', undefined as unknown as File)
-      setError('file', {
-        message: uploaded.error,
+        // eslint-disable-next-line unicorn/no-useless-undefined
+        setValue('file', undefined as unknown as File)
+        setError('file', {
+          message: uploaded.error,
+        })
+        // Upload failed, error will be displayed from hooks states
+        return
+      }
+
+      // 3. We create an image based on the uploaded file
+      const imageCreationResult = await createImage.mutateAsync({
+        file: uploaded,
       })
-      // Upload failed, error will be displayed from hooks states
-      return
-    }
 
-    // 3. We create an image based on the uploaded file
-    const imageCreationResult = await createImage.mutateAsync({
-      file: uploaded,
-    })
+      // 4. We send the edition command with the created image id
+      await sendCommand({
+        name: 'EditImage',
+        payload: {
+          imageId: imageCreationResult.id,
+          resourceId: id,
+        },
+      })
 
-    // 4. We send the edition command with the created image id
-    await sendCommand({
-      name: 'EditImage',
-      payload: {
-        imageId: imageCreationResult.id,
-        resourceId: id,
-      },
-    })
+      // 5. We reset the form
+      setEditing(null)
+      reset()
+      fileUpload.reset()
+    },
+    [
+      setEditing,
+      reset,
+      fileUpload,
+      sendCommand,
+      id,
+      createImage,
+      setError,
+      setValue,
+    ],
+  )
 
-    // 5. We reset the form
-    setEditing(null)
-    reset()
-    fileUpload.reset()
-  }
-
-  const onDelete = async () => {
+  const onDelete = useCallback(async () => {
     // 1. Set edition state to avoid other operations while deleting
 
     setEditing('image')
@@ -122,7 +139,7 @@ const ResourceImageEdition = ({
     setEditing(null)
     reset()
     fileUpload.reset()
-  }
+  }, [setEditing, reset, fileUpload, sendCommand, id])
 
   const disabled = isSubmitting || isEditingAnotherContent
 
@@ -136,7 +153,7 @@ const ResourceImageEdition = ({
       }
     })
     return () => subscription.unsubscribe()
-  }, [watch, isEditingImage, setEditing, handleSubmit, onSubmit])
+  }, [watch, isEditingImage, handleSubmit, onSubmit])
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

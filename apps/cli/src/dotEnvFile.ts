@@ -1,8 +1,6 @@
-
 import { appendFile } from 'node:fs/promises'
 import path from 'node:path'
 import { getDirname } from '@app/config/dirname'
-
 
 export type DotEnvVariable = { name: string; value: string }
 
@@ -12,7 +10,6 @@ export const appendTextToDotEnvFile = async (text: string) => {
   const dotenvFile = path.resolve(getDirname(import.meta.url), '../../../.env')
   await appendFile(dotenvFile, `\n${text}\n`)
 }
-
 
 export const appendEnvVariablesToDotEnvFile = async ({
   comment,

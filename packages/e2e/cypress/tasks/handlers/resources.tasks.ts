@@ -1,10 +1,10 @@
-import { handleResourceCreationCommand } from '@app/web/server/resources/feature/handleResourceCreationCommand'
-import { handleResourceMutationCommand } from '@app/web/server/resources/feature/handleResourceMutationCommand'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import {
   ResourceCreationCommand,
   ResourceMutationCommand,
 } from '@app/web/server/resources/feature/features'
+import { handleResourceCreationCommand } from '@app/web/server/resources/feature/handleResourceCreationCommand'
+import { handleResourceMutationCommand } from '@app/web/server/resources/feature/handleResourceMutationCommand'
 
 export type SendResourceCommandsInput = {
   user: Pick<SessionUser, 'id'>

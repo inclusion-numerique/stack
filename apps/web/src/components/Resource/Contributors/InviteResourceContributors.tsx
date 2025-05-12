@@ -53,6 +53,7 @@ const InviteResourceContributors = ({
       router.refresh()
       await refetch()
     } catch {
+      // biome-ignore lint/suspicious/noConsole: need this for troubleshooting
       console.error('Something went wrong')
     }
   }

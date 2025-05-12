@@ -40,14 +40,14 @@ const OpenOnboardingForMigratedUserThatHasNotSeenIt = ({
 
     // User has not seen the onboarding, we redirect him to the onboarding if he has not closed it yet
     router.push('/nouveautes')
-  }, [user.hasSeenV2Onboarding, mutate, user.legacyId])
+  }, [user.hasSeenV2Onboarding, mutate, user.legacyId, router.push])
 
   useEffect(() => {
     // User has been marked as having seen the onboarding, refresh to have the new state
     if (isSuccess) {
       router.refresh()
     }
-  }, [router, isSuccess])
+  }, [router.refresh, isSuccess])
 
   return null
 }

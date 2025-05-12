@@ -36,8 +36,7 @@ const DataSearchAndFilters = async <
 
   const filterComponents = await Promise.all(
     filterConfigurations.map(async (filterConfiguration) => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const options =
+      const _options =
         'options' in filterConfiguration
           ? Array.isArray(filterConfiguration.options)
             ? filterConfiguration.options

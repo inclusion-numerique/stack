@@ -42,6 +42,7 @@ const CollectionDeletionModal = ({
         ),
       })
     } catch (error) {
+      // biome-ignore lint/suspicious/noConsole: need this for troubleshooting
       console.error('Could not delete collection', error)
       createToast({
         priority: 'error',

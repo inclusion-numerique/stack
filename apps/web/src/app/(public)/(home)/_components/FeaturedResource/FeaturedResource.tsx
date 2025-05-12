@@ -59,7 +59,7 @@ const ProfileMetadata = ({
 export const FeaturedResource = ({
   resource: { title, slug, published, base, createdBy },
   // Todo use the user prop for action buttons
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // biome-ignore lint/correctness/noUnusedVariables: todo
   user,
 }: FeaturedResourceProps) => (
   <div className="fr-border-top fr-enlarge-link fr-no-hover-bg">

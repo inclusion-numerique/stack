@@ -18,7 +18,7 @@ const ResourceTab = ({
   resources: BaseResource[]
   user: SessionUser | null
   emptyText: string
-  ['data-testid']: string
+  'data-testid': string
   isDraft?: boolean
 }) => (
   <div data-testid={dataTestId}>

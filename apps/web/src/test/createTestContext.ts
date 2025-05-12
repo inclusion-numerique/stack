@@ -9,6 +9,7 @@ export const testContextInfo = {
   calls: [],
   connectionParams: null,
   signal: new AbortController().signal,
+  url: null,
 } satisfies TRPCRequestInfo
 
 export const createTestContext = ({

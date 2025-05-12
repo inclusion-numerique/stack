@@ -50,7 +50,7 @@ const ResourceVisibilityForm = ({
         form.setValue('payload.isPublic', false)
       }
     }
-  }, [resource, user])
+  }, [resource, user, form.setValue, form.getValues])
 
   const mutate = trpc.resource.mutate.useMutation()
 

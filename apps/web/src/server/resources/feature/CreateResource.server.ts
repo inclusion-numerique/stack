@@ -76,7 +76,7 @@ export const applyResourceCreated: ResourceCreationEventApplier<
 
 export const onCreated: ResourceEventSideEffect<ResourceCreated> = async (
   event,
-  resource,
+  _resource,
   { transaction },
 ) => {
   await transaction.resource.create({

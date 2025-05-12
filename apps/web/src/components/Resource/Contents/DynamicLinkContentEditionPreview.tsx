@@ -24,6 +24,7 @@ const DynamicLinkContentEditionPreview = ({
       enabled: !!url,
     },
   )
+  // biome-ignore lint/correctness/useExhaustiveDependencies: only needed to run when data changes
   useEffect(() => {
     if (!data) {
       return

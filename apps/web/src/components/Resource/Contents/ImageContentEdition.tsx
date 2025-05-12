@@ -47,6 +47,7 @@ const ImageContentEdition = ({
 
   const imageIdError = errors.imageId?.message
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: no need to run the effect on each changes
   useEffect(() => {
     if (!imageUploadValue) {
       return

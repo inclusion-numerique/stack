@@ -1,8 +1,8 @@
-import { givenUser } from '@app/e2e/support/given/givenUser'
 import { givenBase } from '@app/e2e/support/given/givenBase'
 import { createTestResourceCommands } from '@app/e2e/support/given/givenResourceCommands'
-import { dateAsDay } from '@app/web/utils/dateAsDay'
+import { givenUser } from '@app/e2e/support/given/givenUser'
 import { appUrl } from '@app/e2e/support/helpers'
+import { dateAsDay } from '@app/web/utils/dateAsDay'
 
 describe("Utilisateur connecté, lorsque j'édite une ressource", () => {
   describe("Qui n'a pas été modifiée après création", () => {

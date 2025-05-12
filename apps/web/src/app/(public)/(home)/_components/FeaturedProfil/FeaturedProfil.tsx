@@ -8,7 +8,7 @@ import React from 'react'
 export const FeaturedProfil = ({
   profile,
   // TODO use the user prop for action buttons
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // biome-ignore lint/correctness/noUnusedVariables: todo
   user,
 }: {
   profile: ProfileListItem

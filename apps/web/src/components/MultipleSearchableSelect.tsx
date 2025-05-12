@@ -68,7 +68,7 @@ const MultipleSearchableSelect = ({
       allOptions.filter((option) =>
         filter ? filter(option) : option.label.toLocaleLowerCase(),
       ),
-    [filter, inputValue, allOptions],
+    [filter, allOptions],
   )
 
   const onInputChange = useCallback(
@@ -76,7 +76,7 @@ const MultipleSearchableSelect = ({
       setInputValue(input)
       onInputChangeProperty?.(input)
     },
-    [setInputValue, onInputChangeProperty],
+    [onInputChangeProperty],
   )
 
   const select = useCallback(
@@ -126,7 +126,6 @@ const MultipleSearchableSelect = ({
       onInputChange,
       internalSelection,
       onSelectProperty,
-      selectedIndex,
     ],
   )
 

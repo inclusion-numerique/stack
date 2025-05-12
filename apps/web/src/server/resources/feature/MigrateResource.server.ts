@@ -110,7 +110,7 @@ export const applyResourceMigrated: ResourceCreationEventApplier<
 
 export const onMigrated: ResourceEventSideEffect<ResourceMigrated> = async (
   { data: { __version, id, byId, legacyId, contents, description, ...rest } },
-  resource,
+  _resource,
   { transaction },
 ) => {
   const existing = await transaction.resource.findUnique({

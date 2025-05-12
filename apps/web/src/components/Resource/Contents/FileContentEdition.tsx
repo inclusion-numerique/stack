@@ -46,6 +46,7 @@ const FileContentEdition = ({
   // Upload model creation mutation
   const createUpload = trpc.upload.create.useMutation()
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: only run the effect on file value change
   useEffect(() => {
     if (!uploadFileValue) {
       return

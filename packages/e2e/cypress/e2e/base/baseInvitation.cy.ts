@@ -1,9 +1,9 @@
-import { givenUser } from '@app/e2e/support/given/givenUser'
+import { goToMostRecentEmailReceived } from '@app/e2e/e2e/goToMostRecentEmailReceived'
 import {
   defaultTestBaseSlug,
   defaultTestBaseTitle,
 } from '@app/e2e/support/given/givenBase'
-import { goToMostRecentEmailReceived } from '@app/e2e/e2e/goToMostRecentEmailReceived'
+import { givenUser } from '@app/e2e/support/given/givenUser'
 import { appUrl } from '@app/e2e/support/helpers'
 import {
   cleanUpAndCreateTestBase,

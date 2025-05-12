@@ -27,6 +27,7 @@ const ProfileDeletion = ({ userId }: { userId: string }) => {
       await mutation.mutateAsync({ userId })
       await signOut({ redirect: true, callbackUrl: '/profil-supprime' })
     } catch (error) {
+      // biome-ignore lint/suspicious/noConsole: need this for troubleshooting
       console.error('Could not delete profile', error)
       createToast({
         priority: 'error',

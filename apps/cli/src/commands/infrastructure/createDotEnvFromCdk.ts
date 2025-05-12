@@ -1,12 +1,10 @@
-
-import { Argument, Command } from '@commander-js/extra-typings'
 import { appendEnvVariablesToDotEnvFile } from '@app/cli/dotEnvFile'
 import { output } from '@app/cli/output'
+import { Argument, Command } from '@commander-js/extra-typings'
 
 const { getCdkOutput } = await import('@app/cdk/getCdkOutput')
 
 const stacks = ['web', 'project']
-
 
 export const createDotEnvFromCdk = new Command()
   .command('dotenv:from-cdk')

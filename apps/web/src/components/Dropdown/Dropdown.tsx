@@ -7,6 +7,7 @@ import React, {
   type KeyboardEvent,
   type MouseEvent as ReactMouseEvent,
   type ReactNode,
+  type RefObject,
   useEffect,
   useRef,
 } from 'react'
@@ -69,7 +70,7 @@ export const Dropdown = ({
     }
   }
 
-  useOnClickOutside(collapseRef, (event) => {
+  useOnClickOutside(collapseRef as RefObject<HTMLElement>, (event) => {
     if (
       event.target instanceof HTMLElement &&
       buttonRef.current?.contains(event.target)

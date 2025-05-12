@@ -24,6 +24,7 @@ const RemoveBaseMemberButton = ({ member }: { member: BaseMember }) => {
         message: <>Le membre a bien été retiré</>,
       })
     } catch {
+      // biome-ignore lint/suspicious/noConsole: need this for troubleshooting
       console.error('Something went wrong...')
     }
   }
