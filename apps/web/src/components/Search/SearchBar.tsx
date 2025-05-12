@@ -16,7 +16,7 @@ import classNames from 'classnames'
 import Link from 'next/link'
 import { useRouter, useSelectedLayoutSegments } from 'next/navigation'
 import type React from 'react'
-import { useEffect, useRef, useState } from 'react'
+import { type RefObject, useEffect, useRef, useState } from 'react'
 import { useDebounceValue, useOnClickOutside } from 'usehooks-ts'
 import styles from './SearchBar.module.css'
 
@@ -127,7 +127,7 @@ const SearchBar = ({
 
   // Close quick search on click outside of it
   // TODO Cancel if click on search bar ?
-  useOnClickOutside(quickSearchContainerRef, () => {
+  useOnClickOutside(quickSearchContainerRef as RefObject<HTMLElement>, () => {
     setQuickSearchOpen(false)
   })
 

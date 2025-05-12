@@ -13,7 +13,7 @@ import type { FeaturedBlock } from '@app/web/features/administration/landing/db/
 import { trpc } from '@app/web/trpc'
 import { Spinner } from '@app/web/ui/Spinner'
 import classNames from 'classnames'
-import { type ChangeEvent, useRef, useState } from 'react'
+import { type ChangeEvent, type RefObject, useRef, useState } from 'react'
 import { useDebounceValue, useOnClickOutside } from 'usehooks-ts'
 import styles from '../styles/AdministrationSearchFeaturedBlock.module.css'
 
@@ -34,7 +34,7 @@ const AdministrationSearchFeaturedBlock = ({
   const [debouncedQuery, setDebouncedQuery] = useDebounceValue(query, 500)
   const quickSearchContainerRef = useRef<HTMLDivElement>(null)
 
-  useOnClickOutside(quickSearchContainerRef, () => {
+  useOnClickOutside(quickSearchContainerRef as RefObject<HTMLElement>, () => {
     setQuickSearchOpen(false)
   })
 

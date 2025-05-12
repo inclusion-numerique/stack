@@ -11,6 +11,7 @@ import type {
 import { AnimatePresence, Reorder } from 'framer-motion'
 import React, {
   type Dispatch,
+  RefObject,
   type SetStateAction,
   useRef,
   useState,
@@ -103,7 +104,7 @@ const ContentListEdition = React.forwardRef(
               editionState={editionState}
               isSelected={selectedIndex === index}
               onSelect={() => setSelectedIndex(index)}
-              dragConstraints={dragBoundaryRef}
+              dragConstraints={dragBoundaryRef as RefObject<HTMLElement>}
               moveUp={() => moveUp(index, moveContent)}
               moveDown={() => moveDown(index, contents.length, moveContent)}
               count={orderedContents.length}

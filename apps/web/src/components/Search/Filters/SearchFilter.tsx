@@ -1,7 +1,7 @@
 import type { SelectOption } from '@app/ui/components/Form/utils/options'
 import Button from '@codegouvfr/react-dsfr/Button'
 import classNames from 'classnames'
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, type RefObject } from 'react'
 import { useOnClickOutside } from 'usehooks-ts'
 import { FilterCategory } from './FilterCategory'
 import styles from './SearchFilter.module.css'
@@ -19,8 +19,10 @@ const SearchFilter = ({
   selected: Set<string>
 }) => {
   const [open, setOpen] = useState(false)
-  const optionsRef = useRef(null)
-  useOnClickOutside(optionsRef, () => setOpen(false))
+  const optionsRef = useRef<HTMLDivElement>(null)
+  useOnClickOutside(optionsRef as RefObject<HTMLDivElement>, () =>
+    setOpen(false),
+  )
 
   return (
     <div className={styles.filterContainer} ref={optionsRef}>

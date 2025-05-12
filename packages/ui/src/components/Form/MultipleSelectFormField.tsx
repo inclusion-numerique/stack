@@ -37,7 +37,7 @@ export type MultipleSelectFormFieldProps<T extends FieldValues> = {
   asterisk?: boolean
   defaultOption?: boolean
   defaultOptionLabel?: string
-  hint?: string
+  hint?: ReactNode
   badgeSize?: 'sm' | 'md'
   options: SelectInputOption[]
   limit?: number

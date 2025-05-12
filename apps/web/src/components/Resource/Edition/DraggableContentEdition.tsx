@@ -81,13 +81,13 @@ const DraggableContentEdition = React.forwardRef(
     }
 
     const handleDragStart = (_event: MouseEvent | TouchEvent | PointerEvent) =>
-      onDragStart(dragButtonRef, _event)
+      onDragStart(dragButtonRef as RefObject<HTMLButtonElement>, _event)
 
     // Trigger mutation on drag end
     const handleDragEnd = async (
       event: MouseEvent | TouchEvent | PointerEvent,
     ) => {
-      onDragEnd(dragButtonRef, event)
+      onDragEnd(dragButtonRef as RefObject<HTMLButtonElement>, event)
       const button = dragButtonRef.current
       const buttonIndex = button?.dataset.index as string
       if (button) {

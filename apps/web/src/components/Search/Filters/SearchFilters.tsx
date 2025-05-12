@@ -1,6 +1,6 @@
 'use client'
 
-import { OptionBadge } from '@app/ui/components/Form/OptionBadge'
+import OptionBadge from '@app/ui/components/Form/OptionBadge'
 import type { SelectOption } from '@app/ui/components/Form/utils/options'
 import {
   type SearchParams,

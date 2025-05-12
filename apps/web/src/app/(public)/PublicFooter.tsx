@@ -41,30 +41,33 @@ export const publicFooterProps = {
   'accessibility' | 'accessibilityLinkProps' | 'bottomItems'
 >
 
-const PublicFooter = () => (
-  <Footer
-    accessibility={publicFooterProps.accessibility}
-    accessibilityLinkProps={publicFooterProps.accessibilityLinkProps}
-    brandTop={
-      <>
-        République
-        <br />
-        Française
-      </>
-    }
-    operatorLogo={{
-      imgUrl: '/images/logo-anct.svg',
-      alt: "Logo de l'Agence Nationale de la Cohésion des Territoires",
-      orientation: 'horizontal',
-    }}
-    homeLinkProps={{
-      href: '/',
-      title: 'Accueil',
-    }}
-    bottomItems={[
-      ...publicFooterProps.bottomItems,
-      <SwitchTheme key="switch-theme" initialTheme={getServerDsfrTheme()} />,
-    ]}
-  />
-)
+const PublicFooter = async () => {
+  const initialTheme = await getServerDsfrTheme()
+  return (
+    <Footer
+      accessibility={publicFooterProps.accessibility}
+      accessibilityLinkProps={publicFooterProps.accessibilityLinkProps}
+      brandTop={
+        <>
+          République
+          <br />
+          Française
+        </>
+      }
+      operatorLogo={{
+        imgUrl: '/images/logo-anct.svg',
+        alt: "Logo de l'Agence Nationale de la Cohésion des Territoires",
+        orientation: 'horizontal',
+      }}
+      homeLinkProps={{
+        href: '/',
+        title: 'Accueil',
+      }}
+      bottomItems={[
+        ...publicFooterProps.bottomItems,
+        <SwitchTheme key="switch-theme" initialTheme={initialTheme} />,
+      ]}
+    />
+  )
+}
 export default PublicFooter
