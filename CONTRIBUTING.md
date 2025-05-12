@@ -237,7 +237,7 @@ Lorsqu'une branche est fusionnée avec `main`, cela déclenche automatiquement l
 
 ### Outils
 
-- [Biome](https://eslint.org/) : Formatteur et linteur pour JavaScript, CSS et TypeScript.
+- [Biome](https://biomejs.dev/) : Formatteur et linteur pour JavaScript, CSS et TypeScript.
 - [Jest](https://jestjs.io/) : Environnement d'exécution des tests unitaires.
 - [Cypress](https://www.cypress.io) : Environnement d'exécution des tests de bout en bout et de tests de composants.
 - [Storybook](https://storybook.js.org) : Permet de créer, documenter et tester des composants UI.
