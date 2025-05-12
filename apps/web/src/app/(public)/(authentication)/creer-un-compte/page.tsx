@@ -17,15 +17,17 @@ export const metadata: Metadata = {
 
 export const revalidate = 0
 const SigninPage = async ({
-  searchParams: { error, email, raison, suivant } = {},
+  searchParams,
 }: {
-  searchParams?: {
+  searchParams: Promise<{
     error?: string
     raison?: 'connexion-sans-compte'
     email?: string
     suivant?: Route
-  }
+  }>
 }) => {
+  const { email, error, raison, suivant } = await searchParams
+
   const user = await getSessionUser()
   if (user) {
     redirect(getServerUrl('/'))
