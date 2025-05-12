@@ -1,9 +1,9 @@
+import RedAsterisk from '@app/ui/components/Form/RedAsterisk'
+import SelectOptionsList from '@app/ui/components/Form/SelectOptionsList'
+import classNames from 'classnames'
 import React, { ChangeEventHandler, MouseEventHandler, ReactNode } from 'react'
 import { Control, Controller, FieldValues } from 'react-hook-form'
 import type { FieldPath } from 'react-hook-form/dist/types/path'
-import classNames from 'classnames'
-import RedAsterisk from '@app/ui/components/Form/RedAsterisk'
-import SelectOptionsList from '@app/ui/components/Form/SelectOptionsList'
 import type { SelectInputOption, SelectOption } from './utils/options'
 
 const OptionBadge = ({
@@ -11,13 +11,11 @@ const OptionBadge = ({
   onClick,
   disabled,
   size,
-  'data-testid': dataTestId,
 }: {
   option: SelectOption
   onClick: MouseEventHandler
   disabled?: boolean
   size?: 'sm' | 'md'
-  'data-testid'?: string
 }) => (
   <button
     type="button"
@@ -25,7 +23,6 @@ const OptionBadge = ({
     disabled={disabled || option.disabled}
     onClick={disabled ? undefined : onClick}
     aria-label={`Retirer ${option.label}`}
-    data-testid={dataTestId}
   >
     {option.label}
     <span className="fr-icon-close-line fr-ml-1w fr-icon--sm" />
@@ -40,12 +37,11 @@ export type MultipleSelectFormFieldProps<T extends FieldValues> = {
   asterisk?: boolean
   defaultOption?: boolean
   defaultOptionLabel?: string
-  hint?: ReactNode
+  hint?: string
   badgeSize?: 'sm' | 'md'
   options: SelectInputOption[]
   limit?: number
   className?: string
-  'data-testid'?: string
 }
 
 const MultipleSelectFormField = <T extends FieldValues>({
@@ -61,7 +57,6 @@ const MultipleSelectFormField = <T extends FieldValues>({
   options,
   limit,
   className,
-  'data-testid': dataTestId,
 }: MultipleSelectFormFieldProps<T>) => {
   const id = `select-tags-form-field__${path}`
 
@@ -84,8 +79,6 @@ const MultipleSelectFormField = <T extends FieldValues>({
           event,
         ) => {
           onChange(
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore: force type as string[]
             value ? [...value, event.target.value] : [event.target.value],
           )
         }
@@ -97,8 +90,7 @@ const MultipleSelectFormField = <T extends FieldValues>({
         // Remove value on badge click
         const onTagClick = (option: SelectOption) => {
           onChange(
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-call
-            value.filter(
+            (value as string[]).filter(
               (selectedValue: string) => selectedValue !== option.value,
             ),
           )
@@ -137,7 +129,6 @@ const MultipleSelectFormField = <T extends FieldValues>({
               {hint ? <span className="fr-hint-text">{hint}</span> : null}
             </label>
             <select
-              data-testid={dataTestId}
               className="fr-select fr-select--error"
               aria-describedby="text-select-error-desc-error"
               id={id}
@@ -161,7 +152,6 @@ const MultipleSelectFormField = <T extends FieldValues>({
                   disabled={disabled}
                   size={badgeSize}
                   onClick={() => onTagClick(option)}
-                  data-testid={`${dataTestId}-${option.value}`}
                 />
               ))}
             </div>

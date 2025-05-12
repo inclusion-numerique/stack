@@ -56,7 +56,10 @@ const CheckboxFormField = <T extends FieldValues>({
         }
 
         return (
-          <div className={classNames('fr-form-group', className)}>
+          <div
+            className={classNames('fr-form-group', className)}
+            data-testid={dataTestId}
+          >
             <fieldset
               className={classNames('fr-fieldset fr-mb-0', {
                 'fr-fieldset--error': error,
@@ -85,9 +88,8 @@ const CheckboxFormField = <T extends FieldValues>({
                     disabled={disabled}
                     onBlur={onBlur}
                     onChange={(event) => {
-                      onChange(event.target.checked as PathValue<T, Path<T>>)
+                      onChange(event.target.checked)
                     }}
-                    data-testid={dataTestId}
                     name={name}
                     ref={ref}
                   />

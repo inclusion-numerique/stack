@@ -6,7 +6,6 @@
   "type": "module",
   "scripts": {
     "lint": "biome check src",
-    "lint:style": "../../packages/lint/node_modules/.bin/stylelint \"src/**/*.css\"",
     "test": "jest --passWithNoTests",
     "tsc": "tsc --noEmit",
     "postinstall": "pnpm --silent setup:dsfr",
