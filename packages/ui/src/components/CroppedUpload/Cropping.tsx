@@ -1,7 +1,6 @@
 import classNames from 'classnames'
 import React, { RefObject } from 'react'
 import Cropper, { ReactCropperElement } from 'react-cropper'
-import 'cropperjs/dist/cropper.css'
 import {
   ImageCropData,
   imageCropToCropperInitialData,
