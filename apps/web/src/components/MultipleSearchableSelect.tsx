@@ -1,5 +1,4 @@
-import {
-  OptionBadge,
+import OptionBadge, {
   type SelectOptionValid,
 } from '@app/ui/components/Form/OptionBadge'
 import RedAsterisk from '@app/ui/components/Form/RedAsterisk'

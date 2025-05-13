@@ -6,6 +6,9 @@ export const CreateResourceCommandClientPayloadValidation = z.object({
   description: resourceEditionValues.description,
   baseId: resourceEditionValues.baseId,
 })
+export type CreateResourceCommandClientPayload = z.infer<
+  typeof CreateResourceCommandClientPayloadValidation
+>
 export const CreateResourceCommandPayloadValidation =
   CreateResourceCommandClientPayloadValidation.extend({
     resourceId: z.string().uuid(),

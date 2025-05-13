@@ -7,7 +7,7 @@ import { useEffect, useRef } from 'react'
  */
 const RegisterResourceView = ({ resourceSlug }: { resourceSlug: string }) => {
   // Useful for dev mode where useEffect is called twice
-  const registered = useRef<string>()
+  const registered = useRef<string>(null)
   useEffect(() => {
     if (registered.current === resourceSlug) {
       return

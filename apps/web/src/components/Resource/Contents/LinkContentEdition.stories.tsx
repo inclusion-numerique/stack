@@ -1,5 +1,9 @@
 import { ResourceWrapper } from '@app/storybook/components/ResourceWrapper'
 import { mobileStory } from '@app/storybook/storyHelper'
+import {
+  LinkPayload,
+  LinkPayloadCommandValidation,
+} from '@app/web/server/resources/feature/Content'
 import type { ClientContentPayload } from '@app/web/server/resources/feature/Content.client'
 import { EditContentCommandValidation } from '@app/web/server/resources/feature/EditContent'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -15,8 +19,8 @@ export default {
 type Story = StoryObj<typeof LinkEdition>
 
 const Template = () => {
-  const form = useForm<ClientContentPayload>({
-    resolver: zodResolver(EditContentCommandValidation),
+  const form = useForm<LinkPayload>({
+    resolver: zodResolver(LinkPayloadCommandValidation),
     reValidateMode: 'onChange',
     mode: 'all',
     defaultValues: {

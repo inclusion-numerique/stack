@@ -4,21 +4,20 @@ import InputFormField from '@app/ui/components/Form/InputFormField'
 import RadioFormField from '@app/ui/components/Form/RadioFormField'
 import { createToast } from '@app/ui/toast/createToast'
 import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
+import type { SessionUser } from '@app/web/auth/sessionUser'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
+import type { ResourceProjection } from '@app/web/server/resources/feature/createResourceProjection'
+import {
+  type SendResourceFeedbackClientData,
+  SendResourceFeedbackClientValidation,
+} from '@app/web/server/resources/sendResourceFeedback'
 import { trpc } from '@app/web/trpc'
+import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
 import ButtonsGroup from '@codegouvfr/react-dsfr/ButtonsGroup'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 import { useForm } from 'react-hook-form'
-
-import type { SessionUser } from '@app/web/auth/sessionUser'
-import type { ResourceProjection } from '@app/web/server/resources/feature/createResourceProjection'
-import {
-  type SendResourceFeedbackFormData,
-  SendResourceFeedbackValidation,
-} from '@app/web/server/resources/sendResourceFeedback'
-import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
 
 const toastMessage = ({
   isPublic,
@@ -50,8 +49,8 @@ const ResourceFeedbackForm = ({
 }) => {
   const router = useRouter()
 
-  const form = useForm<SendResourceFeedbackFormData>({
-    resolver: zodResolver(SendResourceFeedbackValidation),
+  const form = useForm<SendResourceFeedbackClientData>({
+    resolver: zodResolver(SendResourceFeedbackClientValidation),
     defaultValues: {
       rating: feedback?.rating ? `${feedback.rating}` : undefined,
       comment: feedback?.comment,
@@ -63,7 +62,7 @@ const ResourceFeedbackForm = ({
 
   const isLoading = form.formState.isSubmitting || mutate.isPending
 
-  const handleSave = async (data: SendResourceFeedbackFormData) => {
+  const handleSave = async (data: SendResourceFeedbackClientData) => {
     await mutate
       .mutateAsync(data)
       .then((newFeedback) => {

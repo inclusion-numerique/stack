@@ -38,11 +38,13 @@ const BaseLayout = async ({
   params,
   children,
 }: PropsWithChildren<BaseRouteParams>) => {
+  const { slug } = await params
+
   const {
     user,
     authorization: { hasPermission },
     base,
-  } = await getBasePageContext(params.slug)
+  } = await getBasePageContext(slug)
 
   const canWrite = hasPermission('WriteBase')
   const canView = hasPermission('ReadBaseData')

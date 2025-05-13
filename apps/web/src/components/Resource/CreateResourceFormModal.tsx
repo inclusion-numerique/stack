@@ -13,7 +13,7 @@ import {
 import ResourceBaseRichRadio from '@app/web/components/Resource/ResourceBaseRichRadio'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import {
-  type CreateResourceCommand,
+  type CreateResourceCommandClientPayload,
   CreateResourceCommandClientPayloadValidation,
 } from '@app/web/server/resources/feature/CreateResource'
 import type { CreateResource } from '@app/web/server/rpc/resource/createResource'
@@ -67,7 +67,7 @@ const CreateResourceFormModal = ({ user }: { user: SessionUser }) => {
     formState: { isSubmitting },
     setError,
     setValue,
-  } = useForm<CreateResourceCommand['payload']>({
+  } = useForm<CreateResourceCommandClientPayload>({
     resolver: zodResolver(CreateResourceCommandClientPayloadValidation),
     defaultValues,
   })
@@ -100,7 +100,7 @@ const CreateResourceFormModal = ({ user }: { user: SessionUser }) => {
       ? 'Créer une nouvelle ressource'
       : 'Où souhaitez-vous ajouter cette ressource ?'
 
-  const onSubmit = async (data: CreateResource) => {
+  const onSubmit = async (data: CreateResourceCommandClientPayload) => {
     if (isSubmitting) {
       return
     }

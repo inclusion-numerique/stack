@@ -7,6 +7,11 @@ import type { SendCommand } from '@app/web/components/Resource/Edition/ResourceE
 import styles from '@app/web/components/Resource/Edition/ResourceEdition.module.css'
 import type { AddContentCommand } from '@app/web/server/resources/feature/AddContent'
 import {
+  LinkPayload,
+  SectionTitlePayload,
+} from '@app/web/server/resources/feature/Content'
+import { TextPayload } from '@app/web/server/resources/feature/Content'
+import {
   type ClientContentPayload,
   ClientContentPayloadCommandValidation,
 } from '@app/web/server/resources/feature/Content.client'
@@ -117,15 +122,23 @@ const ResourceContentForm = React.forwardRef(
 
     switch (type) {
       case 'SectionTitle': {
-        formContent = <SectionTitleContentEdition form={form} />
+        formContent = (
+          <SectionTitleContentEdition
+            form={form as UseFormReturn<SectionTitlePayload>}
+          />
+        )
         break
       }
       case 'Text': {
-        formContent = <TextContentEdition form={form} />
+        formContent = (
+          <TextContentEdition form={form as UseFormReturn<TextPayload>} />
+        )
         break
       }
       case 'Link': {
-        formContent = <LinkContentEdition form={form} />
+        formContent = (
+          <LinkContentEdition form={form as UseFormReturn<LinkPayload>} />
+        )
         break
       }
       case 'Image': {

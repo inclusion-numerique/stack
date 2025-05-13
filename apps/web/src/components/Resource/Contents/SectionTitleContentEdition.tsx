@@ -1,5 +1,5 @@
 import InputFormField from '@app/ui/components/Form/InputFormField'
-import type { ClientContentPayload } from '@app/web/server/resources/feature/Content.client'
+import { type SectionTitlePayload } from '@app/web/server/resources/feature/Content'
 import { resourceSectionTitleMaxLength } from '@app/web/server/rpc/resource/utils'
 import type { UseFormReturn } from 'react-hook-form'
 
@@ -9,7 +9,7 @@ const titleInfo = (title: string | null) =>
 const SectionTitleContentEdition = ({
   form: { control, watch },
 }: {
-  form: UseFormReturn<ClientContentPayload>
+  form: UseFormReturn<SectionTitlePayload>
 }) => {
   const title = watch('title')
   return (

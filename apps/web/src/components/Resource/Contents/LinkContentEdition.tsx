@@ -4,6 +4,7 @@ import CheckboxFormField from '@app/ui/components/Form/CheckboxFormField'
 import InputFormField from '@app/ui/components/Form/InputFormField'
 import DynamicLinkContentEditionPreview from '@app/web/components/Resource/Contents/DynamicLinkContentEditionPreview'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
+import { LinkPayload } from '@app/web/server/resources/feature/Content'
 import type { ClientContentPayload } from '@app/web/server/resources/feature/Content.client'
 import type { Metadata } from '@app/web/server/rpc/metadata/getMetadataFromDocument'
 import {
@@ -21,7 +22,7 @@ const captionInfo = (caption?: string | null) =>
 const LinkContentEdition = ({
   form: { watch, setValue, getFieldState, control },
 }: {
-  form: UseFormReturn<ClientContentPayload>
+  form: UseFormReturn<LinkPayload>
 }) => {
   const showPreview = watch('showPreview')
   const url = watch('url')

@@ -8,7 +8,7 @@ import type { ContentType } from '@prisma/client'
 import classNames from 'classnames'
 import { AnimatePresence, motion } from 'framer-motion'
 import Image from 'next/image'
-import React, { useRef, useState } from 'react'
+import React, { RefObject, useRef, useState } from 'react'
 import { useOnClickOutside } from 'usehooks-ts'
 import styles from './AddContentButton.module.css'
 
@@ -63,7 +63,7 @@ const AddContentButton = ({
   const ref = useRef<HTMLDivElement | null>(null)
   const [open, setOpen] = useState(false)
 
-  useOnClickOutside(ref, () => setOpen(false))
+  useOnClickOutside(ref as RefObject<HTMLElement>, () => setOpen(false))
 
   return (
     <div ref={ref} className={styles.container}>

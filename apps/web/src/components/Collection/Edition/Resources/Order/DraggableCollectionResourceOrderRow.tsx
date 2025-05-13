@@ -22,7 +22,7 @@ const DraggableCollectionResourceOrderRow = ({
 }: {
   resource: ResourceListItem
   count: number
-  dragConstraints: RefObject<HTMLElement>
+  dragConstraints: RefObject<HTMLElement | null>
   index: number
   isSelected: boolean
   onSelect: () => void

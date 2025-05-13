@@ -1,7 +1,7 @@
 import { ResourceWrapper } from '@app/storybook/components/ResourceWrapper'
 import { mobileStory } from '@app/storybook/storyHelper'
-import type { ClientContentPayload } from '@app/web/server/resources/feature/Content.client'
-import { EditContentCommandValidation } from '@app/web/server/resources/feature/EditContent'
+import { SectionTitlePayloadCommandValidation } from '@app/web/server/resources/feature/Content'
+import { SectionTitlePayload } from '@app/web/server/resources/feature/Content'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { Meta, StoryObj } from '@storybook/react'
 import { useForm } from 'react-hook-form'
@@ -15,8 +15,8 @@ export default {
 type Story = StoryObj<typeof SectionTitleContentEdition>
 
 const Template = () => {
-  const form = useForm<ClientContentPayload>({
-    resolver: zodResolver(EditContentCommandValidation),
+  const form = useForm<SectionTitlePayload>({
+    resolver: zodResolver(SectionTitlePayloadCommandValidation),
     reValidateMode: 'onChange',
     mode: 'all',
     defaultValues: {
