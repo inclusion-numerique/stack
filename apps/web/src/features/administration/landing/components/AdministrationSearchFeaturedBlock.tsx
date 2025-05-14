@@ -1,20 +1,20 @@
 'use client'
 
-import classNames from 'classnames'
-import { useRef, useState } from 'react'
-import { useDebounceValue, useOnClickOutside } from 'usehooks-ts'
-import { trpc } from '@app/web/trpc'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
-import { Spinner } from '@app/web/ui/Spinner'
-import {
+import AddFeaturedBlockButton from '@app/web/features/administration/landing/components/AddFeaturedBlockButton'
+import type {
   BaseResult,
   ProfileResult,
   ResourceResult,
   SearchResult,
   SearchType,
 } from '@app/web/features/administration/landing/db/executeFeaturedBlockSearch'
-import AddFeaturedBlockButton from '@app/web/features/administration/landing/components/AddFeaturedBlockButton'
-import { FeaturedBlock } from '@app/web/features/administration/landing/db/getFeaturedBlocksListPageData'
+import type { FeaturedBlock } from '@app/web/features/administration/landing/db/getFeaturedBlocksListPageData'
+import { trpc } from '@app/web/trpc'
+import { Spinner } from '@app/web/ui/Spinner'
+import classNames from 'classnames'
+import { type ChangeEvent, type RefObject, useRef, useState } from 'react'
+import { useDebounceValue, useOnClickOutside } from 'usehooks-ts'
 import styles from '../styles/AdministrationSearchFeaturedBlock.module.css'
 
 const AdministrationSearchFeaturedBlock = ({
@@ -34,7 +34,7 @@ const AdministrationSearchFeaturedBlock = ({
   const [debouncedQuery, setDebouncedQuery] = useDebounceValue(query, 500)
   const quickSearchContainerRef = useRef<HTMLDivElement>(null)
 
-  useOnClickOutside(quickSearchContainerRef, () => {
+  useOnClickOutside(quickSearchContainerRef as RefObject<HTMLElement>, () => {
     setQuickSearchOpen(false)
   })
 
@@ -58,7 +58,7 @@ const AdministrationSearchFeaturedBlock = ({
     setDebouncedQuery(value)
   }
 
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value)
     setInputHasChanged(true)
     setQuickSearchOpen(true)

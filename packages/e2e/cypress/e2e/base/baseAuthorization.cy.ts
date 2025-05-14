@@ -2,8 +2,8 @@ import {
   cleanUpAndCreateTestBase,
   cleanUpAndCreateTestBaseAsMember,
 } from '@app/e2e/e2e/resource/edition/editionTestUtils'
-import { givenUser } from '@app/e2e/support/given/givenUser'
 import { defaultTestBaseSlug } from '@app/e2e/support/given/givenBase'
+import { givenUser } from '@app/e2e/support/given/givenUser'
 
 describe('Utilisateur sans droit, je ne peux ni voir et ni editer la base', () => {
   it('Acceptation 1 - Visiteur sur un base publique', () => {

@@ -1,36 +1,37 @@
 'use client'
 
-import classNames from 'classnames'
-import React, { useEffect, useRef, useState } from 'react'
-import { useRouter } from 'next/navigation'
-import Router from 'next/router'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { createToast } from '@app/ui/toast/createToast'
-import { SessionUser } from '@app/web/auth/sessionUser'
+import type { SessionUser } from '@app/web/auth/sessionUser'
+import AddContent from '@app/web/components/Resource/Edition/AddContent'
 import ContentListEdition from '@app/web/components/Resource/Edition/ContentListEdition'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
-import { ResourceMutationCommand } from '@app/web/server/resources/feature/features'
-import { Resource } from '@app/web/server/resources/getResource'
-import { ResourceProjectionWithContext } from '@app/web/server/resources/getResourceFromEvents'
-import { trpc } from '@app/web/trpc'
 import {
-  PublishCommand,
+  type PublishCommand,
   PublishCommandValidation,
 } from '@app/web/server/resources/feature/PublishResource'
+import type { ResourceMutationCommand } from '@app/web/server/resources/feature/features'
+import type { Resource } from '@app/web/server/resources/getResource'
+import type { ResourceProjectionWithContext } from '@app/web/server/resources/getResourceFromEvents'
 import {
   defaultSearchParams,
   searchUrl,
 } from '@app/web/server/search/searchQueryParams'
-import AddContent from '@app/web/components/Resource/Edition/AddContent'
+import { trpc } from '@app/web/trpc'
+import { zodResolver } from '@hookform/resolvers/zod'
+import classNames from 'classnames'
+import { useRouter } from 'next/navigation'
+import Router from 'next/router'
+import type React from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { useForm } from 'react-hook-form'
 import { ResourceEditionState } from '../enums/ResourceEditionState'
 import { ResourcePublishedState } from '../enums/ResourcePublishedState'
 import ResourceBaseEdition from './ResourceBaseEdition'
 import styles from './ResourceEdition.module.css'
 import ResourceEditionActionBar from './ResourceEditionActionBar'
 import ResourceImageEdition from './ResourceImageEdition'
-import ResourceTitleEdition from './ResourceTitleEdition'
 import ResourcePublication from './ResourcePublication'
+import ResourceTitleEdition from './ResourceTitleEdition'
 
 export type SendCommandResult = Awaited<
   ReturnType<ReturnType<typeof trpc.resource.mutate.useMutation>['mutateAsync']>
@@ -125,7 +126,7 @@ const ResourceEdition = ({
       window.removeEventListener('beforeunload', nativeBrowserHandler)
       Router.events.off('beforeHistoryChange', nextNavigationHandler)
     }
-  }, [askConfirmationBeforeLeaving, editing])
+  }, [askConfirmationBeforeLeaving, editing, confirmationText])
 
   const sendCommand: SendCommand = async (command: ResourceMutationCommand) => {
     const result = await mutate.mutateAsync(command)
@@ -174,6 +175,7 @@ const ResourceEdition = ({
           // TODO check if this is still needed after next update (this is tested e2e)
           router.refresh()
         } catch (error) {
+          // biome-ignore lint/suspicious/noConsole: need this for troubleshooting
           console.error('Could not publish resource', error)
           // TODO Have a nice error and handle edge cases server side
           // TODO for example a linked base or file or resource has been deleted since last publication
@@ -212,6 +214,7 @@ const ResourceEdition = ({
           ),
         })
       } catch (error) {
+        // biome-ignore lint/suspicious/noConsole: need this for troubleshooting
         console.error('Could not publish resource', error)
         createToast({
           priority: 'error',
@@ -244,6 +247,7 @@ const ResourceEdition = ({
       router.refresh()
       router.push(searchUrl('ressources', defaultSearchParams))
     } catch (error) {
+      // biome-ignore lint/suspicious/noConsole: need this for troubleshooting
       console.error('Could not delete resource', error)
       // TODO Have a nice error and handle edge cases server side
       // TODO for example a linked base or file or resource has been deleted since last publication

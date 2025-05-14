@@ -1,5 +1,5 @@
-import { prismaClient } from '@app/web/prismaClient'
 import { deleteAll, seed } from '@app/fixtures/seeds'
+import { prismaClient } from '@app/web/prismaClient'
 
 export const resetFixtures = async (
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

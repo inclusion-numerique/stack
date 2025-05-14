@@ -1,4 +1,4 @@
-import { mount } from 'cypress/react18'
+import { mount } from 'cypress/react'
 // eslint-disable-next-line import/no-relative-packages
 import '../../../../apps/web/public/dsfr/dsfr.module.min'
 // eslint-disable-next-line import/no-relative-packages

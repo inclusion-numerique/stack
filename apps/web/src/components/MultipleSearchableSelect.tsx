@@ -1,12 +1,17 @@
-import React, { ReactNode, useCallback, useMemo, useRef, useState } from 'react'
-import classNames from 'classnames'
-import Options from '@app/ui/components/SearchableSelect/Options'
-import { SelectOption } from '@app/ui/components/Form/utils/options'
-import {
-  OptionBadge,
-  SelectOptionValid,
+import OptionBadge, {
+  type SelectOptionValid,
 } from '@app/ui/components/Form/OptionBadge'
 import RedAsterisk from '@app/ui/components/Form/RedAsterisk'
+import type { SelectOption } from '@app/ui/components/Form/utils/options'
+import Options from '@app/ui/components/SearchableSelect/Options'
+import classNames from 'classnames'
+import React, {
+  type ReactNode,
+  useCallback,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import styles from './MultipleSearchableSelect.module.css'
 
 const DEFAULT_LIMIT = 5
@@ -62,7 +67,7 @@ const MultipleSearchableSelect = ({
       allOptions.filter((option) =>
         filter ? filter(option) : option.label.toLocaleLowerCase(),
       ),
-    [filter, inputValue, allOptions],
+    [filter, allOptions],
   )
 
   const onInputChange = useCallback(
@@ -70,7 +75,7 @@ const MultipleSearchableSelect = ({
       setInputValue(input)
       onInputChangeProperty?.(input)
     },
-    [setInputValue, onInputChangeProperty],
+    [onInputChangeProperty],
   )
 
   const select = useCallback(
@@ -120,7 +125,6 @@ const MultipleSearchableSelect = ({
       onInputChange,
       internalSelection,
       onSelectProperty,
-      selectedIndex,
     ],
   )
 

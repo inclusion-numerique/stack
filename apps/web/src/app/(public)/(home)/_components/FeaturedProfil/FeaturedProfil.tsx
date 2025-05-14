@@ -1,14 +1,14 @@
-import React from 'react'
-import Link from 'next/link'
+import type { SessionUser } from '@app/web/auth/sessionUser'
 import RoundProfileImage from '@app/web/components/RoundProfileImage'
-import { ProfileListItem } from '@app/web/server/profiles/getProfilesList'
-import { SessionUser } from '@app/web/auth/sessionUser'
 import { countProfileResources } from '@app/web/server/profiles/countProfileResources'
+import type { ProfileListItem } from '@app/web/server/profiles/getProfilesList'
+import Link from 'next/link'
+import React from 'react'
 
 export const FeaturedProfil = ({
   profile,
   // TODO use the user prop for action buttons
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // biome-ignore lint/correctness/noUnusedVariables: todo
   user,
 }: {
   profile: ProfileListItem

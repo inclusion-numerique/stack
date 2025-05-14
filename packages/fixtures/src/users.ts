@@ -1,5 +1,5 @@
-import type { Prisma } from '@prisma/client'
 import { givenUser } from '@app/fixtures/givenUser'
+import type { Prisma } from '@prisma/client'
 
 export const jmSansRien = {
   id: '99afd613-9d54-4110-9062-065c627eda8a',
