@@ -11,11 +11,13 @@ const OptionBadge = ({
   onClick,
   disabled,
   size,
+  'data-testid': dataTestId,
 }: {
   option: SelectOption
   onClick: MouseEventHandler
   disabled?: boolean
   size?: 'sm' | 'md'
+  'data-testid'?: string
 }) => (
   <button
     type="button"
@@ -23,6 +25,7 @@ const OptionBadge = ({
     disabled={disabled || option.disabled}
     onClick={disabled ? undefined : onClick}
     aria-label={`Retirer ${option.label}`}
+    data-testid={dataTestId}
   >
     {option.label}
     <span className="fr-icon-close-line fr-ml-1w fr-icon--sm" />
@@ -42,6 +45,7 @@ export type MultipleSelectFormFieldProps<T extends FieldValues> = {
   options: SelectInputOption[]
   limit?: number
   className?: string
+  'data-testid'?: string
 }
 
 const MultipleSelectFormField = <T extends FieldValues>({
@@ -57,6 +61,7 @@ const MultipleSelectFormField = <T extends FieldValues>({
   options,
   limit,
   className,
+  'data-testid': dataTestId,
 }: MultipleSelectFormFieldProps<T>) => {
   const id = `select-tags-form-field__${path}`
 
@@ -129,6 +134,7 @@ const MultipleSelectFormField = <T extends FieldValues>({
               {hint ? <span className="fr-hint-text">{hint}</span> : null}
             </label>
             <select
+              data-testid={dataTestId}
               className="fr-select fr-select--error"
               aria-describedby="text-select-error-desc-error"
               id={id}
@@ -152,6 +158,7 @@ const MultipleSelectFormField = <T extends FieldValues>({
                   disabled={disabled}
                   size={badgeSize}
                   onClick={() => onTagClick(option)}
+                  data-testid={`${dataTestId}-${option.value}`}
                 />
               ))}
             </div>
