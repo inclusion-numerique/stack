@@ -4,7 +4,8 @@ import { cropperToImageCrop } from '@app/ui/components/CroppedUpload/cropperToIm
 import type { CreateModalReturn } from '@app/ui/utils/modalTypes'
 import { ImageForForm } from '@app/web/server/image/imageTypes'
 import type Cropper from 'cropperjs'
-import React, {
+import 'cropperjs/dist/cropper.css'
+import {
   FormEventHandler,
   KeyboardEventHandler,
   useEffect,
