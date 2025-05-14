@@ -2,7 +2,7 @@ import { getSessionTokenFromCookies } from '@app/web/auth/getSessionTokenFromCoo
 import { getSessionUserFromSessionToken } from '@app/web/auth/getSessionUserFromSessionToken'
 import { prismaClient } from '@app/web/prismaClient'
 import { getOrSetVisitHashCookie } from '@app/web/server/visitHash/getOrSetVisitHashCookie'
-import cookie from 'cookie'
+import * as cookie from 'cookie'
 import type { NextRequest } from 'next/server'
 import { v4 } from 'uuid'
 
