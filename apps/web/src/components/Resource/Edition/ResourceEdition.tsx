@@ -161,7 +161,6 @@ const ResourceEdition = ({
         try {
           const result = await sendCommand(data)
           router.push(`/ressources/${result.resource.slug}`)
-          router.refresh()
           createToast({
             priority: 'success',
             message: (
