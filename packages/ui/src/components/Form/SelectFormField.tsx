@@ -33,6 +33,7 @@ const SelectFormField = <T extends FieldValues>({
   asterisk,
   className,
   placeholder,
+  'data-testid': dataTestId,
   classes,
 }: UiComponentProps & SelectFormFieldProps<T>) => {
   const id = `select-form-field__${path}`
@@ -88,6 +89,7 @@ const SelectFormField = <T extends FieldValues>({
               onBlur={onBlur}
               ref={ref}
               value={value || ''}
+              data-testid={dataTestId}
             >
               {placeholder && (
                 <option value="" disabled>
