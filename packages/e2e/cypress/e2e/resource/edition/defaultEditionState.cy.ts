@@ -71,8 +71,9 @@ describe("Utilisateur connecté, lorsque j'édite une ressource", () => {
       cy.testId('add-Text-content-button').click()
       cy.testId('Titre 1-button').click()
       cy.testId('text-input').type('Un deuxième titre moins stylé')
+      cy.intercept('/api/trpc/resource.mutate?*').as('mutation2')
       cy.testId('add-content_form__submit').click()
-      cy.wait('@mutation')
+      cy.wait('@mutation2')
 
       cy.testId('publish-resource-button')
         .should('have.text', 'Publier les modifications')
