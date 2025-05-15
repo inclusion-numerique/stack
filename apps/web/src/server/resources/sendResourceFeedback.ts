@@ -1,7 +1,11 @@
 import z from 'zod'
 
 export const SendResourceFeedbackClientValidation = z.object({
-  rating: z.string().regex(/^[1-4]$/),
+  rating: z
+    .string({
+      required_error: 'Veuillez renseigner le niveau de satisfaction',
+    })
+    .regex(/^[1-4]$/),
   comment: z
     .string()
     .trim()
