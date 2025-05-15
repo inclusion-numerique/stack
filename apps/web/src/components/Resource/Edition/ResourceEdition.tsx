@@ -161,7 +161,6 @@ const ResourceEdition = ({
         try {
           const result = await sendCommand(data)
           router.push(`/ressources/${result.resource.slug}`)
-          router.refresh()
           createToast({
             priority: 'success',
             message: (
@@ -171,9 +170,6 @@ const ResourceEdition = ({
               </>
             ),
           })
-          // Wierd cache behavior without refreshing a second time
-          // TODO check if this is still needed after next update (this is tested e2e)
-          router.refresh()
         } catch (error) {
           // biome-ignore lint/suspicious/noConsole: need this for troubleshooting
           console.error('Could not publish resource', error)
@@ -202,7 +198,6 @@ const ResourceEdition = ({
           },
         })
 
-        router.refresh()
         router.push(`/ressources/${resource.slug}`)
         createToast({
           priority: 'success',
@@ -241,10 +236,6 @@ const ResourceEdition = ({
         },
       })
 
-      // TODO There is a router bug here, unstable_skipClientCache does not work and we see our resource in the list after deletion
-      // While waiting for https://github.com/vercel/next.js/issues/42991, router.refresh() will invalidate router client cache
-      // See https://nextjs.org/docs/app/building-your-application/caching#invalidation-1
-      router.refresh()
       router.push(searchUrl('ressources', defaultSearchParams))
     } catch (error) {
       // biome-ignore lint/suspicious/noConsole: need this for troubleshooting
