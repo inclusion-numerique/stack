@@ -26,7 +26,7 @@ describe('Utilisateur connecté, je peux modifier ma base', () => {
       cy.dsfrShouldBeStarted()
     })
 
-    it.only('Acceptation 1 - Modification des informations', () => {
+    it('Acceptation 1 - Modification des informations', () => {
       cy.testId('edit-card-button').eq(0).click()
 
       cy.testId('base-title-input').clear()
