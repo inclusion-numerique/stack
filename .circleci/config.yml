@@ -509,7 +509,7 @@ jobs:
             echo "Created deployment $DEPLOYMENT_ID"
       - run:
           name: Set deployment status to in progress
-          command: pnpm --silent cli github:deployment:update $DEPLOYMENT_ID in_progress 'Terraform stack deployment'
+          command: pnpm --silent cli github:deployment:update $DEPLOYMENT_ID in_progress -d 'Terraform stack deployment'
       - run:
           name: 'Deploy web app stack'
           command: |
