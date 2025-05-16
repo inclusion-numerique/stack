@@ -105,6 +105,7 @@ const ResourceCard = ({
               priority="tertiary no outline"
               linkProps={{
                 href: `/ressources/${resource.slug}/editer`,
+                prefetch: false,
               }}
             >
               <span className="fr-unhidden-sm fr-hidden fr-mr-1w">

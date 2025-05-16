@@ -31,6 +31,7 @@ const ResourceActions = ({
             iconId="fr-icon-edit-line"
             linkProps={{
               href: `/ressources/${resource.slug}/editer`,
+              prefetch: false,
             }}
           >
             Modifier

@@ -44,6 +44,7 @@ const BaseHeader = ({
               data-testid="base-edition-button"
               className="fr-mt-2w fr-btn fr-btn--secondary fr-icon-edit-line fr-btn--icon-left fr-width-full fr-justify-content-center"
               href={`/bases/${base.slug}/editer`}
+              prefetch={false}
             >
               Modifier la base
             </Link>
