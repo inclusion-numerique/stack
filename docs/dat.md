@@ -142,6 +142,22 @@ La liste des dépendences nodejs est disponible dans :
 - [pnpm-lock.yaml](/pnpm-lock.yaml) pour la liste complète des librairies utilisées directement et indirectement et
   leurs versions précises
 
+### Politique de mise à jour de l’application et des dépendances
+
+#### Mises à jour de sécurité
+
+Nous suivons les rapports de vulnérabilités sur les composants listés ci-dessus. Dependabot est utilisé pour surveiller
+les vulnérabilités et les mises à jour de versions disponibles.
+
+#### Mises à jour des librairies
+
+Nous suivons les mises à jour des versions des librairies et les intégrons au fil de l’eau et adaptons le code applicatif pour utiliser les versions les plus stables et récentes disponibles et faciliter la maintenance.
+
+#### Mises à jour fonctionnelles
+
+Les mises à jour fonctionnelles sont effectuées en fonction de la roadmap et sont déployées en production régulièrement (environ une fois par semaine), après des tests unitaires, d'integration, et end-to-end pour s'assurer au maximum des non-régressions.
+
+
 ### Schéma de l’architecture
 
 Notre application est accessible à l'adresse: https://lesbases.anct.gouv.fr
