@@ -31,6 +31,7 @@ export const generateMetadata = async ({
     select: {
       title: true,
       description: true,
+      isPublic: true,
     },
   })
   if (!collection) {
@@ -40,6 +41,7 @@ export const generateMetadata = async ({
   return {
     title: metadataTitle(collection.title),
     description: collection.description || undefined,
+    robots: collection.isPublic ? undefined : 'noindex, nofollow',
   }
 }
 

@@ -25,6 +25,7 @@ export const generateMetadata = async ({
     select: {
       title: true,
       description: true,
+      isPublic: true,
     },
   })
   if (!base) {
@@ -34,6 +35,7 @@ export const generateMetadata = async ({
   return {
     title: metadataTitle(base.title),
     description: base.description || undefined,
+    robots: base.isPublic ? undefined : 'noindex, nofollow',
   }
 }
 const BaseLayout = async ({

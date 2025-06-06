@@ -27,6 +27,7 @@ export const generateMetadata = async ({
     },
     select: {
       name: true,
+      isPublic: true,
     },
   })
   if (!profile) {
@@ -37,6 +38,7 @@ export const generateMetadata = async ({
     title: metadataTitle(
       (profile.name && formatName(profile.name)) || 'Profil',
     ),
+    robots: profile.isPublic ? undefined : 'noindex, nofollow',
   }
 }
 
