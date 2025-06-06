@@ -8,7 +8,6 @@ import InviteBaseMemberRow from '@app/web/features/base/members/components/Invit
 import { Button } from '@codegouvfr/react-dsfr/Button'
 import classNames from 'classnames'
 import React, {
-  ChangeEvent,
   type ReactNode,
   useCallback,
   useMemo,
@@ -37,6 +36,7 @@ const MultipleSearchableSelect = ({
   selectedMemberType,
   withBadges,
   canAddAdmin,
+  withAddButton,
 }: {
   placeholder?: string
   noResultMessage?: string
@@ -54,6 +54,7 @@ const MultipleSearchableSelect = ({
   selectedMemberType: 'admin' | 'member'
   withBadges: boolean
   canAddAdmin: boolean
+  withAddButton: boolean
 }) => {
   const [internalSelection, setInternalSelection] = useState<
     SelectOptionValid<{
@@ -241,16 +242,18 @@ const MultipleSearchableSelect = ({
                 }}
               />
             </div>
-            <Button
-              type="button"
-              nativeButtonProps={{
-                onClick: () => {
-                  selectFirstResult(selectedIndex)
-                },
-              }}
-            >
-              Ajouter
-            </Button>
+            {withAddButton && (
+              <Button
+                type="button"
+                nativeButtonProps={{
+                  onClick: () => {
+                    selectFirstResult(selectedIndex)
+                  },
+                }}
+              >
+                Ajouter
+              </Button>
+            )}
           </div>
           <div
             ref={optionsContainerRef}

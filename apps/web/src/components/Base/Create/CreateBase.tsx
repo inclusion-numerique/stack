@@ -2,7 +2,7 @@
 
 import CroppedUpload from '@app/ui/components/CroppedUpload/CroppedUpload'
 import type { CroppedImageType } from '@app/ui/components/CroppedUpload/utils'
-import { SelectOptionValid } from '@app/ui/components/Form/OptionBadge'
+import type { SelectOptionValid } from '@app/ui/components/Form/OptionBadge'
 import RedAsterisk from '@app/ui/components/Form/RedAsterisk'
 import { createToast } from '@app/ui/toast/createToast'
 import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
