@@ -75,10 +75,7 @@ const CreateCollection = ({
         ...data,
         imageId: imageUploaded?.id || null,
       })
-      router.refresh()
       router.push(`/collections/${collection.slug}`)
-      // TODO: Wierd refreshes not working create e2e for this (collection appearing in base / collection page) and remove second refresh
-      router.refresh()
       createToast({
         priority: 'success',
         message: (
