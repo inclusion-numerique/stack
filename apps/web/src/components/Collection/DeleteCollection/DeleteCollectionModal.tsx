@@ -36,8 +36,10 @@ const DeleteCollectionModal = ({ redirectTo }: { redirectTo?: string }) => {
       })
       if (redirectTo) {
         router.push(redirectTo)
+      } else {
+        router.refresh()
       }
-      router.refresh()
+
       createToast({
         priority: 'success',
         message: <>La collection a bien été supprimée</>,
@@ -48,8 +50,11 @@ const DeleteCollectionModal = ({ redirectTo }: { redirectTo?: string }) => {
         message:
           'Une erreur est survenue lors de la suppression de la collection',
       })
+      router.refresh()
       mutation.reset()
     }
+
+    setValidationInput('')
   }
 
   return (
@@ -92,6 +97,7 @@ const DeleteCollectionModal = ({ redirectTo }: { redirectTo?: string }) => {
         nativeInputProps={{
           // @ts-ignore: wrong dsfr type
           'data-testid': 'modal-input',
+          value: validationInput,
           onChange: (event) => {
             setValidationInput(event.target.value)
           },
