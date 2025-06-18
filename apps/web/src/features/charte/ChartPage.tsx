@@ -44,12 +44,17 @@ const ChartPage = () => {
                   Les conditions à respecter pour publier une ressource
                 </span>
                 <div className="fr-flex fr-flex-gap-6v fr-direction-column fr-direction-md-row fr-justify-content-center">
-                  <div className={styles.tileContainer}>
+                  <div
+                    className={classNames(
+                      styles.tileContainer,
+                      'fr-p-md-6w fr-px-3w fr-py-4w',
+                    )}
+                  >
                     <LogoEuro />
                     <span className="fr-text--bold fr-text--xl fr-mb-0">
                       Des ressources libres et gratuites
                     </span>
-                    <p>
+                    <p className="fr-text--lg fr-text-mention--grey">
                       Toutes les ressources publiées sur la plateforme sont
                       mises à disposition gratuitement et, par défaut, sous
                       licence&nbsp;
@@ -58,9 +63,9 @@ const ChartPage = () => {
                         className="fr-link"
                         target="_blank"
                       >
-                        Etalab
+                        Etalab 2.0
                       </Link>
-                      (d'autres choix de licences sont possibles,&nbsp;
+                      &nbsp;(d'autres choix de licences sont possibles,&nbsp;
                       <Link
                         href="/centre-d-aide/les-ressources#licences"
                         className="fr-link"
@@ -72,12 +77,17 @@ const ChartPage = () => {
                       diffusion des contenus partagés.
                     </p>
                   </div>
-                  <div className={styles.tileContainer}>
+                  <div
+                    className={classNames(
+                      styles.tileContainer,
+                      'fr-p-md-6w fr-px-3w fr-py-4w',
+                    )}
+                  >
                     <LogoSpeakerPhone />
                     <span className="fr-text--bold fr-text--xl fr-mb-0">
                       Non-démarchage commercial
                     </span>
-                    <p>
+                    <p className="fr-text--lg fr-text-mention--grey">
                       La plateforme est dédiée au partage de ressources et de
                       savoirs au service de l’intérêt général. Il est
                       formellement interdit d'utiliser la plateforme afin de
