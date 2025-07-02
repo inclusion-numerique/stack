@@ -1,3 +1,9 @@
+import styles from '@app/ui/components/Form/Filters/SearchFilter.module.css'
+import {
+  FilterKey,
+  ThematicSelection,
+  isCategoryComplete,
+} from '@app/ui/components/Form/Filters/filter'
 import { SelectOption } from '@app/ui/components/Form/utils/options'
 import SearchThematicsCategory from '@app/web/components/Search/Filters/SearchThematicsCategory'
 import { Category, categoryThemesOptions } from '@app/web/themes/themes'
@@ -5,9 +11,7 @@ import Button from '@codegouvfr/react-dsfr/Button'
 import { createModal } from '@codegouvfr/react-dsfr/Modal'
 import classNames from 'classnames'
 import { useState } from 'react'
-import styles from './SearchFilter.module.css'
 import thematicsFiltersStyles from './SearchThematicsFilters.module.css'
-import type { FilterKey, ThematicSelection } from './filter'
 
 const modal = createModal({
   id: 'search-thematics-filters-modal',
@@ -57,18 +61,36 @@ const SearchThematicsFilters = ({
   const onSelectAllInCategory = (category: FilterKey, selected: boolean) => {
     const categoryOptions = categoryThemesOptions[category as Category]
     if (selected) {
+      const filteredInternalSelected = internalSelected.filter(
+        (s) => s.option.extra?.category !== category,
+      )
       setInternalSelected([
-        ...internalSelected,
-        ...categoryOptions.map((option) => ({ category, option })),
+        ...filteredInternalSelected,
+        ...categoryOptions.map((option) => ({
+          category: 'themes' as FilterKey,
+          option,
+        })),
       ])
     } else {
       setInternalSelected(
-        internalSelected.filter((s) => s.category !== category),
+        internalSelected.filter((s) => s.option.extra?.category !== category),
       )
     }
   }
 
-  const selectedCount = internalSelected.flatMap((s) => s.option).length
+  const selectedCount = Object.keys(categoryThemesOptions).reduce(
+    (count, category) => {
+      if (isCategoryComplete(category as Category, internalSelected)) {
+        return count + 1
+      }
+      return (
+        count +
+        internalSelected.filter((s) => s.option.extra?.category === category)
+          .length
+      )
+    },
+    0,
+  )
 
   return (
     <>
@@ -88,6 +110,25 @@ const SearchThematicsFilters = ({
       <modal.Component
         title="Filtrer par thématiques"
         className={thematicsFiltersStyles.frSearchThematicsModal}
+        buttons={[
+          {
+            children: 'Effacer tout',
+            onClick: clearThematics,
+            priority: 'secondary',
+            doClosesModal: false,
+            nativeButtonProps: {
+              type: 'button',
+            },
+          },
+          {
+            children: 'Appliquer le filtre',
+            onClick: applyThematicsFilters,
+            priority: 'primary',
+            nativeButtonProps: {
+              type: 'button',
+            },
+          },
+        ]}
       >
         <div className="fr-flex fr-direction-column fr-flex-gap-12v">
           {Object.entries(categoryThemesOptions).map(([key, value]) => (
@@ -100,16 +141,6 @@ const SearchThematicsFilters = ({
               onSelectAllInCategory={onSelectAllInCategory}
             />
           ))}
-        </div>
-        <div className="fr-mt-10v fr-border--top">
-          <div className="fr-flex fr-justify-content-space-between fr-pt-8v">
-            <Button priority="secondary" onClick={clearThematics}>
-              Effacer tout
-            </Button>
-            <Button priority="primary" onClick={applyThematicsFilters}>
-              Appliquer le filtre
-            </Button>
-          </div>
         </div>
       </modal.Component>
     </>

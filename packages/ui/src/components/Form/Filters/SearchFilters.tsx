@@ -1,5 +1,12 @@
 'use client'
 
+import SearchFilter from '@app/ui/components/Form/Filters/SearchFilter'
+import styles from '@app/ui/components/Form/Filters/SearchFilters.module.css'
+import {
+  type Category,
+  type FilterKey,
+  isCategoryComplete,
+} from '@app/ui/components/Form/Filters/filter'
 import OptionBadge from '@app/ui/components/Form/OptionBadge'
 import type { SelectOption } from '@app/ui/components/Form/utils/options'
 import DeleteSearchFiltersButton from '@app/web/components/Search/Filters/DeleteSearchFiltersButton'
@@ -18,20 +25,12 @@ import {
 } from '@app/web/themes/themes'
 import classNames from 'classnames'
 import { useRouter } from 'next/navigation'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { FiltersModal } from './FiltersModal'
-import SearchFilter from './SearchFilter'
-import styles from './SearchFilters.module.css'
-import { type Category, type FilterKey, isCategoryComplete } from './filter'
-
-export type SearchFilterSelectOption = SelectOption<
-  string,
-  { category: ThemeCategory }
->
 
 export type FiltersInitialValue = {
   category: FilterKey
-  option: SearchFilterSelectOption
+  option: SelectOption
 }
 
 const SearchFilters = ({
@@ -51,7 +50,7 @@ const SearchFilters = ({
   const [selected, setSelected] = useState<
     {
       category: FilterKey
-      option: SelectOption | SearchFilterSelectOption
+      option: SelectOption
     }[]
   >(initialValues || [])
 
@@ -109,12 +108,19 @@ const SearchFilters = ({
   }
 
   const onUnselectThematics = (category: FilterKey) => {
+    setSelected(selected.filter((s) => s.option.extra?.category !== category))
+
     const updatedSearchParams = {
       ...searchParams,
-      [category]: [],
+      themes: selected
+        .filter(
+          (s) =>
+            s.category === 'themes' && s.option.extra?.category !== category,
+        )
+        .map((s) => s.option.value),
       ...Object.fromEntries(
         Object.entries(searchParams)
-          .filter(([key]) => key !== category)
+          .filter(([key]) => key !== 'themes')
           .map(([key]) => [
             key,
             selected
@@ -124,7 +130,7 @@ const SearchFilters = ({
       ),
     }
 
-    router.push(searchUrl(tab, updatedSearchParams))
+    router.push(searchUrl(tab, updatedSearchParams as SearchParams))
   }
 
   const selectedThematics = selected.filter(
@@ -208,7 +214,7 @@ const SearchFilters = ({
               } else {
                 return selectedThematics
                   .filter((item) => {
-                    const option = item.option as SearchFilterSelectOption
+                    const option = item.option
                     return option.extra!.category === category
                   })
                   .map((selectedItem) => (
