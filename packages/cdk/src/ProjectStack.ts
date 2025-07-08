@@ -27,6 +27,11 @@ import { CockpitToken } from '@app/scaleway/cockpit-token'
 import { ContainerNamespace } from '@app/scaleway/container-namespace'
 import { DataScalewayDomainZone } from '@app/scaleway/data-scaleway-domain-zone'
 import { DomainRecord } from '@app/scaleway/domain-record'
+import { EdgeServicesBackendStage } from '@app/scaleway/edge-services-backend-stage'
+import { EdgeServicesCacheStage } from '@app/scaleway/edge-services-cache-stage'
+import { EdgeServicesDnsStage } from '@app/scaleway/edge-services-dns-stage'
+import { EdgeServicesPipeline } from '@app/scaleway/edge-services-pipeline'
+import { EdgeServicesRouteStage } from '@app/scaleway/edge-services-route-stage'
 import { ObjectBucket } from '@app/scaleway/object-bucket'
 import { ScalewayProvider } from '@app/scaleway/provider'
 import { RdbInstance } from '@app/scaleway/rdb-instance'
@@ -118,21 +123,6 @@ export class ProjectStack extends TerraformStack {
       },
     )
 
-    // Uploads bucket for usage in integration testing and dev environments
-    new ObjectBucket(this, 'devUploads', {
-      name: environmentVariables.UPLOADS_BUCKET.value,
-      corsRule: [
-        {
-          allowedHeaders: ['*'],
-          allowedMethods: ['GET', 'HEAD', 'POST', 'PUT', 'DELETE'],
-          maxAgeSeconds: 3000,
-          exposeHeaders: ['Etag'],
-          allowedOrigins: ['http://localhost:3000', 'http://localhost'],
-        },
-      ],
-      forceDestroy: true,
-    })
-
     // File hosting bucket for uploads of all environments files
     new ObjectBucket(this, 'uploads', {
       name: environmentVariables.UPLOADS_BUCKET.value,
@@ -147,6 +137,77 @@ export class ProjectStack extends TerraformStack {
       ],
       forceDestroy: false,
     })
+
+    const uploadsCdnPipeline = new EdgeServicesPipeline(
+      this,
+      'uploadsCdnPipeline',
+      {
+        name: 'la-base-uploads-cdn-pipeline',
+        description: 'CDN pipeline for uploads bucket',
+      },
+    )
+
+    const uploadsBackendStage = new EdgeServicesBackendStage(
+      this,
+      'uploadsBackendStage',
+      {
+        pipelineId: uploadsCdnPipeline.id,
+        s3BackendConfig: {
+          bucketName: environmentVariables.UPLOADS_BUCKET.value,
+          bucketRegion: region,
+          isWebsite: false,
+        },
+      },
+    )
+
+    const uploadsSubdomain = 'storage'
+    const uploadsHostName = `${uploadsSubdomain}.${mainRootDomain}`
+
+    // Uploads CNAME record
+    new DomainRecord(this, 'cname_uploads', {
+      dnsZone: mainDomainZone.id,
+      type: 'CNAME',
+      name: uploadsSubdomain,
+      data: `${uploadsCdnPipeline.id}.svc.edge.scw.cloud`,
+      ttl: 300,
+    })
+
+    new EdgeServicesDnsStage(this, 'uploadsDnsStage', {
+      pipelineId: uploadsCdnPipeline.id,
+      backendStageId: uploadsBackendStage.id,
+      fqdns: [uploadsHostName],
+    })
+
+    // TODO enable cache stage
+    // const uploadsCacheStage = new EdgeServicesCacheStage(
+    //   this,
+    //   'uploadsCacheStage',
+    //   {
+    //     pipelineId: uploadsCdnPipeline.id,
+    //     backendStageId: uploadsBackendStage.id,
+    //     fallbackTtl: 3600,
+    //     includeCookies: false,
+    //   },
+    // )
+
+    // const uploadsRouteStage = new EdgeServicesRouteStage(
+    //   this,
+    //   'uploadsRouteStage',
+    //   {
+    //     pipelineId: uploadsCdnPipeline.id,
+    //     projectId: environmentVariables.SCW_PROJECT_ID.value,
+    //     rule: [
+    //       {
+    //         ruleHttpMatch: {
+    //           pathFilter: {
+    //             pathFilterType: 'PREFIX',
+    //             value: '/uploads/',
+    //           },
+    //         },
+    //       },
+    //     ],
+    //   },
+    // )
 
     // Uploads bucket for migration of legacy v1 uploads
     new ObjectBucket(this, 'legacyUploads', {
