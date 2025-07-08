@@ -163,30 +163,30 @@ export class ProjectStack extends TerraformStack {
     const uploadsSubdomain = 'storage'
     const uploadsHostName = `${uploadsSubdomain}.${mainRootDomain}`
 
-    const uploadsTlsStage = new EdgeServicesTlsStage(
-      this,
-      'uploadsEdgeTlsStage',
-      {
-        pipelineId: uploadsEdgePipeline.id,
-        managedCertificate: true,
-        backendStageId: uploadsS3BackendStage.id,
-      },
-    )
+    // const uploadsTlsStage = new EdgeServicesTlsStage(
+    //   this,
+    //   'uploadsEdgeTlsStage',
+    //   {
+    //     pipelineId: uploadsEdgePipeline.id,
+    //     managedCertificate: true,
+    //     backendStageId: uploadsS3BackendStage.id,
+    //   },
+    // )
 
-    new EdgeServicesDnsStage(this, 'uploadsEdgeDnsStage', {
-      pipelineId: uploadsEdgePipeline.id,
-      tlsStageId: uploadsTlsStage.id,
-      fqdns: [uploadsHostName],
-    })
+    // new EdgeServicesDnsStage(this, 'uploadsEdgeDnsStage', {
+    //   pipelineId: uploadsEdgePipeline.id,
+    //   tlsStageId: uploadsTlsStage.id,
+    //   fqdns: [uploadsHostName],
+    // })
 
     // Uploads CNAME record
-    // new DomainRecord(this, 'cname_uploads', {
-    //   dnsZone: mainDomainZone.id,
-    //   type: 'CNAME',
-    //   name: uploadsSubdomain,
-    //   data: `${uploadsCdnPipeline.id}.svc.edge.scw.cloud`,
-    //   ttl: 300,
-    // })
+    new DomainRecord(this, 'cname_uploads', {
+      dnsZone: mainDomainZone.id,
+      type: 'CNAME',
+      name: uploadsSubdomain,
+      data: `${uploadsEdgePipeline.id}.svc.edge.scw.cloud`,
+      ttl: 300,
+    })
 
     // TODO enable cache stage
     // const uploadsCacheStage = new EdgeServicesCacheStage(
