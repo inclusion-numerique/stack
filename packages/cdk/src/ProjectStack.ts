@@ -138,12 +138,11 @@ export class ProjectStack extends TerraformStack {
       forceDestroy: false,
     })
 
-    // As of July 2025, we cannot setup edge pipelines from terraform as we have 403 responses from scaleway
-    // So edge pipeline is created manually in scaleway console
-
+    // As of July 2025, we cannot setup edge pipelines from terraform as we have errors from scaleway after creating the pipeline
+    // So edge pipeline is created and configured manually in scaleway console from the object storage interface
     const uploadsSubdomain = 'storage'
     const uploadsHostName = `${uploadsSubdomain}.${mainRootDomain}`
-    const uploadsEdgePipelineId = 'TODO'
+    const uploadsEdgePipelineId = '127e474a-5ed3-46d2-9be2-864a5b60bd38'
 
     // Uploads CNAME record
     new DomainRecord(this, 'cname_uploads', {
