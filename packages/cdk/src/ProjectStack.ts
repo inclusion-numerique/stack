@@ -133,6 +133,21 @@ export class ProjectStack extends TerraformStack {
       forceDestroy: true,
     })
 
+    // File hosting bucket for uploads of all environments files
+    new ObjectBucket(this, 'uploads', {
+      name: environmentVariables.UPLOADS_BUCKET.value,
+      corsRule: [
+        {
+          allowedHeaders: ['*'],
+          allowedMethods: ['GET', 'HEAD', 'POST', 'PUT', 'DELETE'],
+          maxAgeSeconds: 3000,
+          exposeHeaders: ['Etag'],
+          allowedOrigins: ['*'],
+        },
+      ],
+      forceDestroy: false,
+    })
+
     // Uploads bucket for migration of legacy v1 uploads
     new ObjectBucket(this, 'legacyUploads', {
       name: environmentVariables.LEGACY_UPLOADS_S3_BUCKET.value,
