@@ -138,27 +138,27 @@ export class ProjectStack extends TerraformStack {
       forceDestroy: false,
     })
 
-    const uploadsEdgePipeline = new EdgeServicesPipeline(
-      this,
-      'uploadsEdgePipeline',
-      {
-        name: 'la-base-uploads-edge-pipeline',
-        description: 'Edge pipeline for uploads bucket',
-      },
-    )
+    // const uploadsEdgePipeline = new EdgeServicesPipeline(
+    //   this,
+    //   'uploadsEdgePipeline',
+    //   {
+    //     name: 'la-base-uploads-edge-pipeline',
+    //     description: 'Edge pipeline for uploads bucket',
+    //   },
+    // )
 
-    const uploadsS3BackendStage = new EdgeServicesBackendStage(
-      this,
-      'uploadsEdgeS3BackendStage',
-      {
-        pipelineId: uploadsEdgePipeline.id,
-        s3BackendConfig: {
-          bucketName: environmentVariables.UPLOADS_BUCKET.value,
-          bucketRegion: region,
-          isWebsite: false,
-        },
-      },
-    )
+    // const uploadsS3BackendStage = new EdgeServicesBackendStage(
+    //   this,
+    //   'uploadsEdgeS3BackendStage',
+    //   {
+    //     pipelineId: uploadsEdgePipeline.id,
+    //     s3BackendConfig: {
+    //       bucketName: environmentVariables.UPLOADS_BUCKET.value,
+    //       bucketRegion: region,
+    //       isWebsite: false,
+    //     },
+    //   },
+    // )
 
     const uploadsSubdomain = 'storage'
     const uploadsHostName = `${uploadsSubdomain}.${mainRootDomain}`
