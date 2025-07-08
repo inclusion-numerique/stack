@@ -149,7 +149,7 @@ export class ProjectStack extends TerraformStack {
       dnsZone: mainDomainZone.id,
       type: 'CNAME',
       name: uploadsSubdomain,
-      data: `${uploadsEdgePipelineId}.svc.edge.scw.cloud`,
+      data: `${uploadsEdgePipelineId}.svc.edge.scw.cloud.`,
       ttl: 300,
     })
 
