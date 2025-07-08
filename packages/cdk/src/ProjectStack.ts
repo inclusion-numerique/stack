@@ -31,7 +31,7 @@ import { EdgeServicesBackendStage } from '@app/scaleway/edge-services-backend-st
 import { EdgeServicesCacheStage } from '@app/scaleway/edge-services-cache-stage'
 import { EdgeServicesDnsStage } from '@app/scaleway/edge-services-dns-stage'
 import { EdgeServicesPipeline } from '@app/scaleway/edge-services-pipeline'
-import { EdgeServicesRouteStage } from '@app/scaleway/edge-services-route-stage'
+import { EdgeServicesTlsStage } from '@app/scaleway/edge-services-tls-stage'
 import { ObjectBucket } from '@app/scaleway/object-bucket'
 import { ScalewayProvider } from '@app/scaleway/provider'
 import { RdbInstance } from '@app/scaleway/rdb-instance'
@@ -138,12 +138,12 @@ export class ProjectStack extends TerraformStack {
       forceDestroy: false,
     })
 
-    const uploadsCdnPipeline = new EdgeServicesPipeline(
+    const uploadsEdgePipeline = new EdgeServicesPipeline(
       this,
-      'uploadsCdnPipeline',
+      'uploadsEdgePipeline',
       {
-        name: 'la-base-uploads-cdn-pipeline',
-        description: 'CDN pipeline for uploads bucket',
+        name: 'la-base-uploads-edge-pipeline',
+        description: 'Edge pipeline for uploads bucket',
       },
     )
 
@@ -151,7 +151,7 @@ export class ProjectStack extends TerraformStack {
       this,
       'uploadsBackendStage',
       {
-        pipelineId: uploadsCdnPipeline.id,
+        pipelineId: uploadsEdgePipeline.id,
         s3BackendConfig: {
           bucketName: environmentVariables.UPLOADS_BUCKET.value,
           bucketRegion: region,
@@ -163,18 +163,15 @@ export class ProjectStack extends TerraformStack {
     const uploadsSubdomain = 'storage'
     const uploadsHostName = `${uploadsSubdomain}.${mainRootDomain}`
 
-    // Uploads CNAME record
-    new DomainRecord(this, 'cname_uploads', {
-      dnsZone: mainDomainZone.id,
-      type: 'CNAME',
-      name: uploadsSubdomain,
-      data: `${uploadsCdnPipeline.id}.svc.edge.scw.cloud`,
-      ttl: 300,
+    const uploadsTlsStage = new EdgeServicesTlsStage(this, 'uploadsTlsStage', {
+      pipelineId: uploadsEdgePipeline.id,
+      managedCertificate: true,
+      backendStageId: uploadsBackendStage.id,
     })
 
     new EdgeServicesDnsStage(this, 'uploadsDnsStage', {
-      pipelineId: uploadsCdnPipeline.id,
-      backendStageId: uploadsBackendStage.id,
+      pipelineId: uploadsEdgePipeline.id,
+      tlsStageId: uploadsTlsStage.id,
       fqdns: [uploadsHostName],
     })
 
@@ -477,5 +474,8 @@ export class ProjectStack extends TerraformStack {
     output('databaseInstanceId', database.id)
     output('databaseEndpointIp', database.endpointIp)
     output('databaseEndpointPort', database.endpointPort)
+    output('uploadsCdnPipelineId', uploadsEdgePipeline.id)
+    output('uploadsBackendStageId', uploadsBackendStage.id)
+    output('uploadsHostName', uploadsHostName)
   }
 }
