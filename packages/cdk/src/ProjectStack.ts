@@ -47,6 +47,7 @@ export const projectStackVariables = [
   'SCW_PROJECT_ID',
   'EMAIL_FROM_DOMAIN',
   'UPLOADS_BUCKET',
+  'DEV_UPLOADS_BUCKET',
   'BACKUPS_BUCKET',
   'WEB_APP_DOCKER_REGISTRY_NAME',
   'S3_HOST',
@@ -122,6 +123,21 @@ export class ProjectStack extends TerraformStack {
         name: environmentVariables.EMAIL_FROM_DOMAIN.value,
       },
     )
+
+    // Uploads bucket for usage in integration testing and dev environments
+    new ObjectBucket(this, 'devUploads', {
+      name: environmentVariables.DEV_UPLOADS_BUCKET.value,
+      corsRule: [
+        {
+          allowedHeaders: ['*'],
+          allowedMethods: ['GET', 'HEAD', 'POST', 'PUT', 'DELETE'],
+          maxAgeSeconds: 3000,
+          exposeHeaders: ['Etag'],
+          allowedOrigins: ['http://localhost:3000', 'http://localhost'],
+        },
+      ],
+      forceDestroy: true,
+    })
 
     // File hosting bucket for uploads of all environments files
     new ObjectBucket(this, 'uploads', {
