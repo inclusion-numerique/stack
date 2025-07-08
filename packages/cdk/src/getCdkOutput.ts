@@ -28,7 +28,7 @@ export type ProjectCdkOutput = {
   transactionalEmailDomainStatus: string
   webContainersId: string
   uploadsCdnPipelineId: string
-  uploadsBackendStageId: string
+  uploadsS3BackendStageId: string
   uploadsHostName: string
 }
 

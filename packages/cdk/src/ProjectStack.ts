@@ -147,9 +147,9 @@ export class ProjectStack extends TerraformStack {
       },
     )
 
-    const uploadsBackendStage = new EdgeServicesBackendStage(
+    const uploadsS3BackendStage = new EdgeServicesBackendStage(
       this,
-      'uploadsBackendStage',
+      'uploadsEdgeS3BackendStage',
       {
         pipelineId: uploadsEdgePipeline.id,
         s3BackendConfig: {
@@ -163,17 +163,30 @@ export class ProjectStack extends TerraformStack {
     const uploadsSubdomain = 'storage'
     const uploadsHostName = `${uploadsSubdomain}.${mainRootDomain}`
 
-    const uploadsTlsStage = new EdgeServicesTlsStage(this, 'uploadsTlsStage', {
-      pipelineId: uploadsEdgePipeline.id,
-      managedCertificate: true,
-      backendStageId: uploadsBackendStage.id,
-    })
+    const uploadsTlsStage = new EdgeServicesTlsStage(
+      this,
+      'uploadsEdgeTlsStage',
+      {
+        pipelineId: uploadsEdgePipeline.id,
+        managedCertificate: true,
+        backendStageId: uploadsS3BackendStage.id,
+      },
+    )
 
-    new EdgeServicesDnsStage(this, 'uploadsDnsStage', {
+    new EdgeServicesDnsStage(this, 'uploadsEdgeDnsStage', {
       pipelineId: uploadsEdgePipeline.id,
       tlsStageId: uploadsTlsStage.id,
       fqdns: [uploadsHostName],
     })
+
+    // Uploads CNAME record
+    // new DomainRecord(this, 'cname_uploads', {
+    //   dnsZone: mainDomainZone.id,
+    //   type: 'CNAME',
+    //   name: uploadsSubdomain,
+    //   data: `${uploadsCdnPipeline.id}.svc.edge.scw.cloud`,
+    //   ttl: 300,
+    // })
 
     // TODO enable cache stage
     // const uploadsCacheStage = new EdgeServicesCacheStage(
@@ -475,7 +488,7 @@ export class ProjectStack extends TerraformStack {
     output('databaseEndpointIp', database.endpointIp)
     output('databaseEndpointPort', database.endpointPort)
     output('uploadsCdnPipelineId', uploadsEdgePipeline.id)
-    output('uploadsBackendStageId', uploadsBackendStage.id)
+    output('uploadsS3BackendStageId', uploadsS3BackendStage.id)
     output('uploadsHostName', uploadsHostName)
   }
 }
