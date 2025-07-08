@@ -180,13 +180,13 @@ export class ProjectStack extends TerraformStack {
     // })
 
     // Uploads CNAME record
-    new DomainRecord(this, 'cname_uploads', {
-      dnsZone: mainDomainZone.id,
-      type: 'CNAME',
-      name: uploadsSubdomain,
-      data: `${uploadsEdgePipeline.id}.svc.edge.scw.cloud`,
-      ttl: 300,
-    })
+    // new DomainRecord(this, 'cname_uploads', {
+    //   dnsZone: mainDomainZone.id,
+    //   type: 'CNAME',
+    //   name: uploadsSubdomain,
+    //   data: `${uploadsEdgePipeline.id}.svc.edge.scw.cloud`,
+    //   ttl: 300,
+    // })
 
     // TODO enable cache stage
     // const uploadsCacheStage = new EdgeServicesCacheStage(
@@ -487,8 +487,8 @@ export class ProjectStack extends TerraformStack {
     output('databaseInstanceId', database.id)
     output('databaseEndpointIp', database.endpointIp)
     output('databaseEndpointPort', database.endpointPort)
-    output('uploadsCdnPipelineId', uploadsEdgePipeline.id)
-    output('uploadsS3BackendStageId', uploadsS3BackendStage.id)
+    // output('uploadsCdnPipelineId', uploadsEdgePipeline.id)
+    // output('uploadsS3BackendStageId', uploadsS3BackendStage.id)
     output('uploadsHostName', uploadsHostName)
   }
 }
