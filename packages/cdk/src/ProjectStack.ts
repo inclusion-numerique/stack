@@ -138,86 +138,21 @@ export class ProjectStack extends TerraformStack {
       forceDestroy: false,
     })
 
-    // const uploadsEdgePipeline = new EdgeServicesPipeline(
-    //   this,
-    //   'uploadsEdgePipeline',
-    //   {
-    //     name: 'la-base-uploads-edge-pipeline',
-    //     description: 'Edge pipeline for uploads bucket',
-    //   },
-    // )
-
-    // const uploadsS3BackendStage = new EdgeServicesBackendStage(
-    //   this,
-    //   'uploadsEdgeS3BackendStage',
-    //   {
-    //     pipelineId: uploadsEdgePipeline.id,
-    //     s3BackendConfig: {
-    //       bucketName: environmentVariables.UPLOADS_BUCKET.value,
-    //       bucketRegion: region,
-    //       isWebsite: false,
-    //     },
-    //   },
-    // )
+    // As of July 2025, we cannot setup edge pipelines from terraform as we have 403 responses from scaleway
+    // So edge pipeline is created manually in scaleway console
 
     const uploadsSubdomain = 'storage'
     const uploadsHostName = `${uploadsSubdomain}.${mainRootDomain}`
-
-    // const uploadsTlsStage = new EdgeServicesTlsStage(
-    //   this,
-    //   'uploadsEdgeTlsStage',
-    //   {
-    //     pipelineId: uploadsEdgePipeline.id,
-    //     managedCertificate: true,
-    //     backendStageId: uploadsS3BackendStage.id,
-    //   },
-    // )
-
-    // new EdgeServicesDnsStage(this, 'uploadsEdgeDnsStage', {
-    //   pipelineId: uploadsEdgePipeline.id,
-    //   tlsStageId: uploadsTlsStage.id,
-    //   fqdns: [uploadsHostName],
-    // })
+    const uploadsEdgePipelineId = 'TODO'
 
     // Uploads CNAME record
-    // new DomainRecord(this, 'cname_uploads', {
-    //   dnsZone: mainDomainZone.id,
-    //   type: 'CNAME',
-    //   name: uploadsSubdomain,
-    //   data: `${uploadsEdgePipeline.id}.svc.edge.scw.cloud`,
-    //   ttl: 300,
-    // })
-
-    // TODO enable cache stage
-    // const uploadsCacheStage = new EdgeServicesCacheStage(
-    //   this,
-    //   'uploadsCacheStage',
-    //   {
-    //     pipelineId: uploadsCdnPipeline.id,
-    //     backendStageId: uploadsBackendStage.id,
-    //     fallbackTtl: 3600,
-    //     includeCookies: false,
-    //   },
-    // )
-
-    // const uploadsRouteStage = new EdgeServicesRouteStage(
-    //   this,
-    //   'uploadsRouteStage',
-    //   {
-    //     pipelineId: uploadsCdnPipeline.id,
-    //     projectId: environmentVariables.SCW_PROJECT_ID.value,
-    //     rule: [
-    //       {
-    //         ruleHttpMatch: {
-    //           pathFilter: {
-    //             pathFilterType: 'PREFIX',
-    //             value: '/uploads/',
-    //           },
-    //         },
-    //       },
-    //     ],
-    //   },
-    // )
+    new DomainRecord(this, 'cname_uploads', {
+      dnsZone: mainDomainZone.id,
+      type: 'CNAME',
+      name: uploadsSubdomain,
+      data: `${uploadsEdgePipelineId}.svc.edge.scw.cloud`,
+      ttl: 300,
+    })
 
     // Uploads bucket for migration of legacy v1 uploads
     new ObjectBucket(this, 'legacyUploads', {
@@ -487,8 +422,6 @@ export class ProjectStack extends TerraformStack {
     output('databaseInstanceId', database.id)
     output('databaseEndpointIp', database.endpointIp)
     output('databaseEndpointPort', database.endpointPort)
-    // output('uploadsCdnPipelineId', uploadsEdgePipeline.id)
-    // output('uploadsS3BackendStageId', uploadsS3BackendStage.id)
     output('uploadsHostName', uploadsHostName)
   }
 }
