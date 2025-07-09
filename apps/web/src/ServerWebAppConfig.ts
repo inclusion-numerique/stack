@@ -18,6 +18,9 @@ const useDevUploadsBucket = isCi || isLocal || isE2e
 
 export const ServerWebAppConfig = {
   NodeEnv: NodeEnvironment,
+  isCi,
+  isLocal,
+  isE2e,
   Namespace: process.env.NAMESPACE ?? '',
   internalApiPrivateKey: process.env.INTERNAL_API_PRIVATE_KEY ?? '',
   Brevo: {
@@ -41,13 +44,6 @@ export const ServerWebAppConfig = {
     secretKey: process.env.SCW_SECRET_KEY ?? '',
   },
   Scaleway: {
-    region: process.env.SCW_DEFAULT_REGION ?? '',
-    accessKey: process.env.SCW_ACCESS_KEY ?? '',
-    secretKey: process.env.SCW_SECRET_KEY ?? '',
-  },
-  LegacyS3: {
-    uploadsBucket: process.env.LEGACY_UPLOADS_S3_BUCKET ?? '',
-    host: process.env.S3_HOST ?? '',
     region: process.env.SCW_DEFAULT_REGION ?? '',
     accessKey: process.env.SCW_ACCESS_KEY ?? '',
     secretKey: process.env.SCW_SECRET_KEY ?? '',

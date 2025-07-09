@@ -1,6 +1,5 @@
 import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
 import { processImage } from '@app/web/server/image/processImage'
-import { legacyS3Client } from '@app/web/server/s3/legacyS3'
 import { s3 } from '@app/web/server/s3/s3'
 import { isImageCropped } from '@app/web/utils/imageCrop'
 import { output } from '@app/web/utils/output'
@@ -11,41 +10,7 @@ import {
 } from '@aws-sdk/client-s3'
 import type { Image, Upload } from '@prisma/client'
 import * as Sentry from '@sentry/nextjs'
-
-const computeCropKey = ({
-  cropTop,
-  cropHeight,
-  cropLeft,
-  cropWidth,
-}: {
-  cropTop: number
-  cropHeight: number
-  cropLeft: number
-  cropWidth: number
-}) =>
-  isImageCropped({ cropTop, cropHeight, cropLeft, cropWidth })
-    ? `${cropTop}_${cropHeight}_${cropLeft}_${cropWidth}`
-    : 'nocrop'
-
-const computeImageVersionCacheKey = ({
-  image: { id, uploadKey, cropTop, cropHeight, cropLeft, cropWidth },
-  quality,
-  width,
-}: {
-  image: Pick<
-    Image,
-    'id' | 'uploadKey' | 'cropWidth' | 'cropTop' | 'cropLeft' | 'cropHeight'
-  >
-  quality: number
-  width?: number
-}) =>
-  // Add the numbers cropTop, cropHeight, cropLeft, cropWidth as a unique string separted by _
-  `images/${id}/${uploadKey}_${computeCropKey({
-    cropTop,
-    cropHeight,
-    cropLeft,
-    cropWidth,
-  })}_${width ?? 'original'}_${quality}.webp`
+import { getProcessedImageKey } from './getProcessedImageKey'
 
 export const getImageData = async ({
   image,
@@ -55,11 +20,11 @@ export const getImageData = async ({
   image: Pick<
     Image,
     'id' | 'uploadKey' | 'cropWidth' | 'cropTop' | 'cropLeft' | 'cropHeight'
-  > & { upload: Pick<Upload, 'legacyKey'> }
+  >
   quality: number
   width?: number
 }): Promise<Buffer | ReadableStream> => {
-  const cachedImageKey = computeImageVersionCacheKey({
+  const cachedImageKey = getProcessedImageKey({
     image,
     quality,
     width,
@@ -80,61 +45,32 @@ export const getImageData = async ({
     })
 
   if (cachedImageObject?.Body) {
-    // Image is already cached
+    // Image is already computed and cached in the bucket
     return cachedImageObject.Body.transformToWebStream()
   }
 
-  const start = Date.now()
-
-  // Image is not cached, we need to compute it for given quality and width
-  const originalImageObject = image.upload.legacyKey
-    ? await legacyS3Client.send(
-        new GetObjectCommand({
-          Bucket: ServerWebAppConfig.LegacyS3.uploadsBucket,
-          Key: image.upload.legacyKey,
-        }),
-      )
-    : await s3.send(
-        new GetObjectCommand({
-          Bucket: ServerWebAppConfig.S3.uploadsBucket,
-          Key: image.uploadKey,
-        }),
-      )
-
-  if (!originalImageObject.Body) {
-    throw new Error('Image not found')
+  // Check if image is already being processed
+  const queuedPromise = imageProcessingQueue.get(cachedImageKey)
+  if (queuedPromise) {
+    return queuedPromise
   }
 
-  const imageData = await processImage({
-    originalImageBuffer: originalImageObject.Body,
+  // Create new processing promise
+  const imageProcessingPromise = processImageAndCache({
     image,
     quality,
     width,
-  }).catch((error) => {
-    const errorWithContext = new Error(
-      `Error processing image ${image.id} ${cachedImageKey}: ${
-        'message' in error
-          ? (error as { message: string }).message
-          : 'Unknown error'
-      }`,
-    )
-    Sentry.captureException(errorWithContext)
-    output.error(errorWithContext.message)
-    throw errorWithContext
+    cachedImageKey,
+  }).finally(() => {
+    // Remove from queue when processing is complete (success or failure)
+    imageProcessingQueue.remove({ cachedImageKey })
   })
 
-  // Caching result in background for speeding up response time
-  s3.send(
-    new PutObjectCommand({
-      Bucket: ServerWebAppConfig.S3.uploadsBucket,
-      Key: cachedImageKey,
-      Body: imageData,
-    }),
-  ).catch((error) => {
-    Sentry.captureException(error)
+  // Add to queue
+  imageProcessingQueue.add({
+    cachedImageKey,
+    imagePromise: imageProcessingPromise,
   })
 
-  output.info(`Processed ${cachedImageKey} in ${Date.now() - start}ms`)
-
-  return imageData
+  return imageProcessingPromise
 }

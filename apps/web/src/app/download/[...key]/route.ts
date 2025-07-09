@@ -9,7 +9,6 @@ import { resourceAuthorizationTargetSelect } from '@app/web/authorization/models
 import { prismaClient } from '@app/web/prismaClient'
 import { sessionTokenFromRequestCookies } from '@app/web/security/authentication'
 import { authorizeOrThrow } from '@app/web/server/rpc/trpcErrors'
-import { legacyS3Client } from '@app/web/server/s3/legacyS3'
 import { s3 } from '@app/web/server/s3/s3'
 import { GetObjectCommand } from '@aws-sdk/client-s3'
 import type { NextRequest } from 'next/server'
@@ -32,7 +31,6 @@ export const GET = async (request: NextRequest) => {
     where: { key },
     select: {
       key: true,
-      legacyKey: true,
       mimeType: true,
       name: true,
       uploadedById: true,
