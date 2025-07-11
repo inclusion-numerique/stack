@@ -15,12 +15,21 @@ export const migrateStorageFile = async ({
   before: string
   after: string
 }) => {
+  const copySource = `/${beforeBucket}/${encodeURIComponent(before)}`
+
+  // Our old processed webp image had wrong metadata for ContentType
+  // We need to set the correct metadata in this case
+  const isWebpImage = before.endsWith('.webp') && before.startsWith('images/')
+  const metadataDirective = isWebpImage ? 'REPLACE' : 'COPY'
+  const contentType = isWebpImage ? 'image/webp' : undefined
+
   const result = await s3.send(
     new CopyObjectCommand({
       Bucket: afterBucket,
       Key: after,
-      CopySource: `/${beforeBucket}/${encodeURIComponent(before)}`,
-      MetadataDirective: 'COPY', // conserve ContentType + Metadata
+      CopySource: copySource,
+      MetadataDirective: metadataDirective,
+      ContentType: contentType,
       ACL: 'public-read',
     }),
   )

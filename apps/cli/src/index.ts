@@ -17,7 +17,6 @@ import { listSecrets } from '@app/cli/commands/secrets/listSecrets'
 import { setupDatabaseSecret } from '@app/cli/commands/secrets/setupDatabaseSecret'
 import { Command } from '@commander-js/extra-typings'
 import { migrateStorage } from './commands/storage-migration/storageMigration'
-import { migrateStorageDebug } from './commands/storage-migration/storageMigrationDebug'
 
 const program = new Command()
 
@@ -39,6 +38,5 @@ program.addCommand(locallyRestoreLatestMainBackup)
 program.addCommand(addConseillersNumeriquesToBases)
 program.addCommand(removeInactiveConseillersNumeriques)
 program.addCommand(migrateStorage)
-program.addCommand(migrateStorageDebug)
 
 program.parse()

@@ -21,8 +21,6 @@ export const executeProcessing = async ({
   width?: number
   processedImageKey: string
 }) => {
-  const start = Date.now()
-
   // Image is not cached, we need to compute it for given quality and width
   const originalImageObject = await s3.send(
     new GetObjectCommand({
@@ -67,8 +65,6 @@ export const executeProcessing = async ({
     .catch((error) => {
       Sentry.captureException(error)
     })
-
-  output.info(`Processed ${processedImageKey} in ${Date.now() - start}ms`)
 }
 
 export const processAndStoreImage = async ({

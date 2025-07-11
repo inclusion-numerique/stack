@@ -13,15 +13,22 @@ export type StorageFileInfo = {
  * Check if a file exists in the storage and return its info
  */
 export const getStorageFileInfo = async ({ key }: { key: string }) => {
-  const response = await s3.send(
-    new HeadObjectCommand({
-      Bucket: ServerWebAppConfig.S3.uploadsBucket,
-      Key: key,
-    }),
-  )
+  try {
+    const response = await s3.send(
+      new HeadObjectCommand({
+        Bucket: ServerWebAppConfig.S3.uploadsBucket,
+        Key: key,
+      }),
+    )
 
-  return {
-    size: response.ContentLength,
-    mimeType: response.ContentType,
+    return {
+      size: response.ContentLength,
+      mimeType: response.ContentType,
+    }
+  } catch (error) {
+    if (error instanceof Error && error.name === 'NotFound') {
+      return null
+    }
+    throw error
   }
 }

@@ -1,11 +1,8 @@
 import { getStorageFileInfo } from '@app/web/features/uploads/storage/getStorageFileInfo'
 import { getStorageUrl } from '@app/web/features/uploads/storage/getStorageUrl'
 import { prismaClient } from '@app/web/prismaClient'
-import { getImageData } from '@app/web/server/image/getImageData'
-import { getOriginalImageData } from '@app/web/server/image/getOriginalImageData'
 import { getProcessedImageKey } from '@app/web/server/image/getProcessedImageKey'
 import { processAndStoreImage } from '@app/web/server/image/processAndStoreImage'
-import * as Sentry from '@sentry/nextjs'
 import type { NextRequest } from 'next/server'
 
 const notFoundResponse = () =>
@@ -47,6 +44,12 @@ export const GET = async (request: NextRequest) => {
     return notFoundResponse()
   }
 
+  console.log('IMAGE', {
+    uploadKey: image.uploadKey,
+    id: image.id,
+    originalStorageUrl: getStorageUrl({ key: image.uploadKey }),
+  })
+
   if (format === 'original') {
     // We redirect to the storage url of the original upload file
     return Response.redirect(getStorageUrl({ key: image.uploadKey }), 301)
@@ -58,7 +61,7 @@ export const GET = async (request: NextRequest) => {
     Number(request.nextUrl.searchParams.get('width')) || undefined
 
   // First we check that it has already been processed
-  const processedImageKey = await getProcessedImageKey({
+  const processedImageKey = getProcessedImageKey({
     image,
     quality,
     width: targetWidth,

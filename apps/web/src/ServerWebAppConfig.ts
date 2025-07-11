@@ -14,7 +14,6 @@ const emailServer = `smtp://${process.env.SMTP_USERNAME ?? ''}:${
 const isCi = !!process.env.CI
 const isLocal = !process.env.BRANCH
 const isE2e = !!process.env.IS_E2E
-const useDevUploadsBucket = isCi || isLocal || isE2e
 
 export const ServerWebAppConfig = {
   NodeEnv: NodeEnvironment,
@@ -34,10 +33,7 @@ export const ServerWebAppConfig = {
     }>`,
   },
   S3: {
-    // All envs share the UPLOADS_BUCKET, except in CI and local environments
-    uploadsBucket: useDevUploadsBucket
-      ? (process.env.DEV_UPLOADS_BUCKET ?? '')
-      : (process.env.UPLOADS_BUCKET ?? ''),
+    uploadsBucket: process.env.UPLOADS_BUCKET ?? '',
     host: process.env.S3_HOST ?? '',
     region: process.env.SCW_DEFAULT_REGION ?? '',
     accessKey: process.env.SCW_ACCESS_KEY ?? '',

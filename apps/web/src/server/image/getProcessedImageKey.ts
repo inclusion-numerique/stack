@@ -17,6 +17,10 @@ const computeCropKey = ({
     : 'nocrop'
 
 // When an original image is processed, we store it with a unique key depending on the processing parameters
+// e.g. :
+//  - uploadKey: 'main/user/3c108679-6452-4f96-8e0e-57f1d1a54893/uGt8OkKCeJzAroi2QDiog_Logo_Latitudes_TFG_Sticker.png'
+//  -  id: 'ffc774ce-e916-4af7-9ae1-70d8cc1aa25d'
+// -> 'main/images/ffc774ce-e916-4af7-9ae1-70d8cc1aa25d/user/3c108679-6452-4f96-8e0e-57f1d1a54893/uGt8OkKCeJzAroi2QDiog_Logo_Latitudes_TFG_Sticker.png_nocrop_256_100.webp'
 export const getProcessedImageKey = ({
   image: { id, uploadKey, cropTop, cropHeight, cropLeft, cropWidth },
   quality,
@@ -28,11 +32,18 @@ export const getProcessedImageKey = ({
   >
   quality: number
   width?: number
-}) =>
+}) => {
+  const firstSlashIndex = uploadKey.indexOf('/')
+  const namespace = uploadKey.substring(0, firstSlashIndex)
+  const uploadKeyWithoutNamespace = uploadKey.substring(firstSlashIndex + 1)
+
   // Add the numbers cropTop, cropHeight, cropLeft, cropWidth as a unique string separted by _
-  `images/${id}/${uploadKey}_${computeCropKey({
-    cropTop,
-    cropHeight,
-    cropLeft,
-    cropWidth,
-  })}_${width ?? 'original'}_${quality}.webp`
+  return `${namespace}/images/${id}/${uploadKeyWithoutNamespace}_${computeCropKey(
+    {
+      cropTop,
+      cropHeight,
+      cropLeft,
+      cropWidth,
+    },
+  )}_${width ?? 'original'}_${quality}.webp`
+}

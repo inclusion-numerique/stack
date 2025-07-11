@@ -1,10 +1,10 @@
 import ResponsiveUploadedImage from '@app/web/components/ResponsiveUploadedImage'
 import type { ContentProjectionWithContextImage } from '@app/web/server/resources/getResourceFromEvents'
-import { getDownloadUrl } from '@app/web/utils/getDownloadUrl'
 import classNames from 'classnames'
 import Link from 'next/link'
 import React from 'react'
 import styles from './ImageContentDetails.module.css'
+import { getStorageUrl } from '@app/web/features/uploads/storage/getStorageUrl'
 
 const ImageContentDetails = ({
   imageAltText,
@@ -72,15 +72,16 @@ const ImageContentDetails = ({
             className={classNames(
               'fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-icon-download-line',
             )}
-            href={getDownloadUrl(key, { download: true })}
+            href={getStorageUrl({ key })}
             title="Télécharger l'image'"
+            download={name}
           >
             Télécharger
           </a>
           <Link
             title="Voir l'image en plein écran"
             target="_blank"
-            href={getDownloadUrl(key)}
+            href={getStorageUrl({ key })}
             className={classNames(
               'fr-btn--tertiary-no-outline',
               'fr-btn--sm',
