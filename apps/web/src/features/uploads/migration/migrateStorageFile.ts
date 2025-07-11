@@ -1,10 +1,10 @@
 import { s3 } from '@app/web/server/s3/s3'
-import { afterBucket } from './getAfterKeyForMainBucketMigration'
 import {
   CopyObjectCommand,
   GetObjectCommand,
   PutObjectCommand,
 } from '@aws-sdk/client-s3'
+import { afterBucket } from './getAfterKeyForMainBucketMigration'
 
 export const migrateStorageFile = async ({
   beforeBucket,

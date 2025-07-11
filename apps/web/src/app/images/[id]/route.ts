@@ -44,12 +44,6 @@ export const GET = async (request: NextRequest) => {
     return notFoundResponse()
   }
 
-  console.log('IMAGE', {
-    uploadKey: image.uploadKey,
-    id: image.id,
-    originalStorageUrl: getStorageUrl({ key: image.uploadKey }),
-  })
-
   if (format === 'original') {
     // We redirect to the storage url of the original upload file
     return Response.redirect(getStorageUrl({ key: image.uploadKey }), 301)

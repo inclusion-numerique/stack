@@ -1,11 +1,11 @@
-import { GetObjectCommand, PutObjectCommand } from '@aws-sdk/client-s3'
-import { s3 } from '../s3/s3'
-import { imageProcessingQueue } from './imageProcessingQueue'
 import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
-import { processImage } from './processImage'
+import { output } from '@app/web/utils/output'
+import { GetObjectCommand, PutObjectCommand } from '@aws-sdk/client-s3'
 import { Image } from '@prisma/client'
 import * as Sentry from '@sentry/nextjs'
-import { output } from '@app/web/utils/output'
+import { s3 } from '../s3/s3'
+import { imageProcessingQueue } from './imageProcessingQueue'
+import { processImage } from './processImage'
 
 export const executeProcessing = async ({
   image,

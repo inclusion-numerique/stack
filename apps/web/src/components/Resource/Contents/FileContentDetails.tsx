@@ -1,9 +1,9 @@
 import { formatByteSize } from '@app/ui/utils/formatByteSize'
+import { getStorageUrl } from '@app/web/features/uploads/storage/getStorageUrl'
+import { mimeTypesDisplayableInBrowser } from '@app/web/features/uploads/storage/mimeTypesDisplayableInBrowser'
 import type { ContentProjectionWithContext } from '@app/web/server/resources/getResourceFromEvents'
 import classNames from 'classnames'
 import styles from './FileContentDetails.module.css'
-import { getStorageUrl } from '@app/web/features/uploads/storage/getStorageUrl'
-import { mimeTypesDisplayableInBrowser } from '@app/web/features/uploads/storage/mimeTypesDisplayableInBrowser'
 
 const FileContentDetails = ({
   file: { name, size, key, mimeType },
