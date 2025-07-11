@@ -1,5 +1,5 @@
 import { s3 } from '@app/web/server/s3/s3'
-import { afterBucket } from './storageMigrationBuckets'
+import { afterBucket } from './getAfterKeyForMainBucketMigration'
 import {
   CopyObjectCommand,
   GetObjectCommand,

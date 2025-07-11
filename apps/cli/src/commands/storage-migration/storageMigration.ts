@@ -1,10 +1,10 @@
 import { output } from '@app/cli/output'
-import { listStorageItems } from '@app/web/features/uploads/migration/listStorageItems'
-import { migrateStorageFile } from '@app/web/features/uploads/migration/migrateStorageFile'
 import {
   beforeLegacyBucket,
   beforeMainBucket,
-} from '@app/web/features/uploads/migration/storageMigrationBuckets'
+} from '@app/web/features/uploads/migration/getAfterKeyForMainBucketMigration'
+import { listStorageItems } from '@app/web/features/uploads/migration/listStorageItems'
+import { migrateStorageFile } from '@app/web/features/uploads/migration/migrateStorageFile'
 import { Command } from '@commander-js/extra-typings'
 import { chunk } from 'lodash-es'
 

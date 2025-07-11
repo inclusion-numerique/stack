@@ -10,8 +10,8 @@ import {
   afterBucket,
   beforeLegacyBucket,
   beforeMainBucket,
-  newKeyForMain,
-} from './storageMigrationBuckets'
+  getAfterKeyForMainBucketMigration,
+} from './getAfterKeyForMainBucketMigration'
 
 export type StoredItem = {
   Key: string
@@ -86,7 +86,10 @@ export const listStorageItems = async () => {
   const afterKeysSet = new Set(afterItems.items.map((item) => item.Key))
 
   const mainItemsToMigrate = mainItems.items
-    .map((item) => ({ item, afterKey: newKeyForMain(item.Key) }))
+    .map((item) => ({
+      item,
+      afterKey: getAfterKeyForMainBucketMigration(item.Key),
+    }))
     .filter(({ afterKey }) => !afterKeysSet.has(afterKey))
 
   const legacyItemsToMigrate = legacyItems.items

@@ -33,17 +33,15 @@ export const getProcessedImageKey = ({
   quality: number
   width?: number
 }) => {
-  const firstSlashIndex = uploadKey.indexOf('/')
-  const namespace = uploadKey.substring(0, firstSlashIndex)
-  const uploadKeyWithoutNamespace = uploadKey.substring(firstSlashIndex + 1)
+  const parts = uploadKey.split('/')
+  const namespace = parts[0]
+  const filename = parts.at(-1)
 
   // Add the numbers cropTop, cropHeight, cropLeft, cropWidth as a unique string separted by _
-  return `${namespace}/images/${id}/${uploadKeyWithoutNamespace}_${computeCropKey(
-    {
-      cropTop,
-      cropHeight,
-      cropLeft,
-      cropWidth,
-    },
-  )}_${width ?? 'original'}_${quality}.webp`
+  return `${namespace}/images/${id}/${filename}_${computeCropKey({
+    cropTop,
+    cropHeight,
+    cropLeft,
+    cropWidth,
+  })}_${width ?? 'original'}_${quality}.webp`
 }
