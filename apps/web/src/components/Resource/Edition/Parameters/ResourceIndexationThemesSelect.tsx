@@ -75,26 +75,23 @@ const ResourceIndexationThemesSelect = <T extends FieldValues>({
         }
 
         const handleOnSelect = (option: SelectOption, category: FilterKey) => {
-          if (modalSelected.length < themesLimit) {
-            const isAlreadySelected = modalSelected.some(
-              (item) =>
-                item.category === category &&
-                item.option.value === option.value,
-            )
+          const isAlreadySelected = modalSelected.some(
+            (item) =>
+              item.category === category && item.option.value === option.value,
+          )
 
-            if (isAlreadySelected) {
-              setModalSelected(
-                modalSelected.filter(
-                  (item) =>
-                    !(
-                      item.category === category &&
-                      item.option.value === option.value
-                    ),
-                ),
-              )
-            } else {
-              setModalSelected([...modalSelected, { category, option }])
-            }
+          if (isAlreadySelected) {
+            setModalSelected(
+              modalSelected.filter(
+                (item) =>
+                  !(
+                    item.category === category &&
+                    item.option.value === option.value
+                  ),
+              ),
+            )
+          } else {
+            setModalSelected([...modalSelected, { category, option }])
           }
         }
 
@@ -130,19 +127,17 @@ const ResourceIndexationThemesSelect = <T extends FieldValues>({
                   Ajouter des thématiques
                   <span className="ri-add-line fr-ml-2v" />
                 </Button>
-                {displaySelected.map((selected) => {
-                  const category = selected.option.extra?.category as Category
-                  const className = CATEGORY_VARIANTS_TAG[category].unselected
-                  const categoryIconClassName = classNames(
-                    CATEGORY_VARIANTS[category].icon,
-                    CATEGORY_VARIANTS[category].color,
-                  )
-                  return (
-                    <div
-                      className="fr-flex fr-flex-wrap fr-flex-gap-2v fr-mt-4v"
-                      key={selected.option.value}
-                    >
+                <div className="fr-flex fr-flex-wrap fr-flex-gap-2v fr-mt-4v">
+                  {displaySelected.map((selected) => {
+                    const category = selected.option.extra?.category as Category
+                    const className = CATEGORY_VARIANTS_TAG[category].unselected
+                    const categoryIconClassName = classNames(
+                      CATEGORY_VARIANTS[category].icon,
+                      CATEGORY_VARIANTS[category].color,
+                    )
+                    return (
                       <ThematicOptionBadge
+                        key={selected.option.value}
                         categoryIconClassName={categoryIconClassName}
                         className={className}
                         textClassName="fr-text-label--grey"
@@ -154,9 +149,9 @@ const ResourceIndexationThemesSelect = <T extends FieldValues>({
                           handleOnSelect(selected.option, 'themes')
                         }
                       />
-                    </div>
-                  )
-                })}
+                    )
+                  })}
+                </div>
                 {error && (
                   <p id={`${themesPath}__error`} className="fr-error-text">
                     {error.message}
@@ -169,6 +164,24 @@ const ResourceIndexationThemesSelect = <T extends FieldValues>({
                 'Sélectionnez les thématiques abordées dans votre ressource'
               }
               className={styles.filtersThematicsModal}
+              buttons={[
+                {
+                  priority: 'secondary',
+                  type: 'button',
+                  onClick: () => modal.close(),
+                  children: 'Annuler',
+                  doClosesModal: true,
+                },
+                {
+                  priority: 'primary',
+                  type: 'button',
+                  nativeButtonProps: {
+                    'data-testid': 'indexation-themes-select-apply',
+                  },
+                  onClick: applyThematics,
+                  children: 'Valider ma sélection',
+                },
+              ]}
             >
               <div className="fr-flex fr-direction-column fr-flex-gap-12v">
                 <div className="fr-flex fr-direction-column fr-flex-gap-12v">
@@ -177,40 +190,35 @@ const ResourceIndexationThemesSelect = <T extends FieldValues>({
                   </span>
                   <div className="fr-flex fr-direction-column fr-flex-gap-12v">
                     {Object.entries(categoryThemesOptions).map(
-                      ([key, value]) => (
-                        <SearchThematicsCategory
-                          key={key}
-                          data-testid={dataTestId}
-                          disabled={modalSelected.length === themesLimit}
-                          onSelect={handleOnSelect}
-                          selected={modalSelected}
-                          category={key as Category}
-                          options={value}
-                          withHint
-                        />
-                      ),
+                      ([key, value]) => {
+                        const optionsWithDisabled = value.map((option) => {
+                          const isAlreadySelected = modalSelected.some(
+                            (item) => item.option.value === option.value,
+                          )
+                          return {
+                            ...option,
+                            disabled:
+                              modalSelected.length === themesLimit &&
+                              !isAlreadySelected,
+                          }
+                        })
+                        return (
+                          <SearchThematicsCategory
+                            key={key}
+                            data-testid={dataTestId}
+                            onSelect={handleOnSelect}
+                            selected={modalSelected}
+                            category={key as Category}
+                            options={optionsWithDisabled}
+                            withHint
+                          />
+                        )
+                      },
                     )}
                   </div>
                 </div>
                 <div className="fr-mt-10v fr-border--top">
                   {error && <p className="fr-error-text">{error.message}</p>}
-                  <div className="fr-flex fr-justify-content-end fr-flex-gap-4v fr-pt-8v">
-                    <Button
-                      type="button"
-                      priority="secondary"
-                      onClick={() => modal.close()}
-                    >
-                      Annuler
-                    </Button>
-                    <Button
-                      priority="primary"
-                      type="button"
-                      data-testid="indexation-themes-select-apply"
-                      onClick={applyThematics}
-                    >
-                      Valider ma sélection
-                    </Button>
-                  </div>
                 </div>
               </div>
             </modal.Component>
