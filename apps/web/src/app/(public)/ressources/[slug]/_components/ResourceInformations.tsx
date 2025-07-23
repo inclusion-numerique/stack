@@ -1,3 +1,5 @@
+import ResourceLicenceInformations from '@app/web/features/resources/licence/components/ResourceLicenceInformations'
+import ResourceLicenceView from '@app/web/features/resources/licence/components/ResourceLicenceView'
 import type { Resource } from '@app/web/server/resources/getResource'
 import ResourceIndexationView from './ResourceIndexationView'
 
@@ -19,6 +21,7 @@ const ResourceInformations = ({ resource }: { resource: Resource }) => (
       titleClassName="fr-text--sm fr-text--medium"
       tagsClassName="fr-mt-1v"
     />
+    <ResourceLicenceInformations resource={resource} />
   </>
 )
 
