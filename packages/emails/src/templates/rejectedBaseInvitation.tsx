@@ -1,7 +1,6 @@
 import LayoutWithFooter from '@app/emails/components/LayoutWithFooter'
 import { MjmlColumn, MjmlSection, MjmlText } from '@faire/mjml-react'
 import { renderToMjml } from '@faire/mjml-react/utils/renderToMjml'
-import React from 'react'
 
 export const rejectedBaseInvitation = {
   text: ({

@@ -1,7 +1,7 @@
 import Explanations from '@app/emails/components/Explanations'
 import LayoutWithFooter from '@app/emails/components/LayoutWithFooter'
 import { emailAssetUrl } from '@app/emails/emailAssetUrl'
-import { backgroundColor, brandColor } from '@app/emails/styles'
+import { backgroundColor } from '@app/emails/styles'
 import {
   MjmlButton,
   MjmlColumn,
@@ -11,7 +11,6 @@ import {
   MjmlText,
 } from '@faire/mjml-react'
 import { renderToMjml } from '@faire/mjml-react/utils/renderToMjml'
-import React from 'react'
 
 export const inviteMember = {
   text: ({ url, baseTitle }: { url: string; baseTitle: string }): string =>

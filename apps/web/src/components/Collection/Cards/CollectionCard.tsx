@@ -1,20 +1,16 @@
-import type { SessionUser } from '@app/web/auth/sessionUser'
 import CollectionActions from '@app/web/components/Collection/CollectionActions'
 import type { CollectionListItem } from '@app/web/server/collections/getCollectionsList'
 import classNames from 'classnames'
 import Link from 'next/link'
-import React from 'react'
 import CollectionMetaData from '../CollectionMetaData'
 import Images from '../Images'
 import styles from './CollectionCard.module.css'
 
 const CollectionCard = ({
   collection,
-  user,
   canWrite,
 }: {
   collection: CollectionListItem
-  user: SessionUser | null
   canWrite: boolean
 }) => {
   const resourcesCount = collection._count.resources
@@ -86,7 +82,6 @@ const CollectionCard = ({
               <CollectionActions
                 collection={collection}
                 canWrite={canWrite}
-                user={user}
                 context="card"
                 resourcesCount={resourcesCount}
               />

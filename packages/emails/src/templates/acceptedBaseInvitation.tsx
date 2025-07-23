@@ -9,7 +9,6 @@ import {
   MjmlText,
 } from '@faire/mjml-react'
 import { renderToMjml } from '@faire/mjml-react/utils/renderToMjml'
-import React from 'react'
 
 export const acceptedBaseInvitation = {
   text: ({

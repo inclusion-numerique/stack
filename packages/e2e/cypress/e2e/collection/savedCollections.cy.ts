@@ -200,12 +200,6 @@ describe('Utilisateur connecté, je peux ajouter une ressource à une collection
       {
         createdById: creator.id,
         isPublic: false,
-        savedCollections: {
-          create: {
-            savedById: creator.id,
-            collectionId: collection.id,
-          },
-        },
       },
       { acceptedMemberIds: [visitor.id] },
     )

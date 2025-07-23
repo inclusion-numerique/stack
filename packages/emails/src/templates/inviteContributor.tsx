@@ -10,7 +10,6 @@ import {
   MjmlText,
 } from '@faire/mjml-react'
 import { renderToMjml } from '@faire/mjml-react/utils/renderToMjml'
-import React from 'react'
 
 export const inviteContributor = {
   text: ({ resourceTitle }: { resourceTitle: string }): string =>

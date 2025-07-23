@@ -6,7 +6,6 @@ import {
   MjmlText,
 } from '@faire/mjml-react'
 import { renderToMjml } from '@faire/mjml-react/utils/renderToMjml'
-import React from 'react'
 
 import LayoutWithFooter from '@app/emails/components/LayoutWithFooter'
 import { brandColor } from '@app/emails/styles'
