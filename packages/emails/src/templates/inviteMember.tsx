@@ -11,6 +11,7 @@ import {
   MjmlText,
 } from '@faire/mjml-react'
 import { renderToMjml } from '@faire/mjml-react/utils/renderToMjml'
+import React from 'react'
 
 export const inviteMember = {
   text: ({ url, baseTitle }: { url: string; baseTitle: string }): string =>

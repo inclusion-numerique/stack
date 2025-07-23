@@ -11,7 +11,7 @@ import {
   MjmlText,
   MjmlTitle,
 } from '@faire/mjml-react'
-import { ReactNode } from 'react'
+import React, { ReactNode } from 'react'
 
 const Head = ({ preview, title }: { title: ReactNode; preview: ReactNode }) => (
   <MjmlHead>

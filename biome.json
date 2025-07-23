@@ -259,7 +259,8 @@
       "quoteStyle": "single",
       "attributePosition": "auto",
       "bracketSpacing": true
-    }
+    },
+    "jsxRuntime": "reactClassic"
   },
   "css": {
     "parser": {
@@ -310,6 +311,18 @@
           "it",
           "JQuery"
         ]
+      }
+    },
+    {
+      "include": [
+        "packages/emails/**/*.tsx"
+      ],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noUnusedImports": "off"
+          }
+        }
       }
     }
   ]

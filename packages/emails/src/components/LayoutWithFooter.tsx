@@ -11,6 +11,7 @@ import {
   MjmlSection,
   MjmlText,
 } from '@faire/mjml-react'
+import React from 'react'
 import { PropsWithChildren, ReactNode } from 'react'
 
 /**

@@ -6,6 +6,7 @@ import {
   MjmlSection,
   MjmlText,
 } from '@faire/mjml-react'
+import React from 'react'
 
 const Explanations = () => (
   <>
