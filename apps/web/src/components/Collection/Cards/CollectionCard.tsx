@@ -45,17 +45,6 @@ const CollectionCard = ({
             )}
           </Link>
         </div>
-        {!collection.isFavorites && collection.base && (
-          <span className="fr-text--xs fr-mb-0">
-            Par&nbsp;
-            <Link
-              href={`/bases/${collection.base.slug}`}
-              className="fr-link fr-position-relative fr-link--xs"
-            >
-              {collection.base.title}
-            </Link>
-          </span>
-        )}
         {collection.slug && (
           <div className="fr-flex fr-justify-content-space-between fr-align-items-center fr-mt-4v">
             <CollectionMetaData
