@@ -14,7 +14,6 @@ import { basePageQuery } from '@app/web/server/bases/getBase'
 import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
 import { Metadata } from 'next'
 import { notFound, redirect } from 'next/navigation'
-import React from 'react'
 
 export const generateMetadata = async ({
   params,
