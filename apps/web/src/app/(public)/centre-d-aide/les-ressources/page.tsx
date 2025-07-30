@@ -510,7 +510,7 @@ const ContentPolicyPage = () => (
                 <p>
                   Pour modifier la licence de votre ressource, allez dans{' '}
                   <strong>les paramètres de votre ressource</strong> et cliquer
-                  sur le bouton <strong>Modifier avec l'icône stylo</strong>
+                  sur le bouton <strong>Modifier avec l'icône stylo</strong>.
                   Vous pourrez choisir entre ces 3 licences et cliquer sur le
                   bouton <strong>Enregistrer</strong> en bas du bloc pour
                   confirmer votre choix.
