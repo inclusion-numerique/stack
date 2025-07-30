@@ -17,7 +17,7 @@ const { Component: CollectionsResourceModal, open } = createModal({
 })
 
 const ResourceCollectionsModal = ({ resource }: { resource: Resource }) => {
-  const title = `Ressources enregistrées dans ${
+  const title = `Ressource enregistrée dans ${
     resource._count.collections
   } collection${sPluriel(resource._count.collections)}`
   const publicCollections = resource.collections.filter(

@@ -13,14 +13,28 @@ const privateValues = {
 export const ProfilePrivacyTag = ({
   isPublic,
   small,
+  className,
+  withLabel = true,
 }: {
   isPublic?: boolean
   small?: boolean
+  className?: string
+  withLabel?: boolean
 }) =>
   isPublic ? (
-    <CustomTag {...publicValues} small={small} label="Profil public" />
+    <CustomTag
+      {...publicValues}
+      small={small}
+      label={withLabel ? 'Profil public' : undefined}
+      className={className}
+    />
   ) : (
-    <CustomTag {...privateValues} small={small} label="Profil privé" />
+    <CustomTag
+      {...privateValues}
+      small={small}
+      label={withLabel ? 'Profil privé' : undefined}
+      className={className}
+    />
   )
 
 export const BasePrivacyTag = ({
