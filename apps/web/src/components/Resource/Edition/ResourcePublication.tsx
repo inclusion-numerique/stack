@@ -7,6 +7,7 @@ import ResourceLicenceForm from '@app/web/features/resources/licence/components/
 import type { PublishCommand } from '@app/web/server/resources/feature/PublishResource'
 import type { ResourceProjectionWithContext } from '@app/web/server/resources/getResourceFromEvents'
 import Notice from '@codegouvfr/react-dsfr/Notice'
+import classNames from 'classnames'
 import { useEffect, useState } from 'react'
 import type { UseFormReturn } from 'react-hook-form'
 import InviteContributors from '../Contributors/InviteResourceContributors'
@@ -14,7 +15,6 @@ import ResourceIndexationEdition from './Parameters/ResourceIndexationEdition'
 import ResourcePublicationView from './Parameters/ResourcePublicationView'
 import ResourceBaseEdition from './ResourceBaseEdition'
 import styles from './ResourcePublication.module.css'
-import classNames from 'classnames'
 
 const visibilityTexts = (base: { id: string } | null) => ({
   publicTitle: 'Ressource publique',

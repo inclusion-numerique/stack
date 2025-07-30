@@ -1,5 +1,3 @@
-import styles from './ResourceLicenceLogo.module.css'
-
 const ResourceLicenceNoLicenceSymbol = () => {
   return (
     <svg

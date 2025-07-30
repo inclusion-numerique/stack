@@ -342,7 +342,7 @@ const ContentPolicyPage = () => (
                 />
                 <h4 className="fr-text--lead fr-mb-0">Choix de la licence</h4>
                 <p>
-                  Choisissez sous quel licence vous souhaitez publier votre
+                  Choisissez sous quelle licence vous souhaitez publier votre
                   ressource.
                 </p>
                 <p>
