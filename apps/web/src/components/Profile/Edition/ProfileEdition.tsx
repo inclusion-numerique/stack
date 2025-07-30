@@ -23,6 +23,7 @@ const ProfileEdition = ({
           profile={profile}
           resourcesCount={resources.length}
           editMode
+          context="card"
         />
       </div>
     </div>

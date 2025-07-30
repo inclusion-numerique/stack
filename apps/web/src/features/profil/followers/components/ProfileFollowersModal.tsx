@@ -6,28 +6,28 @@ import { FollowButton } from '@app/web/components/Follows/FollowButton'
 import { ProfilePrivacyTag } from '@app/web/components/PrivacyTags'
 import ProfileMetadata from '@app/web/components/Profile/ProfileMetadata'
 import RoundProfileImage from '@app/web/components/RoundProfileImage'
-import { BaseFollowedBy } from '@app/web/server/bases/getBase'
+import { ProfileFollowedBy } from '@app/web/server/profiles/getProfile'
 import { numberToString } from '@app/web/utils/formatNumber'
 import Button from '@codegouvfr/react-dsfr/Button'
 import { createModal } from '@codegouvfr/react-dsfr/Modal'
 import classNames from 'classnames'
-import styles from './BaseFollowersModal.module.css'
+import styles from './ProfileFollowersModal.module.css'
 
 const { Component: FollowersModal, open } = createModal({
-  id: `base-followers-modal`,
+  id: `profile-followers-modal`,
   isOpenedByDefault: false,
 })
 
-const BaseFollowersModal = ({
+const ProfileFollowersModal = ({
   user,
   followedBy,
   count,
 }: {
   user?: SessionUser | null
-  followedBy: BaseFollowedBy
+  followedBy: ProfileFollowedBy
   count: number
 }) => {
-  const title = `Base suivie par ${count} profil${sPluriel(count)}`
+  const title = `Suivi par ${count} profil${sPluriel(count)}`
   const publicFollowers = followedBy.filter(
     (follower) => follower.follower.isPublic,
   )
@@ -36,9 +36,11 @@ const BaseFollowersModal = ({
   )
   return (
     <>
-      <div>·</div>
       <Button
-        className="fr-link fr-text--underline fr-text--sm fr-flex"
+        className={classNames(
+          'fr-link fr-text--underline fr-text--sm fr-flex fr-align-items-baseline',
+          styles.btn,
+        )}
         priority="tertiary no outline"
         onClick={open}
       >
@@ -49,7 +51,7 @@ const BaseFollowersModal = ({
         </div>
       </Button>
 
-      <FollowersModal title={title} className={styles.baseFollowersModal}>
+      <FollowersModal title={title} className={styles.profileFollowersModal}>
         <>
           <div className="fr-flex fr-direction-column fr-direction-sm-row fr-flex-gap-2v fr-align-items-md-center fr-mb-4w">
             {publicFollowers.length > 0 && (
@@ -102,7 +104,7 @@ const BaseFollowersModal = ({
                       className="fr-text-mention--grey"
                       resourcesCount={follower._count.resources}
                       followedByCount={follower._count.followedBy}
-                      context="base"
+                      context="card"
                     />
                     {!follower.isPublic && (
                       <>
@@ -138,4 +140,4 @@ const BaseFollowersModal = ({
   )
 }
 
-export default BaseFollowersModal
+export default ProfileFollowersModal

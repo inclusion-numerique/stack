@@ -46,6 +46,7 @@ const ProfileCard = ({
                 className="fr-text-mention--grey"
                 resourcesCount={countProfileResources(profile)}
                 followedByCount={profile._count.followedBy}
+                context="card"
               />
             )}
             {isAdmin != null && (
