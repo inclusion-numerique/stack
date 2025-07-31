@@ -92,6 +92,7 @@ const ResourceTitleEdition = ({
             control={control}
             path="payload.description"
             type="textarea"
+            rows={5}
             label="Description courte de la ressource"
             hint="Décrivez en quelques mots votre ressource (nature, objectifs...). Cette description apparaîtra aussi dans les résultats du moteur de recherche."
             info={descriptionInfo(description)}
