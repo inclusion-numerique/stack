@@ -10,7 +10,10 @@ import ResourceIndexationView from './ResourceIndexationView'
 
 const ResourceInformations = ({ resource }: { resource: Resource }) => (
   <div className="fr-my-2w fr-pt-2w">
-    <Accordion label="Informations sur la ressource">
+    <Accordion
+      label="Informations sur la ressource"
+      data-testid="resource-informations-accordion"
+    >
       <div className="fr-flex fr-direction-column fr-direction-sm-row fr-flex-gap-2v fr-align-items-center">
         <span className="fr-text--sm fr-mb-0">
           <span className="ri-bookmark-line fr-mr-1w" />
@@ -27,7 +30,10 @@ const ResourceInformations = ({ resource }: { resource: Resource }) => (
       </div>
       {resource._count.resourceFeedback > 0 && (
         <>
-          <div className="fr-flex fr-align-items-center fr-flex-gap-2v">
+          <div
+            className="fr-flex fr-align-items-center fr-flex-gap-2v"
+            data-testid="resources-feedbacks"
+          >
             <span
               className="ri-emotion-line fr-text-label--blue-france"
               aria-hidden
