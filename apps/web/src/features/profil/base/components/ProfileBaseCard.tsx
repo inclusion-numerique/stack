@@ -39,7 +39,13 @@ const ProfileBaseCard = ({
         </Link>
         <BaseMetadata
           className="fr-text-mention--grey fr-align-items-start"
-          base={base}
+          base={{
+            ...base,
+            followedBy: null,
+            _count: {
+              ...base._count,
+            },
+          }}
           smallBadge
           context="profile"
         />

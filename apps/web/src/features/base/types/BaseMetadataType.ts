@@ -6,7 +6,7 @@ export type BaseMetadataData = {
     resources: number
     resourcesViews: number
   }
-  followedBy: BaseFollowedBy
+  followedBy?: BaseFollowedBy | null
   isPublic: boolean
   department: string | null
 }

@@ -47,7 +47,7 @@ const BaseMetadata = ({
             Ressource{sPluriel(resourcesCount)}
           </span>
         </div>
-        {context === 'base' && followedBy > 0 ? (
+        {context === 'base' && !!base.followedBy && followedBy > 0 ? (
           <BaseFollowersModal
             followedBy={base.followedBy}
             count={followedBy}
