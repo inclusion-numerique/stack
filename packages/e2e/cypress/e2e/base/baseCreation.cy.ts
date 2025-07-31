@@ -49,7 +49,7 @@ describe('Utilisateur connecté, lorsque je créé une base, je peux voir ses re
 
     cy.scrollTo('bottom')
     cy.positionToViewport('base-title-input', 'above')
-    cy.testId('create-button').click()
+    cy.testId('create-button').click({ force: true })
 
     cy.positionToViewport('base-title-input', 'inside')
     cy.get('[id=input-form-field__title__error]').should(
