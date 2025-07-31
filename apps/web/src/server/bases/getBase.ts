@@ -79,11 +79,23 @@ export const baseSelect = (
       },
     },
     followedBy: {
-      where: {
-        followerId: user?.id,
-      },
       select: {
         id: true,
+        followerId: true,
+        follower: {
+          select: {
+            image: true,
+            id: true,
+            firstName: true,
+            lastName: true,
+            name: true,
+            isPublic: true,
+            followedBy: true,
+            _count: {
+              select: { resources: true, followedBy: true },
+            },
+          },
+        },
       },
     },
     resources: {
@@ -171,3 +183,4 @@ export type BasePageData = Exclude<
 >
 export type BaseResource = BasePageData['resources'][number]
 export type BaseMember = BasePageData['members'][number]
+export type BaseFollowedBy = BasePageData['followedBy']

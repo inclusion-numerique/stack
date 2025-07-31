@@ -24,8 +24,8 @@ const NOT_FOLLOWING_CHILDREN = (
 
 const match =
   (userId?: string) =>
-  ({ id }: { id: string }) =>
-    id === userId
+  ({ followerId }: { followerId: string }) =>
+    followerId === userId
 
 const followingButtonProps = (onFollow: () => Promise<void>) => () => ({
   ...followingButtonsProps,
@@ -79,7 +79,7 @@ const FollowBaseButton = ({
 }: {
   id: string
   title: string
-  followedBy: { id: string }[]
+  followedBy: { id: string; followerId: string; follower: boolean }[]
   userId?: string
   className?: string
 }) => {
