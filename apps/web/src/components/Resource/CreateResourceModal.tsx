@@ -35,7 +35,7 @@ export const CreateResourceButton = ({
 
   return (
     <>
-      <div className="fr-hidden fr-unhidden-sm">
+      <div className="fr-hidden fr-unhidden-lg">
         <Button
           type="button"
           className={className}
@@ -63,7 +63,7 @@ export const CreateResourceButton = ({
       </div>
       {/* Header mobile only works with links */}
       <Button
-        className={classNames('fr-hidden-sm', className)}
+        className={classNames('fr-hidden-lg', className)}
         data-testid={dataTestid}
         linkProps={{
           href,
