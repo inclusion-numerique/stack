@@ -86,7 +86,10 @@ const ResourceCollectionsModal = ({ resource }: { resource: Resource }) => {
             </span>
           )}
           {collectionsData.visible.map((collection) => (
-            <div className="fr-flex fr-py-2w fr-justify-content-space-between fr-align-items-center">
+            <div
+              key={collection.id}
+              className="fr-flex fr-py-2w fr-justify-content-space-between fr-align-items-center"
+            >
               <div className="fr-flex fr-flex-gap-6v fr-align-items-center">
                 <IconInSquare iconId="ri-folder-2-line" size="medium" />
                 <div className="fr-flex fr-direction-column fr-flex-gap-1v">

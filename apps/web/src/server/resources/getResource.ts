@@ -6,7 +6,7 @@ import {
 } from '@app/web/authorization/models/resourceAuthorization'
 import { prismaClient } from '@app/web/prismaClient'
 
-export const getResourceSelect = (user: { id: string } | null) =>
+export const getResourceSelect = (_user: { id: string } | null) =>
   ({
     id: true,
     title: true,
@@ -111,11 +111,6 @@ export const getResourceSelect = (user: { id: string } | null) =>
               },
             },
           },
-        },
-      },
-      where: {
-        collection: {
-          ...(!user ? { isPublic: true } : { createdById: user.id }),
         },
       },
     },
