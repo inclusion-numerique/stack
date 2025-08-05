@@ -96,6 +96,15 @@ export const createTestResource = (
     createdById: createdBy.id,
     baseId: base ? base.id : null,
     collections: [],
+    collectionsData: {
+      counts: {
+        total: 0,
+        public: 0,
+        private: 0,
+        visible: 0,
+      },
+      visible: [],
+    },
     base: base
       ? {
           id: base.id,
