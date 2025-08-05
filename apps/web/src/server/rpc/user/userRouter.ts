@@ -13,6 +13,7 @@ import {
 import { ServerUserSignupValidation } from '@app/web/server/rpc/user/userSignup.server'
 import { createAvailableSlug } from '@app/web/server/slug/createAvailableSlug'
 import { v4 } from 'uuid'
+import { invalidError } from '../trpcErrors'
 import { formatName } from './formatName'
 
 export const userRouter = router({
@@ -20,8 +21,24 @@ export const userRouter = router({
     .input(ServerUserSignupValidation)
     .mutation(
       async ({
-        input: { firstName: firstNameInput, lastName: lastNameInput, email },
+        input: {
+          firstName: firstNameInput,
+          lastName: lastNameInput,
+          email,
+          profileName,
+          timer,
+        },
       }) => {
+        if (profileName) {
+          // This is a honeypot field, this means a bot submited the form
+          throw invalidError('Cannot process signup request')
+        }
+
+        if (timer < 4000) {
+          // This is too fast for a human, this means a bot
+          throw invalidError('Cannot process signup request')
+        }
+
         const firstName =
           firstNameInput == null ? null : formatName(firstNameInput)
         const lastName =
