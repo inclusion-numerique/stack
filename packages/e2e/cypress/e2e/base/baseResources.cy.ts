@@ -13,6 +13,7 @@ describe('Utilisateur connecté, lorsque je créé une base, je peux voir ses re
   })
 
   it('Acceptation 0 - Empty state', () => {
+    cy.testId('ressources-menu-button').click()
     cy.testId('empty-box').should('exist')
 
     cy.dsfrModalsShouldBeBound()
