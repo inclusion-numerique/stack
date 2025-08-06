@@ -33,7 +33,6 @@ describe('Utilisateur sans droit, je ne peux ni voir et ni editer la base', () =
 
     cy.visit(`/bases/${defaultTestBaseSlug}`)
     cy.dsfrShouldBeStarted()
-    cy.testId('ressources-menu-button').click()
     cy.testId('empty-box').should('not.exist')
     cy.testId('base-edition-button').should('not.exist')
     cy.testId('private-base-box').should('exist')
@@ -76,7 +75,6 @@ describe('Utilisateur sans droit, je ne peux ni voir et ni editer la base', () =
 
     cy.visit(`/bases/${defaultTestBaseSlug}`)
     cy.dsfrShouldBeStarted()
-    cy.testId('ressources-menu-button').click()
     cy.testId('empty-box').should('not.exist')
     cy.testId('base-edition-button').should('not.exist')
     cy.testId('private-base-box').should('exist')
