@@ -25,18 +25,24 @@ export const userRouter = router({
           firstName: firstNameInput,
           lastName: lastNameInput,
           email,
-          profileName,
+          profileName: honeypotProfileNameInput,
           timer,
         },
       }) => {
-        if (profileName) {
-          // This is a honeypot field, this means a bot submited the form
-          throw invalidError('Cannot process signup request')
-        }
+        // We check for probable spam bot behavior
+        // We disable the check in CI as we don't want to block the e2e tests
+        const shouldCheckForBot = !ServerWebAppConfig.isCi
 
-        if (timer < 4000) {
-          // This is too fast for a human, this means a bot
-          throw invalidError('Cannot process signup request')
+        if (shouldCheckForBot) {
+          if (honeypotProfileNameInput) {
+            // This is a invisible honeypot field, this means a bot submited the form
+            throw invalidError('Cannot process signup request')
+          }
+
+          if (timer < 4000) {
+            // This is too fast for a human, this means a bot
+            throw invalidError('Cannot process signup request')
+          }
         }
 
         const firstName =
