@@ -12,6 +12,7 @@ import {
 } from '@app/web/server/rpc/createRouter'
 import { ServerUserSignupValidation } from '@app/web/server/rpc/user/userSignup.server'
 import { createAvailableSlug } from '@app/web/server/slug/createAvailableSlug'
+import * as Sentry from '@sentry/nextjs'
 import { v4 } from 'uuid'
 import { invalidError } from '../trpcErrors'
 import { formatName } from './formatName'
@@ -36,11 +37,30 @@ export const userRouter = router({
         if (shouldCheckForBot) {
           if (honeypotProfileNameInput) {
             // This is a invisible honeypot field, this means a bot submited the form
+            Sentry.captureMessage('Bot detected - signup - honeypot', {
+              level: 'info',
+              extra: {
+                honeypotProfileNameInput,
+                firstName: firstNameInput,
+                lastName: lastNameInput,
+                email,
+                timer,
+              },
+            })
             throw invalidError('Cannot process signup request')
           }
 
           if (timer < 4000) {
             // This is too fast for a human, this means a bot
+            Sentry.captureMessage('Bot detected - signup -timer', {
+              level: 'info',
+              extra: {
+                firstName: firstNameInput,
+                lastName: lastNameInput,
+                email,
+                timer,
+              },
+            })
             throw invalidError('Cannot process signup request')
           }
         }
