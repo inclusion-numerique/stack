@@ -85,7 +85,7 @@ describe('Utilisateur connecté, lorsque je créé une base, je peux voir ses re
     cy.url().should('contain', appUrl(`/ressources/un-titre`))
 
     cy.log('Check new state')
-    cy.visit(`/bases/${defaultTestBaseSlug}`)
+    cy.visit(`/bases/${defaultTestBaseSlug}/ressources`)
 
     cy.dsfrModalsShouldBeBound()
     cy.testId('resources-list').should('contain', 'Ressources · 1')
