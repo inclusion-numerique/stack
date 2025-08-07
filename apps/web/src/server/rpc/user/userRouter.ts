@@ -65,6 +65,18 @@ export const userRouter = router({
           }
         }
 
+        Sentry.captureMessage('New signnup', {
+          level: 'info',
+          extra: {
+            firstName: firstNameInput,
+            lastName: lastNameInput,
+            email,
+            timer,
+            shouldCheckForBot,
+            honeypotProfileNameInput,
+          },
+        })
+
         const firstName =
           firstNameInput == null ? null : formatName(firstNameInput)
         const lastName =
