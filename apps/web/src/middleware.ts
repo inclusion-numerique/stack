@@ -9,6 +9,7 @@ import {
   redirectLegacyPathToCurrentUrl,
 } from '@app/web/legacyRedirection/legacyRedirection'
 import { output } from '@app/web/utils/output'
+import { logRequestEnd, logRequestStart } from '@app/web/utils/requestLogger'
 import { type NextRequest, NextResponse } from 'next/server'
 
 const nodeEnvironment = process.env.NODE_ENV
@@ -62,16 +63,21 @@ const redirectToBaseDomain = ({
   return NextResponse.redirect(redirectTo, { status: 308 })
 }
 
-const middleware = (request: NextRequest) => {
+const middleware = async (request: NextRequest) => {
+  const startTime = Date.now()
   const requestHost = request.headers.get('host')
   const baseUrl = process.env.BASE_URL ?? ''
+  logRequestStart(request)
 
   const jobTriggerInfo = jobTriggerInfoFromRequest({
     request,
     requestHost,
   })
   if (jobTriggerInfo) {
-    return rewriteTriggerToJobEndpoint({ baseUrl, request })
+    const response = rewriteTriggerToJobEndpoint({ baseUrl, request })
+    const responseTime = Date.now() - startTime
+    logRequestEnd(request, responseTime, response.status)
+    return response
   }
 
   /**
@@ -81,7 +87,13 @@ const middleware = (request: NextRequest) => {
     const httpsBase = `https://${baseUrl ?? ''}`
     const requestUrl = new URL(request.url)
 
-    return redirectLegacyPathToCurrentUrl({ httpsBase, requestUrl })
+    const response = await redirectLegacyPathToCurrentUrl({
+      httpsBase,
+      requestUrl,
+    })
+    const responseTime = Date.now() - startTime
+    logRequestEnd(request, responseTime, response.status)
+    return response
   }
 
   /**
@@ -91,11 +103,14 @@ const middleware = (request: NextRequest) => {
     const httpsBase = `https://${baseUrl ?? ''}`
     const requestUrl = new URL(request.url)
 
-    return redirectToBaseDomain({
+    const response = redirectToBaseDomain({
       httpsBase,
       requestUrl,
       requestHost,
     })
+    const responseTime = Date.now() - startTime
+    logRequestEnd(request, responseTime, response.status)
+    return response
   }
 
   const response = NextResponse.next()
@@ -112,6 +127,9 @@ const middleware = (request: NextRequest) => {
   response.headers.append('Strict-Transport-Security', 'max-age=63072000')
 
   response.headers.append('Content-Security-Policy', contentSecurityPolicy)
+
+  const responseTime = Date.now() - startTime
+  logRequestEnd(request, responseTime, response.status)
 
   return response
 }
