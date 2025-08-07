@@ -41,6 +41,7 @@
     "@codegouvfr/react-dsfr": "^1.26.0",
     "@faire/mjml-react": "^3.5.0",
     "@fastify/busboy": "^3.1.1",
+    "@friendlycaptcha/sdk": "^0.1.30",
     "@gouvfr-anct/lieux-de-mediation-numerique": "^2.2.1",
     "@gouvfr-anct/timetable-to-osm-opening-hours": "^2.1.0",
     "@gouvfr/dsfr": "^1.14.0",
