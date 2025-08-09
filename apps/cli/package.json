@@ -12,7 +12,7 @@
     "build": "tsc"
   },
   "engines": {
-    "node": "^22.15"
+    "node": "^24.5"
   },
   "dependencies": {
     "@commander-js/extra-typings": "^13.1.0",
