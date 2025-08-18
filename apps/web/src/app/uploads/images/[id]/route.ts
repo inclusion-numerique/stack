@@ -48,7 +48,7 @@ export const GET = async (request: NextRequest) => {
 
   const imageData = await getImageData({ image, quality, width: targetWidth })
 
-  return new Response(imageData, {
+  return new Response(imageData as BodyInit, {
     status: 200,
     headers: {
       'Content-Type': 'image/webp',

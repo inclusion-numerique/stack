@@ -1,5 +1,3 @@
-import React, { PropsWithChildren, ReactNode } from 'react'
-
 import Footer from '@app/emails/components/Footer'
 import Head from '@app/emails/components/Head'
 import { emailAssetUrl } from '@app/emails/emailAssetUrl'
@@ -14,6 +12,7 @@ import {
   MjmlSection,
   MjmlText,
 } from '@faire/mjml-react'
+import React, { PropsWithChildren, ReactNode } from 'react'
 
 /**
  * With headerLogoOnly the logo will be centered and you can include title in children

@@ -1,8 +1,8 @@
-import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 import { AuthCard } from '@app/web/app/(public)/(authentication)/AuthCard'
 import { signinErrorMessage } from '@app/web/app/(public)/(authentication)/authenticationErrorMessage'
 import { EmailSigninForm } from '@app/web/app/(public)/(authentication)/connexion/EmailSigninForm'
 import ProConnectSigninButton from '@app/web/app/(public)/(authentication)/connexion/ProConnectSigninButton'
+import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 import ButtonsGroup from '@codegouvfr/react-dsfr/ButtonsGroup'
 import type { Route } from 'next'
 

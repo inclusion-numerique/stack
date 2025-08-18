@@ -1,6 +1,6 @@
-import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 import { AuthCard } from '@app/web/app/(public)/(authentication)/AuthCard'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
+import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 import Link from 'next/link'
 
 export const dynamic = 'force-dynamic'
