@@ -9,7 +9,11 @@ executors:
       - image: cimg/node:24.5.0
         environment:
           TZ: 'UTC'
-
+  node22:
+    docker:
+      - image: cimg/node:22.15.0
+        environment:
+          TZ: 'UTC'
   node-postgres:
     docker:
       - image: cimg/node:24.5.0
@@ -447,7 +451,7 @@ jobs:
             pnpm --silent -F @app/web test:integration
 
   deploy_web:
-    executor: node
+    executor: node22
     resource_class: large
     steps:
       - checkout
@@ -525,7 +529,7 @@ jobs:
           when: on_fail
 
   compute_project_infrastructure_diff:
-    executor: node
+    executor: node22
     resource_class: large
     steps:
       - checkout
@@ -546,7 +550,7 @@ jobs:
             pnpm --silent -F @app/cdk cdktf diff project --var-file .tfvars.json
 
   project_infrastructure_deployment:
-    executor: node
+    executor: node22
     resource_class: large
     steps:
       - checkout
@@ -567,7 +571,7 @@ jobs:
             pnpm --silent -F @app/cdk cdktf deploy project --var-file .tfvars.json --auto-approve --outputs-file=cdk.out.json --outputs-file-include-sensitive-outputs
 
   web_app_preview_deletion:
-    executor: node
+    executor: node22
     resource_class: large
     steps:
       - checkout
