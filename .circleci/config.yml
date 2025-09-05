@@ -59,12 +59,9 @@ parameters:
     type: string
     default: e2e
   trigger_workflow:
-    type: string
-    # Can be one of the following:
-    ## web_app_deployment
-    ## web_app_preview_deletion
-    ## project_stack_deployment
-    default: "web_app_deployment"
+    type: enum
+    default: 'web_app_deployment'
+    enum: [ 'web_app_deployment', 'web_app_preview_deletion', 'project_stack_deployment', 'chromatic_deployment' ]
   # Name of the environment to scrap
   web_app_docker_registry:
     # This is redundant with .env.dist but needed as jobs are way simpler to configure with this parameter
