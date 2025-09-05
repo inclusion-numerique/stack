@@ -1,4 +1,4 @@
-// https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/function_namespace
+// https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/function_namespace
 // generated from terraform resource schema
 
 import { Construct } from 'constructs';
@@ -8,19 +8,25 @@ import * as cdktf from 'cdktf';
 
 export interface FunctionNamespaceConfig extends cdktf.TerraformMetaArguments {
   /**
+  * Activate VPC integration for the namespace
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/function_namespace#activate_vpc_integration FunctionNamespace#activate_vpc_integration}
+  */
+  readonly activateVpcIntegration?: boolean | cdktf.IResolvable;
+  /**
   * The description of the function namespace
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/function_namespace#description FunctionNamespace#description}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/function_namespace#description FunctionNamespace#description}
   */
   readonly description?: string;
   /**
   * The environment variables of the function namespace
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/function_namespace#environment_variables FunctionNamespace#environment_variables}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/function_namespace#environment_variables FunctionNamespace#environment_variables}
   */
   readonly environmentVariables?: { [key: string]: string };
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/function_namespace#id FunctionNamespace#id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/function_namespace#id FunctionNamespace#id}
   *
   * Please be aware that the id field is automatically added to all resources in Terraform providers using a Terraform provider SDK version below 2.
   * If you experience problems setting this value it might not be settable. Please take a look at the provider documentation to ensure it should be settable.
@@ -29,53 +35,59 @@ export interface FunctionNamespaceConfig extends cdktf.TerraformMetaArguments {
   /**
   * The name of the function namespace
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/function_namespace#name FunctionNamespace#name}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/function_namespace#name FunctionNamespace#name}
   */
   readonly name?: string;
   /**
   * The project_id you want to attach the resource to
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/function_namespace#project_id FunctionNamespace#project_id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/function_namespace#project_id FunctionNamespace#project_id}
   */
   readonly projectId?: string;
   /**
   * The region you want to attach the resource to
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/function_namespace#region FunctionNamespace#region}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/function_namespace#region FunctionNamespace#region}
   */
   readonly region?: string;
   /**
   * The environment variables of the function namespace
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/function_namespace#secret_environment_variables FunctionNamespace#secret_environment_variables}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/function_namespace#secret_environment_variables FunctionNamespace#secret_environment_variables}
   */
   readonly secretEnvironmentVariables?: { [key: string]: string };
   /**
+  * List of tags ["tag1", "tag2", ...] attached to the function namespace
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/function_namespace#tags FunctionNamespace#tags}
+  */
+  readonly tags?: string[];
+  /**
   * timeouts block
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/function_namespace#timeouts FunctionNamespace#timeouts}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/function_namespace#timeouts FunctionNamespace#timeouts}
   */
   readonly timeouts?: FunctionNamespaceTimeouts;
 }
 export interface FunctionNamespaceTimeouts {
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/function_namespace#create FunctionNamespace#create}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/function_namespace#create FunctionNamespace#create}
   */
   readonly create?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/function_namespace#default FunctionNamespace#default}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/function_namespace#default FunctionNamespace#default}
   */
   readonly default?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/function_namespace#delete FunctionNamespace#delete}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/function_namespace#delete FunctionNamespace#delete}
   */
   readonly delete?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/function_namespace#read FunctionNamespace#read}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/function_namespace#read FunctionNamespace#read}
   */
   readonly read?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/function_namespace#update FunctionNamespace#update}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/function_namespace#update FunctionNamespace#update}
   */
   readonly update?: string;
 }
@@ -285,7 +297,7 @@ export class FunctionNamespaceTimeoutsOutputReference extends cdktf.ComplexObjec
 }
 
 /**
-* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/function_namespace scaleway_function_namespace}
+* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/function_namespace scaleway_function_namespace}
 */
 export class FunctionNamespace extends cdktf.TerraformResource {
 
@@ -301,7 +313,7 @@ export class FunctionNamespace extends cdktf.TerraformResource {
   * Generates CDKTF code for importing a FunctionNamespace resource upon running "cdktf plan <stack-name>"
   * @param scope The scope in which to define this construct
   * @param importToId The construct id used in the generated config for the FunctionNamespace to import
-  * @param importFromId The id of the existing FunctionNamespace that should be imported. Refer to the {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/function_namespace#import import section} in the documentation of this resource for the id to use
+  * @param importFromId The id of the existing FunctionNamespace that should be imported. Refer to the {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/function_namespace#import import section} in the documentation of this resource for the id to use
   * @param provider? Optional instance of the provider where the FunctionNamespace to import is found
   */
   public static generateConfigForImport(scope: Construct, importToId: string, importFromId: string, provider?: cdktf.TerraformProvider) {
@@ -313,7 +325,7 @@ export class FunctionNamespace extends cdktf.TerraformResource {
   // ===========
 
   /**
-  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/function_namespace scaleway_function_namespace} Resource
+  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/function_namespace scaleway_function_namespace} Resource
   *
   * @param scope The scope in which to define this construct
   * @param id The scoped construct ID. Must be unique amongst siblings in the same scope
@@ -324,7 +336,7 @@ export class FunctionNamespace extends cdktf.TerraformResource {
       terraformResourceType: 'scaleway_function_namespace',
       terraformGeneratorMetadata: {
         providerName: 'scaleway',
-        providerVersion: '2.42.1',
+        providerVersion: '2.59.0',
         providerVersionConstraint: '>= 2.42.1'
       },
       provider: config.provider,
@@ -335,6 +347,7 @@ export class FunctionNamespace extends cdktf.TerraformResource {
       connection: config.connection,
       forEach: config.forEach
     });
+    this._activateVpcIntegration = config.activateVpcIntegration;
     this._description = config.description;
     this._environmentVariables = config.environmentVariables;
     this._id = config.id;
@@ -342,12 +355,29 @@ export class FunctionNamespace extends cdktf.TerraformResource {
     this._projectId = config.projectId;
     this._region = config.region;
     this._secretEnvironmentVariables = config.secretEnvironmentVariables;
+    this._tags = config.tags;
     this._timeouts.internalValue = config.timeouts;
   }
 
   // ==========
   // ATTRIBUTES
   // ==========
+
+  // activate_vpc_integration - computed: false, optional: true, required: false
+  private _activateVpcIntegration?: boolean | cdktf.IResolvable; 
+  public get activateVpcIntegration() {
+    return this.getBooleanAttribute('activate_vpc_integration');
+  }
+  public set activateVpcIntegration(value: boolean | cdktf.IResolvable) {
+    this._activateVpcIntegration = value;
+  }
+  public resetActivateVpcIntegration() {
+    this._activateVpcIntegration = undefined;
+  }
+  // Temporarily expose input value. Use with caution.
+  public get activateVpcIntegrationInput() {
+    return this._activateVpcIntegration;
+  }
 
   // description - computed: false, optional: true, required: false
   private _description?: string; 
@@ -476,6 +506,22 @@ export class FunctionNamespace extends cdktf.TerraformResource {
     return this._secretEnvironmentVariables;
   }
 
+  // tags - computed: false, optional: true, required: false
+  private _tags?: string[]; 
+  public get tags() {
+    return this.getListAttribute('tags');
+  }
+  public set tags(value: string[]) {
+    this._tags = value;
+  }
+  public resetTags() {
+    this._tags = undefined;
+  }
+  // Temporarily expose input value. Use with caution.
+  public get tagsInput() {
+    return this._tags;
+  }
+
   // timeouts - computed: false, optional: true, required: false
   private _timeouts = new FunctionNamespaceTimeoutsOutputReference(this, "timeouts");
   public get timeouts() {
@@ -498,6 +544,7 @@ export class FunctionNamespace extends cdktf.TerraformResource {
 
   protected synthesizeAttributes(): { [name: string]: any } {
     return {
+      activate_vpc_integration: cdktf.booleanToTerraform(this._activateVpcIntegration),
       description: cdktf.stringToTerraform(this._description),
       environment_variables: cdktf.hashMapper(cdktf.stringToTerraform)(this._environmentVariables),
       id: cdktf.stringToTerraform(this._id),
@@ -505,12 +552,19 @@ export class FunctionNamespace extends cdktf.TerraformResource {
       project_id: cdktf.stringToTerraform(this._projectId),
       region: cdktf.stringToTerraform(this._region),
       secret_environment_variables: cdktf.hashMapper(cdktf.stringToTerraform)(this._secretEnvironmentVariables),
+      tags: cdktf.listMapper(cdktf.stringToTerraform, false)(this._tags),
       timeouts: functionNamespaceTimeoutsToTerraform(this._timeouts.internalValue),
     };
   }
 
   protected synthesizeHclAttributes(): { [name: string]: any } {
     const attrs = {
+      activate_vpc_integration: {
+        value: cdktf.booleanToHclTerraform(this._activateVpcIntegration),
+        isBlock: false,
+        type: "simple",
+        storageClassType: "boolean",
+      },
       description: {
         value: cdktf.stringToHclTerraform(this._description),
         isBlock: false,
@@ -552,6 +606,12 @@ export class FunctionNamespace extends cdktf.TerraformResource {
         isBlock: false,
         type: "map",
         storageClassType: "stringMap",
+      },
+      tags: {
+        value: cdktf.listMapperHcl(cdktf.stringToHclTerraform, false)(this._tags),
+        isBlock: false,
+        type: "list",
+        storageClassType: "stringList",
       },
       timeouts: {
         value: functionNamespaceTimeoutsToHclTerraform(this._timeouts.internalValue),

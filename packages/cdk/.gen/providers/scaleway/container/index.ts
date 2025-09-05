@@ -1,4 +1,4 @@
-// https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/container
+// https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/container
 // generated from terraform resource schema
 
 import { Construct } from 'constructs';
@@ -8,164 +8,688 @@ import * as cdktf from 'cdktf';
 
 export interface ContainerConfig extends cdktf.TerraformMetaArguments {
   /**
+  * Arguments passed to the command from the command "field". Overrides the arguments from the container image.
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/container#args Container#args}
+  */
+  readonly args?: string[];
+  /**
+  * Command executed when the container starts. Overrides the command from the container image.
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/container#command Container#command}
+  */
+  readonly command?: string[];
+  /**
   * The amount of vCPU computing resources to allocate to each container. Defaults to 70.
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/container#cpu_limit Container#cpu_limit}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/container#cpu_limit Container#cpu_limit}
   */
   readonly cpuLimit?: number;
   /**
   * This allows you to control your production environment
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/container#deploy Container#deploy}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/container#deploy Container#deploy}
   */
   readonly deploy?: boolean | cdktf.IResolvable;
   /**
   * The container description
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/container#description Container#description}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/container#description Container#description}
   */
   readonly description?: string;
   /**
   * The environment variables to be injected into your container at runtime.
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/container#environment_variables Container#environment_variables}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/container#environment_variables Container#environment_variables}
   */
   readonly environmentVariables?: { [key: string]: string };
   /**
   * HTTP traffic configuration
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/container#http_option Container#http_option}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/container#http_option Container#http_option}
   */
   readonly httpOption?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/container#id Container#id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/container#id Container#id}
   *
   * Please be aware that the id field is automatically added to all resources in Terraform providers using a Terraform provider SDK version below 2.
   * If you experience problems setting this value it might not be settable. Please take a look at the provider documentation to ensure it should be settable.
   */
   readonly id?: string;
   /**
-  * The maximum the number of simultaneous requests your container can handle at the same time. Defaults to 50.
+  * Local storage limit of the container (in MB)
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/container#max_concurrency Container#max_concurrency}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/container#local_storage_limit Container#local_storage_limit}
+  */
+  readonly localStorageLimit?: number;
+  /**
+  * The maximum the number of simultaneous requests your container can handle at the same time.
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/container#max_concurrency Container#max_concurrency}
   */
   readonly maxConcurrency?: number;
   /**
-  * The maximum of number of instances this container can scale to. Default to 20.
+  * The maximum of number of instances this container can scale to.
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/container#max_scale Container#max_scale}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/container#max_scale Container#max_scale}
   */
   readonly maxScale?: number;
   /**
-  * The memory computing resources in MB to allocate to each container. Defaults to 128.
+  * The memory computing resources in MB to allocate to each container.
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/container#memory_limit Container#memory_limit}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/container#memory_limit Container#memory_limit}
   */
   readonly memoryLimit?: number;
   /**
-  * The minimum of running container instances continuously. Defaults to 0.
+  * The minimum of running container instances continuously.
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/container#min_scale Container#min_scale}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/container#min_scale Container#min_scale}
   */
   readonly minScale?: number;
   /**
   * The container name
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/container#name Container#name}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/container#name Container#name}
   */
   readonly name?: string;
   /**
   * The container namespace associated
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/container#namespace_id Container#namespace_id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/container#namespace_id Container#namespace_id}
   */
   readonly namespaceId: string;
   /**
-  * The port to expose the container. Defaults to 8080
+  * The port to expose the container.
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/container#port Container#port}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/container#port Container#port}
   */
   readonly port?: number;
   /**
   * The privacy type define the way to authenticate to your container
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/container#privacy Container#privacy}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/container#privacy Container#privacy}
   */
   readonly privacy?: string;
   /**
+  * ID of the Private Network the container is connected to
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/container#private_network_id Container#private_network_id}
+  */
+  readonly privateNetworkId?: string;
+  /**
   * The communication protocol http1 or h2c. Defaults to http1.
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/container#protocol Container#protocol}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/container#protocol Container#protocol}
   */
   readonly protocol?: string;
   /**
   * The region you want to attach the resource to
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/container#region Container#region}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/container#region Container#region}
   */
   readonly region?: string;
   /**
   * The scaleway registry image address
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/container#registry_image Container#registry_image}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/container#registry_image Container#registry_image}
   */
   readonly registryImage?: string;
   /**
   * The sha256 of your source registry image, changing it will re-apply the deployment. Can be any string
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/container#registry_sha256 Container#registry_sha256}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/container#registry_sha256 Container#registry_sha256}
   */
   readonly registrySha256?: string;
   /**
   * Execution environment of the container.
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/container#sandbox Container#sandbox}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/container#sandbox Container#sandbox}
   */
   readonly sandbox?: string;
   /**
   * The secret environment variables to be injected into your container at runtime.
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/container#secret_environment_variables Container#secret_environment_variables}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/container#secret_environment_variables Container#secret_environment_variables}
   */
   readonly secretEnvironmentVariables?: { [key: string]: string };
   /**
   * The container status
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/container#status Container#status}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/container#status Container#status}
   */
   readonly status?: string;
   /**
+  * List of tags ["tag1", "tag2", ...] attached to the container.
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/container#tags Container#tags}
+  */
+  readonly tags?: string[];
+  /**
   * The maximum amount of time in seconds during which your container can process a request before we stop it. Defaults to 300s.
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/container#timeout Container#timeout}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/container#timeout Container#timeout}
   */
   readonly timeout?: number;
   /**
+  * health_check block
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/container#health_check Container#health_check}
+  */
+  readonly healthCheck?: ContainerHealthCheck[] | cdktf.IResolvable;
+  /**
+  * scaling_option block
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/container#scaling_option Container#scaling_option}
+  */
+  readonly scalingOption?: ContainerScalingOption[] | cdktf.IResolvable;
+  /**
   * timeouts block
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/container#timeouts Container#timeouts}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/container#timeouts Container#timeouts}
   */
   readonly timeouts?: ContainerTimeouts;
 }
+export interface ContainerHealthCheckHttp {
+  /**
+  * Path to use for the HTTP health check.
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/container#path Container#path}
+  */
+  readonly path: string;
+}
+
+export function containerHealthCheckHttpToTerraform(struct?: ContainerHealthCheckHttp | cdktf.IResolvable): any {
+  if (!cdktf.canInspect(struct) || cdktf.Tokenization.isResolvable(struct)) { return struct; }
+  if (cdktf.isComplexElement(struct)) {
+    throw new Error("A complex element was used as configuration, this is not supported: https://cdk.tf/complex-object-as-configuration");
+  }
+  return {
+    path: cdktf.stringToTerraform(struct!.path),
+  }
+}
+
+
+export function containerHealthCheckHttpToHclTerraform(struct?: ContainerHealthCheckHttp | cdktf.IResolvable): any {
+  if (!cdktf.canInspect(struct) || cdktf.Tokenization.isResolvable(struct)) { return struct; }
+  if (cdktf.isComplexElement(struct)) {
+    throw new Error("A complex element was used as configuration, this is not supported: https://cdk.tf/complex-object-as-configuration");
+  }
+  const attrs = {
+    path: {
+      value: cdktf.stringToHclTerraform(struct!.path),
+      isBlock: false,
+      type: "simple",
+      storageClassType: "string",
+    },
+  };
+
+  // remove undefined attributes
+  return Object.fromEntries(Object.entries(attrs).filter(([_, value]) => value !== undefined && value.value !== undefined));
+}
+
+export class ContainerHealthCheckHttpOutputReference extends cdktf.ComplexObject {
+  private isEmptyObject = false;
+  private resolvableValue?: cdktf.IResolvable;
+
+  /**
+  * @param terraformResource The parent resource
+  * @param terraformAttribute The attribute on the parent resource this class is referencing
+  * @param complexObjectIndex the index of this item in the list
+  * @param complexObjectIsFromSet whether the list is wrapping a set (will add tolist() to be able to access an item via an index)
+  */
+  public constructor(terraformResource: cdktf.IInterpolatingParent, terraformAttribute: string, complexObjectIndex: number, complexObjectIsFromSet: boolean) {
+    super(terraformResource, terraformAttribute, complexObjectIsFromSet, complexObjectIndex);
+  }
+
+  public get internalValue(): ContainerHealthCheckHttp | cdktf.IResolvable | undefined {
+    if (this.resolvableValue) {
+      return this.resolvableValue;
+    }
+    let hasAnyValues = this.isEmptyObject;
+    const internalValueResult: any = {};
+    if (this._path !== undefined) {
+      hasAnyValues = true;
+      internalValueResult.path = this._path;
+    }
+    return hasAnyValues ? internalValueResult : undefined;
+  }
+
+  public set internalValue(value: ContainerHealthCheckHttp | cdktf.IResolvable | undefined) {
+    if (value === undefined) {
+      this.isEmptyObject = false;
+      this.resolvableValue = undefined;
+      this._path = undefined;
+    }
+    else if (cdktf.Tokenization.isResolvable(value)) {
+      this.isEmptyObject = false;
+      this.resolvableValue = value;
+    }
+    else {
+      this.isEmptyObject = Object.keys(value).length === 0;
+      this.resolvableValue = undefined;
+      this._path = value.path;
+    }
+  }
+
+  // path - computed: false, optional: false, required: true
+  private _path?: string; 
+  public get path() {
+    return this.getStringAttribute('path');
+  }
+  public set path(value: string) {
+    this._path = value;
+  }
+  // Temporarily expose input value. Use with caution.
+  public get pathInput() {
+    return this._path;
+  }
+}
+
+export class ContainerHealthCheckHttpList extends cdktf.ComplexList {
+  public internalValue? : ContainerHealthCheckHttp[] | cdktf.IResolvable
+
+  /**
+  * @param terraformResource The parent resource
+  * @param terraformAttribute The attribute on the parent resource this class is referencing
+  * @param wrapsSet whether the list is wrapping a set (will add tolist() to be able to access an item via an index)
+  */
+  constructor(protected terraformResource: cdktf.IInterpolatingParent, protected terraformAttribute: string, protected wrapsSet: boolean) {
+    super(terraformResource, terraformAttribute, wrapsSet)
+  }
+
+  /**
+  * @param index the index of the item to return
+  */
+  public get(index: number): ContainerHealthCheckHttpOutputReference {
+    return new ContainerHealthCheckHttpOutputReference(this.terraformResource, this.terraformAttribute, index, this.wrapsSet);
+  }
+}
+export interface ContainerHealthCheck {
+  /**
+  * Number of consecutive health check failures before considering the container unhealthy.
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/container#failure_threshold Container#failure_threshold}
+  */
+  readonly failureThreshold: number;
+  /**
+  * Period between health checks.
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/container#interval Container#interval}
+  */
+  readonly interval: string;
+  /**
+  * http block
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/container#http Container#http}
+  */
+  readonly http: ContainerHealthCheckHttp[] | cdktf.IResolvable;
+}
+
+export function containerHealthCheckToTerraform(struct?: ContainerHealthCheck | cdktf.IResolvable): any {
+  if (!cdktf.canInspect(struct) || cdktf.Tokenization.isResolvable(struct)) { return struct; }
+  if (cdktf.isComplexElement(struct)) {
+    throw new Error("A complex element was used as configuration, this is not supported: https://cdk.tf/complex-object-as-configuration");
+  }
+  return {
+    failure_threshold: cdktf.numberToTerraform(struct!.failureThreshold),
+    interval: cdktf.stringToTerraform(struct!.interval),
+    http: cdktf.listMapper(containerHealthCheckHttpToTerraform, true)(struct!.http),
+  }
+}
+
+
+export function containerHealthCheckToHclTerraform(struct?: ContainerHealthCheck | cdktf.IResolvable): any {
+  if (!cdktf.canInspect(struct) || cdktf.Tokenization.isResolvable(struct)) { return struct; }
+  if (cdktf.isComplexElement(struct)) {
+    throw new Error("A complex element was used as configuration, this is not supported: https://cdk.tf/complex-object-as-configuration");
+  }
+  const attrs = {
+    failure_threshold: {
+      value: cdktf.numberToHclTerraform(struct!.failureThreshold),
+      isBlock: false,
+      type: "simple",
+      storageClassType: "number",
+    },
+    interval: {
+      value: cdktf.stringToHclTerraform(struct!.interval),
+      isBlock: false,
+      type: "simple",
+      storageClassType: "string",
+    },
+    http: {
+      value: cdktf.listMapperHcl(containerHealthCheckHttpToHclTerraform, true)(struct!.http),
+      isBlock: true,
+      type: "set",
+      storageClassType: "ContainerHealthCheckHttpList",
+    },
+  };
+
+  // remove undefined attributes
+  return Object.fromEntries(Object.entries(attrs).filter(([_, value]) => value !== undefined && value.value !== undefined));
+}
+
+export class ContainerHealthCheckOutputReference extends cdktf.ComplexObject {
+  private isEmptyObject = false;
+  private resolvableValue?: cdktf.IResolvable;
+
+  /**
+  * @param terraformResource The parent resource
+  * @param terraformAttribute The attribute on the parent resource this class is referencing
+  * @param complexObjectIndex the index of this item in the list
+  * @param complexObjectIsFromSet whether the list is wrapping a set (will add tolist() to be able to access an item via an index)
+  */
+  public constructor(terraformResource: cdktf.IInterpolatingParent, terraformAttribute: string, complexObjectIndex: number, complexObjectIsFromSet: boolean) {
+    super(terraformResource, terraformAttribute, complexObjectIsFromSet, complexObjectIndex);
+  }
+
+  public get internalValue(): ContainerHealthCheck | cdktf.IResolvable | undefined {
+    if (this.resolvableValue) {
+      return this.resolvableValue;
+    }
+    let hasAnyValues = this.isEmptyObject;
+    const internalValueResult: any = {};
+    if (this._failureThreshold !== undefined) {
+      hasAnyValues = true;
+      internalValueResult.failureThreshold = this._failureThreshold;
+    }
+    if (this._interval !== undefined) {
+      hasAnyValues = true;
+      internalValueResult.interval = this._interval;
+    }
+    if (this._http?.internalValue !== undefined) {
+      hasAnyValues = true;
+      internalValueResult.http = this._http?.internalValue;
+    }
+    return hasAnyValues ? internalValueResult : undefined;
+  }
+
+  public set internalValue(value: ContainerHealthCheck | cdktf.IResolvable | undefined) {
+    if (value === undefined) {
+      this.isEmptyObject = false;
+      this.resolvableValue = undefined;
+      this._failureThreshold = undefined;
+      this._interval = undefined;
+      this._http.internalValue = undefined;
+    }
+    else if (cdktf.Tokenization.isResolvable(value)) {
+      this.isEmptyObject = false;
+      this.resolvableValue = value;
+    }
+    else {
+      this.isEmptyObject = Object.keys(value).length === 0;
+      this.resolvableValue = undefined;
+      this._failureThreshold = value.failureThreshold;
+      this._interval = value.interval;
+      this._http.internalValue = value.http;
+    }
+  }
+
+  // failure_threshold - computed: false, optional: false, required: true
+  private _failureThreshold?: number; 
+  public get failureThreshold() {
+    return this.getNumberAttribute('failure_threshold');
+  }
+  public set failureThreshold(value: number) {
+    this._failureThreshold = value;
+  }
+  // Temporarily expose input value. Use with caution.
+  public get failureThresholdInput() {
+    return this._failureThreshold;
+  }
+
+  // interval - computed: false, optional: false, required: true
+  private _interval?: string; 
+  public get interval() {
+    return this.getStringAttribute('interval');
+  }
+  public set interval(value: string) {
+    this._interval = value;
+  }
+  // Temporarily expose input value. Use with caution.
+  public get intervalInput() {
+    return this._interval;
+  }
+
+  // http - computed: false, optional: false, required: true
+  private _http = new ContainerHealthCheckHttpList(this, "http", true);
+  public get http() {
+    return this._http;
+  }
+  public putHttp(value: ContainerHealthCheckHttp[] | cdktf.IResolvable) {
+    this._http.internalValue = value;
+  }
+  // Temporarily expose input value. Use with caution.
+  public get httpInput() {
+    return this._http.internalValue;
+  }
+}
+
+export class ContainerHealthCheckList extends cdktf.ComplexList {
+  public internalValue? : ContainerHealthCheck[] | cdktf.IResolvable
+
+  /**
+  * @param terraformResource The parent resource
+  * @param terraformAttribute The attribute on the parent resource this class is referencing
+  * @param wrapsSet whether the list is wrapping a set (will add tolist() to be able to access an item via an index)
+  */
+  constructor(protected terraformResource: cdktf.IInterpolatingParent, protected terraformAttribute: string, protected wrapsSet: boolean) {
+    super(terraformResource, terraformAttribute, wrapsSet)
+  }
+
+  /**
+  * @param index the index of the item to return
+  */
+  public get(index: number): ContainerHealthCheckOutputReference {
+    return new ContainerHealthCheckOutputReference(this.terraformResource, this.terraformAttribute, index, this.wrapsSet);
+  }
+}
+export interface ContainerScalingOption {
+  /**
+  * Scale depending on the number of concurrent requests being processed per container instance.
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/container#concurrent_requests_threshold Container#concurrent_requests_threshold}
+  */
+  readonly concurrentRequestsThreshold?: number;
+  /**
+  * Scale depending on the CPU usage of a container instance.
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/container#cpu_usage_threshold Container#cpu_usage_threshold}
+  */
+  readonly cpuUsageThreshold?: number;
+  /**
+  * Scale depending on the memory usage of a container instance.
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/container#memory_usage_threshold Container#memory_usage_threshold}
+  */
+  readonly memoryUsageThreshold?: number;
+}
+
+export function containerScalingOptionToTerraform(struct?: ContainerScalingOption | cdktf.IResolvable): any {
+  if (!cdktf.canInspect(struct) || cdktf.Tokenization.isResolvable(struct)) { return struct; }
+  if (cdktf.isComplexElement(struct)) {
+    throw new Error("A complex element was used as configuration, this is not supported: https://cdk.tf/complex-object-as-configuration");
+  }
+  return {
+    concurrent_requests_threshold: cdktf.numberToTerraform(struct!.concurrentRequestsThreshold),
+    cpu_usage_threshold: cdktf.numberToTerraform(struct!.cpuUsageThreshold),
+    memory_usage_threshold: cdktf.numberToTerraform(struct!.memoryUsageThreshold),
+  }
+}
+
+
+export function containerScalingOptionToHclTerraform(struct?: ContainerScalingOption | cdktf.IResolvable): any {
+  if (!cdktf.canInspect(struct) || cdktf.Tokenization.isResolvable(struct)) { return struct; }
+  if (cdktf.isComplexElement(struct)) {
+    throw new Error("A complex element was used as configuration, this is not supported: https://cdk.tf/complex-object-as-configuration");
+  }
+  const attrs = {
+    concurrent_requests_threshold: {
+      value: cdktf.numberToHclTerraform(struct!.concurrentRequestsThreshold),
+      isBlock: false,
+      type: "simple",
+      storageClassType: "number",
+    },
+    cpu_usage_threshold: {
+      value: cdktf.numberToHclTerraform(struct!.cpuUsageThreshold),
+      isBlock: false,
+      type: "simple",
+      storageClassType: "number",
+    },
+    memory_usage_threshold: {
+      value: cdktf.numberToHclTerraform(struct!.memoryUsageThreshold),
+      isBlock: false,
+      type: "simple",
+      storageClassType: "number",
+    },
+  };
+
+  // remove undefined attributes
+  return Object.fromEntries(Object.entries(attrs).filter(([_, value]) => value !== undefined && value.value !== undefined));
+}
+
+export class ContainerScalingOptionOutputReference extends cdktf.ComplexObject {
+  private isEmptyObject = false;
+  private resolvableValue?: cdktf.IResolvable;
+
+  /**
+  * @param terraformResource The parent resource
+  * @param terraformAttribute The attribute on the parent resource this class is referencing
+  * @param complexObjectIndex the index of this item in the list
+  * @param complexObjectIsFromSet whether the list is wrapping a set (will add tolist() to be able to access an item via an index)
+  */
+  public constructor(terraformResource: cdktf.IInterpolatingParent, terraformAttribute: string, complexObjectIndex: number, complexObjectIsFromSet: boolean) {
+    super(terraformResource, terraformAttribute, complexObjectIsFromSet, complexObjectIndex);
+  }
+
+  public get internalValue(): ContainerScalingOption | cdktf.IResolvable | undefined {
+    if (this.resolvableValue) {
+      return this.resolvableValue;
+    }
+    let hasAnyValues = this.isEmptyObject;
+    const internalValueResult: any = {};
+    if (this._concurrentRequestsThreshold !== undefined) {
+      hasAnyValues = true;
+      internalValueResult.concurrentRequestsThreshold = this._concurrentRequestsThreshold;
+    }
+    if (this._cpuUsageThreshold !== undefined) {
+      hasAnyValues = true;
+      internalValueResult.cpuUsageThreshold = this._cpuUsageThreshold;
+    }
+    if (this._memoryUsageThreshold !== undefined) {
+      hasAnyValues = true;
+      internalValueResult.memoryUsageThreshold = this._memoryUsageThreshold;
+    }
+    return hasAnyValues ? internalValueResult : undefined;
+  }
+
+  public set internalValue(value: ContainerScalingOption | cdktf.IResolvable | undefined) {
+    if (value === undefined) {
+      this.isEmptyObject = false;
+      this.resolvableValue = undefined;
+      this._concurrentRequestsThreshold = undefined;
+      this._cpuUsageThreshold = undefined;
+      this._memoryUsageThreshold = undefined;
+    }
+    else if (cdktf.Tokenization.isResolvable(value)) {
+      this.isEmptyObject = false;
+      this.resolvableValue = value;
+    }
+    else {
+      this.isEmptyObject = Object.keys(value).length === 0;
+      this.resolvableValue = undefined;
+      this._concurrentRequestsThreshold = value.concurrentRequestsThreshold;
+      this._cpuUsageThreshold = value.cpuUsageThreshold;
+      this._memoryUsageThreshold = value.memoryUsageThreshold;
+    }
+  }
+
+  // concurrent_requests_threshold - computed: false, optional: true, required: false
+  private _concurrentRequestsThreshold?: number; 
+  public get concurrentRequestsThreshold() {
+    return this.getNumberAttribute('concurrent_requests_threshold');
+  }
+  public set concurrentRequestsThreshold(value: number) {
+    this._concurrentRequestsThreshold = value;
+  }
+  public resetConcurrentRequestsThreshold() {
+    this._concurrentRequestsThreshold = undefined;
+  }
+  // Temporarily expose input value. Use with caution.
+  public get concurrentRequestsThresholdInput() {
+    return this._concurrentRequestsThreshold;
+  }
+
+  // cpu_usage_threshold - computed: false, optional: true, required: false
+  private _cpuUsageThreshold?: number; 
+  public get cpuUsageThreshold() {
+    return this.getNumberAttribute('cpu_usage_threshold');
+  }
+  public set cpuUsageThreshold(value: number) {
+    this._cpuUsageThreshold = value;
+  }
+  public resetCpuUsageThreshold() {
+    this._cpuUsageThreshold = undefined;
+  }
+  // Temporarily expose input value. Use with caution.
+  public get cpuUsageThresholdInput() {
+    return this._cpuUsageThreshold;
+  }
+
+  // memory_usage_threshold - computed: false, optional: true, required: false
+  private _memoryUsageThreshold?: number; 
+  public get memoryUsageThreshold() {
+    return this.getNumberAttribute('memory_usage_threshold');
+  }
+  public set memoryUsageThreshold(value: number) {
+    this._memoryUsageThreshold = value;
+  }
+  public resetMemoryUsageThreshold() {
+    this._memoryUsageThreshold = undefined;
+  }
+  // Temporarily expose input value. Use with caution.
+  public get memoryUsageThresholdInput() {
+    return this._memoryUsageThreshold;
+  }
+}
+
+export class ContainerScalingOptionList extends cdktf.ComplexList {
+  public internalValue? : ContainerScalingOption[] | cdktf.IResolvable
+
+  /**
+  * @param terraformResource The parent resource
+  * @param terraformAttribute The attribute on the parent resource this class is referencing
+  * @param wrapsSet whether the list is wrapping a set (will add tolist() to be able to access an item via an index)
+  */
+  constructor(protected terraformResource: cdktf.IInterpolatingParent, protected terraformAttribute: string, protected wrapsSet: boolean) {
+    super(terraformResource, terraformAttribute, wrapsSet)
+  }
+
+  /**
+  * @param index the index of the item to return
+  */
+  public get(index: number): ContainerScalingOptionOutputReference {
+    return new ContainerScalingOptionOutputReference(this.terraformResource, this.terraformAttribute, index, this.wrapsSet);
+  }
+}
 export interface ContainerTimeouts {
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/container#create Container#create}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/container#create Container#create}
   */
   readonly create?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/container#default Container#default}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/container#default Container#default}
   */
   readonly default?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/container#delete Container#delete}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/container#delete Container#delete}
   */
   readonly delete?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/container#read Container#read}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/container#read Container#read}
   */
   readonly read?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/container#update Container#update}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/container#update Container#update}
   */
   readonly update?: string;
 }
@@ -375,7 +899,7 @@ export class ContainerTimeoutsOutputReference extends cdktf.ComplexObject {
 }
 
 /**
-* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/container scaleway_container}
+* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/container scaleway_container}
 */
 export class Container extends cdktf.TerraformResource {
 
@@ -391,7 +915,7 @@ export class Container extends cdktf.TerraformResource {
   * Generates CDKTF code for importing a Container resource upon running "cdktf plan <stack-name>"
   * @param scope The scope in which to define this construct
   * @param importToId The construct id used in the generated config for the Container to import
-  * @param importFromId The id of the existing Container that should be imported. Refer to the {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/container#import import section} in the documentation of this resource for the id to use
+  * @param importFromId The id of the existing Container that should be imported. Refer to the {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/container#import import section} in the documentation of this resource for the id to use
   * @param provider? Optional instance of the provider where the Container to import is found
   */
   public static generateConfigForImport(scope: Construct, importToId: string, importFromId: string, provider?: cdktf.TerraformProvider) {
@@ -403,7 +927,7 @@ export class Container extends cdktf.TerraformResource {
   // ===========
 
   /**
-  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/container scaleway_container} Resource
+  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.59.0/docs/resources/container scaleway_container} Resource
   *
   * @param scope The scope in which to define this construct
   * @param id The scoped construct ID. Must be unique amongst siblings in the same scope
@@ -414,7 +938,7 @@ export class Container extends cdktf.TerraformResource {
       terraformResourceType: 'scaleway_container',
       terraformGeneratorMetadata: {
         providerName: 'scaleway',
-        providerVersion: '2.42.1',
+        providerVersion: '2.59.0',
         providerVersionConstraint: '>= 2.42.1'
       },
       provider: config.provider,
@@ -425,12 +949,15 @@ export class Container extends cdktf.TerraformResource {
       connection: config.connection,
       forEach: config.forEach
     });
+    this._args = config.args;
+    this._command = config.command;
     this._cpuLimit = config.cpuLimit;
     this._deploy = config.deploy;
     this._description = config.description;
     this._environmentVariables = config.environmentVariables;
     this._httpOption = config.httpOption;
     this._id = config.id;
+    this._localStorageLimit = config.localStorageLimit;
     this._maxConcurrency = config.maxConcurrency;
     this._maxScale = config.maxScale;
     this._memoryLimit = config.memoryLimit;
@@ -439,6 +966,7 @@ export class Container extends cdktf.TerraformResource {
     this._namespaceId = config.namespaceId;
     this._port = config.port;
     this._privacy = config.privacy;
+    this._privateNetworkId = config.privateNetworkId;
     this._protocol = config.protocol;
     this._region = config.region;
     this._registryImage = config.registryImage;
@@ -446,13 +974,48 @@ export class Container extends cdktf.TerraformResource {
     this._sandbox = config.sandbox;
     this._secretEnvironmentVariables = config.secretEnvironmentVariables;
     this._status = config.status;
+    this._tags = config.tags;
     this._timeout = config.timeout;
+    this._healthCheck.internalValue = config.healthCheck;
+    this._scalingOption.internalValue = config.scalingOption;
     this._timeouts.internalValue = config.timeouts;
   }
 
   // ==========
   // ATTRIBUTES
   // ==========
+
+  // args - computed: false, optional: true, required: false
+  private _args?: string[]; 
+  public get args() {
+    return this.getListAttribute('args');
+  }
+  public set args(value: string[]) {
+    this._args = value;
+  }
+  public resetArgs() {
+    this._args = undefined;
+  }
+  // Temporarily expose input value. Use with caution.
+  public get argsInput() {
+    return this._args;
+  }
+
+  // command - computed: false, optional: true, required: false
+  private _command?: string[]; 
+  public get command() {
+    return this.getListAttribute('command');
+  }
+  public set command(value: string[]) {
+    this._command = value;
+  }
+  public resetCommand() {
+    this._command = undefined;
+  }
+  // Temporarily expose input value. Use with caution.
+  public get commandInput() {
+    return this._command;
+  }
 
   // cpu_limit - computed: true, optional: true, required: false
   private _cpuLimit?: number; 
@@ -563,6 +1126,22 @@ export class Container extends cdktf.TerraformResource {
   // Temporarily expose input value. Use with caution.
   public get idInput() {
     return this._id;
+  }
+
+  // local_storage_limit - computed: true, optional: true, required: false
+  private _localStorageLimit?: number; 
+  public get localStorageLimit() {
+    return this.getNumberAttribute('local_storage_limit');
+  }
+  public set localStorageLimit(value: number) {
+    this._localStorageLimit = value;
+  }
+  public resetLocalStorageLimit() {
+    this._localStorageLimit = undefined;
+  }
+  // Temporarily expose input value. Use with caution.
+  public get localStorageLimitInput() {
+    return this._localStorageLimit;
   }
 
   // max_concurrency - computed: true, optional: true, required: false
@@ -690,6 +1269,22 @@ export class Container extends cdktf.TerraformResource {
     return this._privacy;
   }
 
+  // private_network_id - computed: false, optional: true, required: false
+  private _privateNetworkId?: string; 
+  public get privateNetworkId() {
+    return this.getStringAttribute('private_network_id');
+  }
+  public set privateNetworkId(value: string) {
+    this._privateNetworkId = value;
+  }
+  public resetPrivateNetworkId() {
+    this._privateNetworkId = undefined;
+  }
+  // Temporarily expose input value. Use with caution.
+  public get privateNetworkIdInput() {
+    return this._privateNetworkId;
+  }
+
   // protocol - computed: false, optional: true, required: false
   private _protocol?: string; 
   public get protocol() {
@@ -802,6 +1397,22 @@ export class Container extends cdktf.TerraformResource {
     return this._status;
   }
 
+  // tags - computed: false, optional: true, required: false
+  private _tags?: string[]; 
+  public get tags() {
+    return this.getListAttribute('tags');
+  }
+  public set tags(value: string[]) {
+    this._tags = value;
+  }
+  public resetTags() {
+    this._tags = undefined;
+  }
+  // Temporarily expose input value. Use with caution.
+  public get tagsInput() {
+    return this._tags;
+  }
+
   // timeout - computed: true, optional: true, required: false
   private _timeout?: number; 
   public get timeout() {
@@ -816,6 +1427,38 @@ export class Container extends cdktf.TerraformResource {
   // Temporarily expose input value. Use with caution.
   public get timeoutInput() {
     return this._timeout;
+  }
+
+  // health_check - computed: false, optional: true, required: false
+  private _healthCheck = new ContainerHealthCheckList(this, "health_check", true);
+  public get healthCheck() {
+    return this._healthCheck;
+  }
+  public putHealthCheck(value: ContainerHealthCheck[] | cdktf.IResolvable) {
+    this._healthCheck.internalValue = value;
+  }
+  public resetHealthCheck() {
+    this._healthCheck.internalValue = undefined;
+  }
+  // Temporarily expose input value. Use with caution.
+  public get healthCheckInput() {
+    return this._healthCheck.internalValue;
+  }
+
+  // scaling_option - computed: false, optional: true, required: false
+  private _scalingOption = new ContainerScalingOptionList(this, "scaling_option", true);
+  public get scalingOption() {
+    return this._scalingOption;
+  }
+  public putScalingOption(value: ContainerScalingOption[] | cdktf.IResolvable) {
+    this._scalingOption.internalValue = value;
+  }
+  public resetScalingOption() {
+    this._scalingOption.internalValue = undefined;
+  }
+  // Temporarily expose input value. Use with caution.
+  public get scalingOptionInput() {
+    return this._scalingOption.internalValue;
   }
 
   // timeouts - computed: false, optional: true, required: false
@@ -840,12 +1483,15 @@ export class Container extends cdktf.TerraformResource {
 
   protected synthesizeAttributes(): { [name: string]: any } {
     return {
+      args: cdktf.listMapper(cdktf.stringToTerraform, false)(this._args),
+      command: cdktf.listMapper(cdktf.stringToTerraform, false)(this._command),
       cpu_limit: cdktf.numberToTerraform(this._cpuLimit),
       deploy: cdktf.booleanToTerraform(this._deploy),
       description: cdktf.stringToTerraform(this._description),
       environment_variables: cdktf.hashMapper(cdktf.stringToTerraform)(this._environmentVariables),
       http_option: cdktf.stringToTerraform(this._httpOption),
       id: cdktf.stringToTerraform(this._id),
+      local_storage_limit: cdktf.numberToTerraform(this._localStorageLimit),
       max_concurrency: cdktf.numberToTerraform(this._maxConcurrency),
       max_scale: cdktf.numberToTerraform(this._maxScale),
       memory_limit: cdktf.numberToTerraform(this._memoryLimit),
@@ -854,6 +1500,7 @@ export class Container extends cdktf.TerraformResource {
       namespace_id: cdktf.stringToTerraform(this._namespaceId),
       port: cdktf.numberToTerraform(this._port),
       privacy: cdktf.stringToTerraform(this._privacy),
+      private_network_id: cdktf.stringToTerraform(this._privateNetworkId),
       protocol: cdktf.stringToTerraform(this._protocol),
       region: cdktf.stringToTerraform(this._region),
       registry_image: cdktf.stringToTerraform(this._registryImage),
@@ -861,13 +1508,28 @@ export class Container extends cdktf.TerraformResource {
       sandbox: cdktf.stringToTerraform(this._sandbox),
       secret_environment_variables: cdktf.hashMapper(cdktf.stringToTerraform)(this._secretEnvironmentVariables),
       status: cdktf.stringToTerraform(this._status),
+      tags: cdktf.listMapper(cdktf.stringToTerraform, false)(this._tags),
       timeout: cdktf.numberToTerraform(this._timeout),
+      health_check: cdktf.listMapper(containerHealthCheckToTerraform, true)(this._healthCheck.internalValue),
+      scaling_option: cdktf.listMapper(containerScalingOptionToTerraform, true)(this._scalingOption.internalValue),
       timeouts: containerTimeoutsToTerraform(this._timeouts.internalValue),
     };
   }
 
   protected synthesizeHclAttributes(): { [name: string]: any } {
     const attrs = {
+      args: {
+        value: cdktf.listMapperHcl(cdktf.stringToHclTerraform, false)(this._args),
+        isBlock: false,
+        type: "list",
+        storageClassType: "stringList",
+      },
+      command: {
+        value: cdktf.listMapperHcl(cdktf.stringToHclTerraform, false)(this._command),
+        isBlock: false,
+        type: "list",
+        storageClassType: "stringList",
+      },
       cpu_limit: {
         value: cdktf.numberToHclTerraform(this._cpuLimit),
         isBlock: false,
@@ -903,6 +1565,12 @@ export class Container extends cdktf.TerraformResource {
         isBlock: false,
         type: "simple",
         storageClassType: "string",
+      },
+      local_storage_limit: {
+        value: cdktf.numberToHclTerraform(this._localStorageLimit),
+        isBlock: false,
+        type: "simple",
+        storageClassType: "number",
       },
       max_concurrency: {
         value: cdktf.numberToHclTerraform(this._maxConcurrency),
@@ -952,6 +1620,12 @@ export class Container extends cdktf.TerraformResource {
         type: "simple",
         storageClassType: "string",
       },
+      private_network_id: {
+        value: cdktf.stringToHclTerraform(this._privateNetworkId),
+        isBlock: false,
+        type: "simple",
+        storageClassType: "string",
+      },
       protocol: {
         value: cdktf.stringToHclTerraform(this._protocol),
         isBlock: false,
@@ -994,11 +1668,29 @@ export class Container extends cdktf.TerraformResource {
         type: "simple",
         storageClassType: "string",
       },
+      tags: {
+        value: cdktf.listMapperHcl(cdktf.stringToHclTerraform, false)(this._tags),
+        isBlock: false,
+        type: "list",
+        storageClassType: "stringList",
+      },
       timeout: {
         value: cdktf.numberToHclTerraform(this._timeout),
         isBlock: false,
         type: "simple",
         storageClassType: "number",
+      },
+      health_check: {
+        value: cdktf.listMapperHcl(containerHealthCheckToHclTerraform, true)(this._healthCheck.internalValue),
+        isBlock: true,
+        type: "set",
+        storageClassType: "ContainerHealthCheckList",
+      },
+      scaling_option: {
+        value: cdktf.listMapperHcl(containerScalingOptionToHclTerraform, true)(this._scalingOption.internalValue),
+        isBlock: true,
+        type: "set",
+        storageClassType: "ContainerScalingOptionList",
       },
       timeouts: {
         value: containerTimeoutsToHclTerraform(this._timeouts.internalValue),
