@@ -156,8 +156,9 @@ export class ProjectStack extends TerraformStack {
       backupSameRegion: false,
       backupScheduleFrequency: 24,
       backupScheduleRetention: 14,
-      volumeType: 'bssd', // Block storage
+      volumeType: 'sbs_15k', // Block storage
       volumeSizeInGb: 15,
+      encryptionAtRest: true,
       settings: {
         // Custom max connections
         max_connections: '500',
