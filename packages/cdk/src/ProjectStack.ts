@@ -149,7 +149,7 @@ export class ProjectStack extends TerraformStack {
     // https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/rdb_instance
     const database = new RdbInstance(this, 'database', {
       name: databaseInstanceName,
-      engine: 'PostgreSQL-14',
+      engine: 'PostgreSQL-16',
       isHaCluster: true,
       nodeType: 'db-dev-m',
       disableBackup: false,
