@@ -45,4 +45,10 @@ export const ServerWebAppConfig = {
   Database: {
     instanceId: process.env.DATABASE_INSTANCE_ID ?? '', // like fr-par/uuid
   },
+  Sentry: {
+    authToken: process.env.SENTRY_AUTH_TOKEN ?? '',
+    url: process.env.SENTRY_URL ?? '',
+    org: process.env.SENTRY_ORG ?? '',
+    project: process.env.SENTRY_PROJECT ?? '',
+  },
 }

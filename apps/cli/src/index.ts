@@ -11,6 +11,7 @@ import { getDatabasePasswordSecret } from '@app/cli/commands/secrets/getDatabase
 import { getSecretValue } from '@app/cli/commands/secrets/getSecretValue'
 import { listSecrets } from '@app/cli/commands/secrets/listSecrets'
 import { setupDatabaseSecret } from '@app/cli/commands/secrets/setupDatabaseSecret'
+import { deleteSentryEnvironmentIssues } from '@app/cli/commands/sentry/deleteSentryEnvironmentIssues'
 import { Command } from '@commander-js/extra-typings'
 
 const program = new Command()
@@ -28,5 +29,6 @@ program.addCommand(updateGithubDeployment)
 program.addCommand(deactivateGithubDeployment)
 program.addCommand(createTfVarsFileFromEnvironment)
 program.addCommand(checkDeploymentStatus)
+program.addCommand(deleteSentryEnvironmentIssues)
 
 program.parse()
