@@ -91,6 +91,15 @@ export const packageJestConfig = ({
         },
       },
     },
+    // Coverage configuration
+    coverageDirectory: '<rootDir>/coverage',
+    coverageReporters: ['json', 'lcov', 'text-summary'],
+    collectCoverageFrom: [
+      'src/**/*.{ts,tsx}',
+      '!src/**/*.spec.{ts,tsx}',
+      '!src/**/*.integration.{ts,tsx}',
+      '!src/**/*.stories.{ts,tsx}',
+    ],
   }
 }
 
