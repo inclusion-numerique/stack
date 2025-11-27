@@ -29,7 +29,9 @@
     "db:init": "pnpm -F web prisma generate && pnpm -F web prisma migrate deploy",
     "docker:start": "docker compose -f ./docker-compose.dev.yml -p stack up -d",
     "docker:stop": "docker compose -f ./docker-compose.dev.yml -p stack down",
-    "docker:reset": "pnpm docker:stop && docker volume rm stack_pgdata && pnpm docker:start && pnpm db:init"
+    "docker:reset": "pnpm docker:stop && docker volume rm stack_pgdata && pnpm docker:start && pnpm db:init",
+    "coverage:merge": "rm -rf coverage/.nyc_output && mkdir -p coverage/.nyc_output && find coverage-reports -name '*.json' -exec cp {} coverage/.nyc_output/ \\; && nyc report --temp-dir ./coverage/.nyc_output --reporter=lcov --reporter=html --reporter=text-summary --report-dir=./coverage",
+    "coverage:upload": "cat ./coverage/lcov.info | coveralls"
   },
   "pnpm": {
     "overrides": {}
@@ -44,8 +46,10 @@
   "devDependencies": {
     "@biomejs/biome": "^2.2.3",
     "@manypkg/cli": "^0.24.0",
+    "coveralls": "^3.1.1",
     "dotenv": "^16.5.0",
     "dotenv-cli": "^8.0.0",
+    "nyc": "^17.1.0",
     "ts-node": "^10.9.2",
     "turbo": "^2.5.3"
   }
