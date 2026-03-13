@@ -116,7 +116,7 @@
     "superjson": "2.2.2",
     "typescript-plugin-css-modules": "^5.1.0",
     "uglify-js": "^3.19.3",
-    "undici": "^7.8.0",
+    "undici": "^7.24.0",
     "usehooks-ts": "^3.1.1",
     "uuid": "^11.1.0",
     "zod": "^3.24.4",
